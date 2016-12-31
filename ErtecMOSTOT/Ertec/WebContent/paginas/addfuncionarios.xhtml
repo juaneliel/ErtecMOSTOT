@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+ 
+<ui:define name="cuerpo"> 
+	<h:form>			
+		<h:panelGrid id="panelFuncionario" columns="2" border="1" cellpadding="5" cellspacing="1">    
+			<f:facet name="header">
+		  	Agregar Funcionario
+			</f:facet>
+		
+	    <h:outputLabel value="Nombre" for="n" />
+	    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.nombre}" required="true" /> 
+	      
+	    <h:outputLabel value="Email" for="e" />
+	    <p:inputText id="e" label="email" value="#{mb_Funcionario.email}"  />  
+	     
+	    <h:outputLabel value="Telefono" for="t" />    
+	    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.telefono}"  />     
+	    
+	    <h:outputLabel value="Activo:" for="activo" />    
+	    <p:selectOneMenu id="activo" value="#{mb_Funcionario.activo}" style="width:85%"    >
+				<f:selectItem  itemLabel="Si" itemValue="Si" />
+				<f:selectItem   itemLabel="No" itemValue="No" />
+			</p:selectOneMenu >	
+	    
+	    <h:outputLabel value="Alias:" for="alias" /> 
+	    <p:inputText id="alias" value="#{mb_Funcionario.alias}" />
+	    
+	    <h:outputLabel value="Area:" for="area" /> 
+	    <p:inputText id="area" value="#{mb_Funcionario.area}" />
+	    
+	    <h:outputLabel value="Categoria:" for="cat" />    
+	    <p:inputText id="cat" value="#{mb_Funcionario.cat}" />
+	    
+	    <h:outputLabel value="Direccion:" for="direccion" /> 
+	    <p:inputText id="direccion" value="#{mb_Funcionario.direccion}" />
+	    
+ 	    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
+  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
+	
+	    <h:outputLabel value="Carne de Salud" for="cds" /> 			    	    
+ 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" /> 
+	    
+			<h:outputLabel value="Cedula:" for="cedula" /> 	
+	    <p:inputText id="cedula" value="#{mb_Funcionario.cedula}" style="width:100%"/>
+           		  
+			<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
+      <p:calendar id="vcedula" value="#{mb_Funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
+		 
+			<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
+	    <p:inputText id="CatLibreta" value="#{mb_Funcionario.libretaCat}" style="width:100%"/> 
+		 
+ 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
+       <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
+    
+	    
+	    <p:column colspan="2">
+			<h:commandButton value="Agregar" action="#{mb_Funcionario.add}"   />	  
+	    </p:column>
+    
+    
+    
+
+		</h:panelGrid> 
+	</h:form>
+        
+
+
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+
+ 
+ <h:form>
+
+ 
+ 
+   <div id="panel1">         
+		<p:panelGrid id="panel" columns="2" border="1" cellpadding="5" cellspacing="1">   
+	   
+	    
+	   
+	    <p:outputLabel for="desde" value="Desde:" />
+        <p:calendar id="desde" value="#{mb_ManoObra.fechaIniBuscar}" pattern="dd-MM-yyyy" mask="true" />
+ 
+	   	<p:outputLabel for="hasta" value="Hasta:" />
+        <p:calendar id="hasta" value="#{mb_ManoObra.fechaFinBuscar}" pattern="dd-MM-yyyy" mask="true" />  
+	   	   
+		<p:outputLabel value="Funcionario ID:" for="fid" />
+	    <p:inputText id="fid" label="id" value="#{mb_ManoObra.funIDBuscar}"  /> 
+	
+		<p:outputLabel value="OT:" for="otIDBuscar" />
+	    <p:inputText id="otIDBuscar" label="id" value="#{mb_ManoObra.otIDBuscar}"  /> 
+		
+		<p:outputLabel for="tih" value="Tipo Hora:" />
+        <p:selectOneRadio id="tih" value="#{mb_ManoObra.tipoHoraBuscar}">			
+			<f:selectItem itemValue="COMUN" itemLabel="Comunes"/>
+			<f:selectItem itemValue="EXTRAS" itemLabel="Extras"/>
+			<f:selectItem itemValue="EXTRAORDINARIAS" itemLabel="Extraordinarias"/>
+			<f:selectItem itemValue="TODAS" itemLabel="Todas"/>
+        </p:selectOneRadio> 
+		
+		<p:outputLabel for="tipoManoBuscar" value="Tipo M.O.:" />
+        <p:selectOneRadio id="tipoManoBuscar" value="#{mb_ManoObra.tipoManoBuscar}">
+			<f:selectItem itemValue="P" itemLabel="Pedido"/>
+			<f:selectItem itemValue="S" itemLabel="Supervision"/>
+			<f:selectItem itemValue="T" itemLabel="Trabajo"/>
+			<f:selectItem itemValue="" itemLabel="Todas"/>
+        </p:selectOneRadio>  
+        
+		<h:commandButton value="Limpiar" action="#{mb_ManoObra.limpiarVariables}"  render="datatable" />	  
+		<h:commandButton value="Buscar" action="#{mb_ManoObra.findFuncionario}"  render="datatable" />	  
+		 
+	
+	</p:panelGrid>
+   </div>    
+  
+ </h:form>
+        
+
+
+
+<p:dataTable var="funcionario" value="#{mb_Funcionario.funcionariosHallados}" id="datatable">
+    <p:column headerText="Id" sortBy="#{funcionario.funcionarioID}">
+        <h:outputText value="#{funcionario.funcionarioID}"/>
+    </p:column>
+ 
+    <p:column headerText="Nombre" sortBy="#{funcionario.nombre}">
+        <h:outputText id="n" value="#{funcionario.nombre}"/>
+    </p:column>
+
+    <p:column headerText="Email" sortBy="#{funcionario.email}">
+        <h:outputText value="#{funcionario.email}"/>
+    </p:column>
+    
+    <p:column headerText="Telefono" sortBy="#{funcionario.telefono}">
+        <h:outputText value="#{funcionario.telefono}"/>
+    </p:column>
+
+ 	<p:column headerText="Accion">    
+     	<ui:include src="/templates/templatefuncionario.xhtml"/> 		
+    </p:column>
+</p:dataTable>
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

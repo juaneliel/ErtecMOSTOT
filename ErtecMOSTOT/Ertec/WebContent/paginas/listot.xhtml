@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+      
+<ui:define name="cuerpo"> 
+  	  	
+  	<h:form id="datatableOT">
+  	
+		<p:dataTable   var="ot" value="#{mb_OT.lista}" id="datatable2OT"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="false"      scrollWidth="100%"   
+		 editable="true"   
+		 tableStyle="height:auto;" 
+		 style="text-align:left;max-height:500px;overflow-y:scroll; 
+   font-size: 90% !important;color: red;font-weight: bold;"
+		
+		 >
+		 
+		 	<f:facet name="header">
+		        Ordenes de Trabajo
+		 
+		        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatable2OT" trigger="toggler" />
+		    </f:facet>
+		 
+		 <p:ajax event="cellEdit" listener="#{mb_OT.onRowEdit}" update="datatableOT" />
+		 
+		  <p:ajax event="rowToggle"   update="datatable3" />
+		
+
+	   <p:column style="width:16px" stylr="color:red">
+            <p:rowToggler />
+        </p:column>	
+		 
+		 
+		 
+		 
+			<p:column headerText="Id" sortBy="#{ot.id}"  filterMatchMode="startsWith" filterBy="#{ot.id}">
+		        <h:outputText  value="#{ot.id}"/>
+		    </p:column>
+		 
+
+		<p:column style="min-width:200px" headerText="Cliente:" sortBy="#{ot.clienteNombre}"  filterMatchMode="contains" filterBy="#{ot.clienteNombre}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.clienteNombre}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="cliente" value="#{ot.clienteNombre}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+	</p:column>	  
+
+
+
+    <h:outputLink id="content" value="#">
+        <h:outputText value="PrimeFaces" />
+    </h:outputLink>
+    <p:tooltip id="toolTipContent" for="content" position="bottom">
+        <p:graphicImage name="/demo/images/logo-trans.png" />
+    </p:tooltip>
+
+
+
+
+		    		 
+			<p:column style="min-width:200px" headerText="Trabajo:" sortBy="#{ot.trabajo}"  filterMatchMode="contains" filterBy="#{ot.trabajo}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.trabajo}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="trabajo" value="#{ot.trabajo}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+
+
+			<p:column headerText="Proc" sortBy="#{ot.proceso}"  filterMatchMode="contains" filterBy="#{ot.proceso}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.proceso}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="proceso" value="#{ot.proceso}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>	
+
+		 
+	
+			 <p:column headerText="Pres" sortBy="#{ot.presupuesto}"  filterMatchMode="contains" filterBy="#{ot.presupuesto}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.presupuesto}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="presupuesto" value="#{ot.presupuesto}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    		 
+		  
+		    		 
+			<p:column headerText="Fact" sortBy="#{ot.factura}"  filterMatchMode="contains" filterBy="#{ot.factura}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.factura}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="factura" value="#{ot.factura}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    		  
+	   	    		 
+			<p:column headerText="Tipo" sortBy="#{ot.tipoID}"  filterMatchMode="contains" filterBy="#{ot.tipoID}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.tipoID}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="tipoID" value="#{ot.tipoID}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+
+		     			 
+				<p:column headerText="Arre" sortBy="#{ot.arrendamiento}"  filterMatchMode="contains" filterBy="#{ot.arrendamiento}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.arrendamiento}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="arrendamiento" value="#{ot.arrendamiento}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>  
+		    		 
+			
+			 
+			 
+			<p:column headerText="Mant" sortBy="#{ot.mantenimiento}"  filterMatchMode="contains" filterBy="#{ot.mantenimiento}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.mantenimiento}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="mantenimiento" value="#{ot.mantenimiento}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+	  
+		  
+		  <p:rowExpansion id="datatable3">	  		
+	  
+	   
+<p:commandButton value="Ver Adicionales"  update=":datatableADI:datatable2ADI" 
+onclick="PF('verad').show();#{mb_OT.recargarListaAdicionales(ot.id)}"
+action="#{mb_OT.recargarListaAdicionales(ot.id)}"/> 
+
+	  
+<p:commandButton value="Ver Compras Externas" update=":datatableCE:datatable2CE" 
+onclick="PF('verce').show()" 
+action="#{mb_OT.recargarListaComprasExternas(ot.id)}"
+/>  
+
+
+ 
+<p:commandButton value="Ver Mano de Obra" update=":datatableMO:datatable2MO" 
+onclick="PF('vermo').show();" 
+action="#{mb_OT.recargarListaManoObra(ot.id)}"/> 
+
+ 	  
+<p:commandButton value="Ver Movimientos" update=":datatableMOV:datatable2MOV"
+onclick="PF('vermov').show()"   
+action="#{mb_OT.recargarListaMovimientos(ot.id)}"/> 
+
+<br/>
+
+
+<p:commandButton value="Agregar Adicional" 
+onclick="PF('addad').show();#{mb_OT.setNumeroID(ot.id)};#{mb_OT.setNumeroID(ot.id)};"
+action="#{mb_OT.setNumeroID(ot.id)}"/>  
+	
+
+
+<p:commandButton value="Agregar Compras Externas"
+onclick="PF('addce').show();#{mb_OT.setNumeroID(ot.id)}" 
+action="#{mb_OT.setNumeroID(ot.id)}"/>  
+    
+			
+			 
+<p:commandButton value="Agregar Mano Obra"  update="formAddMO"
+onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}" 
+	action="#{mb_ManoObra.setOrdenTrabajo(ot.id)}"/>  
+			
+
+<p:commandButton value="Agregar Movimiento" update="formAddMov"
+onclick="PF('addmov').show();#{mb_OT.setNumeroID(ot.id)}" 
+action="#{mb_Movimiento.setReferencia(ot.id)}"/>  
+
+<br/> 
+
+<p:column headerText="Pdf" style="width:40px" stylr="color:red">  
+<h:form target="_blank">
+<p:commandButton  icon="ui-icon-print" id="imprimir" onclick="location.href='/Ertec/otapdf?otID=#{mb_OT.numeroID}';PF('verpdf').show();"  
+action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
+</h:form>
+
+</p:column>
+   
+		  </p:rowExpansion>
+
+
+ 
+
+
+
+
+
+ 
+
+
+		    
+		      <p:column headerText="Edit"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		    <p:column headerText="Accion"  style = "width:50px">		   
+			<p:commandButton  icon="ui-icon-trash" id="trashOT" actionListener="#{mb_OT.delete(ot)}"   update="datatableOT message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+			</p:column>
+		    	   
+		      
+		</p:dataTable>
+	
+
+  </h:form>
+
+ 
+<p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad">
+<ui:include src="/templates/templateadicional.xhtml" id="listaAdicionales">	 
+</ui:include>
+</p:dialog>	   
+ 
+ <p:dialog header="Compras Externas" widgetVar="verce"  modal="true" width="90%" height="400">
+<ui:include src="/templates/templatecompraexterna.xhtml" id="listaCE">	
+</ui:include>
+</p:dialog>
+
+<p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400">
+<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">					
+</ui:include>			
+</p:dialog>	
+
+<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400">
+<ui:include src="/templates/templatemovimiento.xhtml" id="listaMovimientos">	
+<ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>					
+</ui:include>			
+</p:dialog>	
+
+
+
+<p:dialog header="Agregar Adicional" id="addad" widgetVar="addad"  modal="true" width="580px" height="230">
+<ui:include src="/templates/templateaddadicional.xhtml" id="addadicional">			
+</ui:include>			
+</p:dialog>	
+
+<p:dialog header="Agregar Compra Externa" widgetVar="addce"  modal="true" width="450" height="390">
+<ui:include src="/templates/templateaddcompraexterna.xhtml" id="listaComprasExternasOUT">			
+</ui:include>			
+</p:dialog>	    
+
+<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="550">
+<ui:include src="/templates/templateaddmanoobra.xhtml" id="addmanoobra">			
+</ui:include>			
+</p:dialog>		
+	
+<p:dialog header="Agregar Movimiento" widgetVar="addmov"  modal="true" width="550" height="550">
+<ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">			
+</ui:include>			
+</p:dialog>
+	
+
+<p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"
+     
+    closable="true" closeOnEscape="true" draggable="true"
+    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
+    <h:form prependId="false">
+    <h:outputFormat escape="false">
+    <iframe src="/Ertec/otapdf?otID=#{mb_OT.numeroID}"
+    name="someName" id="someId" scrolling="auto" width="100%"    height="550"  />
+    </h:outputFormat>
+    </h:form> 
+
+	
+</p:dialog>	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	  
+
+</ui:define>
+</ui:composition>
+
+
+
+ 
+
+
+

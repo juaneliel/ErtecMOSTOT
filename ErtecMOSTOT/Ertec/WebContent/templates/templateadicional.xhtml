@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+ 	
+<h:form id="datatableADI">
+ 
+
+<p:dataTable var="adicional" value="#{mb_OT.listaAdicionales}" id="datatable2ADI" 
+ paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+ draggableColumns="true" scrollable="true"  
+ scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
+  tableStyle="color:red" 
+ 
+ >	 
+ 
+ 	<f:facet name="header">
+        Adicional 
+        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatable2ADI" trigger="toggler" />
+    </f:facet>
+    
+    <p:ajax event="rowEdit" listener="#{mb_OT.editAdicional}" update="message" />
+
+		<p:column headerText="ID adicional:" sortBy="#{adicional.especificacion}"  filterMatchMode="contains" filterBy="#{adicional.especificacion}">		                
+		    <h:outputText value="#{adicional.adicionalID}" />
+		</p:column>
+
+
+		 
+		<p:column headerText="Descripcion:" sortBy="#{adicional.especificacion}"  filterMatchMode="contains" filterBy="#{adicional.especificacion}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{adicional.especificacion}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="cliente" value="#{adicional.especificacion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+    
+
+    
+    
+        <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		     
+			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_OT.deleteAdicional(adicional)}" 
+			 update="datatable2ADI message">
+			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+			 </p:commandButton>
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			     <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			     <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			 </p:confirmDialog>
+			</p:column>
+		     
+		     
+		    
+		    
+		    	   
+
+    
+</p:dataTable>   
+
+
+</h:form>
+
+	</ui:composition>
+</html>
+ 	

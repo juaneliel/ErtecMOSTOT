@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+ 
+<h:form id="datatablePRO">
+
+
+ 
+<p:dataTable var="proveedor" value="#{mb_Proveedores.lista}" id="datatable2PRO" 
+ paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+ draggableColumns="true" scrollable="true"  
+ scrollWidth="100%"  editable="true"  tableStyle="color:red" 
+ style="text-align:left;max-height:500px;overflow-y:scroll; 
+   font-size: 90% !important;color: red;font-weight: bold;"
+		
+ >	
+
+ <p:ajax event="rowEdit" listener="#{mb_Proveedores.editProveedor}" update="message" />
+
+
+
+	 	<f:facet name="header">
+        Proveedores 
+        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatable2PRO" trigger="toggler" />
+    </f:facet>   
+   
+
+	<p:column headerText="Id:" sortBy="#{proveedor.proveedorID}"  filterMatchMode="startsWith" filterBy="#{proveedor.proveedorID}">		                
+	    <h:outputText value="#{proveedor.proveedorID}"/>
+    </p:column>
+ 
+
+		<p:column headerText="Nombre:" sortBy="#{proveedor.nombre}"  filterMatchMode="contains" filterBy="#{proveedor.nombre}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.nombre}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="Nombre" value="#{proveedor.nombre}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+ 
+    
+    		<p:column headerText="Direccion" sortBy="#{proveedor.direccion}"  filterMatchMode="contains" filterBy="#{proveedor.direccion}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.direccion}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="Direccion" value="#{proveedor.direccion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+     
+ 	<p:column headerText="Email:" sortBy="#{proveedor.email}"  filterMatchMode="contains" filterBy="#{proveedor.email}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.email}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="Email" value="#{proveedor.email}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+    
+  
+ 
+ 	<p:column headerText="telefono" sortBy="#{proveedor.telefono}"  filterMatchMode="startsWith" filterBy="#{proveedor.telefono}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.telefono}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="telefono" value="#{proveedor.telefono}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+    
+  
+
+	<p:column headerText="Fax:" sortBy="#{proveedor.fax}"  filterMatchMode="contains" filterBy="#{proveedor.fax}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.fax}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="Fax" value="#{proveedor.fax}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>  
+ 
+ 	<p:column headerText="Observacion" sortBy="#{proveedor.observacion}"  filterMatchMode="contains" filterBy="#{proveedor.observacion}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.observacion}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="Observacion" value="#{proveedor.observacion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+    
+  
+ 
+ 	<p:column headerText="RUC" sortBy="#{proveedor.ruc}"  filterMatchMode="startsWith" filterBy="#{proveedor.ruc}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{proveedor.ruc}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="RUC" value="#{proveedor.ruc}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+ 
+  
+    
+        <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		     
+			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Proveedores.delete(proveedor)}" 
+			 update="datatable2PRO message">
+			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+			 </p:commandButton>
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			     <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			     <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			 </p:confirmDialog>
+			</p:column>
+    
+    
+ 
+</p:dataTable>
+
+
+</h:form>
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

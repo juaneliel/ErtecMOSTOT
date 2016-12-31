@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>
+ 	
+<h:form id="formarrendamiento">
+ 
+	<p:outputLabel value="Nro OT:" for="ccte" />
+	<p:inputText id="ccte" label="ccte" value="#{mb_Movimiento.otID}" />	       	
+	<p:commandButton value="Devolver" actionListener="#{mb_Movimiento.devolver}"   /> 
+
+
+
+	<p:dataTable var="arrendamiento" value="#{mb_Movimiento.listaArrendamientos}" id="datatablearrendamiento" 
+	paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+	draggableColumns="true" scrollable="true"  
+	scrollWidth="100%"  editable="true"  
+	style="text-align:left; font-size: 90% !important;color: red;"
+	>	 
+ 
+		<f:facet name="header">
+			Arrendamientos
+			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+ 			<p:columnToggler datasource="datatablearrendamiento" trigger="toggler" />
+    </f:facet>
+     
+		
+
+
+		<p:column headerText="Id" sortBy="#{arrendamiento.id}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.id}">		                
+		  <h:outputText value="#{arrendamiento.id}" />			
+		</p:column>
+		
+				 		 
+		<p:column headerText="Art.id" sortBy="#{arrendamiento.articuloID}"  style="text-align:center;width:80px;" filterStyle="width: 80px;" filterMatchMode="startswith" filterBy="#{arrendamiento.articuloID}">		                
+			<h:outputText value="#{arrendamiento.articuloID}" /> 			 
+		</p:column>
+		
+		<p:column headerText="Desc.art" sortBy="#{arrendamiento.articulo.descripcion}"  filterMatchMode="startswith" filterBy="#{arrendamiento.articulo.descripcion}">		                
+			<h:outputText value="#{arrendamiento.articulo.descripcion}" /> 			 
+		</p:column>		
+		
+ 		<p:column headerText="Cant" sortBy="#{arrendamiento.cantidad}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.cantidad}">		                
+			<h:outputText value="#{arrendamiento.cantidad}" /> 			 
+		</p:column> 
+
+ 		<p:column headerText="Costo" sortBy="#{arrendamiento.costo}"   style="text-align:center;width:80px;" filterStyle="width: 80px;" filterMatchMode="startswith" filterBy="#{arrendamiento.costo}">		                
+			<h:outputText value="#{arrendamiento.costo}" /> 			 
+		</p:column> 
+
+ 		<p:column headerText="Mov ID" sortBy="#{arrendamiento.costo}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.costo}">		                
+			<h:outputText value="#{arrendamiento.costo}" /> 			 
+		</p:column> 
+
+		<p:column headerText="Saldo" sortBy="#{arrendamiento.saldo}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.saldo}">		                
+			<h:outputText value="#{arrendamiento.saldo}" /> 			 
+		</p:column> 
+      
+   	<p:column headerText="Fecha" sortBy="#{arrendamiento.fecha}" style="text-align:center;width:200px;" filterMatchMode="startswith" filterBy="#{arrendamiento.fecha}">		                
+			<p:calendar mindate="#{arrendamiento.fecha}" maxdate="#{arrendamiento.fecha}" id="contratoFin" value="#{arrendamiento.fecha}"
+				pattern="dd-MM-yyyy" mask="true" /> 		
+		</p:column>  
+		
+		<p:column headerText="Dev" sortBy="#{arrendamiento.saldo}"  style="text-align:center;width:70px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.saldo}">		                
+			<p:spinner id="minMax"   size="3" value="#{mb_Movimiento.spinnerDevolucion}" min="0" max="#{arrendamiento.saldo}" >
+				<p:ajax  process="@this" listener="#{mb_Movimiento.actualizarDevolver(arrendamiento.id)}" />
+			</p:spinner>			 
+		</p:column>   
+      
+       
+		    
+ 
+		   
+	</p:dataTable>   
+</h:form>
+</ui:composition>
+</html>
+ 	
+ 	
+ 	
+ 	
+ 
+       
+
+

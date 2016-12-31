@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+
+ <div >
+	 
+        <h:form>
+        
+        
+ 
+        
+        
+  <div id="panel1">         
+<p:panelGrid id="panel1" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <p:outputLabel value="Cliente:" for="c" />
+        <p:inputText id="c" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<p:outputLabel value="Direccion" for="direccion" />
+        <p:inputText id="direccion" label="direccion" value="#{mb_OT.cliente}"  />
+      
+
+		<p:outputLabel value="Lugar de la obra" for="lugar" />
+        <p:inputText id="lugar" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</p:panelGrid>
+   </div>     
+        
+   <div id="panel2">     
+<p:panelGrid id="panel2" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <p:outputLabel value="C. Cte" for="ccte" />
+        <p:inputText id="ccte" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<p:outputLabel value="ARR" for="arr" />
+        <p:inputText id="arr" label="direccion" value="#{mb_OT.cliente}"  />
+     
+
+		<p:outputLabel value="Mant" for="mant" />
+        <p:inputText id="mant" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</p:panelGrid>        
+ </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <p:panelGrid columns="2">
+            
+        <p:outputLabel value="Numero id:" for="idn" />
+        <p:outputLabel id="idn" label="idn" value="#{mb_OT.numeroID}"   />
+        <p:outputLabel value="Cliente:" for="cliente" />
+        <p:outputLabel id="cliente" label="cliente" value="#{mb_OT.cliente}"  />
+        <p:outputLabel value="Trabajo" for="trabajo" />
+        <p:outputLabel id="trabajo" label="trabajo" value="#{mb_OT.trabajo}"  /> 
+        <p:outputLabel value="Proceso:" for="proceso" />
+        <p:outputLabel id="proceso" label="proceso" value="#{mb_OT.proceso}"  />  
+        <p:outputLabel value="Factura:" for="factura" />  
+        <p:outputLabel id="factura" label="factura" value="#{mb_OT.factura}"   />
+        
+        <p:outputLabel value="Fecha inicio:" for="FechaInicio" />
+        <p:outputLabel id="FechaInicio" label="FechaInicio" value="#{mb_OT.fechaInicio}"  />  
+        <p:outputLabel value="Fecha terminada:" for="fechaTerminada" />  
+        <p:outputLabel id="fechaTerminada" label="fechaTerminada" value="#{mb_OT.fechaTerminada}"   />
+        <p:outputLabel value="Fecha facturada:" for="fechaFacturada" />  
+        <p:outputLabel id="fechaFacturada" label="fechaFacturada" value="#{mb_OT.fechaFacturada}"   />
+        
+        <h:inputText id="idr" label="idr" value="#{mb_OT.idOTCargar}"  required="true" />
+     
+        <h:commandButton value="Consultar" action="#{mb_OT.recargarOT}"   />
+        
+<h:message for="" errorStyle="color : red"></h:message> 
+        
+        </p:panelGrid><br/> 
+        </h:form>
+        <div id="msg2">
+              
+        </div><br/>
+ 
+</div>
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

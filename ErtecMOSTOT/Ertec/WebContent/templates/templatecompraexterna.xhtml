@@ -1,0 +1,135 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+ 	
+<h:form id="datatableCE">
+ 
+
+<p:dataTable var="compraExterna" value="#{mb_OT.listaComprasExternas}" id="datatable2CE" 
+ paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+ draggableColumns="true" scrollable="true"  
+ scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
+  tableStyle="color:red" 
+ 
+ >	 
+ 
+ 	<f:facet name="header">
+        Compra externa
+        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatable2CE" trigger="toggler" />
+    </f:facet>
+    
+    <p:ajax event="rowEdit" listener="#{mb_OT.editCompraExterna}" update="message" />
+		 
+	 
+
+		 <p:column headerText="Compra ext id:" sortBy="#{compraExterna.id}"  filterMatchMode="contains" filterBy="#{compraExterna.id}">		                
+		  <h:outputText value="#{compraExterna.id}" />
+			
+		</p:column>
+		   
+		<p:column headerText="articulo:" sortBy="#{compraExterna.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{compraExterna.articulo.descripcion}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{compraExterna.articulo.descripcion}" /></f:facet>
+		         <f:facet name="input">
+<p:autoComplete id="themePojo" value="#{compraExterna.articulo}"
+ completeMethod="#{mb_OT.completarArticulo}"
+var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
+ converter="ConverterArticulo" forceSelection="true" minQueryLength="3"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+ 				</f:facet>
+			</p:cellEditor>
+		</p:column>  
+		   
+		 		 
+		<p:column headerText="cantidad:" sortBy="#{compraExterna.cantidad}"  filterMatchMode="contains" filterBy="#{compraExterna.cantidad}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{compraExterna.cantidad}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="cantidad" value="#{compraExterna.cantidad}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		
+ 
+		
+		<p:column headerText="Fecha:" sortBy="#{compraExterna.fecha}"  filterMatchMode="contains" filterBy="#{compraExterna.fecha}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><p:calendar mindate="#{compraExterna.fecha}" maxdate="#{compraExterna.fecha}" id="maskout" value="#{compraExterna.fecha}" pattern="dd-MM-yyyy" mask="true" />
+ </f:facet>
+		         <f:facet name="input"> <p:calendar id="maskin" value="#{compraExterna.fecha}" pattern="dd-MM-yyyy" mask="true" />
+ </f:facet>
+			</p:cellEditor>
+		</p:column>
+		
+		
+		 
+		 		<p:column headerText="moneda:" sortBy="#{compraExterna.moneda}"  filterMatchMode="contains" filterBy="#{compraExterna.moneda}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{compraExterna.moneda}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="moneda" value="#{compraExterna.moneda}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+      
+		 
+		 <p:column headerText="proveedor:" sortBy="#{compraExterna.proveedor.nombre}"  filterMatchMode="contains" filterBy="#{compraExterna.proveedor.nombre}">		                
+		   <p:cellEditor>
+		   		
+		         <f:facet name="output"><h:outputText value="#{compraExterna.proveedor.nombre}" /></f:facet>
+		         <f:facet name="input"> 
+<p:autoComplete id="provee" value="#{compraExterna.proveedor}"
+completeMethod="#{mb_OT.completarProveedor}"
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+converter="ConverterProveedor" forceSelection="true" minQueryLength="3"  
+style="float:left !important;margin:0px 0px 3px 0px;"/>   
+		         </f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+		 
+		<p:column headerText="precio_Unitario:" sortBy="#{compraExterna.precio_Unitario}"  filterMatchMode="contains" filterBy="#{compraExterna.precio_Unitario}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{compraExterna.precio_Unitario}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="precio_Unitario" value="#{compraExterna.precio_Unitario}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+    
+
+    
+    
+        <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		     
+		     
+			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_OT.deleteCompraExterna(compraExterna)}" 
+			 update="datatable2CE message" >
+			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+			 </p:commandButton>
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			     <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			     <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			 </p:confirmDialog>
+			</p:column>
+		     
+		     
+		    
+		    
+		    	   
+
+    
+</p:dataTable>   
+
+
+</h:form>
+
+	</ui:composition>
+</html>
+ 	

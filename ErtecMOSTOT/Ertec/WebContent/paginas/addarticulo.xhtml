@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+ <h:form> 
+   <div id="panel1">         
+		<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+		
+			<f:facet name="header">
+				Agregar Articulo			 
+			</f:facet>
+			
+                  
+			
+			<h:outputLabel value="Articulo Id:" for="articuloID" /> 
+			<p:inputText validator="#{mb_Articulo.validarArticuloID}" id="articuloID" label="articuloid" value="#{mb_Articulo.articuloID}"  /> 
+			    
+		   
+			<h:outputLabel value="Calidad:" for="calidad" />
+			<p:selectOneMenu id="calidad" value="#{mb_Articulo.calidad}" style="width:85%">
+				<f:selectItem  itemLabel="N" itemValue="N" />
+				<f:selectItem   itemLabel="A" itemValue="A" />
+			</p:selectOneMenu>			 
+					    
+			<h:outputLabel value="costoDolares" for="costoDolares" />
+			<p:inputNumber id="costoDolares" label="costoDolares" value="#{mb_Articulo.costoDolares}"  /> 
+			
+			<h:outputLabel value="costoPesos:" for="costoPesos" />
+			<p:inputNumber id="costoPesos" label="costoPesos" value="#{mb_Articulo.costoPesos}"  /> 
+			
+			<h:outputLabel value="descripcion" for="descripcion" />
+			<p:inputText id="descripcion" label="descripcion" value="#{mb_Articulo.descripcion}"  /> 
+			
+			<h:outputLabel value="medida" for="medida" />
+			<p:inputNumber id="medida" label="medida" value="#{mb_Articulo.medida}"  /> 
+			
+			<h:outputLabel value="observacion" for="observacion" />
+			<p:inputText id="observacion" label="observacion" value="#{mb_Articulo.observacion}"  /> 		   
+				    
+			<h:outputLabel value="precioVenta" for="precioVenta" />
+			<p:inputNumber id="precioVenta" label="precioVenta" value="#{mb_Articulo.precioVenta}"  /> 
+			
+			<h:outputLabel value="stock" for="stock" />
+			<p:inputNumber id="stock" label="stock" value="#{mb_Articulo.stock}"  /> 
+			
+			<h:outputLabel value="stockMinimo" for="stockMinimo" />
+			<p:inputNumber id="stockMinimo" label="stockMinimo" value="#{mb_Articulo.stockMinimo}"  /> 
+			
+			<h:outputLabel value="ultimoCostoDolares" for="ultimoCostoDolares" />
+			<p:inputNumber id="ultimoCostoDolares" label="ultimoCostoDolares" value="#{mb_Articulo.ultimoCostoDolares}"  /> 
+			
+			<h:outputLabel value="ultimoCostoPesos" for="ultimoCostoPesos" />
+			<p:inputNumber id="ultimoCostoPesos" label="ultimoCostoPesos" value="#{mb_Articulo.ultimoCostoPesos}"  /> 
+						
+			<h:commandButton value="Agregar" action="#{mb_Articulo.add }"   />	
+			<h:commandButton value="Limpiar" actionListener="#{mb_Articulo.limpiarVariables}"   />	  
+		   	
+		</h:panelGrid>
+   </div>    
+ 
+ 
+ </h:form>
+        
+
+
+
+
+</ui:define>
+</ui:composition>

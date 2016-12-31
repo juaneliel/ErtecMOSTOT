@@ -1,0 +1,212 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>
+ 	
+<h:form id="formcontratos">
+ 
+
+	<p:dataTable var="contrato" value="#{mb_Cliente.listaContratos}" id="datatablecontratos" 
+	paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+	draggableColumns="true" scrollable="true"  
+	scrollWidth="100%"  editable="true"  
+	style="text-align:left; font-size: 90% !important;color: red;"
+	>	 
+ 
+		<f:facet name="header">
+			Contratos
+			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+ 			<p:columnToggler datasource="datatablecontratos" trigger="toggler" />
+    </f:facet>
+    
+		<p:ajax event="rowEdit" listener="#{mb_Cliente.editContrato}" update="message" />
+		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}" update="formarrendamiento" />
+
+		<p:column style="width:16px">
+            <p:rowToggler />
+		</p:column> 
+
+
+		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{contrato.contratoID}">		                
+		  <h:outputText value="#{contrato.contratoID}" />			
+		</p:column>
+				 		 
+		<p:column headerText="Corredor" sortBy="#{contrato.corredorID}"  filterMatchMode="contains" filterBy="#{contrato.corredorID}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.corredorID}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<p:inputNumber id="corredorID" value="#{contrato.corredorID}" style="float:left  !important;margin:0px 0px 3px 0px;"/>   
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		
+ 
+ 		<p:column headerText="Equipo" sortBy="#{contrato.equipo}"  filterMatchMode="contains" filterBy="#{contrato.equipo}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.equipo}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<h:inputText id="equipo" value="#{contrato.equipo}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+  
+		<p:column headerText="Direccion" sortBy="#{contrato.direccion}"  filterMatchMode="contains" filterBy="#{contrato.direccion}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.direccion}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<h:inputText id="direccion" value="#{contrato.direccion}" style="float:left  !important;margin:0px 0px 3px 0px;"/> 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>				
+		
+		<p:column headerText="Localidad" sortBy="#{contrato.localidad}"  filterMatchMode="contains" filterBy="#{contrato.localidad}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.localidad}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<h:inputText id="localidad" value="#{contrato.localidad}" style="float:left  !important;margin:0px 0px 3px 0px;"/> 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+ 
+  
+		<p:column headerText="Retirado" sortBy="#{contrato.retirado}"  filterMatchMode="contains" filterBy="#{contrato.retirado}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.retirado}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<p:selectOneMenu id="retirado" value="#{contrato.retirado}" style="width:85%">
+					 	<f:selectItem  itemLabel="Retirado" itemValue="1" />
+						<f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+					</p:selectOneMenu>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+ 
+ 
+ 		<p:column headerText="Tipo" sortBy="#{contrato.tipo}"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.tipo}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<p:selectOneMenu id="tipo" value="#{contrato.tipo}" style="width:85%">
+						<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
+						<f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
+					</p:selectOneMenu>	
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		
+ 
+		<p:column headerText="Zona" sortBy="#{contrato.zona}"  filterMatchMode="contains" filterBy="#{contrato.zona}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.zona}" />  
+				</f:facet>
+		 		<f:facet name="input">
+						<h:inputText id="zona" value="#{contrato.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+    
+		<p:column headerText="Inicio" sortBy="#{contrato.fechaInicio}"  filterMatchMode="contains" filterBy="#{contrato.fechaInicio}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+  				<p:calendar mindate="#{contrato.fechaInicio}" maxdate="#{contrato.fechaInicio}" id="contratoInicio" value="#{contrato.fechaInicio}"
+		          pattern="dd-MM-yyyy" mask="true" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<p:calendar id="fechaInicio" value="#{contrato.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+ 	  		</f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+		<p:column headerText="Fin" sortBy="#{contrato.fechaFin}"  filterMatchMode="contains" filterBy="#{contrato.fechaFin}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+  				<p:calendar mindate="#{contrato.fechaFin}" maxdate="#{contrato.fechaFin}" id="contratoFin" value="#{contrato.fechaFin}"
+		          pattern="dd-MM-yyyy" mask="true" /> 
+				</f:facet>
+		 		<f:facet name="input">
+					<p:calendar id="fechaFin" value="#{contrato.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+       
+    
+		<p:column headerText="Editar"  style = "width:50px">				
+			<p:rowEditor rendered="#{mb_Usuario.puedeActualizar}">
+			</p:rowEditor>					
+		</p:column>
+		    
+		     
+		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			<p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.deleteContrato(contrato)}" 
+				update="datatablecontratos message" >
+				<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+		 	</p:commandButton>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	     	<p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	   		<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:column> 
+		   
+		    	  
+		<p:rowExpansion>	  
+ 
+		    
+<p:commandButton value="Ver arrendamientos" 
+onclick="PF('verarrendamientos').show();" 
+action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/>  
+
+		    
+<p:commandButton value="Agregar Direccion" 
+onclick="PF('adddireccion').show();" 
+action="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contratoID,contrato.tipo)}"/>  
+	    
+ 	
+		</p:rowExpansion>		   
+		   
+		   
+		   
+		   
+	</p:dataTable>   
+</h:form>
+
+<p:dialog header="Ver arrendamientos" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="90%" height="600">
+<ui:include src="/templates/templateadddireccion.xhtml" id="adddireccion">	 
+</ui:include>	
+</p:dialog>	
+
+
+<p:dialog header="Agregar direccion" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600">
+<ui:include src="/templates/templatearrendamientos.xhtml" id="verarrendamientos">	
+<ui:param name="#{paramListaArrendamientos}"   value = "#{mb_Movimiento.listaArrendamientos}"/>					
+</ui:include>	
+</p:dialog>		
+
+
+	
+
+
+
+
+</ui:composition>
+</html>
+ 	
+
+

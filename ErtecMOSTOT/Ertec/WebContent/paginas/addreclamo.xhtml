@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+ <h:form>        
+		<h:panelGrid id="panelreclamo" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+		
+			<f:facet name="header">
+				Agregar Reclamo			 
+			</f:facet>
+    
+     	<h:outputLabel  value="Cliente:" for="cliente"  />
+		 	<p:autoComplete  required="true"  id="cliente" value="#{mb_Reclamo.clienteOBJ}"  
+ 				completeMethod="#{mb_Cliente.completarCliente}" 
+				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ 				converter="ConverterCliente" forceSelection="true"
+ 				style="float:left !important;margin:0px 0px 3px 0px;width:90%"> 
+ 				<p:ajax event="itemSelect" listener="#{mb_Cliente.recargarListaContratos(mb_Reclamo.clienteOBJ.clienteID)}" update="contrato" />  				
+ 								
+ 				<f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                    <h:outputText value="Direccion:" />
+                    <h:outputText value="#{theme.dirCliente}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telCliente}" />
+                </h:panelGrid>
+            </f:facet>
+			</p:autoComplete>
+			
+			
+ 
+				
+			
+			<p:outputLabel value="Contrato:" for="contrato" /> 
+		<p:selectOneMenu id="contrato" value="#{mb_Reclamo.contratoOBJ}" style="width:70%"    
+		panelStyle="width:180px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+		>
+			<f:selectItems value="#{mb_Cliente.listaContratos}" var="contrato" title="dale" 			
+				itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					
+					<p:column>
+                <h:outputText value="#{t.tipo}#{t.contratoID}" />
+            </p:column>   
+					
+					 <p:column>
+                <h:outputText value="#{t.direccion}" />
+            </p:column>   
+            
+            <p:column>
+                <h:outputText value="#{t.equipo}" />
+            </p:column>            
+   	</p:selectOneMenu>
+			
+					    
+			<h:outputLabel   value="Fecha Reclamo:" for="fechaReclamadoin" /> 	    
+        <p:calendar id="fechaReclamadoin" value="#{mb_Reclamo.fechaReclamado}"  required="true"  pattern="dd-MM-yyyy HH:mm" mask="true"/>
+		 
+		 
+		 
+      	 <p:outputLabel for="time" value="Time:" />
+        <p:calendar id="time"   pattern="HH:mm" timeOnly="true"  />
+			
+			
+			<h:outputLabel value="Urgente:" for="urgente" /> 
+ 			<p:selectOneMenu required="true" id="urgente" value="#{mb_Reclamo.urgente}" style="width:30">
+				<f:selectItem  itemLabel="Si" itemValue="1" />
+				<f:selectItem   itemLabel="No" itemValue="0" />
+			</p:selectOneMenu>	
+			
+			<h:outputLabel    value="Contacto:" for="contacto" />
+ 			<p:inputText required="true" id="contacto" value="#{mb_Reclamo.contacto}"  />
+ 			
+ 			<h:outputLabel value="Reclamo:" for="reclamo" /> 			
+      <p:inputTextarea required="true" value="#{mb_Reclamo.reclamo}"  id="reclamo"  rows="5" cols="20" counter="display" maxlength="1000" counterTemplate="{0} characters remaining."  />
+     
+						
+			<h:commandButton value="Agregar" action="#{mb_Reclamo.add }"   />	 
+			<h:outputText id="display" />
+				  
+		   	
+		</h:panelGrid>
+     
+ 
+ </h:form>
+</ui:define>
+</ui:composition>
+
+
+
+
+
+<!-- <h:outputLabel value="Fecha Visita:" for="fechaVisitain" /> -->
+<!-- 			<p:calendar id="fechaVisitain" value="#{mb_Reclamo.fechaVisita}" pattern="dd-MM-yyyy" mask="true" /> 			 -->
+
+<!--  			<h:outputLabel value="tecnico" for="tecnico" />  -->
+<!--  			<p:autoComplete id="tecnico" value="#{mb_Reclamo.funcionarioOBJ}" -->
+<!-- 			 	completeMethod="#{mb_Funcionario.completarFuncionario}" -->
+<!-- 				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}" -->
+<!-- 			 	converter="ConverterFuncionario" forceSelection="true"  -->
+<!-- 			  style="float:left !important;margin:0px 0px 3px 0px;" -->
+<!-- 			  queryDelay="1000"  -->
+<!-- 			/>  -->
+ 			 			
+<!--  			<h:outputLabel value="estado" for="estado" /> -->
+<!-- 			<p:selectOneMenu id="estado" value="#{mb_Reclamo.estado}" style="width:85%"> -->
+<!-- 				<f:selectItem  itemLabel="Pendiente" itemValue="pendiente" /> -->
+<!-- 				<f:selectItem   itemLabel="Visitado" itemValue="visitado" /> -->
+<!-- 				<f:selectItem   itemLabel="Anulado" itemValue="anulado" />				 -->
+<!-- 			</p:selectOneMenu>  -->
+ 			
+<!--  			<h:outputLabel value="myrEstado" for="myrEstado" />  -->
+<!-- 			<p:selectOneMenu id="myrEstado" value="#{mb_Reclamo.myrEstado}" style="width:85%"> -->
+<!-- 				<f:selectItem  itemLabel="Pendiente" itemValue="pen" /> -->
+<!-- 				<f:selectItem   itemLabel="Liquidado" itemValue="liq" /> 		 -->
+<!-- 			</p:selectOneMenu> 			 -->
+ 			
+<!--  			<h:outputLabel value="red" for="red" /> -->
+<!--  			<p:inputText id="red" value="#{mb_Reclamo.red}"  /> -->
+ 			
+<!--  			<h:outputLabel value="reclamo" for="reclamo" /> -->
+<!--  			<p:inputText id="reclamo" value="#{mb_Reclamo.reclamo}"  /> 			 -->
+ 			
+<!--  			<h:outputLabel value="observaciones" for="observaciones" /> -->
+<!-- 			<p:inputText id="observaciones" value="#{mb_Reclamo.observaciones}"  /> -->
+ 			
+<!--  			<h:outputLabel value="telefonos" for="telefonos" /> -->
+<!--  			<p:inputText id="telefonos" value="#{mb_Reclamo.telefonos}"  /> -->
+ 			
+<!--  			<h:outputLabel value="myr" for="myr" /> -->
+<!--  			<p:inputText id="myr" value="#{mb_Reclamo.myr}"  /> -->
+ 			
+<!--  			<h:outputLabel value="energia" for="energia" /> -->
+<!--  			<p:inputText id="energia" value="#{mb_Reclamo.energia}" /> -->
+ 			
+
+ 			 						
+<!--  			<h:outputLabel value="conmutador" for="conmutador" /> -->
+<!--  			<p:inputText id="conmutador" value="#{mb_Reclamo.codigo}"  /> -->
+ 			
+<!--  			<h:outputLabel value="codigo" for="codigo" /> -->
+<!--  			<p:inputText id="codigo" value="#{mb_Reclamo.codigo}"  /> -->
+ 			
+<!--  			<h:outputLabel value="antel" for="antel" /> -->
+<!--  			<p:inputText id="antel" value="#{mb_Reclamo.antel}" /> -->
+ 			
+<!--  			<h:outputLabel value="Orden reparacion:" for="ordenreparacion" /> -->
+<!--  			<p:inputText id="ordenreparacion" value="#{mb_Reclamo.ordenreparacion}" /> -->
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+ 
+ 	
+<h:form>
+
+	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			 
+ 
+<p:outputLabel value="Cliente" for="cliente" />
+<p:autoComplete  id="cliente" value="#{mb_OT.clienteOBJ}"
+ completeMethod="#{mb_Cliente.completarCliente}" 
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" style="float:right !important;margin:0px 0px 3px 0px;"/> 
+
+
+ 
+			<p:outputLabel  value="Lugar de la Obra:" for="lugar"/>
+        	<p:inputText id="lugar" value="#{mb_OT.direccionObra}" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+ 
+ 
+ 			<p:outputLabel value="Telefono:" for="telObra" />  
+				<p:inputText id="telObra" label="lugar" value="#{mb_OT.telObra}"  />  
+ 
+			     <p:outputLabel value="Trabajo:" for="trabajo" />
+			       <p:inputText id="trabajo" label="trabajo" value="#{mb_OT.trabajo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+ 
+
+
+
+
+					<p:outputLabel value="C. Corriente:" for="ccte" />
+			    <p:inputText id="ccte" label="ccte" value="#{mb_OT.c_Corriente}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+ 
+	 				<p:outputLabel value="Arrendamiento:" for="arr" /> 
+					<p:inputText id="arr" label="lugar" value="#{mb_OT.arrendamiento}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+ 
+ 
+					<p:outputLabel value="Mantenimiento:" for="man" /> 	 			 
+					<p:inputText id="man" label="lugar" value="#{mb_OT.mantenimiento}"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
+ 
+					<p:outputLabel value="Tipo OT:" for="tot" />  			 
+					<p:inputText id="tot" label="lugar" value="2"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
+ 
+	 				<p:outputLabel value="Verif. Adm." for="va" />  
+					<p:inputText id="va" label="lugar" value="#{mb_OT.cliente}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 
+ 
+			
+   <p:outputLabel value="Presupuesto:" for="pre" />   
+		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.presupuesto}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+		   
+	 				<p:outputLabel value="Pedido:" for="ped" /> 
+					<p:inputText id="ped" label="ped" value="#{mb_OT.pedido}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	 		 
+					<p:outputLabel value="O. C.:" for="oc" />
+			       <p:inputText id="oc" label="ccte" value="#{mb_OT.oC}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			 
+	 				<p:outputLabel value="C:" for="c" />
+	 				<p:inputText id="c" label="c" value="#{mb_OT.c}"   style="float:right !important;margin:0px 0px 3px 0px;"/> 
+	 		 
+	 				<p:outputLabel value="R:" for="r" />
+					<p:inputText id="r" label="r" value="#{mb_OT.r}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 
+ 
+ 	<p:commandButton value="Guardar" action="#{mb_OT.add}" update="message" />	 
+	
+			
+ 
+	</p:panelGrid>
+ 
+</h:form>
+ 	
+ 	
+ </ui:define>
+
+</ui:composition>   
+ 
+
+
+
+

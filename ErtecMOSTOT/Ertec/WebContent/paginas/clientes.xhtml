@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+  	
+  <h:form id="datatablecliente">
+  
+  		 			 <p:commandButton icon="ui-icon-trash" id="probar"  actionListener="#{mb_Movimiento.getArrendado(0)}" 
+			 update="datatablecliente message" >probar
+    </p:commandButton>
+  
+    <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatable2"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
+		 editable="true" 
+		 style="text-align:left;max-height:500px;overflow-y:scroll; 
+   font-size: 90% !important;color: red;font-weight: bold;"
+		
+		 >
+		 
+      	<f:facet name="header">
+			Clientes	
+			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+			<p:columnToggler datasource="datatable2" trigger="toggler" />
+      	</f:facet>
+		 
+		<p:ajax event="rowEdit" listener="#{mb_Cliente.onRowEdit}" update="message" />	 
+		<p:ajax event="rowToggle" listener="#{mb_Cliente.recargarListaContratos(cliente.clienteID)}" update="expansioncliente" /> 
+		 
+		 
+
+		 
+		 
+		<p:column style="width:16px">
+ 			<p:rowToggler />
+		</p:column> 
+		 
+		<p:column headerText="Id" sortBy="#{cliente.clienteID}"  filterMatchMode="startsWith" filterBy="#{cliente.clienteID}">
+			<h:outputText  value="#{cliente.clienteID}"/>
+		</p:column>
+
+		<p:column headerText="nombre" sortBy="#{cliente.nombre}"  filterMatchMode="contains" filterBy="#{cliente.nombre}">		                
+			<p:cellEditor>
+	        	<f:facet name="output"><h:outputText value="#{cliente.nombre}" /></f:facet>
+	       		<f:facet name="input"><p:inputText id="nombre" value="#{cliente.nombre}" style="width:100%"/></f:facet>
+        	</p:cellEditor>
+		</p:column> 
+		 
+		<p:column headerText="direccion" sortBy="#{cliente.dirCliente}"  filterMatchMode="contains" filterBy="#{cliente.dirCliente}">		                
+			<p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{cliente.dirCliente}" /></f:facet>
+		 		<f:facet name="input"><p:inputText id="direccion" value="#{cliente.dirCliente}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		     
+		<p:column headerText="locCliente" sortBy="#{cliente.locCliente}"  filterMatchMode="contains" filterBy="#{cliente.locCliente}">		                
+			<p:cellEditor>
+	     		<f:facet name="output"><h:outputText value="#{cliente.locCliente}" /></f:facet>
+	        	<f:facet name="input"><p:inputText id="locCliente" value="#{cliente.locCliente}" style="width:100%"/></f:facet>
+       		</p:cellEditor>
+		</p:column>
+		  
+		<p:column headerText="telCliente" sortBy="#{cliente.telCliente}"  filterMatchMode="contains" filterBy="#{cliente.telCliente}">		                
+			<p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{cliente.telCliente}" /></f:facet>
+				<f:facet name="input"><p:inputText id="telCliente" value="#{cliente.telCliente}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		  
+		  
+		  	<p:column headerText="rucCliente" sortBy="#{cliente.rucCliente}"  filterMatchMode="contains" filterBy="#{cliente.rucCliente}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{cliente.rucCliente}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="rucCliente" value="#{cliente.rucCliente}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		  
+ 
+
+		  
+		  
+		  <p:column headerText="credito" sortBy="#{cliente.credito}"  filterMatchMode="contains" filterBy="#{cliente.credito}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{cliente.credito}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="credito" value="#{cliente.credito}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		  
+		  
+		  
+		   <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		     
+		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.delete(cliente)}" 
+			 update="datatablecliente message" >
+        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+    </p:commandButton>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>
+		    	   
+	   <p:rowExpansion id="expansioncliente">
+   		  
+		    
+<p:commandButton value="Ver Contratos"  update=":formcontratos"
+onclick="PF('vercontratos').show();"
+action="#{mb_Cliente.recargarListaContratos(cliente.clienteID)}"/> 
+
+		    
+<p:commandButton value="Agregar Contrato" update=":formaddcontrato"
+onclick="PF('addcontrato').show();" 
+action="#{mb_Cliente.setClienteIDYNombre(cliente.clienteID,cliente.nombre)}"/>  
+	    
+ 	
+   </p:rowExpansion>
+	
+	</p:dataTable>
+
+ </h:form> 
+					
+	<p:dialog header="Ver Contratos" widgetVar="vercontratos" appendTo="@(body)"  modal="true" width="90%" height="600">
+	<ui:include src="/templates/templatecontratos.xhtml" id="vercontratos">	 				
+	</ui:include>	
+	</p:dialog>				
+				
+				
+	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="500">
+	<ui:include src="/templates/templateaddcontrato.xhtml" id="addcontrato">			
+	</ui:include>			
+	</p:dialog>		
+
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

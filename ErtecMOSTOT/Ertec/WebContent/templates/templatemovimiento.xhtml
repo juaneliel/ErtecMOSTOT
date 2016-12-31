@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+  <ui:composition>
+
+    <h:form id="datatableMOV">
+      <p:dataTable var="movimiento" value="#{paramLista}" id="datatable2MOV"
+		 paginator="true" rows ="50" paginatorPosition="top"  
+		 resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"  scrollWidth="100%"   
+		 editable="true" 
+		 style="  font-size: 90% !important;color: red;font-weight: bold;
+			text-align:left;max-height:500px;overflow-y:scroll;" 
+		  lazy="true" tableStyle="" 
+		 >
+		 
+        <f:facet name="header">
+		        Movimientos		 
+		        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatable2MOV" trigger="toggler" />
+        </f:facet>
+        
+        
+    <p:ajax event="rowEdit" listener="#{mb_Movimiento.onRowEdit}" update="message" />
+		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}" update="datatable3MOV" />
+		<f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" />
+		
+		<p:column style="width:16px">
+            <p:rowToggler />
+		</p:column> 
+		
+		<p:column headerText="MovimientoID"  sortBy="#{movimiento.movimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.movimientoID}">		                
+			<p:cellEditor>
+	       		<f:facet name="output"><h:outputText value="#{movimiento.movimientoID}" /></f:facet>
+	        	<f:facet name="input"><p:inputText id="MovimientoID" value="#{movimiento.movimientoID}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+		<p:column headerText="cod ID" sortBy="#{movimiento.codigoMovimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.codigoMovimientoID}">		                
+		    <p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{movimiento.codigoString}" /></f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{movimiento.codigoMovimientoID}" style="width:100%">
+				    	<f:selectItems value="#{mb_Movimiento.listaCodMovimientos}" var="cm" 
+				        itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
+					</p:selectOneMenu>				 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+
+		    
+				<p:column headerText="Nombre Cliente:" style="min-width:100px;" sortBy="#{movimiento.nombreCliente}"  filterMatchMode="contains" filterBy="#{movimiento.nombreCliente}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.nombreCliente}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="nomCliente" value="#{movimiento.nombreCliente}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="comprobante" sortBy="#{movimiento.comprobante}"  filterMatchMode="contains" filterBy="#{movimiento.comprobante}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.comprobante}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="comprobante" value="#{movimiento.comprobante}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="Contrato ID:" sortBy="#{movimiento.contratoID}"  filterMatchMode="contains" filterBy="#{movimiento.contratoID}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.contratoID}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="contratoid" value="#{movimiento.contratoID}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="Tipo ot" sortBy="#{movimiento.tipoOT}"  filterMatchMode="contains" filterBy="#{movimiento.tipoOT}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.tipoOT}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="tipoOT" value="#{movimiento.tipoOT}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="cotizacion" sortBy="#{movimiento.cotizacion}"  filterMatchMode="contains" filterBy="#{movimiento.cotizacion}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.cotizacion}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="cotizadion" value="#{movimiento.cotizacion}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="referencia" sortBy="#{movimiento.referencia}"  filterMatchMode="contains" filterBy="#{movimiento.referencia}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.referencia}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="referencia" value="#{movimiento.referencia}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="tipoReferencia" sortBy="#{movimiento.tipoReferencia}"  filterMatchMode="contains" filterBy="#{movimiento.tipoReferencia}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.tipoReferencia}" /></f:facet>
+	               <f:facet name="input">
+	              <p:selectOneMenu value="#{movimiento.tipoReferencia}" style="width:100%">
+                       <f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
+                       itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+                   </p:selectOneMenu>
+	                
+	                </f:facet>
+           		</p:cellEditor>
+		    </p:column>	 
+		 
+ 				<p:column headerText="Fecha:" sortBy="#{movimiento.fecha}"  filterMatchMode="contains" filterBy="#{movimiento.fecha}">		                
+					<p:cellEditor>
+						<f:facet name="output"><p:calendar mindate="#{movimiento.fecha}" maxdate="#{nexo.fecha}"  id="maskoutmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+						<f:facet name="input"> <p:calendar id="maskinmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+					</p:cellEditor>
+				</p:column>
+
+		     <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		     
+		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+		 	<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
+		 	update="message" >
+		    <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+		 	</p:commandButton>
+		 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		    <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		    <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		 	</p:confirmDialog>
+		</p:column>
+		     
+		    	  
+		    <p:rowExpansion>
+		  
+		  
+		    
+<p:commandButton value="Ver Items"  update=":panelNexos" 
+onclick="PF('vernexos').show();"
+action="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}"/> 
+
+		    
+<p:commandButton value="Agregar Item" 
+onclick="PF('addnexo').show();" 
+action="#{mb_Movimiento.setMovimientoID(movimiento.movimientoID)}"/>  
+	    
+ 	
+		
+	</p:rowExpansion>
+		    	  
+ 	      
+		</p:dataTable>
+	
+
+  	</h:form>
+			
+					
+<p:dialog header="Ver nexos" widgetVar="vernexos"  appendTo="@(body)" modal="true" width="90%" height="600">
+<ui:include src="/templates/templatenexos.xhtml" id="vernexos">	
+<ui:param name="paramLista"   value = "#{mb_Movimiento.listaNexos}"/>					
+</ui:include>	
+</p:dialog>				
+			
+			
+<p:dialog header="Agregar nexos" widgetVar="addnexo" appendTo="@(body)"  modal="true" width="430" height="320">
+<ui:include src="/templates/templateaddnexo.xhtml" id="addnexo">			
+</ui:include>			
+</p:dialog>					
+				
+	</ui:composition>
+</html>
+
+		 
+<!-- 			<p:column headerText="Cliente ID:" style="min-width:100px;" sortBy="#{movimiento.clienteID}"  filterMatchMode="contains" filterBy="#{movimiento.clienteID}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{movimiento.clienteID}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="clienteID" value="#{movimiento.clienteID}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
+
+
+
+
+
+
+
+

@@ -1,0 +1,157 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+	
+<h:head>
+
+<title><ui:insert name="titulo">Ertec S.A </ui:insert></title>
+
+<h:outputStylesheet name="/css/estilo.css" />
+
+<link rel="shortcut icon" type="image/png" href="/resources/images/favicon.ico" />
+
+<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+<p:dialog widgetVar="statusDialog" modal="false" draggable="true" closable="true" resizable="false" showHeader="false">
+    <p:graphicImage library="images" name="cargar2.gif" />
+</p:dialog>
+
+ 
+
+</h:head>
+
+<h:body>
+	
+
+  	
+	
+	
+	<header>
+	
+		<h:graphicImage library="images" name="1964.jpg" style="margin-left:30px"/> 	
+	 
+     	
+   		 <div style="float:right;margin-right:430px;margin-top:40px;font-size:40px"> 
+     <h:outputLabel id="hola" label="hola" value="Hola #{mb_Usuario.nombre}"  />  
+    </div>
+ 
+   
+ 
+	<h:form>  
+
+   		 
+    <p:menubar>
+
+        <p:submenu label="Articulos" icon="">
+            <p:menuitem value="Listar" url="/paginas/articulos.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addarticulo.xhtml" icon="" /> 
+              <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+
+
+        <p:submenu label="Clientes" icon="">
+            <p:menuitem value="Listar" url="/paginas/clientes.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addcliente.xhtml" icon="" />
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+
+
+
+       <p:submenu label="Funcionarios" icon="">
+            <p:menuitem value="Listar" url="/paginas/funcionarios.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addfuncionarios.xhtml" icon=""  /> 
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+
+       <p:submenu label="Mano De Obra" icon="">
+            <p:menuitem value="Listar" action="#{mb_ManoObra.listarDesdeMenu}" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addmanoobra.xhtml" icon="" /> 
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+
+
+		<p:submenu label="Movimientos" icon="">
+            <p:menuitem value="Listar" url="/paginas/movimientos.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addmovimiento.xhtml" icon="" /> 
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>        
+        
+          <p:submenu label="Orden de trabajo" icon="">            
+            <p:menuitem value="Listar" url="/paginas/listot.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addot.xhtml" icon="" /> 
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+ 
+        <p:submenu label="Proveedores" icon="">
+            <p:menuitem value="Listar" url="/paginas/proveedores.xhtml" icon="" />
+            <p:menuitem value="Agregar" url="/paginas/addproveedor.xhtml" icon="" />
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+ 
+    		<p:submenu label="Reclamos" icon="">
+            <p:menuitem value="Listar" url="/paginas/reclamos.xhtml" icon="" />
+            <p:menuitem value="Pendientes" url="/paginas/reclamospendientes.xhtml" icon="" />                  
+            <p:menuitem value="Agregar" url="/paginas/addreclamo.xhtml" icon="" />
+            <p:menuitem value="Informes" url="/paginas/informeservice.xhtml" icon="" />
+            <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+ 
+
+ 
+        <f:facet name="options">
+            <p:commandButton  value="Logout" icon="ui-icon-extlink" action="#{mb_Usuario.logout}" />
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<br/>
+
+<p:growl id="message" showDetail="true" style="float:left;margin-right:330px;margin-top:40px;font-size:40px" /> 
+  
+	</header>
+	
+	
+	
+	
+	
+	<div id="contenido">
+		
+		<ui:insert name="cuerpo"/>	
+	</div>
+
+	<footer style = "background:gray;width: 100%;position:relative;bottom: 0px;height: 30px;float:right;margin-top:20px;padding:10px;">
+		<p:outputLabel style="float:right;margin-right:20px">
+		Ertec S.A.
+		</p:outputLabel>		
+		 
+	</footer>
+
+
+</h:body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--             <p:inputText style="margin-right:10px" placeholder="Search"/> -->
+

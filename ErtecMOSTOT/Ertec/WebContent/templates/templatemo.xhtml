@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+
+		<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			 
+			      
+
+			<p:outputLabel value="Cliente:" for="cli" />
+			<p:inputText id="cli" label="cliente" value="#{mb_ManoObra.cliente}"  style="float:right !important;margin:0px 0px 3px 0px;"/>
+			
+			<p:outputLabel value="Funcionario ID:" for="fid" />   
+			<p:inputText id="fid" label="cod" value="#{mb_ManoObra.funcionarioID}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			
+			<p:outputLabel value="N Contrato" for="nuc" /> 
+			<p:inputText id="nuc" label="nuc" value="#{mb_ManoObra.NContrato}"  style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			
+			 <p:outputLabel value="Codigo:" for="cod" />   
+			 <p:inputText id="cod" label="cod" value="#{mb_ManoObra.codigo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			
+			<p:outputLabel for="effect" value="Fecha:" />
+        	<p:calendar id="effect" value="#{mb_ManoObra.fecha}" effect="fold" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+
+			<p:outputLabel value="myr" for="myr" />   
+			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.myr}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			
+			<p:outputLabel value="OT" for="ordenTrabajo" /> 
+			<p:inputText id="ordenTrabajo" label="ordenTrabajo" value="#{mb_ManoObra.ordenTrabajo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			
+			
+			<p:outputLabel value="TContrato" for="TContrato" /> 
+			<p:inputText id="TContrato" label="TContrato" value="#{mb_ManoObra.TContrato}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	
+
+			<p:outputLabel value="tipo" for="tipo" />   
+    		 <p:inputText id="tipo" label="tipo" value="#{mb_ManoObra.tipo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+
+			<p:outputLabel value="tipoHora" for="tipoHora" /> 
+			<p:inputText id="tipoHora" label="tipoHora" value="#{mb_ManoObra.tipoHora}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	 
+
+			<p:outputLabel value="tipoMano" for="tipoMano" />   
+			<p:inputText id="tipoMano" label="tipoMano" value="#{mb_ManoObra.tipoMano}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+
+			<p:outputLabel value="totalHora" for="totalHora" /> 
+			<p:inputText id="totalHora" label="totalHora" value="#{mb_ManoObra.totalHora}"  style="float:right !important;margin:0px 0px 3px 0px;"/>	  
+			
+			<ui:insert name="BotonMO">
+
+			</ui:insert>
+			
+ 
+		</p:panelGrid>
+				
+	</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+

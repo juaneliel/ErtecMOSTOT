@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>		
+	 <h:form> 
+	   <div id="panel1">         
+			<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+			    
+			   			    
+			    <p:outputLabel value="Especificacion:" for="especificacion" />
+			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.especificacionAdicional}"  />
+			    			    
+			    <p:commandButton oncomplete="PF('addad').hide();" process="@form"  value="Agregar" action="#{mb_OT.addAdicional}"  update="message"/>	
+				<p:commandButton value="Cancelar" action="/Ertec/paginas/listot.xhtml"   />	  
+			   	
+			</h:panelGrid>
+	   </div>  
+	 </h:form>
+	</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+

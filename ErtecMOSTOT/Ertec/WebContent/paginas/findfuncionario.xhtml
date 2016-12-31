@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+      
+<ui:define name="cuerpo"> 
+
+ <f:ajax event="load" listener="#{mb_Funcionario.limpiarVariables}" />
+
+ <h:form>
+
+ 
+ 
+   <div id="panel1">         
+	<p:panelGrid id="panel" columns="2" border="1"
+	   cellpadding="5" cellspacing="1">   
+	   
+	   <p:outputLabel value="Id" for="id" />
+	    <p:inputText id="id" label="id" value="#{mb_Funcionario.funcionarioID}"  /> 
+	    
+	    
+	    <p:outputLabel value="Nombre" for="nom" />
+	    <p:inputText id ="nom" value="#{mb_Funcionario.nombre}"	 >
+			<p:ajax event="keyup" update="datatable @form"  listener="#{mb_Funcionario.tecleo}" />
+		</p:inputText>
+	    	      
+	    <p:outputLabel value="Email" for="e" />
+	    <p:inputText id="e" label="e" value="#{mb_Funcionario.email}"  />  
+	     
+	    <p:outputLabel value="Telefono" for="t" />    
+	    <p:inputText id="t" label="t" value="#{mb_Funcionario.telefono}"  />     
+	    
+		<h:commandButton value="Limpiar" action="#{mb_Funcionario.limpiarVariables}"  render="datatable" />	  
+		<h:commandButton value="Buscar" action="#{mb_Funcionario.findFuncionario}"  render="datatable" />	  
+		 
+	
+	</p:panelGrid>
+   </div>    
+  
+ </h:form>
+        
+
+	<p:dataTable var="funcionario" value="#{mb_Funcionario.funcionariosHallados}" id="datatable"
+	 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+	 scrollable="true" scrollHeight="500"  scrollWidth="100%" 
+	 
+	 >
+	 
+	 	<f:facet name="header">
+	        Funcionarios
+	 
+	        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+	        <p:columnToggler datasource="datatable" trigger="toggler" />
+	    </f:facet>
+
+
+   <p:column headerText="Id" sortBy="#{funcionario.funcionarioID}">
+        <h:outputText value="#{funcionario.funcionarioID}"/>
+    </p:column>
+ 
+    <p:column headerText="Nombre" sortBy="#{funcionario.nombre}">
+        <h:outputText id="n" value="#{funcionario.nombre}"/>
+    </p:column>
+
+    <p:column headerText="Email" sortBy="#{funcionario.email}">
+        <h:outputText value="#{funcionario.email}"/>
+    </p:column>
+    
+    <p:column headerText="Telefono" sortBy="#{funcionario.telefono}">
+        <h:outputText value="#{funcionario.telefono}"/>
+    </p:column>
+
+ 	<p:column headerText="Accion">    
+     	<ui:include src="/templates/templatefuncionario.xhtml"/> 		
+    </p:column>
+</p:dataTable>
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

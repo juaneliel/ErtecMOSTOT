@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+
+ <div >
+	 
+        <h:form>
+        
+        
+ 
+        
+        
+  <div id="panel1">         
+<h:panelGrid id="panel1" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <h:outputLabel value="Cliente:" for="c" />
+        <h:inputText id="c" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<h:outputLabel value="Direccion" for="direccion" />
+        <h:inputText id="direccion" label="direccion" value="#{mb_OT.cliente}"  />
+      
+
+		<h:outputLabel value="Lugar de la obra" for="lugar" />
+        <h:inputText id="lugar" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</h:panelGrid>
+   </div>     
+        
+   <div id="panel2">     
+<h:panelGrid id="panel2" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <h:outputLabel value="C. Cte" for="ccte" />
+        <h:inputText id="ccte" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<h:outputLabel value="ARR" for="arr" />
+        <h:inputText id="arr" label="direccion" value="#{mb_OT.cliente}"  />
+      
+
+		<h:outputLabel value="Mant" for="mant" />
+        <h:inputText id="mant" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</h:panelGrid>        
+ </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          </h:form>
+        <div id="msg2">
+              
+        </div><br/>
+ 
+</div>
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

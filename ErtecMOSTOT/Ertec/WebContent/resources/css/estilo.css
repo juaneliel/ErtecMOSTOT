@@ -1,0 +1,93 @@
+@CHARSET "UTF-8";
+
+.ui-row-editor{
+    display: inline;
+}
+
+
+ 
+ .ui-datatable-odd {
+    background: #eeeeec;
+}
+
+
+.ui-datatable-even {
+    background: #d3d7cf;
+}
+
+.urgente{
+color:red;
+}
+
+.deuda{
+color:red
+background: #fff000;
+}
+ 
+ 
+.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight{
+	background: #c4a000;
+}
+ 
+ 
+th {
+  color:blue !important;
+  font-size:11px;
+}
+ 
+.estiloDataTable{
+	text-align:left;font-size: 80% !important;
+}
+
+.ui-cell-editor-output{
+	text-align:left;font-size: 80% !important;
+}
+
+
+
+
+ 
+.ui-datatable .ui-datatable-header {
+	color:#ef2929!important;
+  font-size:14px;
+
+}
+ 
+.ui-menu .ui-menuitem-text{
+	color:#204a87!important;
+  font-size:14px;
+  font-bold:16px;	
+}
+ 
+.ui-calendar{
+	
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

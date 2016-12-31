@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+	 <h:form>    
+			<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+		
+ 
+ 
+ 
+<p:outputLabel value="Articulo:" for="themeArticulo" />
+<p:autoComplete id="themeArticulo" value="#{mb_OT.articuloOBJ}"
+ completeMethod="#{mb_OT.completarArticulo}"  queryDelay="1000"
+var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
+ converter="ConverterArticulo" forceSelection="true"     >
+ 
+ <f:facet name="themeArticulo">
+                <h:panelGrid columns="2" cellpadding="5">
+                     
+                    <h:outputText value="Id:" />
+                    <h:outputText value="#{theme.articuloID}" />
+ 
+                    <h:outputText value="Precio Venta" />
+                    <h:outputText value="#{theme.precioVenta}" />
+                </h:panelGrid>
+            </f:facet>
+ 
+ 
+ 
+ 
+ </p:autoComplete> 
+ 
+         
+ 
+ 
+		
+			<p:outputLabel value="Id OT:" for="otID" />
+		       <p:outputLabel id="otID" label="otID" value="#{mb_OT.numeroID}"   style="float:left  !important;margin:0px 0px 3px 0px;"/>
+		   
+		
+
+
+ 				<p:outputLabel value="cantidad:" for="cantidad" /> 
+			<p:inputNumber id="cantidad" value="#{mb_OT.cantidad}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+
+		       
+	       <p:outputLabel for="effect" value="Fecha:" />
+        	<p:calendar id="effect" value="#{mb_OT.fecha}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+
+	       
+	       
+       
+				<p:outputLabel value="moneda:" for="moneda" /> 
+			<p:inputText id="moneda" label="moneda" value="#{mb_OT.moneda}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+			 
+	         <p:outputLabel value="precio_Unitario:" for="precio_Unitario" />   
+			<p:inputNumber id="precio_Unitario" value="#{mb_OT.precio_Unitario}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+         
+	       
+<p:outputLabel value="Proveedor:" for="provee" />
+<p:autoComplete id="provee" value="#{mb_OT.proveedorOBJ}"
+ completeMethod="#{mb_OT.completarProveedor}"  queryDelay="1000"
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterProveedor" forceSelection="true"  style="float:left !important;margin:0px 0px 3px 0px;"/>        
+	       
+	       
+	       
+<p:commandButton value="Agregar" oncomplete="PF('addce').hide();" process="@form" action ="#{mb_OT.addCompraExterna}"  update="message"  />
+				 
+				   
+	
+ 		   
+ 		  	  
+			   	
+			</h:panelGrid>
+	 </h:form>
+	</ui:composition>
+</html>

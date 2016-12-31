@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+  <ui:composition>		
+	<h:form id="formadddireccion">         
+	  <h:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+			    
+
+		<p:outputLabel   value="Contrato ID:" for="contrato" /> 
+		<p:outputLabel disabled="true" id="contrato" label="contrato" value="#{mb_Cliente.contratoID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+		
+				 		 
+
+		<p:outputLabel value="Cliente ID:" for="cliente" /> 
+		<p:outputLabel disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.clienteID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+			 
+	  <p:outputLabel value="Tipo:" for="tipo" />   
+		<p:selectOneMenu disabled="true" id="tipo" value="#{mb_Cliente.tipo}" style="width:85%">
+	    	<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
+	        <f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
+		</p:selectOneMenu>		 
+			 
+			 
+		<p:outputLabel value="Corredor:" for="corredorID" />   
+		<p:inputNumber id="corredorID" value="#{mb_Cliente.corredorID}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+ 
+		<p:outputLabel value="Equipo:" for="equipo" />   
+		<h:inputText id="equipo" value="#{mb_Cliente.equipo}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+ 
+		<p:outputLabel value="Direccion:" for="direccion" />   
+		<h:inputText id="direccion" value="#{mb_Cliente.direccion}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		 
+		<p:outputLabel value="Localidad:" for="localidad" />   
+		<h:inputText id="localidad" value="#{mb_Cliente.localidad}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+				 		 
+		 <p:outputLabel value="Retirado:" for="retirado" />    
+  		<p:selectOneMenu id="retirado" value="#{mb_Cliente.retirado}" style="width:85%">
+	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />
+	        <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+		</p:selectOneMenu>	
+  
+  
+
+		 			 
+		<p:outputLabel value="Zona:" for="zona" />   
+		<h:inputText id="zona" value="#{mb_Cliente.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+
+		<p:outputLabel  value="Inicio" for="fechaInicio" />
+		<p:calendar id="fechaInicio" value="#{mb_Cliente.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+ 	
+ 		<p:outputLabel for="fechaFin" value="FechaFin:" />
+		<p:calendar id="fechaFin" value="#{mb_Cliente.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+  
+	
+		<p:commandButton value="Agregar"  oncomplete="PF('adddireccion').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addContrato}"  update="message formcontratos"  />
+   
+      </h:panelGrid>
+   
+    </h:form>
+  </ui:composition>
+</html>
+
+
+
+
+
+

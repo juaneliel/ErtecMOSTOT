@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+<div id="principal"  style="width: 80%; margin: 0 auto;"  >
+
+
+
+
+        
+<div id="panel1"   style="text-align: center;display:block;"  >         
+	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1">     
+      
+       <p:row>
+	       <p:column colspan="4">
+				<p:outputLabel value="Cliente:" for="cli" />
+		       <p:inputText id="cli" label="cliente" value="#{mb_OT.cliente}" size="65"  style="float:right !important;margin:0px 0px 3px 0px;"/>
+		   </p:column>      
+       </p:row>
+      
+ 		<p:row>
+	       	<p:column >
+		         <p:outputLabel value="Direccion:" for="direccion" />   
+	       		 <p:inputText id="direccion" label="direccion" value="#{mb_OT.cliente}" size="30"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	       	</p:column> 
+	       	
+			<p:column>
+ 				<p:outputLabel value="Telefono:" for="tel" /> 
+				<p:inputText id="tel" label="lugar" value="#{mb_OT.cliente}"  />  
+ 			</p:column>
+       </p:row>
+ 
+ 		<p:row >
+ 			<p:column>
+				<p:outputLabel value="Lugar de la obra:" for="lugar" /> 
+ 			 
+				<p:inputText id="lugar" label="lugar" value="#{mb_OT.cliente}" size="30"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
+ 			</p:column>
+ 			
+ 			
+ 			<p:column >
+ 				<p:outputLabel value="Telefono:" for="telObra" />  
+				<p:inputText id="telObra" label="lugar" value="#{mb_OT.cliente}"  />  
+ 			</p:column>
+  
+		</p:row>   
+		  
+
+	</p:panelGrid>
+</div>     
+ 
+<br/> 
+
+
+<div id="pareja"  style="width: 100%; margin: 0 auto;"  >
+	       
+	<div id="panel2" style="text-align: center;display:block;float:left">         
+		<p:panelGrid id="panel2"  border="1" cellpadding="2" cellspacing="1">          
+			<p:row>
+		       	<p:column >
+			         <p:outputLabel value="Nro Cliente:" for="nc" />   
+		       		 <p:inputText id="nc" label="direccion" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+		       	</p:column> 
+		   </p:row>      
+	       <p:row>
+		       <p:column >
+					<p:outputLabel value="C. Corriente:" for="ccte" />
+			       <p:inputText id="ccte" label="ccte" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			   </p:column>      
+	       </p:row>	   
+	      <p:row>   	
+				<p:column>
+	 				<p:outputLabel value="Arrendamiento:" for="arr" /> 
+					<p:inputText id="arr" label="lugar" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	 			</p:column>
+	       </p:row> 
+	 		<p:row >
+	 			<p:column>
+					<p:outputLabel value="Mantenimiento:" for="man" /> 
+	 			 
+					<p:inputText id="man" label="lugar" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
+	 			</p:column>
+	 	   </p:row>
+	 	   
+			<p:row >
+	 			<p:column>
+					<p:outputLabel value="Tipo OT:" for="tot" />  			 
+					<p:inputText id="tot" label="lugar" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
+	 			</p:column>
+	 	   </p:row>
+	 	   
+	 	   
+	 	   
+	<!--        <p:row>   			 -->
+	<!--  			<p:column > -->
+	<!--  				<p:outputLabel value="Verif. Adm." for="va" />   -->
+	<!-- 				<p:inputText id="va" label="lugar" value="#{mb_OT.cliente}" size="22"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	  -->
+	<!--  			</p:column>   -->
+	<!-- 		</p:row>   -->
+			
+			
+			  
+		</p:panelGrid>
+	</div>     
+	            
+	       
+	       
+	       
+	       
+	<div id="panel3" style="text-align: center;display:block;block;float:left; margin-left:20px">              
+		<p:panelGrid id="panel3"  border="1" cellpadding="2" cellspacing="1">          
+			<p:row>
+		       	<p:column >
+			         <p:outputLabel value="Presupuesto:" for="pre" />   
+		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+		       	</p:column> 
+		   </p:row>  
+		   
+			<p:row>   	
+				<p:column>
+	 				<p:outputLabel value="Pedido:" for="ped" /> 
+					<p:inputText id="ped" label="ped" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	 			</p:column>
+	       </p:row> 
+		       
+	       <p:row>
+		       <p:column >
+					<p:outputLabel value="O. C.:" for="oc" />
+			       <p:inputText id="oc" label="ccte" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			   </p:column>      
+	       </p:row>	   
+	
+	
+	       <p:row>   			
+	 			<p:column >
+	 				<p:outputLabel value="C:" for="c" />
+	 				<p:inputText id="c" label="c" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/> 
+	 			</p:column>  
+			</p:row>
+			<p:row> 
+	 			<p:column >
+	 				<p:outputLabel value="R:" for="r" />
+					<p:inputText id="r" label="r" value="#{mb_OT.cliente}" size="23"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 
+	 			</p:column>  
+			</p:row>    
+		</p:panelGrid>
+	</div>     
+            
+    
+</div>    
+    
+       
+        
+        
+<div style="clear: both"></div>
+
+<br/>
+
+<p:outputLabel value="Trabajo a Realizar:"  />  
+<br/>
+
+<h:inputTextarea value="#{mb_OT.trabajo}" rows="10" cols="120"   />   
+ 
+ 
+ 
+<!--  MOVIMIENTOS -->
+ 
+ <div  style="text-align: center;display:block;width:83%"  >    
+	   <br/>   
+	<p:separator />
+	 <br/>   
+	
+	
+	<p:commandButton value="Agregar nuevo movimiento" onclick="/paginas/updatefuncionario.xhtml?faces-redirect=true"   />	  
+	 <br/>  
+	  <br/>  
+	  
+	  
+	
+	<p:dataTable var="MRA" value="#{mb_OT.listaMRA}" id="datatableM">
+	
+	    <p:column headerText="Id Mov" style="width:40px;" sortBy="#{MRA.movimientoID}">
+	        <h:outputText id="movimientoID" value="#{MRA.movimientoID}"/>
+	    </p:column>
+	 
+	    <p:column headerText="Descripcion" sortBy="#{MRA.decripcion}">
+	        <h:outputText id="des" value="#{MRA.decripcion}"/>
+	    </p:column>
+	
+	    <p:column headerText="Fecha" sortBy="#{MRA.fecha}">
+	        <h:outputText value="#{MRA.fecha}"/>
+	    </p:column>
+	    
+	    <p:column headerText="Tipo OT" sortBy="#{MRA.tipoOT}">
+	        <h:outputText value="#{MRA.tipoOT}"/>
+	    </p:column>
+	 
+	     <p:column headerText="Accion">     
+		    <h:panelGrid id="panel" columns="2" border="1" cellpadding="5" cellspacing="1">    
+			<p:commandLink value="Delete" action="#{mb_Funcionario.deleteFuncionario(funcionario)}"  render="datatableM"/> 
+		 	<p:commandLink value="Update" action="#{mb_Funcionario.selecToUpdateFuncionario(funcionario)}" />
+			</h:panelGrid>
+	    </p:column>
+	</p:dataTable>  
+</div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+
+ 
+<div  style="text-align: center;display:block;width:83%"  >    
+	   <br/>   
+	<p:separator />
+	 <br/>   
+	
+	
+	<p:commandButton value="Agregar nuevo adicional" onclick="/paginas/updatefuncionario.xhtml?faces-redirect=true"   />	  
+	 <br/>  
+	  <br/>  
+	  
+	  
+	
+	<p:dataTable var="adicional" value="#{mb_Funcionario.listaFuncionarios}" id="datatable">
+	    <p:column headerText="Item" style="width:40px;" sortBy="#{adicional.funcionarioID}">
+	        <h:outputText id="sgfd" value="#{funcionario.funcionarioID}"/>
+	    </p:column>
+	 
+	    <p:column headerText="Descripcion" sortBy="#{adicional.nombre}">
+	        <h:outputText id="des" value="#{adicional.nombre}"/>
+	    </p:column>
+	
+	    <p:column headerText="Cliente" sortBy="#{adicional.email}">
+	        <h:outputText value="#{adicional.email}"/>
+	    </p:column>
+	    
+	    <p:column headerText="Ertec" sortBy="#{adicional.telefono}">
+	        <h:outputText value="#{adicional.telefono}"/>
+	    </p:column>
+	 
+	     <p:column headerText="Accion">     
+		    <h:panelGrid id="panel" columns="2" border="1" cellpadding="5" cellspacing="1">    
+			<p:commandLink value="Delete" action="#{mb_Funcionario.deleteFuncionario(funcionario)}"  render="datatable"/> 
+		 	<p:commandLink value="Update" action="#{mb_Funcionario.selecToUpdateFuncionario(funcionario)}" />
+			</h:panelGrid>
+	    </p:column>
+	</p:dataTable>  
+</div>
+      
+      
+      
+      
+      
+      
+<!-- *****Mano de Obra******    -->
+      
+      
+      
+<div  style="text-align: center;display:block;width:83%"  >    
+	   <br/>   
+	<p:separator />
+	 <br/>   
+	
+	
+	<p:commandButton value="Agregar mano de obra" onclick="/paginas/updatefuncionario.xhtml?faces-redirect=true"   />	  
+	 <br/>  
+	  <br/>  
+	  
+	  
+	
+	<p:dataTable var="adicional" value="#{mb_Funcionario.listaFuncionarios}" id="datatableMO">
+
+	 
+	    <p:column headerText="Fecha" sortBy="#{adicional.nombre}">
+	        <h:outputText id="des" value="#{adicional.nombre}"/>
+	    </p:column>
+	
+	    <p:column headerText="Operario" sortBy="#{adicional.email}">
+	        <h:outputText value="#{adicional.email}"/>
+	    </p:column>
+	    
+	    <p:column headerText="Nro" sortBy="#{adicional.telefono}">
+	        <h:outputText value="#{adicional.telefono}"/>
+	    </p:column>
+	 	    
+	    <p:column headerText="HH. Simples" sortBy="#{adicional.telefono}">
+	        <h:outputText value="#{adicional.telefono}"/>
+	    </p:column>
+	    
+	    	 	    
+	    <p:column headerText="HH.EE. Convencionales" sortBy="#{adicional.telefono}">
+	        <h:outputText value="#{adicional.telefono}"/>
+	    </p:column>
+	    
+	    	 	    
+	    <p:column headerText="HH.EE. Extraordinarias" sortBy="#{adicional.telefono}">
+	        <h:outputText value="#{adicional.telefono}"/>
+	    </p:column>
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	     <p:column headerText="Accion">     
+		    <h:panelGrid id="panel" columns="2" border="1" cellpadding="5" cellspacing="1">    
+			<p:commandLink value="Delete" action="#{mb_Funcionario.deleteFuncionario(funcionario)}"  render="datatable"/> 
+		 	<p:commandLink value="Update" action="#{mb_Funcionario.selecToUpdateFuncionario(funcionario)}" />
+			</h:panelGrid>
+	    </p:column>
+	</p:dataTable> 
+      
+      
+ 
+</div>   
+      
+      
+      
+      
+                
+
+
+
+
+
+
+
+</div>
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

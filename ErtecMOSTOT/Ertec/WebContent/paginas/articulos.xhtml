@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+ 
+	<h:form id="datatable">
+	
+	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatable2"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   
+		 editable="true" 
+		 style="text-align:left;max-height:500px;overflow-y:scroll; 
+   	font-size: 90% !important;color: red;font-weight: bold;"
+		
+		 >
+
+
+		<f:facet name="header">
+		        Articulos
+		</f:facet>
+		 
+		<p:ajax event="rowEdit" listener="#{mb_Articulo.onRowEdit}" update="message" />	 
+		<f:event type="preRenderView" listener="#{mb_Articulo.recargarLista}" />
+
+		<p:column headerText="ID:" sortBy="#{articulo.articuloID}"  filterMatchMode="startsWith" filterBy="#{articulo.articuloID}">		                
+			<h:outputText  value="#{articulo.articuloID}"/>
+		</p:column>
+
+		<p:column headerText="Descripcion:" sortBy="#{articulo.descripcion}"  filterMatchMode="contains" filterBy="#{articulo.descripcion}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><h:outputText value="#{articulo.descripcion}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="descripcion" value="#{articulo.descripcion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>  
+   
+		<p:column headerText="Precio Ven:" sortBy="#{articulo.precioVenta}"  filterMatchMode="startsWith" filterBy="#{articulo.precioVenta}">		                
+			<p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{articulo.precioVenta}" /></f:facet>
+				<f:facet name="input"><p:inputText id="precioventa" value="#{articulo.precioVenta}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+ 
+ 		<p:column headerText="Calidad:" sortBy="#{articulo.calidad}"  filterMatchMode="contains" filterBy="#{articulo.calidad}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><h:outputText value="#{articulo.calidad}" /></f:facet>
+	      <f:facet name="input">
+					<p:selectOneMenu id="calidad" value="#{mb_Articulo.calidad}" style="width:85%">
+						<f:selectItem  itemLabel="N" itemValue="N" />
+						<f:selectItem   itemLabel="A" itemValue="A" />
+					</p:selectOneMenu>	
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Medida:" sortBy="#{articulo.medida}"  filterMatchMode="startsWith" filterBy="#{articulo.medida}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{articulo.medida}" /></f:facet>
+	   		<f:facet name="input"><p:inputText id="medida" value="#{articulo.medida}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+ 
+ 
+  	<p:column headerText="Observacion:" sortBy="#{articulo.observacion}"  filterMatchMode="contains" filterBy="#{articulo.observacion}">		                
+			<p:cellEditor>
+			  <f:facet name="output"><h:outputText value="#{articulo.observacion}" /></f:facet>
+			  <f:facet name="input"><p:inputText id="observacion" value="#{articulo.observacion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+     
+		<p:column headerText="Costo Pes" sortBy="#{articulo.costoPesos}"  filterMatchMode="startsWith" filterBy="#{articulo.costoPesos}">		                
+			<p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{articulo.costoPesos}" /></f:facet>
+				<f:facet name="input"><p:inputText id="costopesos" value="#{articulo.costoPesos}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+ 
+		<p:column headerText="Costo Dol:" sortBy="#{articulo.costoDolares}"  filterMatchMode="startsWith" filterBy="#{articulo.costoDolares}">		                
+			<p:cellEditor>
+		  	<f:facet name="output"><h:outputText value="#{articulo.costoDolares}" /></f:facet>
+		 		<f:facet name="input"><p:inputText id="costodolares" value="#{articulo.costoDolares}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+ 
+
+ 
+		<p:column headerText="Stock:" sortBy="#{articulo.stock}"  filterMatchMode="startsWith" filterBy="#{articulo.stock}">		                
+      <p:cellEditor>
+       <f:facet name="output"><h:outputText value="#{articulo.stock}" /></f:facet>
+       <f:facet name="input"><p:inputText id="stock" value="#{articulo.stock}" style="width:100%"/></f:facet>
+  		</p:cellEditor>
+   	</p:column>
+ 
+		<p:column headerText="Stock min:" sortBy="#{articulo.stockMinimo}"  filterMatchMode="startsWith" filterBy="#{articulo.stockMinimo}">		                
+      <p:cellEditor>
+        <f:facet name="output"><h:outputText value="#{articulo.stockMinimo}" /></f:facet>
+        <f:facet name="input"><p:inputText id="stockminimo" value="#{articulo.stockMinimo}" style="width:100%"/></f:facet>
+   		</p:cellEditor>
+		</p:column>
+
+		<p:column headerText="Ult.Cos.Pes.:" sortBy="#{articulo.ultimoCostoPesos}"  filterMatchMode="startsWith" filterBy="#{articulo.ultimoCostoPesos}">		                
+			<p:cellEditor>
+	     	<f:facet name="output"><h:outputText value="#{articulo.ultimoCostoPesos}" /></f:facet>
+	    	<f:facet name="input"><p:inputText id="ultimoCostoPesos" value="#{articulo.ultimoCostoPesos}" style="width:100%"/></f:facet>
+    	</p:cellEditor>
+		</p:column>
+    
+		<p:column headerText="Ult Cos Dol:" sortBy="#{articulo.ultimoCostoDolares}"  filterMatchMode="startsWith" filterBy="#{articulo.ultimoCostoDolares}">		                
+    	<p:cellEditor>
+	      <f:facet name="output"><h:outputText value="#{articulo.ultimoCostoDolares}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="ultimocostodolares" value="#{articulo.ultimoCostoDolares}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+    </p:column>
+
+ 
+     <p:column headerText="Editar"  style = "width:50px">				
+				<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+				</p:rowEditor>					
+	    </p:column>
+		    
+		     
+		     
+		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}" 
+			 update="datatable message" >
+        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+    </p:commandButton>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>  
+		     
+		   
+    
+    
+</p:dataTable>
+
+
+	</h:form>
+
+</ui:define>
+</ui:composition>   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	
+	<persistence-unit name="MOSTOT"  transaction-type="RESOURCE_LOCAL">
+		<class>model.Area</class>
+		<class>model.Proveedores</class>
+		<class>model.Articulo</class>
+		<class>model.Usuario</class>
+		<class>model.Adicional</class>
+		<class>model.NexoMovimiento</class>
+		<class>model.Referencia</class>
+		<class>model.CodigosMO</class>
+		<class>model.ComprasExternasOT</class>
+		<class>model.Cliente</class>
+		<class>model.TipoOT</class>
+		<class>model.ManoObra</class>
+		<class>model.Ot</class>
+		<class>model.CuentasCorriente</class>
+		<class>model.Movimiento</class>
+		<class>model.Funcionario</class>
+		<class>model.DireccionContrato</class>
+		<class>model.Contrato</class>
+		<class>model.Arrendamiento</class>
+		<class>model.Cod_Movimiento</class>
+		<class>model.Reclamo</class>
+		
+		
+		
+		
+		<properties>			
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MOSTOT?useSSL=false" />
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="adminMysqlPass" />	
+
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			
+        </properties> 
+        
+	</persistence-unit>	
+	
+</persistence>

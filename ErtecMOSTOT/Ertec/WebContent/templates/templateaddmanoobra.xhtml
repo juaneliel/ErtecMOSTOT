@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+
+ 	
+ 	
+ <h:form id="formAddMO" >
+
+ 	 <p:panelGrid id="panelAddMO"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			 
+
+		 	
+			<p:outputLabel title="Ingrese parte del nombre o id del funcionario" value="Funcionario :" for="fid" />  
+			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_ManoObra.funcionarioOBJ}"
+					 completeMethod="#{mb_Funcionario.completarFuncionario}"
+					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+					 converter="ConverterFuncionario" forceSelection="true" 
+					  style="float:right !important;margin:0px 0px 3px 0px;" required="true"/> 
+			 
+		  
+
+
+			<p:outputLabel value="Cliente" for="cliente" />
+<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_ManoObra.clienteOBJ}"
+ completeMethod="#{mb_Cliente.completarCliente}" 
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" style="float:right !important;margin:0px 0px 3px 0px;"/> 
+
+
+
+			 
+
+			
+			
+			
+			
+			<p:outputLabel  value="Fecha:" for="fechamo"/>
+        	<p:calendar id="fechamo" value="#{mb_ManoObra.fecha}" effect="fold" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+
+			<p:outputLabel value="MyR:" for="myr" />   
+			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.myr}"  disabled="#{mb_ManoObra.codigosMOOBJ.verMYR==0}" 
+			  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			
+			<p:outputLabel value="Id OT:" for="ordenTrabajo" /> 
+			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo" value="#{mb_ManoObra.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			
+			
+			<p:outputLabel value="Tipo de Hora:" for="tipoHora" /> 
+			<p:selectOneMenu value="#{mb_ManoObra.tipoHora}" style="width:80%" id="tipoHora" required="true" >					
+                <f:selectItem itemLabel="Comun" itemValue="COMUN" />
+                <f:selectItem itemLabel="Extra. comun" itemValue="EXT-C" /> 
+                <f:selectItem itemLabel="Extra. excepcional" itemValue="EXT-E" />                       
+            </p:selectOneMenu>
+  
+ 
+			<p:outputLabel value="Tipo de Mano:" for="tipoMano" />   			  
+			<p:selectOneMenu value="#{mb_ManoObra.tipoMano}" style="width:80%" id="tipoMano" required="true" >					
+                   <f:selectItem itemLabel="Trabajadas" itemValue="T" />
+                   <f:selectItem itemLabel="Perdidas" itemValue="P" />                       
+            </p:selectOneMenu>
+                
+
+			<p:outputLabel value="Total de horas:" for="totalHora" /> 
+			<p:inputNumber  id="totalHora" value="#{mb_ManoObra.totalHora}" required="true" decimalSeparator="," thousandSeparator="." />  
+			
+			<p:commandButton value="Guardar" action="#{mb_ManoObra.add}" update="message" />	 
+	
+			
+ 
+		</p:panelGrid>
+ 
+</h:form>
+ 	
+ 	
+	</ui:composition>
+</html>
+
+
+
+
+<!-- <p:outputLabel value="N Contrato" for="nuc" />  -->
+<!-- <p:inputText id="nuc" label="nuc" value="#{mb_ManoObra.NContrato}"  style="float:right !important;margin:0px 0px 3px 0px;"/>	 -->
+
+
+<!-- <p:outputLabel value="TContrato" for="TContrato" />  -->
+<!-- <p:inputText id="TContrato" label="TContrato" value="#{mb_ManoObra.TContrato}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	 -->
+
+
+<!-- <p:outputLabel value="tipo" for="tipo" />    -->
+<!-- <p:inputText id="tipo" label="tipo" value="#{mb_ManoObra.tipo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 -->
+
+
+<!-- <p:outputLabel value="Cliente:" for="cli" /> -->
+<!-- <p:inputText id="cli" label="cliente" value="#{mb_ManoObra.cliente}"  style="float:right !important;margin:0px 0px 3px 0px;"/> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 	

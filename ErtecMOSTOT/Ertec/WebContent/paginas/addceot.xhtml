@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+<div id="principal"  style="width: 80%; margin: 0 auto;"  >
+
+
+        
+<div id="panel1"   style="text-align: center;display:block;"  >         
+	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1">     
+      
+       <p:row>
+	       <p:column colspan="4">
+				<p:outputLabel value="CExternaID:" for="CExternaID" />
+		       <p:inputText id="CExternaID" label="CExternaID" value="#{mb_CEOT.CExternaID}" size="65"  style="float:right !important;margin:0px 0px 3px 0px;"/>
+		   </p:column>      
+       </p:row>
+      
+ 		<p:row>
+	       	<p:column >
+		         <p:outputLabel value="articulo:" for="articulo" />  
+		         
+		         <p:autoComplete id="articulo" value="#{mb_OT.articuloOBJ}"
+ completeMethod="#{mb_OT.completarArticulo}"
+var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
+ converter="ConverterArticulo" forceSelection="true" minQueryLength="3"  style="float:left !important;margin:0px 0px 3px 0px;"/>  		          
+	       	  	</p:column> 
+	       	
+			<p:column>
+ 				<p:outputLabel value="cantidad:" for="cantidad" /> 
+				<p:inputText id="cantidad" label="cantidad" value="#{mb_CEDT.cantidad}"  />  
+ 			</p:column>
+       </p:row>
+ 
+ 		      
+ 		<p:row>
+	       	<p:column >
+		         <p:outputLabel value="fecha:" for="fecha" />   
+	       		 <p:inputText id="fecha" label="fecha" value="#{mb_CEDT.fecha}" size="30"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	       	</p:column> 
+	       	
+			<p:column>
+ 				<p:outputLabel value="moneda:" for="moneda" /> 
+				<p:inputText id="moneda" label="moneda" value="#{mb_CEOT.moneda}"  />  
+ 			</p:column>
+       </p:row>
+		  
+ 		<p:row>
+	       	<p:column >
+		         <p:outputLabel value="precio_Unitario:" for="precio_Unitario" />   
+	       		 <p:inputText id="precio_Unitario" label="precio_Unitario" value="#{mb_CEDT.precio_Unitario}" size="30"  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+	       	</p:column> 
+	       	
+			<p:column>
+ 				<p:outputLabel value="proveedor:" for="proveedor" /> 
+				<p:autoComplete id="proveedor" value="#{mb_OT.proveedorOBJ}"
+completeMethod="#{mb_OT.completarProveedor}"
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+converter="ConverterProveedor" forceSelection="true" minQueryLength="3"  
+style="float:left !important;margin:0px 0px 3px 0px;"/>  
+ 			</p:column>
+       </p:row>
+	</p:panelGrid>
+</div>     
+ 
+
+
+
+
+
+
+</div>
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

@@ -1,0 +1,212 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+ 	
+<h:form id="datatableMO">
+
+
+
+<p:outputLabel for="maskIni" value="Fecha inicial:" />
+<p:calendar id="maskIni" value="#{mb_ManoObra.fechaIni}" pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+ 
+
+<p:outputLabel for="maskFin" value="  Fecha final:" />
+<p:calendar id="maskFin" value="#{mb_ManoObra.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" />
+ 
+<p:commandButton value="Buscar"  icon="ui-icon-trash" id="Buscar" action="#{mb_OT.filtrarPorFechasManoObraOT}"   
+update="datatable2MO :message"/>
+			 
+
+
+
+
+<p:dataTable var="mo" value="#{mb_OT.listaManoObra}" id="datatable2MO" 
+ paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
+ draggableColumns="true" scrollable="true"  
+ scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
+  tableStyle="color:red" 
+ 
+ >	 
+ 
+ 	<f:facet name="header">
+        Mano de obra 
+        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatable2MO" trigger="toggler" />
+    </f:facet>
+    
+    <p:ajax event="rowEdit" listener="#{mb_ManoObra.onRowEdit}" update="message" />
+		 
+	
+
+		 
+		 
+		 
+		 
+		<p:column headerText="Clliente:" sortBy="#{mo.clienteNombre}"  filterMatchMode="contains" filterBy="#{mo.clienteNombre}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.clienteNombre}" /></f:facet>
+		         <f:facet name="input">
+		         <p:autoComplete  id="cliente" value="#{mo.cliente}"
+ completeMethod="#{mb_Cliente.completarCliente}" 
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" style="float:left !important;margin:0px 0px 3px 0px;"/> 
+		         
+			     </f:facet>
+			</p:cellEditor>
+		</p:column> 
+
+    
+    
+    
+<p:column headerText="Funcionario Nombre:" style="min-width:190px;" sortBy="#{mo.funcionario.nombre}"  filterMatchMode="contains" filterBy="#{mo.funcionario.nombre}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.funcionario.nombre}" /></f:facet>
+		         <f:facet name="input">
+					<p:autoComplete id="funcionario" value="#{mo.funcionario}"
+					 completeMethod="#{mb_Funcionario.completarFuncionario}"
+					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+					 converter="ConverterFuncionario" forceSelection="true" 
+					  style="float:left !important;margin:0px 0px 3px 0px;"
+					  queryDelay="1000" 
+					  /> 
+				  </f:facet>
+			</p:cellEditor>
+		</p:column>
+		
+		
+		    
+		
+		<p:column headerText="N Contrato:" sortBy="#{mo.NContrato}"  filterMatchMode="contains" filterBy="#{mo.NContrato}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.NContrato}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="NContrato" value="#{mo.NContrato}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+
+    
+    		<p:column headerText="Codigo:" sortBy="#{mo.codigo}"  filterMatchMode="contains" filterBy="#{mo.codigo}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.codigo}" /></f:facet>
+		         <f:facet name="input">
+					<p:selectOneMenu value="#{mo.codigo}" style="width:100%">
+                       <f:selectItems value="#{mb_ManoObra.listaCodMO}" var="cmo" 
+                       itemLabel="#{cmo.descripcion}" itemValue="#{cmo.codigo}" />
+                   </p:selectOneMenu>
+		         </f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+ 
+	       		   
+		<p:column headerText="Fecha:" sortBy="#{mo.fecha}"  filterMatchMode="contains" filterBy="#{mo.fecha}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><p:calendar mindate="#{mo.fecha}" maxdate="#{mo.fecha}" id="maskout" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
+ </f:facet>
+		         <f:facet name="input"> <p:calendar id="maskin" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
+ </f:facet>
+			</p:cellEditor>
+		</p:column>
+	       		   
+ 
+		<p:column headerText="MYR" sortBy="#{mo.myr}"  filterMatchMode="contains" filterBy="#{mo.myr}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.myr}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="MYR" value="#{mo.myr}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+
+	 
+       			<p:column headerText="O.T.:" sortBy="#{mo.ordenTrabajo}"  filterMatchMode="contains" filterBy="#{mo.ordenTrabajo}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.ordenTrabajo}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="ot" value="#{mo.ordenTrabajo}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+       	
+
+		<p:column headerText="Mano Obra ID" sortBy="#{mo.manoObraID}"  filterMatchMode="contains" filterBy="#{mo.manoObraID}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.manoObraID}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="mid" value="#{mo.manoObraID}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+     
+     		<p:column headerText="T. Contrato" sortBy="#{mo.TContrato}"  filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.TContrato}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="tcon" value="#{mo.TContrato}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+    		<p:column headerText="Tipo:" sortBy="#{mo.tipo}"  filterMatchMode="contains" filterBy="#{mo.tipo}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.tipo}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="tipo" value="#{mo.tipo}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+     
+    
+    		<p:column headerText="Tipo Hora" sortBy="#{mo.tipoHora}"  filterMatchMode="contains" filterBy="#{mo.tipoHora}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.tipoHora}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="thora" value="#{mo.tipoHora}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+     
+    
+    		<p:column headerText="Tipo Mano" sortBy="#{mo.tipoMano}"  filterMatchMode="contains" filterBy="#{mo.tipoMano}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.tipoMano}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="tmano" value="#{mo.tipoMano}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+     
+    		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}"  filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.totalHora}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="total" value="#{mo.totalHora}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+    
+    
+        <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		     
+		     
+		     	    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_ManoObra.delete(mo)}" 
+			 update="datatable2MO message" >
+        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+    </p:commandButton>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>
+		     
+		     
+		    
+		    
+		    	   
+
+    
+</p:dataTable>   
+
+
+</h:form>
+
+	</ui:composition>
+</html>
+ 	

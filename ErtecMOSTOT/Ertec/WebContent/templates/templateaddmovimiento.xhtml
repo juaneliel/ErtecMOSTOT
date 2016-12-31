@@ -1,0 +1,111 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>
+
+ 	
+ 	
+ <h:form id="formAddMov">
+  
+ 	 <p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+		<f:facet name="header">
+			Agregar Movimiento
+		</f:facet>
+	 	 
+	 	 
+		<p:outputLabel value="Fecha:" for="fecha" /> 
+		<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.fecha}" />	
+		
+		
+		
+		
+	
+		<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
+		<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.codigoMovimientoID}" style="width:50%">
+			<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.codigoMovimientoID )}" update="cotizacion referencia tipoReferencia clienteLabel" />
+			<f:selectItems value="#{paramListaCodMov}" var="cm" 
+				itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Tipo Referencia:" for="tipoReferencia" /> 
+		<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.tipoReferencia}" style="width:70%">
+			<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(  mb_Movimiento.codigoMovimientoID   )}" 
+		 	  />
+			<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
+				itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+   	</p:selectOneMenu>
+   	
+   	 
+
+			<p:outputLabel value="Cliente" visible="mb_Movimiento.verCliente" for="cliente" id="clienteLabel" />
+<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_Movimiento.clienteOBJ}"
+ completeMethod="#{mb_Cliente.completarCliente}" 
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" /> 
+
+			
+		<p:outputLabel value="Contrato" for="contrato" /> 			 
+		<p:inputNumber id="contrato" value="#{mb_Movimiento.comprobante}" thousandSeparator="."> 
+		</p:inputNumber>  			
+			
+			
+			
+			
+			
+		<p:outputLabel value="Comprobante:" for="comprobante" /> 			 
+		<p:inputNumber id="comprobante" value="#{mb_Movimiento.comprobante}"
+			decimalSeparator="," thousandSeparator="."> 
+		</p:inputNumber>  			
+			
+		<p:outputLabel value="Contrato ID:" for="contratoID" /> 
+		<p:inputText id="contratoID" label="TContrato" value="#{mb_Movimiento.contratoID}"/>	
+		 
+		<p:outputLabel value="Cotizacion:" for="cotizacion" /> 
+		<p:inputText disabled="#{!mb_Movimiento.verCotizacion}"  id="cotizacion" label="cotizacion" value="#{mb_Movimiento.cotizacion}" />	
+
+		<p:outputLabel value="Referencia:" for="referencia" /> 
+		<p:inputText disabled="#{!mb_Movimiento.verReferencia}" id="referencia" label="referencia" value="#{mb_Movimiento.referencia}"   />	
+			  
+	 
+			
+			<h:commandButton value="Guardar" action="#{mb_Movimiento.add}"  />	 
+	
+			
+ 
+		</p:panelGrid>
+ 
+</h:form>
+ 	 
+	</ui:composition>
+</html>
+
+
+<!-- 			private int nexoMovimientoID; -->
+
+<!-- articuloID; -->
+
+<!--  cantidad; -->
+<!--  costo; -->
+<!--  fecha; -->
+<!--  movimientoID; -->
+
+<!-- 		<p:outputLabel value="Tipo OT:" for="tipoOT" />  -->
+<!-- 		<p:selectOneMenu id="tipoOT"  value="#{mb_Movimiento.tipoOT}" style="width:70%"> -->
+<!-- 			<f:selectItems value="#{mb_OT.listaTiposOT}" var="tot"  -->
+<!-- 				itemLabel="#{tot.descripcion}" itemValue="#{tot.tipoID}" /> -->
+<!-- 		</p:selectOneMenu> -->
+
+
+<!-- 		<p:outputLabel value="Cliente:" for="cliente" label="Ingrese nombre o id del cliente espere 1 segundo" /> 		 -->
+<!-- 		<p:autoComplete id="cliente" value="#{mb_Movimiento.clienteOBJ}" -->
+<!-- 			completeMethod="#{mb_Cliente.completarCliente}" -->
+<!-- 			var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}" -->
+<!--  			converter="ConverterCliente" forceSelection="true"  queryDelay="1000"  -->
+<!--  			label="Ingrese nombre o id del cliente espere 1 segundo"  -->
+<!--  			style="float:left !important;margin:0px 0px 3px 0px;"/>     -->
+
+ 	

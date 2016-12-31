@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+
+        
+
+<h:form>         
+	<h:panelGrid id="panel" columns="2" border="1"
+   cellpadding="5" cellspacing="1">   
+   
+     
+     
+		<p:outputLabel value="articulo:" for="articulo" />  		         
+		<p:autoComplete id="articulo" value="#{mb_Movimiento.articuloOBJ}"
+			completeMethod="#{mb_Articulo.completarArticulo}"
+			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
+			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  		          
+		       	  	 
+	        
+		    
+		<h:outputLabel value="Cantidad" for="cantidad" />
+		<p:inputNumber id="cantidad" label="cantidad" value="#{mb_Movimiento.cantidadArticulo}"  /> 
+		
+		<h:outputLabel value="Costo" for="costo" />
+		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.costo}"  />   
+		
+		<p:outputLabel for="effect" value="Fecha:" />
+		<p:calendar id="effect" value="#{mb_Movimiento.fecha}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			 
+	
+		<p:commandButton value="Agregar" oncomplete="PF('addnexo').hide();" process="@form" action ="#{mb_Movimiento.addNexo}"  update="message"  />
+	
+
+
+	</h:panelGrid>  
+</h:form>
+</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+

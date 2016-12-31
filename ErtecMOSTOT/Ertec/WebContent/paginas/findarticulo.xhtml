@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+ <h:form>
+ 
+   <div id="panel1">         
+	<h:panelGrid id="panel" columns="2" border="1"
+	   cellpadding="5" cellspacing="1">   
+	   
+	   <h:outputLabel value="Id" for="id" />
+	    <p:inputText id="id" label="id" value="#{mb_Articulo.articuloID}"  > 
+	    <p:ajax event="keyup" update="datatable @form"  listener="#{mb_Articulo.tecleo}" />
+	    </p:inputText>
+	     
+	    
+	    
+	    <p:outputLabel value="Descripcion:" for="des" />
+	     <p:inputText id="des" label="descripcion" value="#{mb_Articulo.descripcion}"  >
+			<p:ajax event="keyup" update="datatable @form"  listener="#{mb_Articulo.tecleo}" />
+		</p:inputText>
+	    
+	    	    
+	     
+	    
+
+	    
+		<h:commandButton value="Buscar" action="#{mb_Articulo.findArticulo}"  render="datatable" />	  
+	
+	</h:panelGrid>
+   </div>    
+  
+ </h:form>
+        
+
+
+
+
+
+
+
+<p:dataTable var="articulo" value="#{mb_Articulo.articulos}" id="datatable" paginator="true" rows ="10" style="text-align:center"  >
+
+
+    <p:column headerText="Id" sortBy="#{articulo.articuloID}">
+        <h:outputText value="#{articulo.articuloID}" />
+    </p:column>
+ 
+     <p:column headerText="descripcion" sortBy="#{articulo.descripcion}">
+        <h:outputText value="#{articulo.descripcion}"/>
+    </p:column>
+  
+    <p:column headerText="Calidad" sortBy="#{articulo.calidad}">
+        <h:outputText value="#{articulo.calidad}" />
+    </p:column>
+
+    <p:column headerText="costoDolares" sortBy="#{articulo.costoDolares}">
+        <h:outputText value="#{articulo.costoDolares}"/>
+    </p:column>
+ 
+ 
+    <p:column headerText="costoPesos" sortBy="#{articulo.costoPesos}">
+        <h:outputText value="#{articulo.costoPesos}"/>
+    </p:column>
+  
+ 
+    <p:column headerText="medida" sortBy="#{articulo.medida}">
+        <h:outputText value="#{articulo.medida}"/>
+    </p:column>
+ 
+
+    <p:column headerText="observacion" sortBy="#{articulo.observacion}">
+        <h:outputText value="#{articulo.observacion}"/>
+    </p:column>
+ 
+ 
+    <p:column headerText="precioVenta" sortBy="#{articulo.precioVenta}" >
+        <h:outputText value="#{articulo.precioVenta}" />
+    </p:column>
+ 
+ 
+   <p:column headerText="Stock" sortBy="#{articulo.stock}">
+        <h:outputText value="#{articulo.stock}"/>
+    </p:column>
+ 
+ 
+    <p:column headerText="S. Min" sortBy="#{articulo.stockMinimo}">
+        <h:outputText value="#{articulo.stockMinimo}"/>
+    </p:column>
+    
+    
+    <p:column headerText="Ult Dol" sortBy="#{articulo.ultimoCostoDolares}">
+        <h:outputText value="#{articulo.ultimoCostoDolares}"/>
+    </p:column>
+ 
+ 
+    <p:column headerText="Ult Pes" sortBy="#{articulo.ultimoCostoPesos}">
+        <h:outputText value="#{articulo.ultimoCostoPesos}"/>
+    </p:column>
+ 
+ 	<p:column headerText="Accion">     
+		<h:form> 
+		
+		 <p:commandButton value="Bor" icon="ui-icon-trash" id="trash" actionListener="#{mb_Articulo.deleteArticulo(articulo)}"   update="datatable message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+		
+		<p:commandButton id="movieBtn" icon="ui-icon-pencil"  value="Mod"   action="#{mb_Articulo.selecToUpdateArticulo(articulo)}"   rendered="#{mb_Usuario.puedeActualizar}"/> 
+		    <p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:600px">          
+		         
+				 <h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    	 
+		 
+		 				   
+				   <h:outputLabel value="ID" for="articuloID" />
+				    <h:outputLabel id="articuloID" label="articuloID" value="#{mb_Articulo.articuloID}"  /> 
+				   
+				   <h:outputLabel value="calidad" for="calidad" />
+				    <h:inputText id="calidad" label="calidad" value="#{mb_Articulo.calidad}"  /> 
+				    		    
+				    <h:outputLabel value="costoDolares" for="costoDolares" />
+				    <h:inputText id="costoDolares" label="costoDolares" value="#{mb_Articulo.costoDolares}"  /> 
+				    
+				    <h:outputLabel value="costoPesos:" for="costoPesos" />
+				    <h:inputText id="costoPesos" label="costoPesos" value="#{mb_Articulo.costoPesos}"  /> 
+				    
+				    <h:outputLabel value="descripcion" for="descripcion" />
+				    <h:inputText id="descripcion" label="descripcion" value="#{mb_Articulo.descripcion}"  /> 
+				   
+				    <h:outputLabel value="medida" for="medida" />
+				    <h:inputText id="medida" label="medida" value="#{mb_Articulo.medida}"  /> 
+				    
+				    <h:outputLabel value="observacion" for="observacion" />
+				    <h:inputText id="observacion" label="observacion" value="#{mb_Articulo.observacion}"  /> 		   
+				   		    
+				    <h:outputLabel value="precioVenta" for="precioVenta" />
+				    <h:inputText id="precioVenta" label="precioVenta" value="#{mb_Articulo.precioVenta}"  /> 
+				    
+				    <h:outputLabel value="stock" for="stock" />
+				    <h:inputText id="stock" label="stock" value="#{mb_Articulo.stock}"  /> 
+					  
+				    <h:outputLabel value="stockMinimo" for="stockMinimo" />
+				    <h:inputText id="stockMinimo" label="stockMinimo" value="#{mb_Articulo.stockMinimo}"  /> 
+				    
+				    <h:outputLabel value="ultimoCostoDolares" for="ultimoCostoDolares" />
+				    <h:inputText id="ultimoCostoDolares" label="ultimoCostoDolares" value="#{mb_Articulo.ultimoCostoDolares}"  /> 
+				   
+		   		    <h:outputLabel value="ultimoCostoPesos" for="ultimoCostoPesos" />
+				    <h:inputText id="ultimoCostoPesos" label="ultimoCostoPesos" value="#{mb_Articulo.ultimoCostoPesos}"  /> 
+				    
+				    <h:commandButton value="Guardar" action="#{mb_Articulo.updateArticulo}"  update="datatable message" />	
+					<h:commandButton value="Cancelar" action="/Ertec/paginas/articulos.xhtml"   />	  
+				</h:panelGrid>				                  
+		         
+		    </p:overlayPanel>  
+		</h:form> 	
+    </p:column>
+
+
+    
+    
+    
+</p:dataTable>
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

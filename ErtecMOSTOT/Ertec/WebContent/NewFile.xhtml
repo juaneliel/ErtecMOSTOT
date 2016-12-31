@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+      
+      
+<h:head>
+ 
+
+<title>Facelet Title</title>
+<script name="jquery/jquery.js" library="primefaces"></script>
+</h:head>
+
+<h:body>
+
+<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+
+ <div id="principal">
+	<p:layout style="min-width:400px;min-height:250px;" id="layout">  
+    <p:layoutUnit position="west" resizable="true" size="200" minSize="250">  
+        <div id="msg1">
+            <p:layoutUnit position="center" resizable="true" size="200" minSize="250">  
+        	<h:graphicImage library="images" name="1964.jpg"/>
+    		</p:layoutUnit>
+        </div><br/>
+        <h:form>
+        
+        
+<p:menu overlay="true" trigger="triggerButton" my="left top" at="right top">
+		<p:submenu label="File">
+			<p:menuitem value="Open"></p:menuitem>
+			<p:menuitem value="Edit"></p:menuitem>
+			<p:separator/>
+			<p:menuitem value="Exit"></p:menuitem>
+		</p:submenu>
+		<p:submenu label="Help">
+			<p:menuitem value="About Primefaces"></p:menuitem>
+			<p:menuitem value="Contact Us"></p:menuitem>
+			<p:separator/>
+			<p:menuitem value="Help"></p:menuitem>
+		</p:submenu>
+	</p:menu>
+        
+        
+  <div id="panel1">         
+<h:panelGrid id="panel1" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <h:outputLabel value="Cliente:" for="c" />
+        <h:inputText id="c" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<h:outputLabel value="Direccion" for="direccion" />
+        <h:inputText id="direccion" label="direccion" value="#{mb_OT.cliente}"  />
+      
+
+		<h:outputLabel value="Lugar de la obra" for="lugar" />
+        <h:inputText id="lugar" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</h:panelGrid>
+   </div>     
+        
+   <div id="panel2">     
+<h:panelGrid id="panel2" columns="2" border="1"
+   cellpadding="5" cellspacing="1">     
+      
+        <h:outputLabel value="C. Cte" for="ccte" />
+        <h:inputText id="ccte" label="cliente" value="#{mb_OT.cliente}"  />
+      
+
+ 		<h:outputLabel value="ARR" for="arr" />
+        <h:inputText id="arr" label="direccion" value="#{mb_OT.cliente}"  />
+      
+
+		<h:outputLabel value="Mant" for="mant" />
+        <h:inputText id="mant" label="lugar" value="#{mb_OT.cliente}"  />    
+
+</h:panelGrid>        
+ </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <h:panelGrid columns="2">
+            
+        <h:outputLabel value="Numero id:" for="idn" />
+        <h:outputLabel id="idn" label="idn" value="#{mb_OT.numeroID}"   />
+        <h:outputLabel value="Cliente:" for="cliente" />
+        <h:outputLabel id="cliente" label="cliente" value="#{mb_OT.cliente}"  />
+        <h:outputLabel value="Trabajo" for="trabajo" />
+        <h:outputLabel id="trabajo" label="trabajo" value="#{mb_OT.trabajo}"  /> 
+        <h:outputLabel value="Proceso:" for="proceso" />
+        <h:outputLabel id="proceso" label="proceso" value="#{mb_OT.proceso}"  />  
+        <h:outputLabel value="Factura:" for="factura" />  
+        <h:outputLabel id="factura" label="factura" value="#{mb_OT.factura}"   />
+        
+        <h:outputLabel value="Fecha inicio:" for="FechaInicio" />
+        <h:outputLabel id="FechaInicio" label="FechaInicio" value="#{mb_OT.fechaInicio}"  />  
+        <h:outputLabel value="Fecha terminada:" for="fechaTerminada" />  
+        <h:outputLabel id="fechaTerminada" label="fechaTerminada" value="#{mb_OT.fechaTerminada}"   />
+        <h:outputLabel value="Fecha facturada:" for="fechaFacturada" />  
+        <h:outputLabel id="fechaFacturada" label="fechaFacturada" value="#{mb_OT.fechaFacturada}"   />
+        <h:inputText id="idr" label="idr" value="#{mb_OT.idOTCargar}"  required="true" />
+     
+        <h:commandButton value="Consultar" action="#{mb_OT.recargarOT}"   />
+        
+<h:message for="" errorStyle="color : red"></h:message> 
+        
+        </h:panelGrid><br/> 
+        </h:form>
+        <div id="msg2">
+              
+        </div><br/>
+    </p:layoutUnit>
+
+  
+</p:layout>
+</div>
+
+</h:body>
+
+</html>

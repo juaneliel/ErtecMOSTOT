@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+  	
+  	<h:form id="formfuncionarios">
+  	
+
+  	
+		<p:dataTable var="funcionario" value="#{mb_Funcionario.lista}" id="datatable2"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true" scrollHeight="500"   scrollWidth="100%"  
+		 editable="true" 
+		 style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"		
+		 >
+		 
+		 	<f:facet name="header">
+		        Funcionarios		 
+		        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatable2" trigger="toggler" >
+		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
+		        </p:columnToggler>
+		    </f:facet>
+		 
+		 <p:ajax event="rowEdit" listener="#{mb_Funcionario.onRowEdit}" update="message" />
+		 
+		 
+	 
+		 
+		 
+			<p:column headerText="Id" visible="#{mb_Usuario.viewFuncionarios[0]}" style = "width:50px;text-align:center" filterStyle="width: 40px;" sortBy="#{funcionario.funcionarioID}"  filterMatchMode="contains" filterBy="#{funcionario.funcionarioID}">
+		        <h:outputText  value="#{funcionario.funcionarioID}"/>
+		    </p:column>
+		  		 
+		 
+			<p:column headerText="Nombre:" visible="#{mb_Usuario.viewFuncionarios[1]}" sortBy="#{funcionario.nombre}"  filterMatchMode="contains" filterBy="#{funcionario.nombre}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.nombre}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="nombre" value="#{funcionario.nombre}" style="width:100%;min-width:120px;"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		 
+		 
+			<p:column headerText="Email:" visible="#{mb_Usuario.viewFuncionarios[2]}" sortBy="#{funcionario.email}"  filterMatchMode="contains" filterBy="#{funcionario.email}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.email}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="email" value="#{funcionario.email}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+	   
+		    
+			<p:column headerText="Telefono:"  visible="#{mb_Usuario.viewFuncionarios[3]}" sortBy="#{funcionario.telefono}"  filterMatchMode="contains" filterBy="#{funcionario.telefono}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.telefono}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="tel" value="#{funcionario.telefono}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+	   
+	   
+				<p:column headerText="Activo"  visible="#{mb_Usuario.viewFuncionarios[4]}" sortBy="#{funcionario.activo}"  filterMatchMode="contains" filterBy="#{funcionario.activo}">		                
+		        <p:cellEditor>
+	              <f:facet name="output"><h:outputText value="#{funcionario.activo}" /></f:facet>
+	              <f:facet name="input">
+	              	<p:selectOneMenu id="activo" value="#{funcionario.activo}" style="width:85%">
+										<f:selectItem  itemLabel="Si" itemValue="Si" />
+										<f:selectItem   itemLabel="No" itemValue="No" />
+									</p:selectOneMenu>		               
+	              </f:facet>
+           		</p:cellEditor>
+		    </p:column>   
+
+				<p:column headerText="Alias"  visible="#{mb_Usuario.viewFuncionarios[5]}" sortBy="#{funcionario.alias}"  filterMatchMode="contains" filterBy="#{funcionario.alias}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.alias}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="alias" value="#{funcionario.alias}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>   
+	   
+	   
+	   		<p:column headerText="Area"  visible="#{mb_Usuario.viewFuncionarios[6]}" sortBy="#{funcionario.area}"  filterMatchMode="contains" filterBy="#{funcionario.area}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.area}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="area" value="#{funcionario.area}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column> 
+	   
+	   		<p:column headerText="Cat:"  visible="#{mb_Usuario.viewFuncionarios[7]}" sortBy="#{funcionario.cat}"  filterMatchMode="contains" filterBy="#{funcionario.cat}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.cat}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="cat" value="#{funcionario.cat}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column> 
+		    
+		    
+	   		<p:column headerText="Direccion:"  visible="#{mb_Usuario.viewFuncionarios[8]}" sortBy="#{funcionario.direccion}"  filterMatchMode="contains" filterBy="#{funcionario.direccion}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.direccion}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="direccion" value="#{funcionario.direccion}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column> 
+		    	    
+		    	    
+	       		   
+				<p:column headerText="Nacimiento:"  visible="#{mb_Usuario.viewFuncionarios[9]}" style="min-width:100px;"  sortBy="#{funcionario.nacimiento}"  filterMatchMode="contains" filterBy="#{funcionario.nacimiento}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{funcionario.nacimiento}" maxdate="#{funcionario.nacimiento}" id="nacimiento" value="#{funcionario.nacimiento}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="nacimientoin" value="#{funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>	    
+				    	    
+				<p:column headerText="C.Salud"  visible="#{mb_Usuario.viewFuncionarios[10]}" style="min-width:100px;"  sortBy="#{funcionario.carneSalud}"  filterMatchMode="contains" filterBy="#{funcionario.carneSalud}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{funcionario.carneSalud}" maxdate="#{funcionario.carneSalud}" id="carneSaludout" value="#{funcionario.carneSalud}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="carneSaludin" value="#{funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>	     
+
+		 
+		 
+		
+	   		<p:column headerText="Cedula"  visible="#{mb_Usuario.viewFuncionarios[11]}" sortBy="#{funcionario.cedula}"  filterMatchMode="contains" filterBy="#{funcionario.cedula}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.cedula}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="Cedula" value="#{funcionario.cedula}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column> 
+		
+		
+		
+		<p:column headerText="V.Cedula"  visible="#{mb_Usuario.viewFuncionarios[12]}" style="min-width:100px;"  sortBy="#{funcionario.vencimientoCedula}"  filterMatchMode="contains" filterBy="#{funcionario.vencimientoCedula}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{funcionario.vencimientoCedula}" maxdate="#{funcionario.vencimientoCedula}" id="vcedulaout" value="#{funcionario.vencimientoCedula}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="vcedulain" value="#{funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>	    	
+		
+		
+	   		<p:column headerText="Cat.Libreta"  visible="#{mb_Usuario.viewFuncionarios[13]}" sortBy="#{funcionario.libretaCat}"  filterMatchMode="contains" filterBy="#{funcionario.libretaCat}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{funcionario.libretaCat}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="CatLibreta" value="#{funcionario.libretaCat}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column> 
+		
+		 
+		 
+				<p:column headerText="V.Libreta"  visible="#{mb_Usuario.viewFuncionarios[14]}" style="min-width:100px;"  sortBy="#{funcionario.vencimientoLibreta}"  filterMatchMode="contains" filterBy="#{funcionario.vencimientoLibreta}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{funcionario.vencimientoLibreta}" maxdate="#{funcionario.vencimientoLibreta}" id="vlibretaout" value="#{funcionario.vencimientoLibreta}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="vlibretain" value="#{funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>	    
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.puedeActualizar}">				
+					<p:rowEditor >
+					</p:rowEditor>	
+									
+		    </p:column>
+		     
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.puedeBorrar}" >	
+			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}" 
+   	
+   	update="formfuncionarios message" >
+        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+  <span class="ui-icon ui-icon-trash"></span>
+   	</p:commandLink>    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>
+		 
+		 
+		 
+		 
+ 
+		    	   
+		      
+		</p:dataTable>
+	
+
+  	</h:form>
+
+ 
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

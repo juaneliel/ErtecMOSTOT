@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+ 
+ 
+ <h:outputStylesheet name="/css/estilo.css" />
+ 
+	<h:form id="datatable">
+	
+
+<p:outputLabel for="maskIni" value="Fecha inicial:" />
+<p:calendar id="maskIni" value="#{mb_Reclamo.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+ 
+
+<p:outputLabel for="maskFin" value="  Fecha final:" />
+<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" required= "true"/>
+ 
+<p:commandButton value="Buscar"  icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarInformeVisitadosPorFechas}"   
+update="datatableservice :message"/>
+
+
+ 
+	<h:commandLink>
+		<p:graphicImage name="/images/excel.png" width="24"/>
+		<p:dataExporter type="xls" target="datatableservice" fileName="service"  />
+	</h:commandLink>
+	
+	<h:commandLink>
+		<p:graphicImage name="/images/pdf.png" width="24"/>
+		<p:dataExporter type="pdf" target="datatableservice" fileName="service"  />
+	</h:commandLink>
+
+ <br/><br/>		 
+	
+	<p:dataTable var="service" value="#{mb_Reclamo.filtrado}" id="datatableservice"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"  scrollHeigth="500" 
+		 editable="true"  paginatorPosition="top"  
+		 styleClass="estiloDataTable"
+		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+         selection="#{mb_Reclamo.infoServiceSelected}" selectionMode="single" rowKey="#{service.codigo}"
+                
+		 >
+		 
+		<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatableservice" fileName="service" pageOnly="true" />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatableservice" fileName="service" pageOnly="true"/>
+	    </h:commandLink> 
+		</f:facet>
+		
+
+		<f:facet name="header" styleClass="cabecera">
+			Indicadores de Servicios
+		</f:facet>
+		 
+		 
+ 
+   
+		<p:column headerText="Cod" sortBy="#{service.codigo}" style = "width:60px;text-align:center" filterStyle="width: 50px;" filterMatchMode="contains" filterBy="#{service.codigo}">		                
+		 <h:outputText value="#{service.codigo}" /> 
+		</p:column>  
+
+   
+		<p:column headerText="Cliente" sortBy="#{service.nombreCliente}"  filterMatchMode="contains" filterBy="#{service.nombreCliente}">		                
+		 <h:outputText value="#{service.nombreCliente}" /> 
+		</p:column>  
+
+
+		<p:column headerText="Equipo" sortBy="#{service.equipo}"  filterMatchMode="contains" filterBy="#{service.equipo}">		                
+		 <h:outputText value="#{service.equipo}" /> 
+		</p:column>  
+
+		<p:column headerText="Vis" sortBy="#{service.visitas}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.visitas}">		                
+		 <h:outputText value="#{service.visitas}" /> 
+		</p:column>  
+
+		<p:column headerText="T.R." sortBy="#{service.tiempoRespuesta}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoRespuesta}">		                
+		 <h:outputText value="#{service.tiempoRespuesta}" /> 
+		</p:column>  
+
+
+		<p:column headerText="T.H" sortBy="#{service.tiempoHoras}"  style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoHoras}">		                
+		 <h:outputText value="#{service.tiempoHoras}" /> 
+		</p:column> 
+
+
+ 	<p:column headerText="H.R" sortBy="#{service.horasRed}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasRed}">		                
+		 <h:outputText value="#{service.horasRed}" /> 
+		</p:column> 
+  
+ 	<p:column headerText="H.C" sortBy="#{service.horasConmutador}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.horasConmutador}">		                
+		 <h:outputText value="#{service.horasConmutador}" /> 
+		</p:column>  
+ 
+ 	<p:column headerText="H.A" sortBy="#{service.horasAntel}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasAntel}">		                
+		 <h:outputText value="#{service.horasAntel}" /> 
+		</p:column> 
+ 
+ 
+
+    
+    
+</p:dataTable>
+
+
+	<p:contextMenu for="datatableservice">
+  	<p:menuitem value="Ver detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('SDDialog').show()"/>
+  </p:contextMenu>
+
+	<p:dialog header="Detalles Service" style="text-align:center;width:400px;"  resizable="true" widgetVar="SDDialog"   modal="true" showEffect="fade" hideEffect="fade">
+		<p:outputPanel id="detalles" style="text-align:center;">
+    	<p:panelGrid  columns="2" >
+ 
+	      <h:outputText value="Codigo:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.codigo}" />
+	      
+	      <h:outputText value="Cliente:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.nombreCliente}" />
+	      
+	      <h:outputText value="Equipo:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.equipo}" />
+	      
+	      <h:outputText value="Visitas:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.visitas}" />
+	      
+	      
+	      <h:outputText value="Tiempo Respuesta:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.tiempoRespuesta}" />
+	      
+	      <h:outputText value="Tiempo Trabajo:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.tiempoHoras}" />
+	      
+	      <h:outputText value="Horas Red:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.horasRed}" />
+	      
+	      <h:outputText value="Horas conmutador:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.horasConmutador}" />
+	      
+	       <h:outputText value="Horas Antel:" />
+	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.horasAntel}" />
+                                
+    	</p:panelGrid>
+		</p:outputPanel>
+	</p:dialog>
+
+
+
+
+
+
+
+
+
+
+
+	</h:form>
+
+</ui:define>
+</ui:composition>   
