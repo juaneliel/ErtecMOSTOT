@@ -91,7 +91,7 @@ public class mb_Reclamo {
   } 
   
   public void recargar() {
-    this.filtrado=dao.getFiltrado();
+    this.filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
     this.lista=dao.getLista();
     this.listaPendientes=dao.getListaPendientes();
     System.out.println("mb tamaño reclamos "+lista.size());

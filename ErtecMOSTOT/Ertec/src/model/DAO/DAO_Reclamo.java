@@ -40,64 +40,84 @@ public class DAO_Reclamo {
     }
     return salida;
   }
-
-  public ArrayList<DAO_infoService> getFiltrado(){
+  
+  
+  public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
+    
+    String consulta =  "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador),"
+        + " c.equipo,c.tipo,c.contratoID,max( DATEDIFF(r.fechaVisita,r.fechaReclamado) ),sum(r.antel),sum(r.conmutador) "
+        + "FROM Reclamo r, Contrato c where r.contratoID = c.id ";
+ 
+        
+                 
+    
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    String fi = "";
+    String ff="";
+    if(fechaIni!=null){
+      fi = formatter.format(fechaIni); 
+    }
+    
+    if (fechaFin!=null){
+      ff = formatter.format(fechaFin); 
+    }
+    else{
+      ff = formatter.format(new Date()); 
+    }
+    
+    String fechaCondicion="";
+    
+    if(!fi.equals("")){
+      fechaCondicion = " and r.fechaVisita >= '" + fi + "' AND r.fechaVisita <= '" + ff + "'" ;
+    }
+    else{  
+      fechaCondicion = " and r.fechaVisita <= '" + ff + "' " ;         
+    }    
+    consulta +=fechaCondicion;
+    
+    
+    if(buscarVisitado){
+      consulta+= " and r.estado='visitado' ";
+    }
+    else{
+      consulta+= " and r.estado<>'visitado' ";
+    }
+    
+    
+    consulta += " group by r.clienteID, r.nombreCliente,c.equipo,c.tipo,c.contratoID having count(*) > 0";
+    
+    
     ArrayList<DAO_infoService> salida = new ArrayList<DAO_infoService>();    
     //String consulta="SELECT count(r.ClienteID), r.clienteID, c.equipo,  nombreCliente, sum(red),AVG(red) FROM Reclamo r, Contratos c where r.contratoID = c.id and r.estado='visitado'  group by clienteID, nombreCliente,equipo having count(*) > 0";
     
     
-    EntityManager em=JpaUtil.getEntityManager();
-   
-    
-    String consulta = "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red), c.equipo,c.tipo,c.contratoID FROM Reclamo r, Contrato c where r.contratoID = c.id and r.estado='visitado' group by r.clienteID, r.nombreCliente,c.equipo,c.tipo,c.contratoID having count(*) > 0";
-    
- 
-    System.out.println(">>>consulta>"+ consulta);
+    EntityManager em=JpaUtil.getEntityManager();      
      
-    Query q = em.createQuery(consulta);
-    
-   
-        
+    System.out.println(">>>consulta>"+ consulta);     
+    Query q = em.createQuery(consulta);            
     List < Object[]>r = (List<Object[]>) q.getResultList();
     
-    for (Object[] results : r){       
-      String codigo="";
+    for (Object[] results : r){ 
       DAO_infoService aux = new DAO_infoService();
-      int i = 0;
-      for (Object o : results) {
-        String ostring = o.toString();
-        if(i==0){
-          aux.setVisitas(Long.parseLong(ostring));          
-        }
-        if(i==2){
-          aux.setNombreCliente(ostring);
-        }
-        if(i==3){
-          aux.setHorasRed(Long.parseLong(ostring));     
-        }
-        
-        
-        if(i==5){
-          aux.setEquipo(ostring);     
-        }
-        if(i==6){
-          codigo=ostring;
-        }
-        if(i==7){
-          codigo+=ostring;
-          aux.setCodigo(codigo);  
-        }
-        
-        
-        System.out.println(i+"ostring: "+ostring);
-        ++i;    
-      } 
       
+      aux.setTiempoHoras(Double.parseDouble(results[4].toString()));
+      aux.setVisitas(Long.parseLong(results[0].toString()));          
+      aux.setNombreCliente(results[2].toString());
+      aux.setHorasRed(Long.parseLong(results[3].toString()));  
+      aux.setEquipo(results[5].toString());     
+      aux.setCodigo(results[6].toString()+results[7].toString());    
+      aux.setTiempoRespuesta(Long.parseLong(results[8].toString()));  
+      aux.setHorasAntel(Long.parseLong(results[9].toString()));  
+      aux.setHorasConmutador(Long.parseLong(results[10].toString()));  
+       
       salida.add(aux);
       
-    } 
-    return salida;    
+    }  
+    return salida;
   }
+  
+  
+ 
   
   
   public boolean delete (Reclamo o){ 
@@ -160,93 +180,7 @@ public class DAO_Reclamo {
   
   //097980954
   
-  public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
-    
-    String consulta = "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red), c.equipo,c.tipo,c.contratoID "
-        + "FROM Reclamo r, Contrato c where r.contratoID = c.id";          
-    
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    String fi = "";
-    String ff="";
-    if(fechaIni!=null){
-      fi = formatter.format(fechaIni); 
-    }
-    
-    if (fechaFin!=null){
-      ff = formatter.format(fechaFin); 
-    }
-    else{
-      ff = formatter.format(new Date()); 
-    }
-    
-    String fechaCondicion="";
-    
-    if(!fi.equals("")){
-      fechaCondicion = " and r.fechaVisita >= '" + fi + "' AND r.fechaVisita <= '" + ff + "'" ;
-    }
-    else{  
-      fechaCondicion = " and r.fechaVisita <= '" + ff + "' " ;         
-    }    
-    consulta +=fechaCondicion;
-    
-    
-    if(buscarVisitado){
-      consulta+= " and r.estado='visitado' ";
-    }
-    else{
-      consulta+= " and r.estado<>'visitado' ";
-    }
-    
-    
-    consulta += " group by r.clienteID, r.nombreCliente,c.equipo,c.tipo,c.contratoID having count(*) > 0";
-    
-    
-    ArrayList<DAO_infoService> salida = new ArrayList<DAO_infoService>();    
-    //String consulta="SELECT count(r.ClienteID), r.clienteID, c.equipo,  nombreCliente, sum(red),AVG(red) FROM Reclamo r, Contratos c where r.contratoID = c.id and r.estado='visitado'  group by clienteID, nombreCliente,equipo having count(*) > 0";
-    
-    
-    EntityManager em=JpaUtil.getEntityManager();      
-     
-    System.out.println(">>>consulta>"+ consulta);     
-    Query q = em.createQuery(consulta);            
-    List < Object[]>r = (List<Object[]>) q.getResultList();
-    
-    for (Object[] results : r){       
-      String codigo="";
-      DAO_infoService aux = new DAO_infoService();
-      int i = 0;
-      for (Object o : results) {
-        String ostring = o.toString();
-        if(i==0){
-          aux.setVisitas(Long.parseLong(ostring));          
-        }
-        if(i==2){
-          aux.setNombreCliente(ostring);
-        }
-        if(i==3){
-          aux.setHorasRed(Long.parseLong(ostring));     
-        }
-        
-        
-        if(i==5){
-          aux.setEquipo(ostring);     
-        }
-        if(i==6){
-          codigo=ostring;
-        }
-        if(i==7){
-          codigo+=ostring;
-          aux.setCodigo(codigo);  
-        }
-        
-        
-        System.out.println(i+"ostring: "+ostring);
-        ++i;    
-      }       
-      salida.add(aux);    
-    }    
-    return salida;
-  }
+
   
   public boolean update (Reclamo o){ 
     boolean salida=false;

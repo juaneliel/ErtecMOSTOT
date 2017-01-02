@@ -51,7 +51,7 @@ th {
 	color:#ef2929!important;
   font-size:14px;
 
-}
+} 
  
 .ui-menu .ui-menuitem-text{
 	color:#204a87!important;
@@ -63,7 +63,9 @@ th {
 	
 }
  
- 
+.preformatted {
+    white-space: pre-wrap;
+}
  
  
  

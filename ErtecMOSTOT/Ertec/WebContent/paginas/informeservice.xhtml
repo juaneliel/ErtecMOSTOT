@@ -22,7 +22,7 @@
  
 
 <p:outputLabel for="maskFin" value="  Fecha final:" />
-<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" required= "true"/>
+<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" />
  
 <p:commandButton value="Buscar"  icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarInformeVisitadosPorFechas}"   
 update="datatableservice :message"/>
@@ -122,8 +122,8 @@ update="datatableservice :message"/>
   	<p:menuitem value="Ver detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('SDDialog').show()"/>
   </p:contextMenu>
 
-	<p:dialog header="Detalles Service" style="text-align:center;width:400px;"  resizable="true" widgetVar="SDDialog"   modal="true" showEffect="fade" hideEffect="fade">
-		<p:outputPanel id="detalles" style="text-align:center;">
+	<p:dialog header="Detalles Service" style="text-align:left;width:400px;"  resizable="true" widgetVar="SDDialog"   modal="true" showEffect="fade" hideEffect="fade">
+		<p:outputPanel id="detalles"  >
     	<p:panelGrid  columns="2" >
  
 	      <h:outputText value="Codigo:" />
@@ -133,7 +133,7 @@ update="datatableservice :message"/>
 	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.nombreCliente}" />
 	      
 	      <h:outputText value="Equipo:" />
-	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.equipo}" />
+	      <h:outputText styleClass="preformatted" value="#{mb_Reclamo.infoServiceSelected.equipo}" />
 	      
 	      <h:outputText value="Visitas:" />
 	      <h:outputText value="#{mb_Reclamo.infoServiceSelected.visitas}" />

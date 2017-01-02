@@ -6,7 +6,7 @@ public class DAO_infoService {
     private String equipo="";
     private long visitas;
     private long tiempoRespuesta;
-    private long tiempoHoras;
+    private double tiempoHoras;
     private long horasAntel;
     private long horasConmutador;
     private long horasRed;
@@ -40,10 +40,12 @@ public class DAO_infoService {
     public void setTiempoRespuesta(long tiempoRespuesta) {
       this.tiempoRespuesta = tiempoRespuesta;
     }
-    public long getTiempoHoras() {
+
+
+    public double getTiempoHoras() {
       return tiempoHoras;
     }
-    public void setTiempoHoras(long tiempoHoras) {
+    public void setTiempoHoras(double tiempoHoras) {
       this.tiempoHoras = tiempoHoras;
     }
     public long getHorasAntel() {
