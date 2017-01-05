@@ -141,7 +141,7 @@ public class mb_Usuario {
 	public String logout (){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		
-		return "/paginas/login.xhtml?faces-redirect=true";
+		return "/login.xhtml?faces-redirect=true";
 	}
 
 

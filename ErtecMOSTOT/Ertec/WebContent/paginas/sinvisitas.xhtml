@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+  
+ 
+	<h:form id="datatable">
+	
+
+<p:outputLabel for="maskIni" value="Fecha inicial:" />
+<p:calendar id="maskIni" value="#{mb_Reclamo.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+ 
+
+<p:outputLabel for="maskFin" value="  Fecha final:" />
+<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" />
+ 
+<p:commandButton value="Buscar"  icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarSinVisitar}"   
+update="datatableservice :message"/>
+
+
+ 
+	<h:commandLink>
+		<p:graphicImage name="/images/excel.png" width="24"/>
+		<p:dataExporter type="xls" target="datatableservice" fileName="service"  />
+	</h:commandLink>
+	
+	<h:commandLink>
+		<p:graphicImage name="/images/pdf.png" width="24"/>
+		<p:dataExporter type="pdf" target="datatableservice" fileName="service"  />
+	</h:commandLink>
+
+ <br/><br/>		 
+	
+	<p:dataTable var="contrato" value="#{mb_Reclamo.listaSinVisitar}" id="datatableservice"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"  scrollHeigth="500" 
+		 editable="true"  paginatorPosition="top"  
+		 styleClass="estiloDataTable"
+		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+               
+		 >
+		 
+		<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatableservice" fileName="service" pageOnly="true" />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatableservice" fileName="service" pageOnly="true"/>
+	    </h:commandLink> 
+		</f:facet>
+		
+
+		<f:facet name="header" styleClass="cabecera">
+			Clientes sin visitar
+		</f:facet>
+		 
+   	<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{contrato.contratoID}">		                
+		  <h:outputText value="#{contrato.contratoID}" />			
+		</p:column>
+		
+		<p:column headerText="Cliente" sortBy="#{contrato.cliente.nombre}"  filterMatchMode="contains" filterBy="#{contrato.cliente.nombre}">		                
+		 <h:outputText value="#{contrato.cliente.nombre}" title="id=#{contrato.cliente.clienteID} direccion=#{contrato.direccion}"></h:outputText>
+		</p:column>  
+
+
+		<p:column headerText="Equipo" sortBy="#{contrato.equipo}"  filterMatchMode="contains" filterBy="#{contrato.equipo}">		                
+		 <h:outputText value="#{contrato.equipo}" /> 
+		</p:column>  
+
+		<p:column headerText="MaxSV" sortBy="#{contrato.topeMesesVisita}"  filterMatchMode="contains" filterBy="#{contrato.topeMesesVisita}">		                
+		 <h:outputText value="#{contrato.topeMesesVisita}" /> 
+		</p:column>  
+
+    
+    
+</p:dataTable>
+
+ 
+
+
+
+	</h:form>
+
+</ui:define>
+</ui:composition>   

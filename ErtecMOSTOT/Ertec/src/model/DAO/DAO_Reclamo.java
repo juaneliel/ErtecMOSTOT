@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery; 
+import javax.persistence.TypedQuery;
+
+import model.Contrato;
 import model.Funcionario;
 import model.Reclamo;
 import util.JpaUtil;
@@ -40,6 +42,83 @@ public class DAO_Reclamo {
     }
     return salida;
   }
+  
+  
+  public ArrayList<Contrato> filtrarSinVisitar (Date fechaIni, Date fechaFin,boolean visitado){
+    // encontrar los contratos cuyo tope de meses haya sido superado es decir no existe
+    //una visita tal que r.fechavisita > (fecha actual -topemeses) 
+    
+    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 13 and "
+        + " NOT EXISTS  (SELECT * FROM Reclamos r WHERE r.contratoID = c.id and "; 
+    
+    
+    
+    
+    
+    
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    String fi = "";
+    String ff="";
+    if(fechaIni!=null){
+      fi = formatter.format(fechaIni); 
+    }
+    
+    if (fechaFin!=null){
+      ff = formatter.format(fechaFin); 
+    }
+    else{
+      ff = formatter.format(new Date()); 
+    }
+    
+    consulta += "r.fecha_visita >= DATE_SUB(CURDATE(), INTERVAL c.TopeMesesVisita MONTH)";
+    
+//    
+//    String fechaCondicion="";
+//    
+//    if(!fi.equals("")){
+//      fechaCondicion = " and r.fechaVisita >= '" + fi + "' AND r.fechaVisita <= '" + ff + "'" ;
+//    }
+//    else{  
+//      fechaCondicion = " and r.fechaVisita <= '" + ff + "' " ;         
+//    }    
+//    consulta +=fechaCondicion;
+    
+    
+    if(visitado){
+      consulta+= " and r.estado='visitado' ";
+    }
+    else{
+      consulta+= " and r.estado<>'visitado' ";
+    }
+    
+    consulta += ")" ; 
+    
+    
+    ArrayList<Contrato> salida = new ArrayList<Contrato>();    
+    //String consulta="SELECT count(r.ClienteID), r.clienteID, c.equipo,  nombreCliente, sum(red),AVG(red) FROM Reclamo r, Contratos c where r.contratoID = c.id and r.estado='visitado'  group by clienteID, nombreCliente,equipo having count(*) > 0";
+    
+
+    EntityManager em=JpaUtil.getEntityManager();      
+     
+    try {
+      System.out.println(">>>consulta>"+ consulta);     
+      Query q = em.createNativeQuery(consulta,Contrato.class);            
+      salida= (ArrayList<Contrato>) q.getResultList();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      System.out.println("mendoza");
+      e.printStackTrace();
+    }
+    
+
+    System.out.println("dao tamanio sinvisitas " +salida.size() );
+    
+    return salida;
+    
+    
+    
+  }
+  
   
   
   public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
@@ -90,29 +169,33 @@ public class DAO_Reclamo {
     ArrayList<DAO_infoService> salida = new ArrayList<DAO_infoService>();    
     //String consulta="SELECT count(r.ClienteID), r.clienteID, c.equipo,  nombreCliente, sum(red),AVG(red) FROM Reclamo r, Contratos c where r.contratoID = c.id and r.estado='visitado'  group by clienteID, nombreCliente,equipo having count(*) > 0";
     
-    
-    EntityManager em=JpaUtil.getEntityManager();      
-     
-    System.out.println(">>>consulta>"+ consulta);     
-    Query q = em.createQuery(consulta);            
-    List < Object[]>r = (List<Object[]>) q.getResultList();
-    
-    for (Object[] results : r){ 
-      DAO_infoService aux = new DAO_infoService();
-      
-      aux.setTiempoHoras(Double.parseDouble(results[4].toString()));
-      aux.setVisitas(Long.parseLong(results[0].toString()));          
-      aux.setNombreCliente(results[2].toString());
-      aux.setHorasRed(Long.parseLong(results[3].toString()));  
-      aux.setEquipo(results[5].toString());     
-      aux.setCodigo(results[6].toString()+results[7].toString());    
-      aux.setTiempoRespuesta(Long.parseLong(results[8].toString()));  
-      aux.setHorasAntel(Long.parseLong(results[9].toString()));  
-      aux.setHorasConmutador(Long.parseLong(results[10].toString()));  
+    try{
+      EntityManager em=JpaUtil.getEntityManager();      
        
-      salida.add(aux);
+      System.out.println(">>>consulta>"+ consulta);     
+      Query q = em.createQuery(consulta);            
+      List < Object[]>r = (List<Object[]>) q.getResultList();
       
-    }  
+      for (Object[] results : r){ 
+        DAO_infoService aux = new DAO_infoService();
+        
+        aux.setTiempoHoras(Double.parseDouble(results[4].toString()));
+        aux.setVisitas(Long.parseLong(results[0].toString()));          
+        aux.setNombreCliente(results[2].toString());
+        aux.setHorasRed(Long.parseLong(results[3].toString()));  
+        aux.setEquipo(results[5].toString());     
+        aux.setCodigo(results[6].toString()+results[7].toString());    
+        aux.setTiempoRespuesta(Long.parseLong(results[8].toString()));  
+        aux.setHorasAntel(Long.parseLong(results[9].toString()));  
+        aux.setHorasConmutador(Long.parseLong(results[10].toString()));  
+         
+        salida.add(aux);
+        
+      } 
+    }
+    catch(Exception e){
+      e.printStackTrace();
+    }
     return salida;
   }
   
@@ -235,3 +318,101 @@ public class DAO_Reclamo {
   } 
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+//
+//public ArrayList<Contrato> filtrarSinVisitar (Date fechaIni, Date fechaFin,boolean visitado){
+//  // buscar aquellos contratos con 0 visitas en el periodo de fechas dado   
+//  
+//  String consulta =  "SELECT c FROM  Contrato c where r.topeMesesVisita <> 13 and "
+//      + " NOT EXISTS  (SELECT r FROM Reclamo r WHERE r.contratoID = c.id  "; 
+//  
+//  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//  String fi = "";
+//  String ff="";
+//  if(fechaIni!=null){
+//    fi = formatter.format(fechaIni); 
+//  }
+//  
+//  if (fechaFin!=null){
+//    ff = formatter.format(fechaFin); 
+//  }
+//  else{
+//    ff = formatter.format(new Date()); 
+//  }
+//  
+//  String fechaCondicion="";
+//  
+//  if(!fi.equals("")){
+//    fechaCondicion = " and r.fechaVisita >= '" + fi + "' AND r.fechaVisita <= '" + ff + "'" ;
+//  }
+//  else{  
+//    fechaCondicion = " and r.fechaVisita <= '" + ff + "' " ;         
+//  }    
+//  consulta +=fechaCondicion;
+//  
+//  
+//  if(visitado){
+//    consulta+= " and r.estado='visitado' ";
+//  }
+//  else{
+//    consulta+= " and r.estado<>'visitado' ";
+//  }
+//  
+//  consulta += ")" ; 
+//  
+//  
+//  ArrayList<Contrato> salida = new ArrayList<Contrato>();    
+//  //String consulta="SELECT count(r.ClienteID), r.clienteID, c.equipo,  nombreCliente, sum(red),AVG(red) FROM Reclamo r, Contratos c where r.contratoID = c.id and r.estado='visitado'  group by clienteID, nombreCliente,equipo having count(*) > 0";
+//  
+//
+//  EntityManager em=JpaUtil.getEntityManager();      
+//   
+//  try {
+//    System.out.println(">>>consulta>"+ consulta);     
+//    Query q = em.createQuery(consulta);            
+//    salida= (ArrayList<Contrato>) q.getResultList();
+//  } catch (Exception e) {
+//    // TODO Auto-generated catch block
+//    e.printStackTrace();
+//  }
+//  
+//
+//    
+//  return salida;
+//  
+//  
+//  
+//}
+
+
+
+
+
+
+

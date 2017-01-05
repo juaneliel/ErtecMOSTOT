@@ -62,6 +62,9 @@ public class mb_Reclamo {
   private ArrayList<DAO_infoService> filtrado;
   private Contrato contratoOBJ;
   
+  
+  private ArrayList<Contrato> listaSinVisitar;
+  
   private Date fechaIni;
   private Date fechaFin;
   private DAO_infoService infoServiceSelected;
@@ -94,6 +97,7 @@ public class mb_Reclamo {
     this.filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
     this.lista=dao.getLista();
     this.listaPendientes=dao.getListaPendientes();
+    this.listaSinVisitar=dao.filtrarSinVisitar(this.fechaIni, this.fechaFin,true);
     System.out.println("mb tamaño reclamos "+lista.size());
   } 
   
@@ -101,6 +105,9 @@ public class mb_Reclamo {
     filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
   }
   
+  public void filtrarSinVisitar(){
+    this.listaSinVisitar=dao.filtrarSinVisitar(this.fechaIni, this.fechaFin,true);
+  }
   
   public String add(){
     String salida=null;
@@ -452,6 +459,14 @@ public class mb_Reclamo {
 
   public void setContratoOBJ(Contrato contratoOBJ) {
     this.contratoOBJ = contratoOBJ;
+  }
+
+  public ArrayList<Contrato> getListaSinVisitar() {
+    return listaSinVisitar;
+  }
+
+  public void setListaSinVisitar(ArrayList<Contrato> listaSinVisitar) {
+    this.listaSinVisitar = listaSinVisitar;
   } 
   
 }

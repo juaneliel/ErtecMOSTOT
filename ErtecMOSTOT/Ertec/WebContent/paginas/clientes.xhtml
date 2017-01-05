@@ -13,9 +13,6 @@
   	
   <h:form id="datatablecliente">
   
-  		 			 <p:commandButton icon="ui-icon-trash" id="probar"  actionListener="#{mb_Movimiento.getArrendado(0)}" 
-			 update="datatablecliente message" >probar
-    </p:commandButton>
   
     <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatable2"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 

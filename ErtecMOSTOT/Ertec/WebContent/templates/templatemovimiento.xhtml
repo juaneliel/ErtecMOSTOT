@@ -45,7 +45,7 @@
 				<f:facet name="output"><h:outputText value="#{movimiento.codigoString}" /></f:facet>
 				<f:facet name="input">
 					<p:selectOneMenu value="#{movimiento.codigoMovimientoID}" style="width:100%">
-				    	<f:selectItems value="#{mb_Movimiento.listaCodMovimientos}" var="cm" 
+				    	<f:selectItems value="#{mb_Movimiento.listaCodMovimientosComun}" var="cm" 
 				        itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
 					</p:selectOneMenu>				 
 				</f:facet>

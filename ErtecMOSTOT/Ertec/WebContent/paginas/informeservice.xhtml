@@ -10,35 +10,30 @@
 	xmlns:p="http://primefaces.org/ui">
       
 <ui:define name="cuerpo"> 
- 
- 
- <h:outputStylesheet name="/css/estilo.css" />
+  
  
 	<h:form id="datatable">
 	
-
-<p:outputLabel for="maskIni" value="Fecha inicial:" />
+		<p:outputLabel for="maskIni" value="Fecha inicial:" />
 <p:calendar id="maskIni" value="#{mb_Reclamo.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
  
 
-<p:outputLabel for="maskFin" value="  Fecha final:" />
-<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" />
+<p:outputLabel for="maskFin" value="  Fecha final:"   />
+<p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
  
-<p:commandButton value="Buscar"  icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarInformeVisitadosPorFechas}"   
+<p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarInformeVisitadosPorFechas}"   
 update="datatableservice :message"/>
-
-
- 
-	<h:commandLink>
-		<p:graphicImage name="/images/excel.png" width="24"/>
+		
+			
+				<h:commandLink style="text-align:right">
+		<p:graphicImage  name="/images/excel.png" width="24"/>
 		<p:dataExporter type="xls" target="datatableservice" fileName="service"  />
 	</h:commandLink>
 	
-	<h:commandLink>
+	<h:commandLink style="text-align:right">
 		<p:graphicImage name="/images/pdf.png" width="24"/>
 		<p:dataExporter type="pdf" target="datatableservice" fileName="service"  />
 	</h:commandLink>
-
  <br/><br/>		 
 	
 	<p:dataTable var="service" value="#{mb_Reclamo.filtrado}" id="datatableservice"
@@ -64,8 +59,9 @@ update="datatableservice :message"/>
 		</f:facet>
 		
 
-		<f:facet name="header" styleClass="cabecera">
-			Indicadores de Servicios
+		<f:facet name="header">
+				<h:outputText value="Indicadores de Servicios" style="text-align:center"/> 
+
 		</f:facet>
 		 
 		 
@@ -89,25 +85,25 @@ update="datatableservice :message"/>
 		 <h:outputText value="#{service.visitas}" /> 
 		</p:column>  
 
-		<p:column headerText="T.R." sortBy="#{service.tiempoRespuesta}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoRespuesta}">		                
+		<p:column headerText="T/R" title="tiempo de respuesta en dias" sortBy="#{service.tiempoRespuesta}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoRespuesta}">		                
 		 <h:outputText value="#{service.tiempoRespuesta}" /> 
 		</p:column>  
 
 
-		<p:column headerText="T.H" sortBy="#{service.tiempoHoras}"  style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoHoras}">		                
+		<p:column headerText="T/H" title="Total de horas trabajadas" sortBy="#{service.tiempoHoras}"  style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoHoras}">		                
 		 <h:outputText value="#{service.tiempoHoras}" /> 
 		</p:column> 
 
 
- 	<p:column headerText="H.R" sortBy="#{service.horasRed}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasRed}">		                
+ 	<p:column headerText="H/R" label="Horas trabajadas en la red" sortBy="#{service.horasRed}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasRed}">		                
 		 <h:outputText value="#{service.horasRed}" /> 
 		</p:column> 
   
- 	<p:column headerText="H.C" sortBy="#{service.horasConmutador}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.horasConmutador}">		                
+ 	<p:column headerText="H/C" title="Horas trabajadas en el conmutador" sortBy="#{service.horasConmutador}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.horasConmutador}">		                
 		 <h:outputText value="#{service.horasConmutador}" /> 
 		</p:column>  
  
- 	<p:column headerText="H.A" sortBy="#{service.horasAntel}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasAntel}">		                
+ 	<p:column headerText="H/A" title="Horas trabajadas en antel" sortBy="#{service.horasAntel}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasAntel}">		                
 		 <h:outputText value="#{service.horasAntel}" /> 
 		</p:column> 
  
