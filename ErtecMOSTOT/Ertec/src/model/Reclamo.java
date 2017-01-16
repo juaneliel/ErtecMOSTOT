@@ -50,7 +50,7 @@ public class Reclamo implements Serializable {
 	@Column(name="fecha_reclamado")
 	private Date fechaReclamado;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_visita")
 	private Date fechaVisita;
 
@@ -257,20 +257,20 @@ public class Reclamo implements Serializable {
 		this.urgente = urgente;
 	}
 
-  public Funcionario getFuncionario() {
-    return funcionario;
-  }
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
 
-  public void setFuncionario(Funcionario funcionario) {
-    this.funcionario = funcionario;
-  }
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
 
-  public Cliente getCliente() {
-    return cliente;
-  }
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-  public void setCliente(Cliente cliente) {
-    this.cliente = cliente;
-  }
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
 }

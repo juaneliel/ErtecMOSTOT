@@ -44,28 +44,28 @@
 			<h:outputText  value="#{cliente.clienteID}"/>
 		</p:column>
 
-		<p:column headerText="nombre" sortBy="#{cliente.nombre}"  filterMatchMode="contains" filterBy="#{cliente.nombre}">		                
+		<p:column headerText="Nombre" sortBy="#{cliente.nombre}"  filterMatchMode="contains" filterBy="#{cliente.nombre}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{cliente.nombre}" /></f:facet>
 	       		<f:facet name="input"><p:inputText id="nombre" value="#{cliente.nombre}" style="width:100%"/></f:facet>
         	</p:cellEditor>
 		</p:column> 
 		 
-		<p:column headerText="direccion" sortBy="#{cliente.dirCliente}"  filterMatchMode="contains" filterBy="#{cliente.dirCliente}">		                
+		<p:column headerText="Direccion" sortBy="#{cliente.dirCliente}"  filterMatchMode="contains" filterBy="#{cliente.dirCliente}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{cliente.dirCliente}" /></f:facet>
 		 		<f:facet name="input"><p:inputText id="direccion" value="#{cliente.dirCliente}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
 		     
-		<p:column headerText="locCliente" sortBy="#{cliente.locCliente}"  filterMatchMode="contains" filterBy="#{cliente.locCliente}">		                
+		<p:column headerText="Localidad" sortBy="#{cliente.locCliente}"  filterMatchMode="contains" filterBy="#{cliente.locCliente}">		                
 			<p:cellEditor>
 	     		<f:facet name="output"><h:outputText value="#{cliente.locCliente}" /></f:facet>
 	        	<f:facet name="input"><p:inputText id="locCliente" value="#{cliente.locCliente}" style="width:100%"/></f:facet>
        		</p:cellEditor>
 		</p:column>
 		  
-		<p:column headerText="telCliente" sortBy="#{cliente.telCliente}"  filterMatchMode="contains" filterBy="#{cliente.telCliente}">		                
+		<p:column headerText="Telefono" sortBy="#{cliente.telCliente}"  filterMatchMode="contains" filterBy="#{cliente.telCliente}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{cliente.telCliente}" /></f:facet>
 				<f:facet name="input"><p:inputText id="telCliente" value="#{cliente.telCliente}" style="width:100%"/></f:facet>
@@ -73,10 +73,18 @@
 		</p:column>
 		  
 		  
-		  	<p:column headerText="rucCliente" sortBy="#{cliente.rucCliente}"  filterMatchMode="contains" filterBy="#{cliente.rucCliente}">		                
+		  	<p:column headerText="RUC" sortBy="#{cliente.rucCliente}"  filterMatchMode="contains" filterBy="#{cliente.rucCliente}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{cliente.rucCliente}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="rucCliente" value="#{cliente.rucCliente}" style="width:100%"/></f:facet>
+	               <f:facet name="input">               
+	               		<p:inputMask   id="rucCliente" value="#{cliente.rucCliente}" >
+								      	<p:keyFilter regEx="/[0-9_]/i" /> 
+								  	</p:inputMask>
+									               
+	               
+	               
+	               
+	               </f:facet>
            		</p:cellEditor>
 		    </p:column>
 		  
@@ -84,10 +92,28 @@
 
 		  
 		  
-		  <p:column headerText="credito" sortBy="#{cliente.credito}"  filterMatchMode="contains" filterBy="#{cliente.credito}">		                
+		  <p:column headerText="Credito" sortBy="#{cliente.credito}"  filterMatchMode="contains" filterBy="#{cliente.credito}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{cliente.credito}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="credito" value="#{cliente.credito}" style="width:100%"/></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{cliente.credito}" style="width:80%" id="credito" required="true" >					
+										       <f:selectItem itemLabel="SI" itemValue="SI" />
+										       <f:selectItem itemLabel="NO" itemValue="NO" />                       
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		  
+		  
+		   	<p:column headerText="Cta corriente" sortBy="#{cliente.cuentaCorriente}"  filterMatchMode="contains" filterBy="#{cliente.cuentaCorriente}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{cliente.cuentaCorriente}" /></f:facet>
+	               <f:facet name="input">
+	               
+	               <p:inputMask   id="ctacorriente" value="#{cliente.cuentaCorriente}"    >
+								      	<p:keyFilter regEx="/[0-9_]/i" /> 
+								  	</p:inputMask>
+								 </f:facet>
            		</p:cellEditor>
 		    </p:column>
 		  

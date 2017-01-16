@@ -23,12 +23,22 @@ import util.JpaUtil;
 public class DAO_Movimiento {
 	
 	
-	public static boolean add(Movimiento f){
+	public static boolean add(Movimiento movimiento, ArrayList<NexoMovimiento> nexos){
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
-			em.persist(f);
+			em.persist(movimiento);	
+			em.flush();
+			
+			
+			for(NexoMovimiento nexo : nexos){
+				nexo.setMovimientoID(movimiento.getMovimientoID());
+				Articulo a = em.find(Articulo.class, nexo.getArticuloID());
+				//compra en plaza, aumenta stock y modifica los valores del articulo
+				acomodarNexo(movimiento,nexo,a);
+				em.persist(nexo);
+			}
 			em.getTransaction().commit(); 
 			salida = true;
 		}
@@ -41,6 +51,61 @@ public class DAO_Movimiento {
 		}
 		return salida;
 	}
+	
+	//se podria poner en el codigo algo que indique la estrategia a usar
+	private static void acomodarNexo(Movimiento movimiento,NexoMovimiento nexo, Articulo a){
+		if(movimiento.getCodigoMovimientoID()==1||movimiento.getCodigoMovimientoID()==2||movimiento.getCodigoMovimientoID()==3){	
+			entradaStockConCosto(movimiento,nexo,a);
+		}
+		
+		else {
+			if(movimiento.getCodigoMovimientoID()==5||movimiento.getCodigoMovimientoID()==11){	
+				a.setStock(a.getStock().add(nexo.getCantidad())); 	
+			}
+			else{
+				if(movimiento.getCodigoMovimientoID()==25||movimiento.getCodigoMovimientoID()==31){	
+					a.setStock(a.getStock().subtract(nexo.getCantidad())); 	
+				}
+			}
+		}
+	}
+	
+	private static Articulo entradaStockConCosto(Movimiento m,NexoMovimiento nexo, Articulo a){
+    
+    BigDecimal cdCopia=a.getCostoDolares();
+    BigDecimal cpCopia=a.getCostoPesos();
+    
+    BigDecimal cotizacion = m.getCotizacion().setScale(3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal costoPesos = nexo.getCosto().setScale(3,BigDecimal.ROUND_HALF_UP); 
+    BigDecimal costoDolares= costoPesos.divide(cotizacion,3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal stock = a.getStock().setScale(3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal cantidad = nexo.getCantidad().setScale(3,BigDecimal.ROUND_HALF_UP);
+    
+    BigDecimal cPV= (stock.multiply(a.getCostoPesos())).setScale(3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal cPN= (cantidad.multiply(costoPesos)).setScale(3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal auxsuma=(cPV.add(cPN)).setScale(3,BigDecimal.ROUND_HALF_UP);
+    BigDecimal auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP);      
+    BigDecimal auxCP=auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP); 
+    a.setCostoPesos(auxCP);    
+    
+    BigDecimal cDV= (stock.multiply(a.getCostoDolares())).setScale(3,BigDecimal.ROUND_HALF_UP); 
+    BigDecimal cDN= (cantidad.multiply(costoDolares)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+    auxsuma=(cDV.add(cDN)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+    auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+    BigDecimal auxCD= auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP);  
+    a.setCostoDolares(auxCD);
+    
+    a.setUltimoCostoDolares(cdCopia);
+    a.setUltimoCostoPesos(cpCopia); 
+		a.setStock(stock.add(nexo.getCantidad()));
+    return a;
+		
+	}
+	
+	
+	
+	
+	
 
 
 	public ArrayList<Arrendamiento> getArrendado (int idCliente){
@@ -166,46 +231,13 @@ public class DAO_Movimiento {
 	}
 
 	public boolean addNexo(NexoMovimiento nexo){
+		
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false; 
-		Movimiento m = em.find(Movimiento.class, nexo.getMovimientoID());
-		Articulo a=null;
-		if(m.getCodigoMovimientoID()==1||m.getCodigoMovimientoID()==2||m.getCodigoMovimientoID()==3){
-      a = em.find(Articulo.class, nexo.getArticuloID());
-      
-      
-      BigDecimal cdCopia=a.getCostoDolares();
-      BigDecimal cpCopia=a.getCostoPesos();
-      
-
-      
-      BigDecimal cotizacion = m.getCotizacion().setScale(3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal costoPesos = nexo.getCosto().setScale(3,BigDecimal.ROUND_HALF_UP); 
-      BigDecimal costoDolares= costoPesos.divide(cotizacion,3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal stock = a.getStock().setScale(3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal cantidad = nexo.getCantidad().setScale(3,BigDecimal.ROUND_HALF_UP);
-      
-      BigDecimal cPV= (stock.multiply(a.getCostoPesos())).setScale(3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal cPN= (cantidad.multiply(costoPesos)).setScale(3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal auxsuma=(cPV.add(cPN)).setScale(3,BigDecimal.ROUND_HALF_UP);
-      BigDecimal auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP);      
-      BigDecimal auxCP=auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP); 
-      a.setCostoPesos(auxCP);
-      
-      
-      BigDecimal cDV= (stock.multiply(a.getCostoDolares())).setScale(3,BigDecimal.ROUND_HALF_UP); 
-      BigDecimal cDN= (cantidad.multiply(costoDolares)).setScale(3,BigDecimal.ROUND_HALF_UP); 
-      auxsuma=(cDV.add(cDN)).setScale(3,BigDecimal.ROUND_HALF_UP); 
-      auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP); 
-      BigDecimal auxCD= auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP);  
-      a.setCostoDolares(auxCD);
-      
-      a.setUltimoCostoDolares(cdCopia);
-      a.setUltimoCostoPesos(cpCopia);
-
-    }
-		
 		try{			
+			Movimiento m = em.find(Movimiento.class, nexo.getMovimientoID());
+			Articulo a= em.find(Articulo.class, nexo.getArticuloID());      
+			acomodarNexo(m,nexo,a);
 			em.getTransaction().begin();
 			em.persist(nexo);
 			 
@@ -226,6 +258,74 @@ public class DAO_Movimiento {
 		return salida;
 	}
 	
+	
+	public boolean addListNexo(ArrayList<NexoMovimiento> nexos){
+		EntityManager em=JpaUtil.getEntityManager(); 
+		boolean salida=false; 
+		try{
+			em.getTransaction().begin();
+			for (NexoMovimiento nexo : nexos){
+				Movimiento m = em.find(Movimiento.class, nexo.getMovimientoID());
+				Articulo a=null;
+				
+					//si son de los 3 tipos hay que realizar una cuenta
+					if(m!=null && ( m.getCodigoMovimientoID()==1||m.getCodigoMovimientoID()==2||m.getCodigoMovimientoID()==3 )){
+			      a = em.find(Articulo.class, nexo.getArticuloID());      
+			      
+			      BigDecimal cdCopia=a.getCostoDolares();
+			      BigDecimal cpCopia=a.getCostoPesos();
+			      
+			      BigDecimal cotizacion = m.getCotizacion().setScale(3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal costoPesos = nexo.getCosto().setScale(3,BigDecimal.ROUND_HALF_UP); 
+			      BigDecimal costoDolares= costoPesos.divide(cotizacion,3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal stock = a.getStock().setScale(3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal cantidad = nexo.getCantidad().setScale(3,BigDecimal.ROUND_HALF_UP);
+			      
+			      BigDecimal cPV= (stock.multiply(a.getCostoPesos())).setScale(3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal cPN= (cantidad.multiply(costoPesos)).setScale(3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal auxsuma=(cPV.add(cPN)).setScale(3,BigDecimal.ROUND_HALF_UP);
+			      BigDecimal auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP);      
+			      BigDecimal auxCP=auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP); 
+			      a.setCostoPesos(auxCP);	      
+			      
+			      BigDecimal cDV= (stock.multiply(a.getCostoDolares())).setScale(3,BigDecimal.ROUND_HALF_UP); 
+			      BigDecimal cDN= (cantidad.multiply(costoDolares)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+			      auxsuma=(cDV.add(cDN)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+			      auxdivisor=(stock.add(cantidad)).setScale(3,BigDecimal.ROUND_HALF_UP); 
+			      BigDecimal auxCD= auxsuma.divide(auxdivisor,2,BigDecimal.ROUND_HALF_UP);  
+			      a.setCostoDolares(auxCD);
+			      
+			      a.setUltimoCostoDolares(cdCopia);
+			      a.setUltimoCostoPesos(cpCopia);	
+			    }
+					
+				
+				
+				
+				em.persist(nexo);
+				 
+				if (a!=null){
+				  em.persist(a);
+				}			
+				
+				em.getTransaction().commit(); 				
+			}
+			salida = true;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}finally{ 
+	   	if(em.isOpen() ){
+	   		em.close();
+	   	}		
+		}	
+		return salida;
+	}
+	
+	
+	
+	
+	
 	public static ArrayList <Movimiento> getMovimientosOT(long idOT){	
 		ArrayList <Movimiento> salida = new ArrayList <Movimiento>();
 		try{
@@ -235,7 +335,11 @@ public class DAO_Movimiento {
 			
 			EntityManager em=JpaUtil.getEntityManager();
 			
-			String consulta ="Select m From Movimiento m where (m.tipoReferencia = 'OR' OR m.tipoReferencia = 'OT') and m.referencia = "+idOT + " ORDER BY MovimientoID DESC";
+			//String consulta ="Select m From Movimiento m where (m.tipoReferencia = 'OR' OR m.tipoReferencia = 'OT') and m.referencia = "+idOT + " ORDER BY MovimientoID DESC";
+			String consulta ="Select m From Movimiento m where (m.nombreCliente <> NULL) and m.referencia = "+idOT + " ORDER BY MovimientoID DESC";
+			
+			
+			
 			System.out.println("Consulta movimiento "+consulta);
 			TypedQuery<Movimiento> consultaFuncionario= em.createQuery(consulta, Movimiento.class);
 			ArrayList<Movimiento> auxLista = (ArrayList<Movimiento>) consultaFuncionario.getResultList();
@@ -479,6 +583,9 @@ public class DAO_Movimiento {
         nexo.setCantidad(BigDecimal.valueOf(devolucion));
         nexo.setCosto(arr.getCosto());
         nexo.setMovimientoID(movID); 
+        
+        Articulo a = em.find(Articulo.class, nexo.getArticuloID());
+        a.setStock(a.getStock().add(nexo.getCantidad()));
         
         em.persist(nexo);
         

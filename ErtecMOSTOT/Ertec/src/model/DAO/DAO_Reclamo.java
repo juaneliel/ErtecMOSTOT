@@ -101,7 +101,7 @@ public class DAO_Reclamo {
     EntityManager em=JpaUtil.getEntityManager();      
      
     try {
-      System.out.println(">>>consulta>"+ consulta);     
+      System.out.println(">>>daoreclamo consulta filtrarSinVisitar>"+ consulta);     
       Query q = em.createNativeQuery(consulta,Contrato.class);            
       salida= (ArrayList<Contrato>) q.getResultList();
     } catch (Exception e) {

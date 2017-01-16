@@ -48,6 +48,7 @@ public class DAO_Cliente {
 			aux.setNombre(c.getNombre());
 			aux.setRucCliente(c.getRucCliente());
 			aux.setTelCliente(c.getTelCliente());
+			aux.setCuentaCorriente(c.getCuentaCorriente());
 			em.getTransaction().commit();
 			salida=true;
 		}
@@ -164,6 +165,8 @@ public class DAO_Cliente {
 			
 	
 	public boolean addContrato(Contrato c){
+		//modificar esto para que los id de los contratos se acomoden para arrendamiento
+		//y para mantenemiento
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false;
 		try{			

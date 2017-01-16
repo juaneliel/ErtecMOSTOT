@@ -74,14 +74,12 @@
 		 
 		 
 		 
-      	 <p:outputLabel for="time" value="Time:" />
-        <p:calendar id="time"   pattern="HH:mm" timeOnly="true"  />
 			
 			
 			<h:outputLabel value="Urgente:" for="urgente" /> 
  			<p:selectOneMenu required="true" id="urgente" value="#{mb_Reclamo.urgente}" style="width:30">
-				<f:selectItem  itemLabel="Si" itemValue="1" />
-				<f:selectItem   itemLabel="No" itemValue="0" />
+				<f:selectItem  itemLabel="SI" itemValue="SI" />
+				<f:selectItem   itemLabel="NO" itemValue="NO" />
 			</p:selectOneMenu>	
 			
 			<h:outputLabel    value="Contacto:" for="contacto" />

@@ -21,8 +21,8 @@
 		<class>model.DireccionContrato</class>
 		<class>model.Contrato</class>
 		<class>model.Arrendamiento</class>
-		<class>model.Cod_Movimiento</class>
 		<class>model.Reclamo</class>
+		<class>model.Cod_Movimiento</class>
 		
 		
 		

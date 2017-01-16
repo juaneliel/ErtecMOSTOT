@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>
+
+ 	
+ 	
+ <h:form id="formAddItemList">
+    
+
+		
+		<p:commandButton value="Agregar Item" 
+		onclick="PF('nuevoitem').show();"
+		action="#{mb_OT.setNumeroID(ot.id)}"/>  
+		
+		
+		
+		
+		<p:panelGrid id="panelNexos"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			<p:dataTable var="nexo" value="#{mb_Movimiento.listaNexos}" id="datatable4"
+				paginator="true" rows ="10" paginatorPosition="top"  
+				resizableColumns="true" liveResize="true" draggableColumns="true" 
+				scrollable="true"   scrollWidth="100%"   
+				editable="true" 
+				style="text-align:center"
+				>			 
+				<f:facet name="header">
+			  	Especificacion
+				 	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+			   	<p:columnToggler datasource="datatable4" trigger="toggler" />
+				</f:facet>			 
+			  <p:ajax event="cellEdit" listener="#{mb_Movimiento.editarNexo}" update="datatable4" />		 
+			  
+				<p:column headerText="Articulo:" sortBy="#{nexo.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{nexo.articulo.descripcion}">		                
+		   		<p:cellEditor>
+		 				<f:facet name="output"><h:outputText value="#{nexo.articulo.descripcion}" /></f:facet>
+		      	<f:facet name="input"><p:inputText id="articuloId" value="#{nexo.articulo.descripcion}" style="width:100%"/></f:facet>
+	     		</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Cantidad:" sortBy="#{nexo.cantidad}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{nexo.cantidad}">		                
+	        <p:cellEditor>
+           <f:facet name="output"><h:outputText value="#{nexo.cantidad}" /></f:facet>
+           <f:facet name="input"><p:inputText id="cantidadArticulos" value="#{nexo.cantidad}" style="width:100%"/></f:facet>
+      		</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Costo:" sortBy="#{nexo.costo}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{nexo.costo}">		                
+	        <p:cellEditor>
+            <f:facet name="output"><h:outputText value="#{nexo.costo}" /></f:facet>
+            <f:facet name="input"><p:inputText id="cantidad" value="#{nexo.costo}" style="width:100%"/></f:facet>
+       		</p:cellEditor>
+		    </p:column>
+		    
+		    
+
+			
+			
+				<p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		    
+		    <p:column headerText="Borrar"  style = "width:50px">		   
+					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo)}"   update="@([id$=panelNexos]) message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+				</p:column>
+				
+			</p:dataTable> 
+	</p:panelGrid>
+		
+		
+		
+ 
+</h:form>
+ 	 
+
+ 
+<p:dialog header="Agregar item" widgetVar="nuevoitem"  modal="false" width="450" height="300" id="nuevoitem"  >
+<ui:include src="/templates/templateaddnexo.xhtml" id="listaAdicionales">	 
+</ui:include>
+</p:dialog>	   
+ 	 
+ 	 
+ 	 
+	</ui:composition>
+</html>
+
+<!-- appendTo="@(body)" -->

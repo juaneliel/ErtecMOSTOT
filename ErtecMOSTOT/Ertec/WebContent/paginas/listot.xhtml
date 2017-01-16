@@ -173,9 +173,13 @@ onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}"
 	action="#{mb_ManoObra.setOrdenTrabajo(ot.id)}"/>  
 			
 
+
 <p:commandButton value="Agregar Movimiento" update="formAddMov"
-onclick="PF('addmov').show();#{mb_OT.setNumeroID(ot.id)}" 
-action="#{mb_Movimiento.setReferencia(ot.id)}"/>  
+onclick="PF('addmov').show()" 
+action="#{mb_Movimiento.setClienteOBJ(ot.cliente)}">  
+<f:actionListener binding="#{mb_Movimiento.setReferencia(ot.id)}" />
+</p:commandButton>
+
 
 <br/> 
 
@@ -254,8 +258,9 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 </ui:include>			
 </p:dialog>		
 	
-<p:dialog header="Agregar Movimiento" widgetVar="addmov"  modal="true" width="550" height="550">
-<ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">			
+<p:dialog header="Agregar Movimiento" widgetVar="addmov"  modal="true" width="90%" height="550">
+<ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	
+  <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			
 </ui:include>			
 </p:dialog>
 	

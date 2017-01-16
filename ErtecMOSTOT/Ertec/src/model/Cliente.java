@@ -24,30 +24,37 @@ public class Cliente implements Serializable {
 	@Column(name="NomCliente")
 	private String nombre;
 	
+	
+//	@OneToOne(fetch=FetchType.EAGER)
+//	@JoinColumn(name="ClienteID" , insertable = false, updatable = false)
+//	private CuentasCorriente cuentacorriente;
+	
+	@OneToMany (fetch=FetchType.LAZY)
+	@JoinColumn(name="ClienteID", referencedColumnName="ClienteID")
+	private List<Contrato> contratos;
+
 	@Column(name="Credito")
-	private int credito;
+	private String credito;
+
+	@Column(name="CuentaCorriente")
+	private int cuentaCorriente;
 
 	@Column(name="DirCliente")
 	private String dirCliente;
 
 	@Column(name="LocCliente")
 	private String locCliente;
-
-	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ClienteID" , insertable = false, updatable = false)
-	private CuentasCorriente cuentacorriente;
-	
-	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="ClienteID", referencedColumnName="ClienteID")
-	private List<Contrato> contratos;
-
+ 
 
 	@Column(name="RucCliente")
 	private String rucCliente;
 
 	@Column(name="TelCliente")
 	private String telCliente;
+
+	//bi-directional many-to-one association to Reclamo
+	@OneToMany(mappedBy="cliente")
+	private List<Reclamo> reclamos;
 
 	public Cliente() {
 	}
@@ -60,12 +67,20 @@ public class Cliente implements Serializable {
 		this.clienteID = clienteID;
 	}
 
-	public int getCredito() {
+	public String getCredito() {
 		return this.credito;
 	}
 
-	public void setCredito(int credito) {
+	public void setCredito(String credito) {
 		this.credito = credito;
+	}
+
+	public int getCuentaCorriente() {
+		return this.cuentaCorriente;
+	}
+
+	public void setCuentaCorriente(int cuentaCorriente) {
+		this.cuentaCorriente = cuentaCorriente;
 	}
 
 	public String getDirCliente() {
@@ -84,12 +99,22 @@ public class Cliente implements Serializable {
 		this.locCliente = locCliente;
 	}
 
+
+
 	public String getNombre() {
-		return this.nombre;
+		return nombre;
 	}
 
-	public void setNombre(String nomCliente) {
-		this.nombre = nomCliente;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Contrato> getContratos() {
+		return contratos;
+	}
+
+	public void setContratos(List<Contrato> contratos) {
+		this.contratos = contratos;
 	}
 
 	public String getRucCliente() {
@@ -108,20 +133,26 @@ public class Cliente implements Serializable {
 		this.telCliente = telCliente;
 	}
 
-	public CuentasCorriente getCuentacorriente() {
-		return cuentacorriente;
+	public List<Reclamo> getReclamos() {
+		return this.reclamos;
 	}
 
-	public void setCuentacorriente(CuentasCorriente cuentacorriente) {
-		this.cuentacorriente = cuentacorriente;
+	public void setReclamos(List<Reclamo> reclamos) {
+		this.reclamos = reclamos;
 	}
 
-	public List<Contrato> getContratos() {
-		return contratos;
+	public Reclamo addReclamo(Reclamo reclamo) {
+		getReclamos().add(reclamo);
+		reclamo.setCliente(this);
+
+		return reclamo;
 	}
 
-	public void setContratos(List<Contrato> contratos) {
-		this.contratos = contratos;
+	public Reclamo removeReclamo(Reclamo reclamo) {
+		getReclamos().remove(reclamo);
+		reclamo.setCliente(null);
+
+		return reclamo;
 	}
 
 }

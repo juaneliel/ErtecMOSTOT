@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Entity
 @Table(name="Contratos")
 @NamedQuery(name="Contrato.findAll", query="SELECT c FROM Contrato c")
@@ -14,41 +13,44 @@ import java.util.Date;
 
 
 public class Contrato implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CON_SEQ")
-	@Column(name="Id")
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CON_SEQ")
+  @Column(name="Id")
+  private int id;
 
-	@Column(name="ClienteID")
-	private int clienteID;
+  @Column(name="ClienteID")
+  private int clienteID;
 
-	 
+   
   @OneToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="ClienteID" , insertable = false, updatable = false)
   private Cliente cliente;
-	
-	
-	@Column(name="ContratoID")
-	private int contratoID;
+  
+  
+  @Column(name="ContratoID")
+  private int contratoID;
 
-	@Column(name="CorredorID")
-	private int corredorID;
+  @Column(name="CorredorID")
+  private int corredorID;
 
-	@Column(name="Direccion")
-	private String direccion;
+  @Column(name="Direccion")
+  private String direccion;
 
-	@Column(name="Equipo")
-	private String equipo;
+  @Column(name="Equipo")
+  private String equipo;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="FechaFin")
-	private Date fechaFin;
+  @Temporal(TemporalType.DATE)
+  @Column(name="FechaFin")
+  private Date fechaFin;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="FechaInicio")
-	private Date fechaInicio;
+  @Temporal(TemporalType.DATE)
+  @Column(name="FechaInicio")
+  private Date fechaInicio;
+
+ 
+
 
 	@Column(name="Localidad")
 	private String localidad;
@@ -58,6 +60,9 @@ public class Contrato implements Serializable {
 
 	@Column(name="Tipo")
 	private String tipo;
+
+	@Column(name="TopeMesesVisita")
+	private int topeMesesVisita;
 
 	@Column(name="Zona")
 	private String zona;
@@ -151,6 +156,14 @@ public class Contrato implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public int getTopeMesesVisita() {
+		return this.topeMesesVisita;
+	}
+
+	public void setTopeMesesVisita(int topeMesesVisita) {
+		this.topeMesesVisita = topeMesesVisita;
 	}
 
 	public String getZona() {

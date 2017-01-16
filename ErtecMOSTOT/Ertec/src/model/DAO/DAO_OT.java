@@ -13,6 +13,7 @@ import model.ComprasExternasOT;
 import model.Funcionario;
 import model.ManoObra;
 import model.Movimiento;
+import model.NexoMovimiento;
 import model.Ot;
 import model.Proveedores;
 import model.TipoOT;
@@ -202,6 +203,29 @@ public class DAO_OT {
 		}		
 	}
 	
+	public ArrayList<NexoMovimiento> getMovimientos(){
+		 
+		ArrayList<NexoMovimiento> salida = new ArrayList<NexoMovimiento>();
+		String consulta="SELECT m FROM Movimiento m, Ot ot WHERE m.movimientoID= Ot.referencia and Ot.tipoOT <> NULL  ORDER BY m.movimientoID DESC";
+		
+		System.out.println("Consulta: "+consulta);
+		EntityManager em=JpaUtil.getEntityManager();
+		TypedQuery<NexoMovimiento> consultaFuncionario= em.createQuery(consulta, NexoMovimiento.class);
+		try{
+			System.out.println(">>>consulta>"+ consulta);
+			salida =  (ArrayList<NexoMovimiento>) consultaFuncionario.getResultList();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}finally{ 
+		  	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}
+		return salida;
+
+
+	}
 	
 	public ArrayList<ComprasExternasOT> getComprasExternas (int idOT){
 		EntityManager em=JpaUtil.getEntityManager();		
@@ -219,7 +243,8 @@ public class DAO_OT {
 	
 	
 	public boolean addMovimientoOT(Movimiento m){
-		return DAO_Movimiento.add(m);
+		ArrayList<NexoMovimiento> nexos= new ArrayList<NexoMovimiento>();//arreglar esto
+		return DAO_Movimiento.add(m,nexos);
 	}
 	public boolean addManoObraOT(ManoObra mo){
 		return DAO_ManoObra.add(mo);

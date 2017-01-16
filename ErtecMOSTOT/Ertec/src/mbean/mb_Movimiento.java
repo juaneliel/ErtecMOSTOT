@@ -11,7 +11,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.RowEditEvent;
@@ -20,7 +23,8 @@ import model.Adicional;
 import model.Arrendamiento;
 import model.Articulo;
 import model.Cliente;
-import model.Cod_Movimiento; 
+import model.Cod_Movimiento;
+import model.Contrato;
 import model.Movimiento;
 import model.NexoMovimiento;
 import model.Referencia;
@@ -51,11 +55,19 @@ public class mb_Movimiento {
 	private boolean verCotizacion;
 	private boolean verReferencia;
 	private boolean verCliente;
+	private boolean verCosto;
+	private boolean verContrato;
+	private boolean EditarCotizacion;
+	private boolean EditarReferencia;
+	private boolean EditarCliente;
+	private boolean EditarCosto;
+	private boolean EditarContrato;
 	private int otID;
 	
 	private ArrayList<Movimiento> lista;
 	private ArrayList<NexoMovimiento> listaNexos;
 	private ArrayList<Arrendamiento> listaArrendamientos;
+	private ArrayList<NexoMovimiento> listaTemporalNexos;
 	
 	//private ArrayList<Codigo> listaCodigos;
 	private ArrayList<Cod_Movimiento> listaCodMovimientosComun;
@@ -69,7 +81,7 @@ public class mb_Movimiento {
 	private Articulo articuloOBJ;
 	private int spinnerDevolucion;
 	private Map<Integer,Integer> mapaArrendamiento = new HashMap<Integer, Integer>();
-	
+	private Contrato contratoOBJ;
 	
 	@PostConstruct
 	public void init(){
@@ -77,11 +89,14 @@ public class mb_Movimiento {
 
 	  this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
 	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
-
+	  this.listaNexos=new ArrayList<NexoMovimiento>();
 		this.listaReferencias=dao.getListaReferencias();
 		this.recargarLista();
 		this.verReferencia=false;
 		this.verCotizacion=false;
+		this.verCosto=false;
+		verCliente=false;
+		verContrato=false;
 	}
 	
 	public void recargarLista(){
@@ -102,6 +117,10 @@ public class mb_Movimiento {
 	  } 
 	  System.out.println("mapa:"+mapaArrendamiento);
 	}
+	
+	
+ 
+	
 	
 	public String devolver(){ 
 	  System.out.println("mapa:"+mapaArrendamiento);
@@ -141,22 +160,23 @@ public class mb_Movimiento {
 		aux.setContratoID(contratoID);
 		if(clienteOBJ !=null){
       aux.setNombreCliente(clienteOBJ.getNombre());
+      aux.setClienteID(clienteOBJ.getClienteID()); 
     }
 		aux.setReferencia(referencia);
 		aux.setTipoOT(tipoOT);
 		aux.setTipoReferencia(tipoReferencia);  
 		aux.setFecha(fecha);
 		aux.setCodigoMovimientoID(codigoMovimientoID);
-		aux.setClienteID(clienteID); 
+		
 			
 		
-		if (DAO_Movimiento.add (aux)){
+		if (DAO_Movimiento.add (aux, this.listaNexos)){
 			salida= "/paginas/movimientos.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Se agrego el movimiento "+aux.getMovimientoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar movimiento");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el movimiento");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR"+aux.getMovimientoID());
@@ -188,6 +208,12 @@ public class mb_Movimiento {
     NexoMovimiento o= (NexoMovimiento) event.getObject();
     
     
+    if(this.movimientoID==0){
+    	//this.listaTemporalNexos.
+    	return;
+    }
+    
+    
     if(dao.updateNexo(o)){        
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el item "+o.getNexoMovimientoID());
           FacesContext.getCurrentInstance().addMessage(null, message); 
@@ -209,7 +235,7 @@ public class mb_Movimiento {
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el movimiento "+f.getMovimientoID());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el movimiento intente borrar todos los items del movimiento ");
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
@@ -274,10 +300,22 @@ public class mb_Movimiento {
 	//usado para ingreso de movimiento si se habilitan los campos de cotizacion o de contrato
 	public void actualizarCotizacionYContrato(int cod){
 		Cod_Movimiento cm=dao.getCodMovimiento(cod);
+		this.listaReferencias=dao.getListaCMPorTipoRef(cod);
+		this.verCosto=cm.getVerCosto()==1;
 		this.verCotizacion=cm.getVerCotizacion()==1;
 		this.verReferencia=cm.getVerReferencia()==1;
-		this.listaReferencias=dao.getListaCMPorTipoRef(cod);
 		this.verCliente=cm.getVerCliente()==1;
+		this.verContrato=cm.getVerContrato()==1;
+		System.out.println("<<<vercliente "+isVerCliente());
+		this.EditarCosto=cm.getEditarCosto()==1;
+		this.EditarCotizacion=cm.getEditarCotizacion()==1;
+		this.EditarReferencia=cm.getEditarReferencia()==1; 
+		this.EditarCliente=cm.getEditarCliente()==1;
+		this.EditarContrato=cm.getEditarContrato()==1;
+		
+		
+		
+		
 		System.out.println("codigo en actualizar mov "+cod); 	 
 	}
 
@@ -299,9 +337,28 @@ public class mb_Movimiento {
   }
 
   public String addNexo(){
-				
+  	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+  	String realPath=(String) servletContext.getServletPath(); 
+  	System.out.println("contexto addnexo: "+realPath);
+  	//se agrega a una lista temporal
+  	if(realPath.contains("addmovimiento.xhtml")){
+  		NexoMovimiento nexo=new NexoMovimiento();
+  		nexo.setArticuloID(articuloOBJ.getArticuloID());
+  		nexo.setCantidad(this.cantidadArticulo);
+  		nexo.setCosto(costo);
+  		nexo.setFecha(fecha);
+  		nexo.setMovimientoID(movimientoID);		
+  		nexo.setArticulo(articuloOBJ);
+  		this.listaNexos.add(nexo);
+  		return null;
+  	}
+  	
+  	
+  	
+  	
 		String salida=null;
 		NexoMovimiento nexo=new NexoMovimiento();
+		nexo.setArticulo(articuloOBJ);//verificar
 		nexo.setArticuloID(articuloOBJ.getArticuloID());
 		nexo.setCantidad(this.cantidadArticulo);
 		nexo.setCosto(costo);
@@ -324,7 +381,40 @@ public class mb_Movimiento {
 		return salida;		
 	}
 	
+  
+	public  String addmovdesdemenu() {
+		this.codigoMovimientoID=0;
+		this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
+	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
+	
+		this.listaReferencias=dao.getListaReferencias();
+		this.verReferencia=false;
+		this.verCotizacion=false;
+		this.verCosto=false;
+		this.clienteID=0;
+		this.listaNexos=new ArrayList<NexoMovimiento>();
+		this.listaTemporalNexos=new ArrayList<NexoMovimiento>();
+		limpiarVariables();
+		
+		
+		String salida= "/paginas/addmovimiento.xhtml?faces-redirect=true"; 
+		return salida;
+	} 
+  
+  
+  
 	public void deleteNexo(NexoMovimiento nexo){ 
+		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+  	String realPath=(String) servletContext.getServletPath(); 
+  	System.out.println("contexto deletenexo: "+realPath);
+  	//se agrega a una lista temporal
+  	if(realPath.contains("addmovimiento.xhtml")){ 
+			this.listaNexos.remove(nexo);			
+			return;
+		}
+		
+		
+		
 		int idM=nexo.getMovimientoID();
 		if (dao.deleteNexo(nexo) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el Item");
@@ -351,6 +441,11 @@ public class mb_Movimiento {
 	
 	
 	private void limpiarVariables(){
+		this.referencia=0;
+		this.cantidadArticulo=BigDecimal.ZERO;
+		this.costo=BigDecimal.ZERO;
+		this.cotizacion=BigDecimal.ZERO;
+		this.movimientoID=0;
 		
 	}
 	
@@ -577,7 +672,7 @@ public class mb_Movimiento {
 	public void setCosto(BigDecimal costo) {
 		this.costo = costo;
 	}
-
+	
   public ArrayList<Arrendamiento> getListaArrendamientos() {
     return listaArrendamientos;
   }
@@ -601,6 +696,80 @@ public class mb_Movimiento {
   public void setSpinnerDevolucion(int spinnerDevolucion) {
     this.spinnerDevolucion = spinnerDevolucion;
   }
+
+	public Contrato getContratoOBJ() {
+		return contratoOBJ;
+	}
+
+	public void setContratoOBJ(Contrato contratoOBJ) {
+		this.contratoOBJ = contratoOBJ;
+	}
+
+	public boolean isVerCosto() {
+		return verCosto;
+	}
+
+	public void setVerCosto(boolean verCosto) {
+		this.verCosto = verCosto;
+	}
+
+	public ArrayList<NexoMovimiento> getListaTemporalNexos() {
+		return listaTemporalNexos;
+	}
+
+	public void setListaTemporalNexos(ArrayList<NexoMovimiento> listaTemporalNexos) {
+		this.listaTemporalNexos = listaTemporalNexos;
+	}
+
+	public boolean isVerContrato() {
+		return verContrato;
+	}
+
+	public void setVerContrato(boolean verContrato) {
+		this.verContrato = verContrato;
+	}
+
+	public boolean isEditarCotizacion() {
+		return EditarCotizacion;
+	}
+
+	public void setEditarCotizacion(boolean editarCotizacion) {
+		EditarCotizacion = editarCotizacion;
+	}
+
+	public boolean isEditarReferencia() {
+		return EditarReferencia;
+	}
+
+	public void setEditarReferencia(boolean editarReferencia) {
+		EditarReferencia = editarReferencia;
+	}
+
+	public boolean isEditarCliente() {
+		return EditarCliente;
+	}
+
+	public void setEditarCliente(boolean editarCliente) {
+		EditarCliente = editarCliente;
+	}
+
+	public boolean isEditarCosto() {
+		return EditarCosto;
+	}
+
+	public void setEditarCosto(boolean editarCosto) {
+		EditarCosto = editarCosto;
+	}
+
+	public boolean isEditarContrato() {
+		return EditarContrato;
+	}
+
+	public void setEditarContrato(boolean editarContrato) {
+		EditarContrato = editarContrato;
+	}
+
+ 
 
 	
 }

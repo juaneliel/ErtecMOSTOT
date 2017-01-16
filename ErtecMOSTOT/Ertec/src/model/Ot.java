@@ -4,13 +4,23 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @Entity
 @Table(name="OT")
-@NamedQuery(name="Ot.findAll", query="SELECT o FROM Ot o ORDER BY o.id DESC") 
+
+@NamedQueries({
+	@NamedQuery(name="Ot.findAll", query="SELECT o FROM Ot o ORDER BY o.id DESC") 
+
+	//@NamedQuery(name="Ot.getMovimientos", query="SELECT m FROM Movimiento m, Ot ot WHERE m.movimientoID= Ot.referencia and Ot.tipoOT <> NULL  ORDER BY m.movimientoID DESC") 
+}) 
+
+
+
+
 
 @SequenceGenerator(name = "OT_SEQ", sequenceName = "OT_SEQ", initialValue = 969697, allocationSize = 1)
 
@@ -22,8 +32,17 @@ public class Ot implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OT_SEQ")		
 	@Column(name="Id")
 	private int id;
+ 
+//	private ArrayList<Movimiento> movimientos;
+//	
+//	public ArrayList<Movimiento> getMovimientos() {
+//		return movimientos;
+//	}
+//
+//	public void setMovimientos(ArrayList<Movimiento> movimientos) {
+//		this.movimientos = movimientos;
+//	}
 
-	
 	@OneToMany (fetch=FetchType.LAZY)
 	@JoinColumn(name="OTID", referencedColumnName="Id" , insertable = false, updatable = false)//columna adicional, columna ot
 	private List<Adicional> adicionales;

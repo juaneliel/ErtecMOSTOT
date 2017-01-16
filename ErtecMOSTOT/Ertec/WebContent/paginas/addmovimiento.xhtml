@@ -12,14 +12,13 @@
 
 
       
-<ui:define name="cuerpo"> 
-	<ui:include src="/templates/templateaddmovimiento.xhtml"> 
-				<ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosComun}"/>
-				
-				
-		</ui:include>	
-	</ui:define>
-
+  <ui:define name="cuerpo"> 
+  
+  
+    <ui:include src="/templates/templateaddmovimiento.xhtml"> 
+      <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosComun}"/>						
+    </ui:include>	
+  </ui:define>
 </ui:composition>     
 
 

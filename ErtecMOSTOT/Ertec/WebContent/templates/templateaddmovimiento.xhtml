@@ -10,75 +10,114 @@
  	
  	
  <h:form id="formAddMov">
-  
- 	 <p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+    
+  <p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2" style="float:left">    
 		<f:facet name="header">
 			Agregar Movimiento
 		</f:facet>
 	 	 
 	 	 
 		<p:outputLabel value="Fecha:" for="fecha" /> 
-		<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.fecha}" />	
+		<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.fecha}" required="true" />	
 		
 		
 		
 		
 	
 		<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
-		<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.codigoMovimientoID}" style="width:50%">
-			<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.codigoMovimientoID )}" update="cotizacion referencia tipoReferencia clienteLabel" />
+		<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.codigoMovimientoID}" style="width:50%" required="true">
+			<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.codigoMovimientoID )}" update="formAddMov foraddnexo" />
 			<f:selectItems value="#{paramListaCodMov}" var="cm" 
 				itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
 		</p:selectOneMenu>
 
 		<p:outputLabel value="Tipo Referencia:" for="tipoReferencia" /> 
-		<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.tipoReferencia}" style="width:70%">
+		<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.tipoReferencia}" style="width:70%" required="true">
 			<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(  mb_Movimiento.codigoMovimientoID   )}" 
 		 	  />
 			<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
 				itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
-   	</p:selectOneMenu>
+   	    </p:selectOneMenu>
    	
-   	 
-
-			<p:outputLabel value="Cliente" visible="mb_Movimiento.verCliente" for="cliente" id="clienteLabel" />
-<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_Movimiento.clienteOBJ}"
- completeMethod="#{mb_Cliente.completarCliente}" 
-var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- converter="ConverterCliente" forceSelection="true" /> 
-
+   	
+		<p:outputLabel value="Referencia:" for="referencia"  visible="#{mb_Movimiento.verReferencia}"/> 
+		<p:inputMask converterMessage="Ingrese un valor de referencia" disabled="#{!mb_Movimiento.editarReferencia}" min="1" id="referencia" label="referencia" value="#{mb_Movimiento.referencia}" required="true" maxlength="10" >
+      	<p:keyFilter regEx="/[0-9_]/i" />
+      	 <f:validateDoubleRange minimum="1" />  
+  	</p:inputMask>
+		
+			 
+ 		 
+ 		
+ 		<h:outputLabel  value="Cliente:" for="cliente" rendered="#{mb_Movimiento.verCliente}" />
+		 	<p:autoComplete  rendered="#{mb_Movimiento.verCliente}" id="cliente" value="#{mb_Movimiento.clienteOBJ}" required="true"   disabled="#{!mb_Movimiento.editarCliente}"
+ 				completeMethod="#{mb_Cliente.completarCliente}" 
+				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ 				converter="ConverterCliente" forceSelection="true"
+ 				style="float:left !important;margin:0px 0px 3px 0px;width:90%"> 
+ 				<p:ajax event="itemSelect" listener="#{mb_Cliente.recargarListaContratos(mb_Reclamo.clienteOBJ.clienteID)}" update="contrato" />  				
+ 								
+ 				<f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                		<h:outputText value="ID:" />
+                    <h:outputText value="#{theme.clienteID}" />
+                
+                    <h:outputText value="Direccion:" />
+                    <h:outputText value="#{theme.dirCliente}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telCliente}" />
+                </h:panelGrid>
+            </f:facet>
+			</p:autoComplete>
 			
-		<p:outputLabel value="Contrato" for="contrato" /> 			 
-		<p:inputNumber id="contrato" value="#{mb_Movimiento.comprobante}" thousandSeparator="."> 
-		</p:inputNumber>  			
 			
-			
-			
-			
-			
-		<p:outputLabel value="Comprobante:" for="comprobante" /> 			 
-		<p:inputNumber id="comprobante" value="#{mb_Movimiento.comprobante}"
-			decimalSeparator="," thousandSeparator="."> 
-		</p:inputNumber>  			
-			
-		<p:outputLabel value="Contrato ID:" for="contratoID" /> 
-		<p:inputText id="contratoID" label="TContrato" value="#{mb_Movimiento.contratoID}"/>	
+	<p:outputLabel value="Contrato:" for="contrato"  rendered="#{mb_Movimiento.verContrato}"/> 
+		<p:selectOneMenu rendered="#{mb_Movimiento.verContrato}" id="contrato" value="#{mb_Movimiento.contratoOBJ}" style="width:70%" panelStyle="width:180px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+		 disabled="#{!mb_Movimiento.editarContrato}"
+		>
+			<f:selectItems value="#{mb_Cliente.listaContratos}" var="contrato" title="dale" 			
+				itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					
+					<p:column>
+                <h:outputText value="#{t.tipo}#{t.contratoID}" />
+            </p:column>   
+					
+					 <p:column>
+                <h:outputText value="#{t.direccion}" />
+            </p:column>   
+            
+            <p:column>
+                <h:outputText value="#{t.equipo}" />
+            </p:column>            
+   	</p:selectOneMenu>
+ 		
+ 	
 		 
 		<p:outputLabel value="Cotizacion:" for="cotizacion" /> 
-		<p:inputText disabled="#{!mb_Movimiento.verCotizacion}"  id="cotizacion" label="cotizacion" value="#{mb_Movimiento.cotizacion}" />	
+		<p:inputText disabled="#{!mb_Movimiento.verCotizacion}"  required="true" id="cotizacion" label="cotizacion" value="#{mb_Movimiento.cotizacion}">	
+			<f:validateDoubleRange minimum="0.01" />
+		</p:inputText>
+ 
 
-		<p:outputLabel value="Referencia:" for="referencia" /> 
-		<p:inputText disabled="#{!mb_Movimiento.verReferencia}" id="referencia" label="referencia" value="#{mb_Movimiento.referencia}"   />	
-			  
-	 
-			
-			<h:commandButton value="Guardar" action="#{mb_Movimiento.add}"  />	 
+		<h:commandButton value="Guardar" action="#{mb_Movimiento.add}"  />	 
 	
-			
+		
  
 		</p:panelGrid>
+		
+		<div style="float:left;width:600px;margin-left:30px;" id="divnexo">
+			<ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos">	
+			<ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>					
+			</ui:include>	
+		</div>
+
+		
  
 </h:form>
+ 	 
+ 	 
+
+ 	 
  	 
 	</ui:composition>
 </html>
@@ -108,4 +147,40 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 <!--  			label="Ingrese nombre o id del cliente espere 1 segundo"  -->
 <!--  			style="float:left !important;margin:0px 0px 3px 0px;"/>     -->
 
+			
+			
+			
+			
+<!-- 		<p:outputLabel value="Comprobante:" for="comprobante" /> 			  -->
+<!-- 		<p:inputNumber id="comprobante" value="#{mb_Movimiento.comprobante}" -->
+<!-- 			decimalSeparator="," thousandSeparator=".">  -->
+<!-- 		</p:inputNumber>  -->
+
+
+
+
+
+<!-- 			<p:outputLabel value="Cliente" visible="mb_Movimiento.verCliente" for="cliente" id="clienteLabel" /> -->
+<!-- <p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_Movimiento.clienteOBJ}" -->
+<!--  completeMethod="#{mb_Cliente.completarCliente}"  -->
+<!-- var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}" -->
+<!--  converter="ConverterCliente" forceSelection="true" />  -->
+
+			
+<!-- 		<p:outputLabel value="Contrato" for="contrato" /> 			  -->
+<!-- 		<p:inputNumber id="contrato" value="#{mb_Movimiento.comprobante}" thousandSeparator=".">  -->
+<!-- 		</p:inputNumber>  		 -->
  	
+ 	
+ 	
+<!-- <p:commandButton value="Agregar Items"   -->
+<!-- 		onclick="PF('additem').show();"  -->
+<!-- 		action="#{mb_OT.setNumeroID(ot.id)}"/>  -->
+			
+ 	 
+<!-- <p:dialog header="Agregar movimientos"  id="additem" widgetVar="additem"  modal="true" resizable="false" width="90%"  height="400"> -->
+<!-- <ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos">	 -->
+<!-- <ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>					 -->
+<!-- </ui:include>			 -->
+<!-- </p:dialog>	  -->
+ 	 

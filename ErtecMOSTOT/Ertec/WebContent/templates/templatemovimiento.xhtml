@@ -124,7 +124,7 @@
 		     
 		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
 		 	<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
-		 	update="message" >
+		 	update="message datatableMOV" >
 		    <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 		 	</p:commandButton>
 		 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

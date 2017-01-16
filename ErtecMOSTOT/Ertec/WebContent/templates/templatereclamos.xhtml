@@ -18,7 +18,7 @@
 			scrollable="true" scrollHeight="500"  scrollWidth="100%"   
 			editable="true" 
 			style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"
-			rowStyleClass="#{(reclamo.urgente) ==1 ? 'urgente' : ''}" 
+			rowStyleClass="#{(reclamo.urgente) =='SI' ? 'urgente' : ''}" 
 			>
 		 
 		<f:facet name="header" styleClass="cabecera">
@@ -157,8 +157,8 @@
 				<f:facet name="output"><h:outputText value="#{reclamo.urgente}" /></f:facet>
 	    	<f:facet name="input">  
         	<p:selectOneMenu id="urgente" value="#{reclamo.urgente}" style="width:85%">
-						<f:selectItem  itemLabel="Si" itemValue="1" />
-						<f:selectItem   itemLabel="No" itemValue="0" />
+						<f:selectItem  itemLabel="SI" itemValue="SI" />
+						<f:selectItem   itemLabel="NO" itemValue="NO" />
 					</p:selectOneMenu>
 				</f:facet>
    		</p:cellEditor>

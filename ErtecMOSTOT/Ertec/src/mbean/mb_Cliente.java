@@ -29,7 +29,7 @@ public class mb_Cliente implements Serializable{
  
 	
 	private int clienteID; 
-	private int credito; 
+	private String credito; 
 	private String dirCliente; 
 	private String locCliente; 
 	private String nombre; 
@@ -49,7 +49,7 @@ public class mb_Cliente implements Serializable{
 	private int retirado; 
 	private String tipo; 
 	private String zona;
-	
+	private int cuentaCorriente;
 	
 	
 	
@@ -125,6 +125,19 @@ public class mb_Cliente implements Serializable{
     }
 	
 	
+	public void limpiarVariables(){
+		setClienteID(0);
+		setCorredorID(0);
+		setDireccion("");
+		setEquipo("");
+		setFechaFin(null);
+		setFechaInicio(null);
+		setLocalidad("");
+		setRetirado(0);
+		setTipo("");
+		setZona("");
+	}
+	
 	public String add(){
 		String salida=null;
 		Cliente f = new Cliente();
@@ -135,14 +148,15 @@ public class mb_Cliente implements Serializable{
 		f.setNombre(nombre);
 		f.setRucCliente(rucCliente);
 		f.setTelCliente(telCliente);
-		
+		f.setCuentaCorriente(cuentaCorriente);
+		limpiarVariables();
 		if (dao.add (f)){
 			salida= "/paginas/clientes.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el cliente: "+ f.getNombre());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar OT");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el cliente");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR cliente"+f.getClienteID() );
@@ -235,13 +249,17 @@ public class mb_Cliente implements Serializable{
 		this.clienteID = clienteID;
 	}
 
-	public int getCredito() {
+ 
+
+	public String getCredito() {
 		return credito;
 	}
 
-	public void setCredito(int credito) {
+
+	public void setCredito(String credito) {
 		this.credito = credito;
 	}
+
 
 	public String getDirCliente() {
 		return dirCliente;
@@ -377,6 +395,16 @@ public class mb_Cliente implements Serializable{
 
 	public void setZona(String zona) {
 		this.zona = zona;
+	}
+
+
+	public int getCuentaCorriente() {
+		return cuentaCorriente;
+	}
+
+
+	public void setCuentaCorriente(int cuentaCorriente) {
+		this.cuentaCorriente = cuentaCorriente;
 	}
 	
 	

@@ -60,9 +60,12 @@ public class ExportarOTPDF {
   	  cliente = ot.getCliente().getNombre();
   	  direccion = ot.getCliente().getDirCliente();
       telCliente =  ot.getCliente().getTelCliente();
-      if(ot.getCliente()!=null && ot.getCliente().getCuentacorriente()!=null ){
-        ccte=ot.getCliente().getCuentacorriente().getCuentaID();  
-      }      
+//      if(ot.getCliente()!=null && ot.getCliente().getCuentacorriente()!=null ){
+//        ccte=ot.getCliente().getCuentacorriente().getCuentaID();  
+//      }  
+       ccte=ot.getCliente().getCuentaCorriente(); 
+      
+      
   	}
     int numeroCliente=ot.getNroCliente();    
     String lugarDeObra= ot.getDireccionObra();

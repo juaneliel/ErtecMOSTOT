@@ -20,7 +20,9 @@
    <div id="panel1">         
 <h:panelGrid id="panel" columns="2" border="1"
    cellpadding="5" cellspacing="1">   
-   
+   		<f:facet name="header">
+			Agregar Cliente
+		</f:facet>
     
     <h:outputLabel value="Nombre" for="n" />
     <h:inputText id="n" label="nombre" value="#{mb_Cliente.nombre}"  /> 
@@ -33,16 +35,27 @@
     <h:inputText id="loc" label="locCliente" value="#{mb_Cliente.locCliente}"  /> 
     
      
-      <h:outputLabel value="telCliente" for="telCliente" />
+      <h:outputLabel value="Telefono:" for="telCliente" />
     <h:inputText id="telCliente" label="telCliente" value="#{mb_Cliente.telCliente}"  /> 
             
-      <h:outputLabel value="rucCliente" for="rucCliente" />
-    <h:inputText id="rucCliente" label="rucCliente" value="#{mb_Cliente.rucCliente}"  /> 
-    
+      <h:outputLabel value="RUC:" for="rucCliente" /> 
+      
+	               		<p:inputMask   id="rucCliente" value="#{mb_Cliente.rucCliente}" >
+								      	<p:keyFilter regEx="/[0-9_]/i" /> 
+								  	</p:inputMask>
      
-      <h:outputLabel value="credito" for="credito" />
-    <h:inputText id="credito" label="credito" value="#{mb_Cliente.credito}"  /> 
+      <h:outputLabel value="Credito:" for="credito" />
+      <p:selectOneMenu value="#{mb_Cliente.credito}" style="width:80%" id="credito" required="true" >					
+	       <f:selectItem itemLabel="SI" itemValue="SI" />
+	       <f:selectItem itemLabel="NO" itemValue="NO" />                       
+			</p:selectOneMenu>
+       
     
+     <h:outputLabel value="Cta Corriente:" for="ctacorriente" />  
+    
+    <p:inputMask   id="ctacorriente" value="#{mb_Cliente.cuentaCorriente}"    >
+								      	<p:keyFilter regEx="/[0-9_]/i" /> 
+								  	</p:inputMask>
     
     
     <p:column colspan="2">

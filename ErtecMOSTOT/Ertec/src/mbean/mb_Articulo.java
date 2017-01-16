@@ -66,7 +66,7 @@ public class mb_Articulo {
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el articulo "+f.getDescripcion());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede eliminar el articulo "+f.getDescripcion() + " es posible que este referenciado en un movimiento "+f.getDescripcion());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
