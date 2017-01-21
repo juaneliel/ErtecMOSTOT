@@ -147,7 +147,7 @@ public class DAO_Cliente {
 		EntityManager em=JpaUtil.getEntityManager();  
 		try{ 
 			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID;
-			System.out.println("Consulta "+consulta);
+			System.out.println("Consulta getContratosCliente"+consulta);
 			TypedQuery<Contrato> consultaFuncionario= em.createQuery(consulta, Contrato.class);
 			ArrayList<Contrato> auxLista = (ArrayList<Contrato>) consultaFuncionario.getResultList(); 
 			System.out.println(">>>>" + auxLista); 

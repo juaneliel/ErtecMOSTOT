@@ -8,11 +8,23 @@
   <ui:composition>		
 	<h:form id="formaddcontrato">         
 	  <h:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
-			    
- 
+			
+		
+		<p:outputLabel value="Id" for="contratoid" />    
+ 		 <p:inputMask converterMessage="Ingrese un valor de referencia"  min="1" id="contratoid" label="contratoid" value="#{mb_Cliente.contratoID}"  maxlength="10" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
+		  	</p:inputMask>
 
 		<p:outputLabel value="Cliente:" for="cliente" /> 
 		<p:outputLabel disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.nombre}"  /> 
+			 
+				<p:outputLabel value="Tipo:" for="tipo" />   
+		<p:selectOneMenu disabled="#{paramListaArrendamientos}" id="tipo" value="#{mb_Cliente.tipo}" style="width:85%">
+	    	<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
+	        <f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
+		</p:selectOneMenu>		 
+			 
 			 
 		<p:outputLabel value="Corredor:" for="corredorID" />   
 		<p:inputNumber id="corredorID" value="#{mb_Cliente.corredorID}" />  
@@ -33,11 +45,7 @@
 		</p:selectOneMenu>	
   
   
-		<p:outputLabel value="Tipo:" for="tipo" />   
-		<p:selectOneMenu disabled="#{paramListaArrendamientos}" id="tipo" value="#{mb_Cliente.tipo}" style="width:85%">
-	    	<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
-	        <f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
-		</p:selectOneMenu>	
+
 		 			 
 		<p:outputLabel value="Zona:" for="zona" />   
 		<h:inputText id="zona" value="#{mb_Cliente.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
@@ -49,7 +57,7 @@
 		<p:calendar id="fechaFin" value="#{mb_Cliente.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
   
 	
-		<p:commandButton value="Agregar"  oncomplete="PF('addcontrato').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addContrato}"  update="message formcontratos"  />
+		<p:commandButton value="Agregar"  oncomplete="PF('addcontrato').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addContrato}"  update="message @([id$=formcontratos])"  />
    
       </h:panelGrid>
    

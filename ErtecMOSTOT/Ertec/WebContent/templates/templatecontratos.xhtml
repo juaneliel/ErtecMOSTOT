@@ -32,7 +32,23 @@
 
 
 		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{contrato.contratoID}">		                
-		  <h:outputText value="#{contrato.contratoID}" />			
+ 
+		  <p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.contratoID}" />  
+				</f:facet>
+		 		<f:facet name="input">
+				 <p:inputMask converterMessage="Ingrese un valor de referencia"  min="1" id="contratoid" label="contratoid" value="#{contrato.contratoID}"  maxlength="10" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
+		  	</p:inputMask>
+				 		 
+				 
+				</f:facet>
+			</p:cellEditor>
+		  
+		  
+		  
 		</p:column>
 				 		 
 		<p:column headerText="Corredor" sortBy="#{contrato.corredorID}"  filterMatchMode="contains" filterBy="#{contrato.corredorID}">		                
@@ -156,7 +172,7 @@
 		     
 		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
 			<p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.deleteContrato(contrato)}" 
-				update="datatablecontratos message" >
+				update="datatablecontratos message @([id$=formcontratos])" >
 				<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 		 	</p:commandButton>
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

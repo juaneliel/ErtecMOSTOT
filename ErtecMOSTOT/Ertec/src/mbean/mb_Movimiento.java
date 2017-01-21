@@ -341,13 +341,14 @@ public class mb_Movimiento {
   	String realPath=(String) servletContext.getServletPath(); 
   	System.out.println("contexto addnexo: "+realPath);
   	//se agrega a una lista temporal
-  	if(realPath.contains("addmovimiento.xhtml")){
+  	//if(realPath.contains("addmovimiento.xhtml")){
+  	if(listaNexos.isEmpty() || (!listaNexos.isEmpty()&&listaNexos.get(0).getMovimientoID()==0) ){
   		NexoMovimiento nexo=new NexoMovimiento();
   		nexo.setArticuloID(articuloOBJ.getArticuloID());
   		nexo.setCantidad(this.cantidadArticulo);
   		nexo.setCosto(costo);
   		nexo.setFecha(fecha);
-  		nexo.setMovimientoID(movimientoID);		
+  		nexo.setMovimientoID(0);		
   		nexo.setArticulo(articuloOBJ);
   		this.listaNexos.add(nexo);
   		return null;

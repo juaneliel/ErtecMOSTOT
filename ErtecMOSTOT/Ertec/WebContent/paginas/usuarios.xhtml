@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+  	
+  <h:form id="formusuarios">
+  
+  
+    <p:dataTable var="usuario" value="#{mb_Usuario.lista}" id="datatable2"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
+		 editable="true" 
+		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;" 
+		 >
+		 
+      	<f:facet name="header">
+			Usuarios	
+			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+			<p:columnToggler datasource="datatable2" trigger="toggler" />
+      	</f:facet>
+		 
+		<p:ajax event="rowEdit" listener="#{mb_Usuario.onRowEdit}"  update="message  menuprincipal"/>	  
+		 
+		<p:column headerText="Nombre" sortBy="#{usuario.nombre}"  filterMatchMode="startsWith" filterBy="#{usuario.nombre}">
+			<h:outputText  value="#{usuario.nombre}"/>
+		</p:column>	 
+
+		  
+		  
+		  <p:column headerText="A.Articulos" sortBy="#{usuario.articulos}"  filterMatchMode="contains" filterBy="#{usuario.articulos}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.articulos}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.articulos}" style="width:80%" id="articulos" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		  
+		  
+	  	  <p:column headerText="A.Clientes" sortBy="#{usuario.clientes}"  filterMatchMode="contains" filterBy="#{usuario.clientes}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.clientes}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.clientes}" style="width:80%" id="clientes" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		  	  <p:column headerText="A.Funcionarios" sortBy="#{usuario.funcionarios}"  filterMatchMode="contains" filterBy="#{usuario.funcionarios}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.funcionarios}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.funcionarios}" style="width:80%" id="funcionarios" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	    
+		    
+		    
+		  
+		    
+		    <p:column headerText="A.Mano Obra" sortBy="#{usuario.manodeobra}"  filterMatchMode="contains" filterBy="#{usuario.manodeobra}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.manodeobra}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.manodeobra}" style="width:80%" id="manoobra" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	    	 
+		    
+		    
+		    <p:column headerText="A.Movientos" sortBy="#{usuario.movimientos}"  filterMatchMode="contains" filterBy="#{usuario.movimientos}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.movimientos}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.movimientos}" style="width:80%" id="movimientos" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	    
+		    
+		     <p:column headerText="A.OT" sortBy="#{usuario.ot}"  filterMatchMode="contains" filterBy="#{usuario.ot}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.ot}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.ot}" style="width:80%" id="ot" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	    
+		    
+		    
+			     <p:column headerText="A.Proveedores" sortBy="#{usuario.proveedores}"  filterMatchMode="contains" filterBy="#{usuario.proveedores}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.proveedores}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.proveedores}" style="width:80%" id="proveedores" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	  	    
+		    
+		    
+		 	    
+			     <p:column headerText="A.Reclamos" sortBy="#{usuario.reclamos}"  filterMatchMode="contains" filterBy="#{usuario.reclamos}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.reclamos}"  /></f:facet>
+	               <f:facet name="input">
+	                     <p:selectOneMenu value="#{usuario.reclamos}" style="width:80%" id="reclamos" required="true" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>	 
+		 
+		 
+		 
+		 
+		 
+		    
+		  
+		  
+		   <p:column headerText="Editar"  style = "width:50px">				
+					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					</p:rowEditor>					
+		    </p:column>
+		     
+		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.delete(cliente)}" 
+			 update="message" >
+        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+    </p:commandButton>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>
+		    	   
+	   <p:rowExpansion id="expansioncliente">
+   		    
+ 	
+   </p:rowExpansion>
+	
+	</p:dataTable>
+
+ </h:form> 
+					
+
+
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

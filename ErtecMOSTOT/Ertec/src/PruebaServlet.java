@@ -17,6 +17,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import util.ExportMovimientoPDF;
 import util.ExportarOTPDF;
 
 
@@ -55,9 +56,27 @@ public class PruebaServlet extends HttpServlet {
 //      } catch (DocumentException de) {
 //          throw new IOException(de.getMessage());
 //      } 
+      
+      
     String idOT=request.getParameter("otID");
-    System.out.println(idOT);
-    ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());
+    System.out.println(idOT);    
+    String tipo=request.getParameter("tipo");
+    
+    ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+    
+//    if (tipo.equals("ot")){
+//    	ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());      
+//    }
+//    else{
+//      if (tipo.equals("mov")){ 	
+//      	
+//      	ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());
+//      
+//      
+//      }
+//    }
+	
+	
 	}
 
 	/**

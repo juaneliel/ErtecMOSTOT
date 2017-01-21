@@ -72,7 +72,7 @@ public class DAO_Articulo {
 		return salida;
 	}
 	
-	public Articulo findArticulo(int idA){
+	public static Articulo findArticulo(int idA){
 		EntityManager em=JpaUtil.getEntityManager();		
 		return em.find(Articulo.class,idA );	
 	}

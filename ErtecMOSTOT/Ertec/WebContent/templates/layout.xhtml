@@ -39,12 +39,19 @@
  
    
  
-	<h:form>  
+	<h:form id="menuprincipal">  
 
    		 
     <p:menubar>
 
-        <p:submenu label="Articulos" icon="">
+        <p:submenu label="Usuarios" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.admin)}">
+            <p:menuitem value="Listar" url="/paginas/usuarios.xhtml" icon="" />
+             
+              <p:separator />
+            <p:menuitem value="Ocultar" url="#" />
+        </p:submenu>
+
+        <p:submenu label="Articulos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.articulos)}">
             <p:menuitem value="Listar" url="/paginas/articulos.xhtml" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addarticulo.xhtml" icon="" /> 
               <p:separator />
@@ -52,7 +59,7 @@
         </p:submenu>
 
 
-        <p:submenu label="Clientes" icon="">
+        <p:submenu label="Clientes" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.clientes)}">
             <p:menuitem value="Listar" url="/paginas/clientes.xhtml" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addcliente.xhtml" icon="" />
             <p:separator />
@@ -61,14 +68,14 @@
 
 
 
-       <p:submenu label="Funcionarios" icon="">
+       <p:submenu label="Funcionarios" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.funcionarios)}">
             <p:menuitem value="Listar" url="/paginas/funcionarios.xhtml" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addfuncionarios.xhtml" icon=""  /> 
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
 
-       <p:submenu label="Mano De Obra" icon="">
+       <p:submenu label="Mano De Obra" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.manodeobra)}">
             <p:menuitem value="Listar" action="#{mb_ManoObra.listarDesdeMenu}" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addmanoobra.xhtml" icon="" /> 
             <p:separator />
@@ -76,28 +83,28 @@
         </p:submenu>
 
 
-		<p:submenu label="Movimientos" icon="">
+		<p:submenu label="Movimientos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.movimientos)}">
             <p:menuitem value="Listar" url="/paginas/movimientos.xhtml" icon="" />
             <p:menuitem value="Agregar" action="#{mb_Movimiento.addmovdesdemenu}" icon="" /> 
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>        
         
-          <p:submenu label="Orden de trabajo" icon="">            
+          <p:submenu label="Orden de trabajo" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.ot)}">            
             <p:menuitem value="Listar" url="/paginas/listot.xhtml" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addot.xhtml" icon="" /> 
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
  
-        <p:submenu label="Proveedores" icon="">
+        <p:submenu label="Proveedores" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.proveedores)}">
             <p:menuitem value="Listar" url="/paginas/proveedores.xhtml" icon="" />
             <p:menuitem value="Agregar" url="/paginas/addproveedor.xhtml" icon="" />
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
  
-    		<p:submenu label="Reclamos" icon="">
+    		<p:submenu label="Reclamos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.reclamos)}">
             <p:menuitem value="Listar" url="/paginas/reclamos.xhtml" icon="" />
             <p:menuitem value="Pendientes" url="/paginas/reclamospendientes.xhtml" icon="" />                  
             <p:menuitem value="Agregar" url="/paginas/addreclamo.xhtml" icon="" />

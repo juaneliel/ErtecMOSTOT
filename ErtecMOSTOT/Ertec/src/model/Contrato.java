@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name="Contratos")
@@ -20,49 +21,61 @@ public class Contrato implements Serializable {
   @Column(name="Id")
   private int id;
 
-  @Column(name="ClienteID")
-  private int clienteID;
+	@Column(name="ClienteID")
+	private int clienteID;
 
-   
-  @OneToOne(fetch=FetchType.EAGER)
-  @JoinColumn(name="ClienteID" , insertable = false, updatable = false)
-  private Cliente cliente;
-  
-  
-  @Column(name="ContratoID")
-  private int contratoID;
+	@Column(name="ContratoID")
+	private int contratoID;
 
-  @Column(name="CorredorID")
-  private int corredorID;
+	@Column(name="CorredorID")
+	private int corredorID;
 
-  @Column(name="Direccion")
-  private String direccion;
+	@Column(name="Cuota")
+	private BigDecimal cuota;
 
-  @Column(name="Equipo")
-  private String equipo;
+	@Column(name="Direccion")
+	private String direccion;
 
-  @Temporal(TemporalType.DATE)
-  @Column(name="FechaFin")
-  private Date fechaFin;
+	@Column(name="Equipo")
+	private String equipo;
 
-  @Temporal(TemporalType.DATE)
-  @Column(name="FechaInicio")
-  private Date fechaInicio;
+	@Temporal(TemporalType.DATE)
+	@Column(name="FechaFin")
+	private Date fechaFin;
 
- 
+	@Temporal(TemporalType.DATE)
+	@Column(name="FechaInicio")
+	private Date fechaInicio;
 
+	@Column(name="Frecuencia")
+	private String frecuencia;
 
 	@Column(name="Localidad")
 	private String localidad;
 
+	@Column(name="Moneda")
+	private String moneda;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="NoAumentar")
+	private Date noAumentar;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="NoFacturar")
+	private Date noFacturar;
+
 	@Column(name="Retirado")
-	private int retirado;
+	private String retirado;
 
 	@Column(name="Tipo")
 	private String tipo;
 
 	@Column(name="TopeMesesVisita")
 	private int topeMesesVisita;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="UltimoAjuste")
+	private Date ultimoAjuste;
 
 	@Column(name="Zona")
 	private String zona;
@@ -102,6 +115,14 @@ public class Contrato implements Serializable {
 		this.corredorID = corredorID;
 	}
 
+	public BigDecimal getCuota() {
+		return this.cuota;
+	}
+
+	public void setCuota(BigDecimal cuota) {
+		this.cuota = cuota;
+	}
+
 	public String getDireccion() {
 		return this.direccion;
 	}
@@ -134,6 +155,14 @@ public class Contrato implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
+	public String getFrecuencia() {
+		return this.frecuencia;
+	}
+
+	public void setFrecuencia(String frecuencia) {
+		this.frecuencia = frecuencia;
+	}
+
 	public String getLocalidad() {
 		return this.localidad;
 	}
@@ -142,11 +171,35 @@ public class Contrato implements Serializable {
 		this.localidad = localidad;
 	}
 
-	public int getRetirado() {
+	public String getMoneda() {
+		return this.moneda;
+	}
+
+	public void setMoneda(String moneda) {
+		this.moneda = moneda;
+	}
+
+	public Date getNoAumentar() {
+		return this.noAumentar;
+	}
+
+	public void setNoAumentar(Date noAumentar) {
+		this.noAumentar = noAumentar;
+	}
+
+	public Date getNoFacturar() {
+		return this.noFacturar;
+	}
+
+	public void setNoFacturar(Date noFacturar) {
+		this.noFacturar = noFacturar;
+	}
+
+	public String getRetirado() {
 		return this.retirado;
 	}
 
-	public void setRetirado(int retirado) {
+	public void setRetirado(String retirado) {
 		this.retirado = retirado;
 	}
 
@@ -166,6 +219,14 @@ public class Contrato implements Serializable {
 		this.topeMesesVisita = topeMesesVisita;
 	}
 
+	public Date getUltimoAjuste() {
+		return this.ultimoAjuste;
+	}
+
+	public void setUltimoAjuste(Date ultimoAjuste) {
+		this.ultimoAjuste = ultimoAjuste;
+	}
+
 	public String getZona() {
 		return this.zona;
 	}
@@ -173,13 +234,5 @@ public class Contrato implements Serializable {
 	public void setZona(String zona) {
 		this.zona = zona;
 	}
-
-  public Cliente getCliente() {
-    return cliente;
-  }
-
-  public void setCliente(Cliente cliente) {
-    this.cliente = cliente;
-  }
 
 }

@@ -24,6 +24,7 @@ import javafx.util.converter.BigDecimalStringConverter;
 import model.Articulo;
 import model.Movimiento;
 import model.Ot;
+import model.DAO.DAO_Articulo;
 import model.DAO.DAO_Movimiento;
 import model.DAO.DAO_OT;
 import model.NexoMovimiento;
@@ -39,12 +40,12 @@ public class ExportMovimientoPDF {
   public static final String RESULT = "/home/juan/Escritorio/movimiento.pdf";
   
   public static void main(String[] args) {
-    ExportMovimientoPDF.ExportarPDF(0);
+    ExportMovimientoPDF.ExportarPDF(0,null);
   }    
   
   
   
-  public static void ExportarPDF(int idOT  )   {
+  public static void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
   
     //String RESULT = "/home/juan/Escritorio/OT.pdf";
     
@@ -55,59 +56,60 @@ public class ExportMovimientoPDF {
     BigDecimal costoLinea = BigDecimal.ZERO;
 
     DAO_OT dao= new DAO_OT();    
-    //Ot ot = dao.getOT(idOT);
+    DAO_Movimiento daoMov = new DAO_Movimiento();
     
-   // ArrayList <Movimiento> movimientos =DAO_Movimiento.getMovimientosOT(idOT);
-    ArrayList <Movimiento> movimientos =new ArrayList <Movimiento>();
-    Movimiento m = new Movimiento();
-    m.setTipoOT("Salida por OT-OR");
-    m.setComprobante(1);
-    m.setFecha(new Date());
-    m.setNexos(new ArrayList<NexoMovimiento>());
-    NexoMovimiento nexo=new NexoMovimiento();
-    Articulo a=new Articulo();
-    a.setArticuloID(1);
-    a.setDescripcion("descripcion");
-    nexo.setArticulo(a);
-    nexo.setCantidad( BigDecimal.valueOf(3));
-    nexo.setCosto(BigDecimal.valueOf(250));
-    m.getNexos().add(nexo);
-    movimientos.add(m);
-    
-    
-    
-    m = new Movimiento();
-    m.setTipoOT("Salida por OT-OR");
-    m.setComprobante(2);
-    m.setFecha(new Date());
-    m.setNexos(new ArrayList<NexoMovimiento>());
-    nexo=new NexoMovimiento();
-    a=new Articulo();
-    a.setArticuloID(2);
-    a.setDescripcion("dos");
-    nexo.setArticulo(a);
-    nexo.setCantidad( BigDecimal.valueOf(5));
-    nexo.setCosto(BigDecimal.valueOf(100));
-    m.getNexos().add(nexo);
-    
-    nexo=new NexoMovimiento();
-    a=new Articulo();
-    a.setArticuloID(2);
-    a.setDescripcion("dos");
-    nexo.setArticulo(a);
-    nexo.setCantidad( BigDecimal.valueOf(6));
-    nexo.setCosto(BigDecimal.valueOf(100));
-    m.getNexos().add(nexo);
-    
-    movimientos.add(m);
-    
+    ArrayList <Movimiento> movimientos =DAO_Movimiento.getMovimientosOT(idOT);
+    //ArrayList <Movimiento> movimientos =new ArrayList <Movimiento>();
+//    Movimiento m = new Movimiento();
+//    m.setTipoOT("Salida por OT-OR");
+//    m.setComprobante(1);
+//    m.setFecha(new Date());
+//    m.setNexos(new ArrayList<NexoMovimiento>());
+//    NexoMovimiento nexo=new NexoMovimiento();
+//    Articulo a=new Articulo();
+//    a.setArticuloID(1);
+//    a.setDescripcion("descripcion");
+//    nexo.setArticulo(a);
+//    nexo.setCantidad( BigDecimal.valueOf(3));
+//    nexo.setCosto(BigDecimal.valueOf(250));
+//    m.getNexos().add(nexo);
+//    movimientos.add(m);
+//    
+//    
+//    
+//    m = new Movimiento();
+//    m.setTipoOT("Salida por OT-OR");
+//    m.setComprobante(2);
+//    m.setFecha(new Date());
+//    m.setNexos(new ArrayList<NexoMovimiento>());
+//    nexo=new NexoMovimiento();
+//    a=new Articulo();
+//    a.setArticuloID(2);
+//    a.setDescripcion("dos");
+//    nexo.setArticulo(a);
+//    nexo.setCantidad( BigDecimal.valueOf(5));
+//    nexo.setCosto(BigDecimal.valueOf(100));
+//    m.getNexos().add(nexo);
+//    
+//    nexo=new NexoMovimiento();
+//    a=new Articulo();
+//    a.setArticuloID(2);
+//    a.setDescripcion("dos");
+//    nexo.setArticulo(a);
+//    nexo.setCantidad( BigDecimal.valueOf(6));
+//    nexo.setCosto(BigDecimal.valueOf(100));
+//    m.getNexos().add(nexo);
+//    
+//    movimientos.add(m);
+//    
     
     try {
       
       Document document = new Document(PageSize.A4, 30, 30, 30, 30); 
-        PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(RESULT)); 
+       // PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(RESULT)); 
         
-         
+        PdfWriter writer=PdfWriter.getInstance(document, sOS);
+        
         
         document.open();   
         
@@ -164,8 +166,8 @@ public class ExportMovimientoPDF {
         for (Movimiento mov : movimientos){
           String cabecera="";
           cabecera+="Fecha: "+mov.getFecha()+"    ";
-          cabecera+="Tipo Movimiento: "+mov.getTipoOT()+"    ";
-          cabecera+="Comprobante: "+mov.getComprobante()+"    "; 
+          cabecera+="Tipo Movimiento: "+ daoMov.getDescripcionMov(mov.getCodigoMovimientoID())+"    ";
+          cabecera+="Comprobante: "+mov.getMovimientoID()+"    "; 
           
           cell = new PdfPCell(new Paragraph(cabecera, new Font(FontFamily.HELVETICA, 10)));
           cell.setColspan(5);
@@ -174,7 +176,7 @@ public class ExportMovimientoPDF {
            
           
           
-          ArrayList<NexoMovimiento> nexos= (ArrayList<NexoMovimiento>) mov.getNexos();
+          ArrayList<NexoMovimiento> nexos= daoMov.getNexos(mov.getMovimientoID()); //(ArrayList<NexoMovimiento>) mov.getNexos();
           costoMovimiento=BigDecimal.ZERO;
           for (NexoMovimiento n :nexos){
             cell =new PdfPCell(new Paragraph(Integer.toString(n.getArticulo().getArticuloID()), new Font(FontFamily.HELVETICA, 10)));
@@ -193,7 +195,16 @@ public class ExportMovimientoPDF {
             cell.setMinimumHeight(20);        
             tabla1.addCell( cell );
             
-            costoLinea = n.getCantidad().multiply(n.getCosto());
+            System.out.println("ezport " +n);
+            System.out.println("ezport " +n.getCantidad());
+            System.out.println("ezport " +n.getCosto());
+            
+            BigDecimal costo=n.getCosto();
+            if(mov.getCodigoMovimientoID()==4){
+            	costo = BigDecimal.ZERO.subtract(DAO_Articulo.findArticulo(n.getArticuloID()).getCostoPesos());
+            }
+            
+            costoLinea = n.getCantidad().multiply(costo);
             costoMovimiento =costoMovimiento.add(costoLinea);
             costoTotal=costoTotal.add(costoLinea);
             

@@ -104,7 +104,12 @@ public class mb_OT {
 	
 	public String imprimirOT(int otID){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  return  "/otapdf.do?faces-redirect=true"+"&otID="+otID;
+	  return  "/otapdf.do?faces-redirect=true"+"&otID="+otID+"&tipo=ot";
+	}
+	
+	public String imprimirMovimientos(int otID){
+		//ExportarOTPDF.ExportarPDF(ot, "");
+	  return  "/otapdf.do?faces-redirect=true"+"&otID="+otID+"&tipo=mov";
 	}
 	
 	@PostConstruct	

@@ -46,7 +46,7 @@ public class mb_Cliente implements Serializable{
 	private Date fechaFin;  
 	private Date fechaInicio; 
 	private String localidad; 
-	private int retirado; 
+	private String retirado; 
 	private String tipo; 
 	private String zona;
 	private int cuentaCorriente;
@@ -133,7 +133,7 @@ public class mb_Cliente implements Serializable{
 		setFechaFin(null);
 		setFechaInicio(null);
 		setLocalidad("");
-		setRetirado(0);
+		setRetirado("NO");
 		setTipo("");
 		setZona("");
 	}
@@ -159,8 +159,9 @@ public class mb_Cliente implements Serializable{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el cliente");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR cliente"+f.getClienteID() );
+		System.out.println(">>AGREGAR cliente"+f.getClienteID() );		
 		recargar ();
+		this.limpiarVariables();
 		return salida;
 	}
 	
@@ -187,7 +188,7 @@ public class mb_Cliente implements Serializable{
 	          FacesContext.getCurrentInstance().addMessage(null, message);      
 	    }
 	    //return "/paginas/funcionarios.xhtml?faces-redirect=true";
-	    this.recargarListaContratos(clienteID);
+	    this.recargarListaContratos(o.getClienteID());
 	  }
 	
 
@@ -206,6 +207,8 @@ public class mb_Cliente implements Serializable{
 	public String addContrato(){
 		String salida= null;
 		Contrato c = new Contrato();
+		c.setContratoID(contratoID);
+			
 		c.setClienteID(clienteID);
 		c.setCorredorID(corredorID);
 		c.setDireccion(direccion);
@@ -227,11 +230,27 @@ public class mb_Cliente implements Serializable{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar el contrato");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR contrato"+c.getContratoID() );
+		System.out.println(">>AGREGAR contrato"+c.getContratoID() );		
 		this.recargarListaContratos(clienteID);
+		limpiarVariablesContrato();
 		return salida;
 	}
 
+	public void limpiarVariablesContrato(){
+		setContratoID(0);
+		
+		setClienteID(0);
+		setCorredorID(0);
+		setDireccion("");
+		setEquipo("");
+		setFechaFin(null);
+		setFechaInicio(null);
+		setLocalidad("");
+		setRetirado("NO");
+		setTipo("");
+		setZona("");
+	}
+	
 	public ArrayList<Cliente> getLista() {
 		System.out.println("lista de clientes "+ lista.size());
 		return lista;
@@ -373,13 +392,17 @@ public class mb_Cliente implements Serializable{
 		this.localidad = localidad;
 	}
 
-	public int getRetirado() {
+ 
+
+	public String getRetirado() {
 		return retirado;
 	}
 
-	public void setRetirado(int retirado) {
+
+	public void setRetirado(String retirado) {
 		this.retirado = retirado;
 	}
+
 
 	public String getTipo() {
 		return tipo;

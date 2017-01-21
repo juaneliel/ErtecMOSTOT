@@ -184,13 +184,13 @@
 		 
 		 
 		 
-		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.puedeActualizar}">				
+		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.funcionarios)}">				
 					<p:rowEditor >
 					</p:rowEditor>	
 									
 		    </p:column>
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.puedeBorrar}" >	
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.funcionarios)}">	
 			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}" 
    	
    	update="formfuncionarios message" >

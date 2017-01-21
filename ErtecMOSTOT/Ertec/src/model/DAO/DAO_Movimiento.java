@@ -103,7 +103,11 @@ public class DAO_Movimiento {
 	}
 	
 	
-	
+	public static String getDescripcionMov(int cod){
+		EntityManager em=JpaUtil.getEntityManager();
+		return em.find(Cod_Movimiento.class,cod).getDescripcion();
+		
+	}
 	
 	
 
@@ -114,8 +118,8 @@ public class DAO_Movimiento {
 	  try{       
       EntityManager em=JpaUtil.getEntityManager();      
       String consulta ="SELECT a FROM Movimiento m, Arrendamiento a "+
-                       "WHERE a.movimientoID = m.movimientoID and m.clienteID=0 "+
-                       "ORDER BY id DESC ";
+                       " WHERE a.movimientoID = m.movimientoID and m.clienteID= "+ idCliente +
+                       " ORDER BY id DESC ";
       System.out.println("Consulta arrendados "+consulta);
       TypedQuery<Arrendamiento> consultaFuncionario= em.createQuery(consulta, Arrendamiento.class);
       ArrayList<Arrendamiento> auxLista = (ArrayList<Arrendamiento>) consultaFuncionario.getResultList();
