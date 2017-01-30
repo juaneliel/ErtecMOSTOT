@@ -22,7 +22,7 @@
  
 <p:outputLabel value="Cliente" for="cliente" />
 <p:autoComplete  id="cliente" value="#{mb_OT.clienteOBJ}"
- completeMethod="#{mb_Cliente.completarCliente}" 
+ completeMethod="#{mb_Cliente.completarCliente}" required="true"
 var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
  converter="ConverterCliente" forceSelection="true" style="float:right !important;margin:0px 0px 3px 0px;"/> 
 
@@ -39,26 +39,6 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 			       <p:inputText id="trabajo" label="trabajo" value="#{mb_OT.trabajo}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
  
 
-
-
-
-					<p:outputLabel value="C. Corriente:" for="ccte" />
-			    <p:inputText id="ccte" label="ccte" value="#{mb_OT.c_Corriente}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
- 
-	 				<p:outputLabel value="Arrendamiento:" for="arr" /> 
-					<p:inputText id="arr" label="lugar" value="#{mb_OT.arrendamiento}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
- 
- 
-					<p:outputLabel value="Mantenimiento:" for="man" /> 	 			 
-					<p:inputText id="man" label="lugar" value="#{mb_OT.mantenimiento}"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
- 
-					<p:outputLabel value="Tipo OT:" for="tot" />  			 
-					<p:inputText id="tot" label="lugar" value="2"  style="float:right !important;margin:0px 0px 3px 0px;"/>  
- 
-	 				<p:outputLabel value="Verif. Adm." for="va" />  
-					<p:inputText id="va" label="lugar" value="#{mb_OT.cliente}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 
- 
-			
    <p:outputLabel value="Presupuesto:" for="pre" />   
 		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.presupuesto}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
 		   
@@ -88,6 +68,25 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 </ui:composition>   
  
 
+
+
+<!-- 					<p:outputLabel value="C. Corriente:" for="ccte" /> -->
+<!-- 			    <p:inputText id="ccte" label="ccte" value="#{mb_OT.c_Corriente}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 -->
+ 
+<!-- 	 				<p:outputLabel value="Arrendamiento:" for="arr" />  -->
+<!-- 					<p:inputText id="arr" label="lugar" value="#{mb_OT.arrendamiento}"   style="float:right !important;margin:0px 0px 3px 0px;"/>	       	 -->
+ 
+ 
+<!-- 					<p:outputLabel value="Mantenimiento:" for="man" /> 	 			  -->
+<!-- 					<p:inputText id="man" label="lugar" value="#{mb_OT.mantenimiento}"  style="float:right !important;margin:0px 0px 3px 0px;"/>   -->
+ 
+<!-- 					<p:outputLabel value="Tipo OT:" for="tot" />  			  -->
+<!-- 					<p:inputText id="tot" label="lugar" value="2"  style="float:right !important;margin:0px 0px 3px 0px;"/>   -->
+ 
+<!-- 	 				<p:outputLabel value="Verif. Adm." for="va" />   -->
+<!-- 					<p:inputText id="va" label="lugar" value="#{mb_OT.cliente}"    style="float:right !important;margin:0px 0px 3px 0px;"/>	       	  -->
+ 
+			
 
 
 

@@ -119,17 +119,30 @@
 					<p:rowEditor  >
 					</p:rowEditor>					
 		    </p:column>
-		     
-		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.clientes)}">
-			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.delete(cliente)}" 
-			 update="datatablecliente message" >
-        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
-    </p:commandButton>
+ 
+		    	   
+		    	   
+		    	   
+		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.clientes)}">	
+			<p:commandLink actionListener="#{mb_Cliente.delete(cliente)}" 
+   	
+   	update="datatablecliente message" >
+        <p:confirm header="Confirmacion" message="Borrar cliente: #{cliente.nombre}?" icon="ui-icon-alert" />
+  <span class="ui-icon ui-icon-trash"></span>
+   	</p:commandLink>    
     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
         <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
     </p:confirmDialog>
 			</p:column>
+		    	   
+		    	   
+		    	   
+		    	   
+		    	   
+		    	   
+		    	   
+		    	   
 		    	   
 	   <p:rowExpansion id="expansioncliente">
    		  
@@ -156,7 +169,7 @@ action="#{mb_Cliente.setClienteIDYNombre(cliente.clienteID,cliente.nombre)}"/>
 	</p:dialog>				
 				
 				
-	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="500">
+	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="520">
 	<ui:include src="/templates/templateaddcontrato.xhtml" id="addcontrato">			
 	</ui:include>			
 	</p:dialog>		

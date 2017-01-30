@@ -119,7 +119,10 @@ public class mb_Usuario {
         recargarLista ();
 	}
   
-  
+  public boolean igualNombre(String nom){
+  	System.out.println(">>>igualnombre: "+nombre+" "+nom);
+  	return nom.toUpperCase().equals(this.nombre.toUpperCase());
+  }
   
 	public void onRowEdit(RowEditEvent event) {
 		

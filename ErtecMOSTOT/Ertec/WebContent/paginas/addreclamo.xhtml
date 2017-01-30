@@ -32,7 +32,7 @@
  				<p:ajax event="itemSelect" listener="#{mb_Cliente.recargarListaContratos(mb_Reclamo.clienteOBJ.clienteID)}" update="contrato" />  				
  								
  				<f:facet name="itemtip">
-                <h:panelGrid columns="2" cellpadding="3">  
+                <h:panelGrid columns="3" cellpadding="3">  
                 		<h:outputText value="ID:" />
                     <h:outputText value="#{theme.clienteID}" />
                 
@@ -51,7 +51,7 @@
 			
 			<p:outputLabel value="Contrato:" for="contrato" /> 
 		<p:selectOneMenu id="contrato" value="#{mb_Reclamo.contratoOBJ}" style="width:70%"    
-		panelStyle="width:180px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+		panelStyle="min-width:200px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
 		>
 			<f:selectItems value="#{mb_Cliente.listaContratos}" var="contrato" title="dale" 			
 				itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					

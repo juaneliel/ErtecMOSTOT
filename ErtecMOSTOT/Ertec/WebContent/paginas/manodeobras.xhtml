@@ -200,25 +200,21 @@ update="datatable2MO :message"/>
 			</p:cellEditor>
 		</p:column>
     
-    
-        <p:column headerText="Editar"  style = "width:20px" rendered="#{mb_Usuario.puedeActualizar}">	
-       		  
-       		  
-       		 	<p:rowEditor> 
-				</p:rowEditor>	
-												
+    		    
+ 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.manodeobra)}">				
+					<p:rowEditor >
+					</p:rowEditor>									
 		    </p:column>
-		    
-		    
-		     <p:column toggleable="false" headerText="Bor"  style = "width:20px"   >	
+		     
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.manodeobra)}">	
 			<p:commandLink actionListener="#{mb_ManoObra.delete(mo)}" 
    	
    	update="datatable2MO message" >
-        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+        <p:confirm header="Confirmacion" message="Borrar Mano de Obra de #{mo.funcionario.nombre}?" icon="ui-icon-alert" />
   <span class="ui-icon ui-icon-trash"></span>
    	</p:commandLink>    
     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
         <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
     </p:confirmDialog>
 			</p:column>

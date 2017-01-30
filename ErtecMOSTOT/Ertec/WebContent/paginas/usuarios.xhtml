@@ -33,6 +33,24 @@
 			<h:outputText  value="#{usuario.nombre}"/>
 		</p:column>	 
 
+		<p:column headerText="A.Admin" sortBy="#{usuario.admin}"  filterMatchMode="contains" filterBy="#{usuario.admin}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{usuario.admin}"  /></f:facet>
+	               <f:facet name="input" >
+	                     <p:selectOneMenu value="#{usuario.admin}" style="width:80%" id="admin" required="true" 
+	                      disabled="#{mb_Usuario.igualNombre( 'ertec' )}" >					
+										       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+										       <f:selectItem itemLabel="VER" itemValue="VER" />  
+										        <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+										       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+										          <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+												</p:selectOneMenu>	               
+	               </f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		  
+		  
+		  
 		  
 		  
 		  <p:column headerText="A.Articulos" sortBy="#{usuario.articulos}"  filterMatchMode="contains" filterBy="#{usuario.articulos}">		                

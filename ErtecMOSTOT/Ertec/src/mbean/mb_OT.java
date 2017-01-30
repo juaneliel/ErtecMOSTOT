@@ -76,7 +76,7 @@ public class mb_OT {
 	
  	private Articulo articuloOBJ;
 //	private ArrayList<Articulo> listaArticulosOBJ=new ArrayList<Articulo>(); 
-	
+	private Ot otSelected;
 	
 	private Proveedores proveedorOBJ;
 	private ArrayList<Proveedores> listaProveedoresOBJ; 
@@ -198,7 +198,12 @@ public class mb_OT {
 		Ot ot = new Ot();
 		
 		ot.setC(this.c);
-		ot.setClienteNombre(this.clienteOBJ.getNombre());
+		
+		if(clienteOBJ!=null){
+			ot.setClienteNombre(this.clienteOBJ.getNombre());
+			ot.setNroCliente(clienteOBJ.getClienteID());
+		}
+		
 		ot.setDireccionObra(this.direccionObra);
 		ot.setTelObra(telObra);
 		ot.setFactura(factura);
@@ -206,7 +211,6 @@ public class mb_OT {
 		ot.setFechaInicio(fechaInicio);
 		ot.setFechaTerminada(fechaTerminada);
 		ot.setMantenimiento(mantenimiento);
-		ot.setNroCliente(clienteOBJ.getClienteID());
 		ot.setOC(oC);
 		ot.setPedido(pedido);
 		ot.setPresupuesto(presupuesto);
@@ -882,6 +886,14 @@ public class mb_OT {
 
 	public void setListaTiposOT(ArrayList<TipoOT> listaTiposOT) {
 		this.listaTiposOT = listaTiposOT;
+	}
+
+	public Ot getOtSelected() {
+		return otSelected;
+	}
+
+	public void setOtSelected(Ot otSelected) {
+		this.otSelected = otSelected;
 	}
 
 

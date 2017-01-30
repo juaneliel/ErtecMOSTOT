@@ -48,9 +48,14 @@ public class DAO_Reclamo {
     // encontrar los contratos cuyo tope de meses haya sido superado es decir no existe
     //una visita tal que r.fechavisita > (fecha actual -topemeses) 
     
-    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 13 and "
-        + " NOT EXISTS  (SELECT * FROM Reclamos r WHERE r.contratoID = c.id and "; 
+  	//cambiar 13 por 0  
+//    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 13 and "
+//        + " NOT EXISTS  (SELECT * FROM Reclamos r WHERE r.contratoID = c.id and "; 
+//    
     
+    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 13 and "
+        + " NOT EXISTS  (SELECT * FROM Reclamos r,Contratos c2 WHERE r.contratoID = c2.id "+
+    		" and c2.contratoID = c.contratoID and "; 
     
     
     

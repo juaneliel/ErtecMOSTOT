@@ -19,9 +19,23 @@
 		 editable="true" 
 		 style="text-align:left;max-height:500px;overflow-y:scroll; 
    	font-size: 90% !important;color: red;font-weight: bold;"
+		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+    
 		
+		selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
 		 >
 
+			  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatable2" fileName="service"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatable2" fileName="service"  />
+	    </h:commandLink> 
+		</f:facet>
 
 		<f:facet name="header">
 		        Articulos
@@ -130,7 +144,7 @@
 		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}" 
 			 update="datatable message" >
-        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+        <p:confirm header="Confirmacion" message="Borrar articulo #{articulo.descripcion}?" icon="ui-icon-alert" />
     </p:commandButton>
     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
         <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -138,13 +152,25 @@
     </p:confirmDialog>
 			</p:column>  
 		     
-		   
+
     
     
 </p:dataTable>
 
+		 	<p:contextMenu for="datatable2">
+  	<p:menuitem value="Ver Movimientos asociados" update="panelinfomovart" actionListener="#{mb_Articulo.limpiarFiltrado()}" icon="ui-icon-search" oncomplete="PF('verma').show()"/>
+		</p:contextMenu>  
+
+
+
 
 	</h:form>
+	
+		 
+<p:dialog header="Movimientos de Articulo" widgetVar="verma"  modal="true" width="90%" height="400" id="verma">
+<ui:include src="/templates/templateinfomovarticulos.xhtml" id="movart">	 
+</ui:include>
+</p:dialog>	   
 
 </ui:define>
 </ui:composition>   

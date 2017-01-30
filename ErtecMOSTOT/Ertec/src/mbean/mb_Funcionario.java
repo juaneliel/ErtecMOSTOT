@@ -49,6 +49,8 @@ public class mb_Funcionario {
 	private Funcionario funcionarioOBJ;
 	private ArrayList<Funcionario> listaFuncionariosOBJ=new ArrayList<Funcionario>(); 
 	
+	private Funcionario funcionarioSelected;
+	
 	@PostConstruct
 	public void init(){
 		this.recargarLista ();
@@ -87,6 +89,10 @@ public class mb_Funcionario {
 		return salida;
 	}
 	
+	public void onRowSelect(){
+		
+	}
+	
 	public void onRowEdit(RowEditEvent event) {
 		
 		Funcionario f= (Funcionario) event.getObject();
@@ -114,7 +120,7 @@ public class mb_Funcionario {
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        recargarLista ();
+    this.lista.remove(f);
 	}
  
 	 
@@ -388,6 +394,16 @@ public class mb_Funcionario {
   public void setVencimientoLibreta(Date vencimientoLibreta) {
     this.vencimientoLibreta = vencimientoLibreta;
   }
+
+
+	public Funcionario getFuncionarioSelected() {
+		return funcionarioSelected;
+	}
+
+
+	public void setFuncionarioSelected(Funcionario funcionarioSelected) {
+		this.funcionarioSelected = funcionarioSelected;
+	}
 
 
 

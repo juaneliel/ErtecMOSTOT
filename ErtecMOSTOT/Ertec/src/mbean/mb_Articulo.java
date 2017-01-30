@@ -2,6 +2,7 @@ package mbean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -19,6 +20,8 @@ import model.Articulo;
 import model.Funcionario;
 import model.DAO.DAO_Articulo;
 import model.DAO.DAO_Funcionario;
+import model.DAO.DAO_infoMovDeArticulos;
+import model.DAO.DAO_infoService;
 
 @ManagedBean
 @SessionScoped
@@ -38,9 +41,12 @@ public class mb_Articulo {
 	private BigDecimal ultimoCostoDolares;
 	private BigDecimal ultimoCostoPesos;
 	private DAO_Articulo dao=new DAO_Articulo();
+  private Date fechaIni;
+  private Date fechaFin;
+  private ArrayList<DAO_infoMovDeArticulos> filtrado;
 	
 	private ArrayList<Articulo> lista=new ArrayList<Articulo>();
-	
+	private Articulo artSelected;
 	private Articulo articuloOBJ;
 	private ArrayList<Articulo> listaArticulosOBJ=new ArrayList<Articulo>(); 
 
@@ -58,6 +64,17 @@ public class mb_Articulo {
 		System.out.println(">>AGREGAR"+f.getDescripcion());
 		recargarLista ();
 		return salida;
+	}
+	
+	public void filtrarInfoMovArticulo(){
+		 filtrado=dao.filtrarInfoMovArticulo(articuloID,fechaIni,fechaFin);
+	}
+	
+	public void limpiarFiltrado(){
+		this.articuloID=this.artSelected.getArticuloID();
+		System.out.println("limpiarFiltrado "+articuloID);
+		this.filtrado=new ArrayList<DAO_infoMovDeArticulos>();
+		
 	}
 	
 	public void delete(Articulo f){ 
@@ -286,6 +303,38 @@ public class mb_Articulo {
 
 	public void setListaArticulosOBJ(ArrayList<Articulo> listaArticulosOBJ) {
 		this.listaArticulosOBJ = listaArticulosOBJ;
+	}
+
+	public Date getFechaIni() {
+		return fechaIni;
+	}
+
+	public void setFechaIni(Date fechaIni) {
+		this.fechaIni = fechaIni;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	public ArrayList<DAO_infoMovDeArticulos> getFiltrado() {
+		return filtrado;
+	}
+
+	public void setFiltrado(ArrayList<DAO_infoMovDeArticulos> filtrado) {
+		this.filtrado = filtrado;
+	}
+
+	public Articulo getArtSelected() {
+		return artSelected;
+	}
+
+	public void setArtSelected(Articulo artSelected) {
+		this.artSelected = artSelected;
 	}
 	
 }

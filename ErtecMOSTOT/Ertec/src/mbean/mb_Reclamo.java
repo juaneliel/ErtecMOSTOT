@@ -25,7 +25,7 @@ import model.DAO.DAO_Reclamo;
 import model.DAO.DAO_infoService;
 
 @ManagedBean(name="mb_Reclamo", eager = true)
-@SessionScoped
+@ViewScoped
 
 public class mb_Reclamo {
 
@@ -68,6 +68,7 @@ public class mb_Reclamo {
   private Date fechaIni;
   private Date fechaFin;
   private DAO_infoService infoServiceSelected;
+  private Reclamo reclamoSelected;
   
   
   public Date getFechaIni() {
@@ -175,6 +176,10 @@ public class mb_Reclamo {
   }
  
  
+  public void onRowReclamoSelect(){
+  	
+  }
+  
   public void editReclamo (RowEditEvent event) {
     
     Reclamo o= (Reclamo) event.getObject();
@@ -467,6 +472,14 @@ public class mb_Reclamo {
 
   public void setListaSinVisitar(ArrayList<Contrato> listaSinVisitar) {
     this.listaSinVisitar = listaSinVisitar;
-  } 
+  }
+
+	public Reclamo getReclamoSelected() {
+		return reclamoSelected;
+	}
+
+	public void setReclamoSelected(Reclamo reclamoSelected) {
+		this.reclamoSelected = reclamoSelected;
+	} 
   
 }

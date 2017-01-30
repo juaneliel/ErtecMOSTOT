@@ -31,7 +31,22 @@
 		</p:column> 
 
 
-		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{contrato.contratoID}">		                
+ 		<p:column headerText="Tipo" sortBy="#{contrato.tipo}"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.tipo}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					<p:selectOneMenu id="tipo" value="#{contrato.tipo}" style="width:85%">
+						<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
+						<f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
+					</p:selectOneMenu>	
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+
+
+		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startsWith" filterBy="#{contrato.contratoID}">		                
  
 		  <p:cellEditor>
 				<f:facet name="output">
@@ -56,8 +71,13 @@
 				<f:facet name="output">
 					<h:outputText value="#{contrato.corredorID}" />  
 				</f:facet>
-		 		<f:facet name="input">
-					<p:inputNumber id="corredorID" value="#{contrato.corredorID}" style="float:left  !important;margin:0px 0px 3px 0px;"/>   
+		 		<f:facet name="input">   
+					
+		<p:inputMask converterMessage="Ingrese un valor de corredor"  id="corredorID" label="corredorID" value="#{contrato.corredorID}" maxlength="10" >
+      	<p:keyFilter regEx="/[0-9_]/i" /> 
+  	</p:inputMask>
+					
+					
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
@@ -104,27 +124,15 @@
 				</f:facet>
 		 		<f:facet name="input">
 					<p:selectOneMenu id="retirado" value="#{contrato.retirado}" style="width:85%">
-					 	<f:selectItem  itemLabel="Retirado" itemValue="1" />
-						<f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+					 	<f:selectItem  itemLabel="SI" itemValue="SI" />
+						<f:selectItem   itemLabel="NO" itemValue="NO" />
 					</p:selectOneMenu>
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
  
  
- 		<p:column headerText="Tipo" sortBy="#{contrato.tipo}"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
-			<p:cellEditor>
-				<f:facet name="output">
-					<h:outputText value="#{contrato.tipo}" />  
-				</f:facet>
-		 		<f:facet name="input">
-					<p:selectOneMenu id="tipo" value="#{contrato.tipo}" style="width:85%">
-						<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
-						<f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
-					</p:selectOneMenu>	
-				</f:facet>
-			</p:cellEditor>
-		</p:column>
+
 		
  
 		<p:column headerText="Zona" sortBy="#{contrato.zona}"  filterMatchMode="contains" filterBy="#{contrato.zona}">		                
@@ -173,7 +181,7 @@
 		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
 			<p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.deleteContrato(contrato)}" 
 				update="datatablecontratos message @([id$=formcontratos])" >
-				<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+				<p:confirm header="Confirmacion" message="Borrar #{contrato.tipo}#{contrato.contratoID}?" icon="ui-icon-alert" />
 		 	</p:commandButton>
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 	     	<p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -185,14 +193,14 @@
 		<p:rowExpansion>	  
  
 		    
-<p:commandButton value="Ver arrendamientos" 
+<p:commandButton value="Ver arrendamientos" rendered="false"
 onclick="PF('verarrendamientos').show();" 
 action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/>  
 
 		    
 <p:commandButton value="Agregar Direccion" 
-onclick="PF('adddireccion').show();" 
-action="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contratoID,contrato.tipo)}"/>  
+onclick="PF('adddireccion').show();" update="formadddireccion"
+actionListener="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contratoID,contrato.tipo,contrato.fechaInicio,contrato.fechaFin)}"/>  
 	    
  	
 		</p:rowExpansion>		   
@@ -203,13 +211,13 @@ action="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contratoID,con
 	</p:dataTable>   
 </h:form>
 
-<p:dialog header="Ver arrendamientos" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="90%" height="600">
+<p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="420" height="600" id="dialogdireccion">
 <ui:include src="/templates/templateadddireccion.xhtml" id="adddireccion">	 
 </ui:include>	
 </p:dialog>	
 
 
-<p:dialog header="Agregar direccion" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600">
+<p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600">
 <ui:include src="/templates/templatearrendamientos.xhtml" id="verarrendamientos">	
 <ui:param name="#{paramListaArrendamientos}"   value = "#{mb_Movimiento.listaArrendamientos}"/>					
 </ui:include>	

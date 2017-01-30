@@ -21,8 +21,21 @@
 		 tableStyle="height:auto;" 
 		 style="text-align:left;max-height:500px;overflow-y:scroll; 
    font-size: 90% !important;color: red;font-weight: bold;"
-		
+		selection="#{mb_OT.otSelected}" selectionMode="single" rowKey="#{ot.id}"
 		 >
+		 
+		 		  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatable2OT" fileName="ot"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatable2OT" fileName="ot"  />
+	    </h:commandLink> 
+		</f:facet>
+		 
 		 
 		 	<f:facet name="header">
 		        Ordenes de Trabajo
@@ -100,33 +113,54 @@
 	               <f:facet name="input"><p:inputText id="factura" value="#{ot.factura}" style="width:100%"/></f:facet>
            		</p:cellEditor>
 		    </p:column>
+		    
+	   
 		    		  
 	   	    		 
-			<p:column headerText="Tipo" sortBy="#{ot.tipoID}"  filterMatchMode="contains" filterBy="#{ot.tipoID}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{ot.tipoID}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="tipoID" value="#{ot.tipoID}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
-		    </p:column>
+
 		    
 
-		     			 
-				<p:column headerText="Arre" sortBy="#{ot.arrendamiento}"  filterMatchMode="contains" filterBy="#{ot.arrendamiento}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{ot.arrendamiento}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="arrendamiento" value="#{ot.arrendamiento}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
-		    </p:column>  
-		    		 
-			
-			 
-			 
-			<p:column headerText="Mant" sortBy="#{ot.mantenimiento}"  filterMatchMode="contains" filterBy="#{ot.mantenimiento}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{ot.mantenimiento}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="mantenimiento" value="#{ot.mantenimiento}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
-		    </p:column>
+
+	  
+	  
+	  
+				<p:column headerText="F.Inicio"  style="min-width:100px;"  sortBy="#{ot.fechaInicio}"  filterMatchMode="contains" filterBy="#{ot.fechaInicio}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{ot.fechaInicio}" maxdate="#{ot.fechaInicio}" id="inicio" value="#{ot.fechaInicio}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="nacimientoin" value="#{ot.fechaInicio}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>
+	  
+	  				<p:column headerText="F.Fin"  style="min-width:100px;"  sortBy="#{ot.fechaTerminada}"  filterMatchMode="contains" filterBy="#{ot.fechaTerminada}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{ot.fechaTerminada}" maxdate="#{ot.fechaTerminada}" id="terminadaout" value="#{ot.fechaTerminada}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="terminadain" value="#{ot.fechaTerminada}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column>
+	  
+	  
+	  				<p:column headerText="F.Facturada"  style="min-width:100px;"  sortBy="#{ot.fechaFacturada}"  filterMatchMode="contains" filterBy="#{ot.fechaFacturada}">		                
+				   <p:cellEditor>
+				         <f:facet name="output">
+				         	<p:calendar mindate="#{ot.fechaFacturada}" maxdate="#{ot.fechaFacturada}" id="facturada" value="#{ot.fechaFacturada}"
+				          pattern="dd-MM-yyyy" mask="true" />
+						</f:facet>
+				         <f:facet name="input"> <p:calendar id="facturadain" value="#{ot.fechaFacturada}" pattern="dd-MM-yyyy" mask="true" />
+		 				</f:facet>
+					</p:cellEditor>
+				</p:column> 
+	  
+	  
+	  
+	  
 	  
 		  
 		  <p:rowExpansion id="datatable3">	  		
@@ -176,8 +210,7 @@ onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}"
 
 <p:commandButton value="Agregar Movimiento" update="formAddMov"
 onclick="PF('addmov').show()" 
-action="#{mb_Movimiento.setClienteOBJ(ot.cliente)}">  
-<f:actionListener binding="#{mb_Movimiento.setReferencia(ot.id)}" />
+actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">  
 </p:commandButton>
 
 
@@ -202,19 +235,42 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 
  
 
-
-		    
-		      <p:column headerText="Edit"  style = "width:50px">				
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
-					</p:rowEditor>					
+		 
+		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.ot)}">				
+					<p:rowEditor >
+					</p:rowEditor>									
 		    </p:column>
-		    
-		    <p:column headerText="Accion"  style = "width:50px">		   
-			<p:commandButton  icon="ui-icon-trash" id="trashOT" actionListener="#{mb_OT.delete(ot)}"   update="datatableOT message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+		     
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.ot)}">	
+			<p:commandLink actionListener="#{mb_OT.delete(ot)}" 
+   	
+   	update="datatableOT message" >
+        <p:confirm header="Confirmacion" message="Borrar OT nro:#{ot.id}?" icon="ui-icon-alert" />
+  <span class="ui-icon ui-icon-trash"></span>
+   	</p:commandLink>    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
 			</p:column>
+
+
+ 
 		    	   
 		      
 		</p:dataTable>
+	
+	
+		<p:contextMenu for="datatable2OT">
+  	<p:menuitem value="Adicionales" update="datatableADI" icon="ui-icon-search" oncomplete="PF('verad').show()"/>
+  	<p:menuitem value="Compras externas" update="datatableCE" icon="ui-icon-search" oncomplete="PF('verce').show()"/>
+   	<p:menuitem value="Mano de Obra" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
+   	<p:menuitem value="Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+  	<p:menuitem value="Imprimir Ot"  icon="ui-icon-search" actionListener="#{mb_OT.setNumeroID(ot.id)}" oncomplete="#{mb_OT.setNumeroID(ot.id)};PF('verpdf').show();"/>
+   	<p:menuitem value="Imprimir Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+		</p:contextMenu>
+	
+	
 	
 
   </h:form>
@@ -265,8 +321,7 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 </p:dialog>
 	
 
-<p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"
-     
+<p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"     
     closable="true" closeOnEscape="true" draggable="true"
     onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
     <h:form prependId="false">
@@ -275,12 +330,19 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
     name="someName" id="someId" scrolling="auto" width="100%"    height="550"  />
     </h:outputFormat>
     </h:form> 
-
-	
 </p:dialog>	
 	
 	
-	
+<p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" width="90%" height="550"     
+    closable="true" closeOnEscape="true" draggable="true"
+    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
+    <h:form prependId="false">
+    <h:outputFormat escape="false">
+    <iframe src="/Ertec/otapdf?otID=#{mb_OT.numeroID}"
+    name="someName" id="someId" scrolling="auto" width="100%"    height="550"  />
+    </h:outputFormat>
+    </h:form> 
+</p:dialog>	
 
 	
 	
@@ -296,7 +358,33 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 
 
 
- 
+ 		     			 
+<!-- 				<p:column headerText="Arre" sortBy="#{ot.arrendamiento}"  filterMatchMode="contains" filterBy="#{ot.arrendamiento}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{ot.arrendamiento}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="arrendamiento" value="#{ot.arrendamiento}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column>   -->
+		    		 
+			
+			 
+			 
+<!-- 			<p:column headerText="Mant" sortBy="#{ot.mantenimiento}"  filterMatchMode="contains" filterBy="#{ot.mantenimiento}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{ot.mantenimiento}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="mantenimiento" value="#{ot.mantenimiento}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
 
+<!-- 			<p:column headerText="Tipo" sortBy="#{ot.tipoID}"  filterMatchMode="contains" filterBy="#{ot.tipoID}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{ot.tipoID}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="tipoID" value="#{ot.tipoID}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
 
-
+<!-- <p:commandButton value="Agregar Movimiento" update="formAddMov" -->
+<!-- onclick="PF('addmov').show()"  -->
+<!-- actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">   -->
+<!-- <f:actionListener binding="#{mb_Movimiento.setReferencia(ot.id)}" /> -->
+<!-- </p:commandButton> -->

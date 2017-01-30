@@ -23,7 +23,12 @@ public class Contrato implements Serializable {
 
 	@Column(name="ClienteID")
 	private int clienteID;
+	
+  @OneToOne(fetch=FetchType.EAGER)
+  @JoinColumn(name="ClienteID" , insertable = false, updatable = false)
+  private Cliente cliente;
 
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLI_SEQ")  
 	@Column(name="ContratoID")
 	private int contratoID;
 
@@ -233,6 +238,14 @@ public class Contrato implements Serializable {
 
 	public void setZona(String zona) {
 		this.zona = zona;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 }

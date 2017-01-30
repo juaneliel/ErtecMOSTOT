@@ -50,7 +50,7 @@ public class mb_Cliente implements Serializable{
 	private String tipo; 
 	private String zona;
 	private int cuentaCorriente;
-	
+	private int topeMesesVisita;
 	
 	
 	
@@ -71,10 +71,13 @@ public class mb_Cliente implements Serializable{
 	}
 	
 	
-	public void agregarDireccion(int clienteID,int contratoID,String tipo){
+	public void agregarDireccion(int clienteID, int contratoID,String tipo,Date inicio,Date fin){
 	  this.contratoID=contratoID;
 	  this.clienteID=clienteID;
 	  this.tipo=tipo;
+	  this.setFechaInicio(inicio);
+	  this.setFechaFin(fin);
+	  System.out.println("agregardireccion "+tipo+" "+clienteID);
 	}
 	
 	
@@ -204,11 +207,10 @@ public class mb_Cliente implements Serializable{
 		return this.listaClientesOBJ;
 	}
 	
-	public String addContrato(){
+	public String addDireccionContrato(){
 		String salida= null;
 		Contrato c = new Contrato();
-		c.setContratoID(contratoID);
-			
+		c.setContratoID(contratoID);			
 		c.setClienteID(clienteID);
 		c.setCorredorID(corredorID);
 		c.setDireccion(direccion);
@@ -219,11 +221,42 @@ public class mb_Cliente implements Serializable{
 		c.setRetirado(retirado);
 		c.setTipo(tipo);
 		c.setZona(zona);
-		
+		c.setTopeMesesVisita(topeMesesVisita);
 		
 		if (dao.addContrato (c)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato ");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la direccion al contrato "+c.getTipo()+c.getContratoID());
+	        FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		else{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar la direccion");
+	        FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		System.out.println(">>AGREGAR contrato"+c.getContratoID() );		
+		this.recargarListaContratos(clienteID);
+		limpiarVariablesContrato();
+		return salida;
+	}
+	
+	public String addContrato(){
+		String salida= null;
+		Contrato c = new Contrato();
+		c.setContratoID(0);			
+		c.setClienteID(clienteID);
+		c.setCorredorID(corredorID);
+		c.setDireccion(direccion);
+		c.setEquipo(equipo);
+		c.setFechaFin(fechaFin);
+		c.setFechaInicio(fechaInicio);
+		c.setLocalidad(localidad);
+		c.setRetirado(retirado);
+		c.setTipo(tipo);
+		c.setZona(zona);
+		c.setTopeMesesVisita(topeMesesVisita);
+		
+		if (dao.addContrato (c)){
+			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato "+c.getTipo()+c.getContratoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		else{
@@ -428,6 +461,16 @@ public class mb_Cliente implements Serializable{
 
 	public void setCuentaCorriente(int cuentaCorriente) {
 		this.cuentaCorriente = cuentaCorriente;
+	}
+
+
+	public int getTopeMesesVisita() {
+		return topeMesesVisita;
+	}
+
+
+	public void setTopeMesesVisita(int topeMesesVisita) {
+		this.topeMesesVisita = topeMesesVisita;
 	}
 	
 	

@@ -11,12 +11,12 @@
 			    
 
 		<p:outputLabel   value="Contrato ID:" for="contrato" /> 
-		<p:outputLabel disabled="true" id="contrato" label="contrato" value="#{mb_Cliente.contratoID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+		<p:inputText disabled="true" id="contrato" label="contrato" value="#{mb_Cliente.contratoID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
 		
 				 		 
 
 		<p:outputLabel value="Cliente ID:" for="cliente" /> 
-		<p:outputLabel disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.clienteID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
+		<p:inputText disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.clienteID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
 			 
 	  <p:outputLabel value="Tipo:" for="tipo" />   
 		<p:selectOneMenu disabled="true" id="tipo" value="#{mb_Cliente.tipo}" style="width:85%">
@@ -25,8 +25,13 @@
 		</p:selectOneMenu>		 
 			 
 			 
-		<p:outputLabel value="Corredor:" for="corredorID" />   
-		<p:inputNumber id="corredorID" value="#{mb_Cliente.corredorID}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:outputLabel value="Corredor:" for="corredorID" />    
+		
+		 		<p:inputMask converterMessage="Ingrese un valor de corredor"  id="corredorID" label="corredorID" value="#{mb_Cliente.corredorID}" maxlength="10" >
+      	<p:keyFilter regEx="/[0-9_]/i" /> 
+  	</p:inputMask>
+		
+		
  
 		<p:outputLabel value="Equipo:" for="equipo" />   
 		<h:inputText id="equipo" value="#{mb_Cliente.equipo}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
@@ -50,13 +55,13 @@
 		<h:inputText id="zona" value="#{mb_Cliente.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
 
 		<p:outputLabel  value="Inicio" for="fechaInicio" />
-		<p:calendar id="fechaInicio" value="#{mb_Cliente.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+		<p:calendar id="fechaInicio" value="#{mb_Cliente.fechaInicio}" disabled="true" pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
  	
  		<p:outputLabel for="fechaFin" value="FechaFin:" />
-		<p:calendar id="fechaFin" value="#{mb_Cliente.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+		<p:calendar id="fechaFin" value="#{mb_Cliente.fechaFin}" disabled="true" pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
   
 	
-		<p:commandButton value="Agregar"  oncomplete="PF('adddireccion').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addContrato}"  update="message formcontratos"  />
+		<p:commandButton value="Agregar"  oncomplete="PF('adddireccion').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addDireccionContrato}"  update="message formcontratos"  />
    
       </h:panelGrid>
    

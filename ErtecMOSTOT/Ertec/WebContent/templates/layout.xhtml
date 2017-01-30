@@ -51,9 +51,9 @@
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
 
-        <p:submenu label="Articulos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.articulos)}">
-            <p:menuitem value="Listar" url="/paginas/articulos.xhtml" icon="" />
+        <p:submenu label="Articulos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.articulos)}">   
             <p:menuitem value="Agregar" url="/paginas/addarticulo.xhtml" icon="" /> 
+              <p:menuitem value="Listar" url="/paginas/articulos.xhtml" icon="" />
               <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
@@ -104,11 +104,11 @@
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>
  
-    		<p:submenu label="Reclamos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.reclamos)}">
-            <p:menuitem value="Listar" url="/paginas/reclamos.xhtml" icon="" />
-            <p:menuitem value="Pendientes" url="/paginas/reclamospendientes.xhtml" icon="" />                  
+    		<p:submenu label="Reclamos" icon="" rendered="#{mb_Usuario.acceso('VER',mb_Usuario.reclamos)}">    		                 
             <p:menuitem value="Agregar" url="/paginas/addreclamo.xhtml" icon="" />
+            <p:menuitem value="Historial" url="/paginas/reclamos.xhtml" icon="" />
             <p:menuitem value="Informes" url="/paginas/informeservice.xhtml" icon="" />
+            <p:menuitem value="Pendientes" url="/paginas/reclamospendientes.xhtml" icon="" /> 
             <p:menuitem value="Sin visitas" url="/paginas/sinvisitas.xhtml" icon="" />
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />

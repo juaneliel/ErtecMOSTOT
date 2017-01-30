@@ -3,11 +3,13 @@ package model.DAO;
 import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import model.Articulo;
 import model.Cliente;
 import model.Contrato;
+import model.DatosGlobale;
 import model.NexoMovimiento;
 import util.JpaUtil;
 
@@ -146,7 +148,8 @@ public class DAO_Cliente {
 		ArrayList<Contrato> salida = new ArrayList<Contrato>();
 		EntityManager em=JpaUtil.getEntityManager();  
 		try{ 
-			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID;
+			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID + "and retirado='NO'" +
+					"ORDER BY contratoID DESC";
 			System.out.println("Consulta getContratosCliente"+consulta);
 			TypedQuery<Contrato> consultaFuncionario= em.createQuery(consulta, Contrato.class);
 			ArrayList<Contrato> auxLista = (ArrayList<Contrato>) consultaFuncionario.getResultList(); 
@@ -165,9 +168,48 @@ public class DAO_Cliente {
 			
 	
 	public boolean addContrato(Contrato c){
+System.out.println("addContrato "+c.getContratoID());
+    	EntityManager em=JpaUtil.getEntityManager(); 
+    	DatosGlobale dg = em.find(DatosGlobale.class, 1);
+    	if(c.getContratoID()==0){
+	    	if(c.getTipo().equals("A")){
+	    		int seq=dg.getArrendamiento_Seq();
+	    		c.setContratoID(seq);
+	    		dg.setArrendamiento_Seq(++seq);
+	    	}
+	    	else {
+					if(c.getTipo().equals("M")){
+						int seq=dg.getMantenimiento_Seq();
+		    		c.setContratoID(seq);
+		    		dg.setMantenimiento_Seq(++seq);
+					}
+				}
+    	}
+    	
+//		String consulta="";
+//		
+//		if(c.getTipo().equals("A")){
+//			consulta = "UPDATE ArrMan_Seq SET `Arrendamiento_Seq` = `Arrendamiento_Seq` +1";
+//			Query q = em.createNativeQuery(consulta);   
+//			q.executeUpdate();
+//			
+//	    salida= (ArrayList<Contrato>) q.getResultList();
+//			
+//			"select `Arrendamiento_Seq` from ArrMan_Seq";
+//		}
+//		else {
+//			if(c.getTipo().equals("M")){
+//				consulta="UPDATE ArrMan_Seq SET `Mantenimiento_Seq` = `Mantenimiento_Seq` +1";
+//			}
+//		}
+//		
+//    System.out.println(">>>daoreclamo consulta filtrarSinVisitar>"+ consulta);     
+//    Query q = em.createNativeQuery(consulta,Contrato.class);            
+//    salida= (ArrayList<Contrato>) q.getResultList();
+		
 		//modificar esto para que los id de los contratos se acomoden para arrendamiento
 		//y para mantenemiento
-		EntityManager em=JpaUtil.getEntityManager(); 
+		
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
@@ -222,6 +264,7 @@ public class DAO_Cliente {
 			aux.setRetirado(o.getRetirado());
 			aux.setTipo(o.getTipo());
 			aux.setZona(o.getZona());			
+			aux.setTopeMesesVisita(o.getTopeMesesVisita());
 			
 			em.getTransaction().commit();
 			salida=true;

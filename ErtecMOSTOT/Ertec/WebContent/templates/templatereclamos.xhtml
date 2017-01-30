@@ -19,6 +19,7 @@
 			editable="true" 
 			style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"
 			rowStyleClass="#{(reclamo.urgente) =='SI' ? 'urgente' : ''}" 
+			selection="#{mb_Reclamo.reclamoSelected}" selectionMode="single" rowKey="#{reclamo.id}"
 			>
 		 
 		<f:facet name="header" styleClass="cabecera">
@@ -30,7 +31,7 @@
 		</f:facet>
 				 
 		<p:ajax event="rowEdit" listener="#{mb_Reclamo.editReclamo}" update="message reclamo" />	  
-	
+	 
 
   
   
@@ -68,7 +69,9 @@
             	
 	    	</f:facet>
    		</p:cellEditor>
-		</p:column>  
+		</p:column> 
+		
+		 
 		
   
   	<p:column headerText="F.Reclamado" visible="#{mb_Reclamo.list[4]}" sortBy="#{reclamo.fechaReclamado}"  filterMatchMode="contains" filterBy="#{reclamo.fechaReclamado}">		                
@@ -226,13 +229,13 @@
 		  
 		  
 		  
-		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.puedeActualizar}">				
+		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.reclamos)}">				
 					<p:rowEditor>
 					</p:rowEditor>	
 									
 		    </p:column>
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.puedeBorrar}" >	
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.reclamos)}" >	
 			<p:commandLink actionListener="#{mb_Reclamo.delete(reclamo)}" 
    	
    	update="formreclamo message" >
@@ -249,11 +252,99 @@
 	
 	</p:dataTable>
 
+	<p:contextMenu for="datatable2">
+  	<p:menuitem value="Ver detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>
+  </p:contextMenu>
+
+<p:dialog header="Detalle funcionario" widgetVar="dialogodetalles" modal="true" showEffect="fade" hideEffect="fade" >
+        <p:outputPanel id="detalles" style="text-align:center;">
+                <p:panelGrid  columns="2" rendered="#{not empty mb_Reclamo.reclamoSelected}" columnClasses="label,value">
+                
+
+
+
+                
+               <h:outputText value="Id:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.id}" /> 
+              
+               <h:outputText value="Cliente:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.nombreCliente}" /> 
+               
+               <h:outputText value="Codigo:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.codigo}" /> 
+               
+               <h:outputText value="Reclamo:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.reclamo}" /> 
+               
+               <h:outputText value="F.Reclamado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaReclamado}" /> 
+              
+               <h:outputText value="Estado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.estado}" /> 
+               
+               <h:outputText value="F.Visita:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaVisita}" /> 
+               
+               <h:outputText value="Tecnico:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.funcionario.nombre}" /> 
+               
+               <h:outputText value="MYR:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.myr}" /> 
+                              
+               <h:outputText value="O.R.:" />
+               <h:outputText value="#{mb_Reclamo.ordenreparacion}" /> 
+                              
+               <h:outputText value="Observaciones:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.observaciones}" /> 
+                              
+               <h:outputText value="Urgente:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.urgente}" /> 
+                              
+               <h:outputText value="MYR estado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.myrEstado}" /> 
+                              
+               <h:outputText value="H.Red" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.red}" /> 
+                              
+               <h:outputText value="H.Telefono:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.telefonos}" /> 
+                              
+               <h:outputText value="H.Energia:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.energia}" /> 
+                                             
+               <h:outputText value="H.Conmutador:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.conmutador}" /> 
+                                             
+               <h:outputText value="H.Antel:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.antel}" /> 
+
+               <h:outputText value="Contacto:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.contacto}" /> 
+
+           </p:panelGrid>
+       </p:outputPanel>
+   </p:dialog>
+
+
+
+
+
+
+
+
+
 </h:form> 
 			
  			
 				
 	</ui:composition>
 </html>
+
+
+
 <!--   <f:event type="preRenderView" listener="#{mb_Reclamo.recargar}" /> -->
+
+<!--   <p:ajax event="rowSelect" listener="#{mb_Reclamo.onRowReclamoSelect}" update=":formreclamo:detalles" oncomplete="PF('dialogodetalles').show()" /> -->
+  
+
  

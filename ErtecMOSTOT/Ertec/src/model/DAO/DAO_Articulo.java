@@ -1,8 +1,13 @@
 package model.DAO;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import model.Articulo;
@@ -204,6 +209,70 @@ public class DAO_Articulo {
 		}
 		return salida;	
 	}	
+	
+	public static ArrayList<DAO_infoMovDeArticulos> filtrarInfoMovArticulo (int articuloID,Date fechaIni, Date fechaFin){
+		ArrayList<DAO_infoMovDeArticulos> salida=new ArrayList<DAO_infoMovDeArticulos>();
+		
+		System.out.println("filtrarInfoMovArticulo "+fechaIni+" "+fechaFin);
+		
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    String fi = "";
+    String ff="";
+    if(fechaIni!=null){
+      fi = formatter.format(fechaIni); 
+    }
+    else{
+    	
+    }
+    
+    if (fechaFin!=null){
+      ff = formatter.format(fechaFin); 
+    }
+    else{
+      ff = formatter.format(new Date()); 
+    }
+		  
+		  
+		  
+		  
+		  
+		String consulta="Select n.movimientoID,m.codigoMovimientoID , m.referencia,n.cantidad,n.costo,m.nombreCliente,m.fecha"
+				+ " from NexoMovimiento n, Movimiento m where n.articuloID=" +articuloID+ " and m.movimientoID = n.movimientoID and m.fecha BETWEEN '" +
+				fi + "' AND '" + ff + "'" ;
+			
+		EntityManager em=JpaUtil.getEntityManager();
+		
+	   try{	       
+	      System.out.println(">>>consulta>"+ consulta);     
+	      Query q = em.createQuery(consulta);            
+	      List < Object[]>r = (List<Object[]>) q.getResultList();
+	      
+	      for (Object[] results : r){ 
+	      	DAO_infoMovDeArticulos aux = new DAO_infoMovDeArticulos();
+	        aux.setMovimientoID(Long.parseLong(results[0].toString()));
+	      	aux.setCodigoMovimientoID(Integer.parseInt(results[1].toString()));
+	      	aux.setReferencia(Integer.parseInt(results[2].toString()));
+	      	aux.setCantidad( new BigDecimal(results[3].toString()));
+	      	aux.setCosto(new BigDecimal(results[4].toString()));
+	      	aux.setNombreCliente(results[5].toString());
+	      	aux.setFecha(formatter.parse(results[6].toString()));
+	      	 
+	        salida.add(aux);
+	        
+	      } 
+	    }
+	   catch(Exception e){
+	      e.printStackTrace();
+	    }
+	   finally{ 
+	  	  if(em!=null ){
+				  em.close();
+			  }		
+		}
+		
+		System.out.println(">>>filtrado por fechas: "+salida.size());
+		return salida;
+	}
 	
 	
 }

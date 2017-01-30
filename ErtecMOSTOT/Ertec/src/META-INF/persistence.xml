@@ -23,6 +23,7 @@
 		<class>model.Arrendamiento</class>
 		<class>model.Reclamo</class>
 		<class>model.Cod_Movimiento</class>
+		<class>model.DatosGlobale</class>
 		
 		
 		
@@ -30,8 +31,8 @@
 		<properties>			
            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MOSTOT?useSSL=false"/>
-           <property name="javax.persistence.jdbc.user" value="root"/>
-           <property name="javax.persistence.jdbc.password" value="adminMysqlPass"/>
+           <property name="javax.persistence.jdbc.user" value="ertec"/>
+           <property name="javax.persistence.jdbc.password" value="adminMostotPass"/>
            <property name="hibernate.hbm2ddl.auto" value="update"/>
            <property name="hibernate.show_sql" value="false"/>
            <property name="hibernate.format_sql" value="true"/>

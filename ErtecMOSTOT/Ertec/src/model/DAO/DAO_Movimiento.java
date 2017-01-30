@@ -1,11 +1,16 @@
 package model.DAO;
 
+import java.text.SimpleDateFormat;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import model.Adicional;
@@ -14,6 +19,7 @@ import model.Articulo;
 import model.Cod_Movimiento; 
 
 import model.Funcionario;
+import model.ManoObra;
 import model.Movimiento;
 import model.NexoMovimiento;
 import model.Ot;
@@ -38,6 +44,18 @@ public class DAO_Movimiento {
 				//compra en plaza, aumenta stock y modifica los valores del articulo
 				acomodarNexo(movimiento,nexo,a);
 				em.persist(nexo);
+				
+
+				//salida por arrendamiento
+				if(movimiento.getCodigoMovimientoID()==25){
+					Arrendamiento arrendamiento=new Arrendamiento();
+					arrendamiento.setArticulo(a);
+					arrendamiento.setArticuloID(a.getArticuloID());
+					arrendamiento.setCantidad(nexo.getCantidad().intValue());
+					arrendamiento.setMovimientoID(movimiento.getMovimientoID()); 
+					arrendamiento.setSaldo(nexo.getCantidad().intValue());
+					em.persist(arrendamiento);
+				}
 			}
 			em.getTransaction().commit(); 
 			salida = true;
@@ -160,6 +178,9 @@ public class DAO_Movimiento {
     }
     return salida;
 	}
+	
+	
+	
 	
 	public boolean update(Movimiento m){ 
 		EntityManager em=JpaUtil.getEntityManager();

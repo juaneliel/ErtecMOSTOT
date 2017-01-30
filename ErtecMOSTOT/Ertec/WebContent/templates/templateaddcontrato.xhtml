@@ -10,11 +10,7 @@
 	  <h:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
 			
 		
-		<p:outputLabel value="Id" for="contratoid" />    
- 		 <p:inputMask converterMessage="Ingrese un valor de referencia"  min="1" id="contratoid" label="contratoid" value="#{mb_Cliente.contratoID}"  maxlength="10" >
-		      	<p:keyFilter regEx="/[0-9_]/i" />
-		      	 <f:validateDoubleRange minimum="1" />  
-		  	</p:inputMask>
+
 
 		<p:outputLabel value="Cliente:" for="cliente" /> 
 		<p:outputLabel disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.nombre}"  /> 
@@ -26,8 +22,13 @@
 		</p:selectOneMenu>		 
 			 
 			 
-		<p:outputLabel value="Corredor:" for="corredorID" />   
-		<p:inputNumber id="corredorID" value="#{mb_Cliente.corredorID}" />  
+		<p:outputLabel value="Corredor:" for="corredorID" />    
+ 
+ 		<p:inputMask converterMessage="Ingrese un valor de corredor"  id="corredorID" label="corredorID" value="#{mb_Cliente.corredorID}" maxlength="10" >
+      	<p:keyFilter regEx="/[0-9_]/i" /> 
+  	</p:inputMask>
+ 
+ 
  
 		<p:outputLabel value="Equipo:" for="equipo" />   
 		<h:inputText id="equipo" value="#{mb_Cliente.equipo}"/>  
@@ -56,6 +57,12 @@
  		<p:outputLabel for="fechaFin" value="FechaFin:" />
 		<p:calendar id="fechaFin" value="#{mb_Cliente.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
   
+		<p:outputLabel value="tope sin visitas" for="topemesesvisita" />    
+ 		 <p:inputMask converterMessage="Ingrese un maximo de tiempo sin ser visitado"  min="1" id="topemesesvisita" label="topemesesvisita" value="#{mb_Cliente.topeMesesVisita}"  maxlength="2" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
+		  	</p:inputMask>
+	
 	
 		<p:commandButton value="Agregar"  oncomplete="PF('addcontrato').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addContrato}"  update="message @([id$=formcontratos])"  />
    
@@ -69,4 +76,8 @@
 
 
 
-
+<!-- 		<p:outputLabel value="Id" for="contratoid" />     -->
+<!--  		 <p:inputMask converterMessage="Ingrese un valor de referencia"  min="1" id="contratoid" label="contratoid" value="#{mb_Cliente.contratoID}"  maxlength="10" > -->
+<!-- 		      	<p:keyFilter regEx="/[0-9_]/i" /> -->
+<!-- 		      	 <f:validateDoubleRange minimum="1" />   -->
+<!-- 		  	</p:inputMask> -->

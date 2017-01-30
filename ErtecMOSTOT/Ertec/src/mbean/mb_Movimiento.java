@@ -32,7 +32,7 @@ import model.DAO.DAO_Movimiento;
 
 
 @ManagedBean (name="mb_Movimiento")
-@SessionScoped
+@ViewScoped
 public class mb_Movimiento {
 
 	private DAO_Movimiento dao=new DAO_Movimiento();
@@ -118,7 +118,12 @@ public class mb_Movimiento {
 	  System.out.println("mapa:"+mapaArrendamiento);
 	}
 	
-	
+	public void ajustesAddMovimentoOT(Cliente cliente, int referencia){
+		this.clienteOBJ=cliente;
+		this.referencia=referencia;
+		this.codigoMovimientoID=4;
+		this.actualizarCotizacionYContrato(codigoMovimientoID);
+	}
  
 	
 	
