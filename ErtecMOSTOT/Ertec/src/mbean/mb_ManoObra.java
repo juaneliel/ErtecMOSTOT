@@ -20,7 +20,7 @@ import model.DAO.DAO_Funcionario;
 import model.DAO.DAO_ManoObra; 
 
 @ManagedBean (name="mb_ManoObra")
-@SessionScoped
+@ViewScoped
 public class mb_ManoObra {
 
 	private String cliente;

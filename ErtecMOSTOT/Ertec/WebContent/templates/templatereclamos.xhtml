@@ -179,6 +179,33 @@
 	    	</f:facet>
    		</p:cellEditor>
 		</p:column>  
+		
+
+
+		<p:column headerText="Antel" visible="#{mb_Reclamo.list[18]}" sortBy="#{reclamo.antel}"  filterMatchMode="contains" filterBy="#{reclamo.antel}">		                
+			<p:cellEditor>
+	        	<f:facet name="output"><h:outputText value="#{reclamo.antel}" /></f:facet>
+	       		<f:facet name="input"><p:inputText id="antel" value="#{reclamo.antel}"  /></f:facet>
+        	</p:cellEditor>
+		</p:column> 
+		  
+		
+					<p:column headerText="Conmutador" visible="#{mb_Reclamo.list[17]}" sortBy="#{reclamo.conmutador}"  filterMatchMode="contains" filterBy="#{reclamo.conmutador}">		                
+			<p:cellEditor>
+	        	<f:facet name="output"><h:outputText value="#{reclamo.conmutador}" /></f:facet>
+	       		<f:facet name="input"><p:inputText id="conmutador" value="#{reclamo.conmutador}"  /></f:facet>
+        	</p:cellEditor>
+		</p:column>  
+		
+		
+			<p:column headerText="Energia" visible="#{mb_Reclamo.list[15]}" sortBy="#{reclamo.energia}"  filterMatchMode="contains" filterBy="#{reclamo.energia}">		                
+			<p:cellEditor>
+	        	<f:facet name="output"><h:outputText value="#{reclamo.energia}" /></f:facet>
+	       		<f:facet name="input"><p:inputText id="energia" value="#{reclamo.energia}"  /></f:facet>
+        	</p:cellEditor>
+		</p:column> 
+		
+		
 
 	 	<p:column headerText="Red" sortBy="#{reclamo.red}" visible="#{mb_Reclamo.list[13]}" filterMatchMode="contains" filterBy="#{reclamo.red}">		                
 			<p:cellEditor>
@@ -197,12 +224,7 @@
 
 	
 
-	<p:column headerText="Energia" visible="#{mb_Reclamo.list[15]}" sortBy="#{reclamo.energia}"  filterMatchMode="contains" filterBy="#{reclamo.energia}">		                
-			<p:cellEditor>
-	        	<f:facet name="output"><h:outputText value="#{reclamo.energia}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="energia" value="#{reclamo.energia}"  /></f:facet>
-        	</p:cellEditor>
-		</p:column> 
+
 
 	<p:column headerText="Contacto" visible="#{mb_Reclamo.list[16]}" sortBy="#{reclamo.contacto}"  filterMatchMode="contains" filterBy="#{reclamo.contacto}">		                
 			<p:cellEditor>
@@ -211,20 +233,7 @@
         	</p:cellEditor>
 		</p:column> 
 
-	<p:column headerText="Conmutador" visible="#{mb_Reclamo.list[17]}" sortBy="#{reclamo.conmutador}"  filterMatchMode="contains" filterBy="#{reclamo.conmutador}">		                
-			<p:cellEditor>
-	        	<f:facet name="output"><h:outputText value="#{reclamo.conmutador}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="conmutador" value="#{reclamo.conmutador}"  /></f:facet>
-        	</p:cellEditor>
-		</p:column>  
 
-		<p:column headerText="Antel" visible="#{mb_Reclamo.list[18]}" sortBy="#{reclamo.antel}"  filterMatchMode="contains" filterBy="#{reclamo.antel}">		                
-			<p:cellEditor>
-	        	<f:facet name="output"><h:outputText value="#{reclamo.antel}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="antel" value="#{reclamo.antel}"  /></f:facet>
-        	</p:cellEditor>
-		</p:column> 
-		  
 	 
 		  
 		  

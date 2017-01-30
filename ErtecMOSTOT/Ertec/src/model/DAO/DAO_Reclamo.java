@@ -128,8 +128,8 @@ public class DAO_Reclamo {
   
   public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
     
-    String consulta =  "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador),"
-        + " c.equipo,c.tipo,c.contratoID,max( DATEDIFF(r.fechaVisita,r.fechaReclamado) ),sum(r.antel),sum(r.conmutador) "
+    String consulta =  "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador+r.energia+r.telefonos),"
+        + " c.equipo,c.tipo,c.contratoID,max( DATEDIFF(r.fechaVisita,r.fechaReclamado) ),sum(r.antel),sum(r.conmutador),sum(r.energia),sum(r.telefonos) "
         + "FROM Reclamo r, Contrato c where r.contratoID = c.id ";
  
         
@@ -193,9 +193,10 @@ public class DAO_Reclamo {
         aux.setTiempoRespuesta(Long.parseLong(results[8].toString()));  
         aux.setHorasAntel(Long.parseLong(results[9].toString()));  
         aux.setHorasConmutador(Long.parseLong(results[10].toString()));  
-         
-        salida.add(aux);
+        aux.setHorasEnergia(Long.parseLong(results[11].toString())); 
+        aux.setHorasTelefonos(Long.parseLong(results[12].toString()));         
         
+        salida.add(aux);        
       } 
     }
     catch(Exception e){

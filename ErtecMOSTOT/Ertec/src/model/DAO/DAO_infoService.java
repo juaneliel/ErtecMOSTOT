@@ -10,6 +10,8 @@ public class DAO_infoService {
     private long horasAntel;
     private long horasConmutador;
     private long horasRed;
+    private long horasEnergia;
+    private long horasTelefonos;
     public String getCodigo() {
       return codigo;
     }
@@ -65,7 +67,19 @@ public class DAO_infoService {
     }
     public void setHorasRed(long horasRed) {
       this.horasRed = horasRed;
-    } 
+    }
+		public long getHorasEnergia() {
+			return horasEnergia;
+		}
+		public void setHorasEnergia(long horasEnergia) {
+			this.horasEnergia = horasEnergia;
+		}
+		public long getHorasTelefonos() {
+			return horasTelefonos;
+		}
+		public void setHorasTelefonos(long horasTelefonos) {
+			this.horasTelefonos = horasTelefonos;
+		} 
     
     
          

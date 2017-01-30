@@ -253,8 +253,18 @@ public class DAO_Articulo {
 	      	aux.setCodigoMovimientoID(Integer.parseInt(results[1].toString()));
 	      	aux.setReferencia(Integer.parseInt(results[2].toString()));
 	      	aux.setCantidad( new BigDecimal(results[3].toString()));
-	      	aux.setCosto(new BigDecimal(results[4].toString()));
-	      	aux.setNombreCliente(results[5].toString());
+	      	if(results[4]!=null){
+		      	aux.setCosto(new BigDecimal(results[4].toString()));
+	      	}
+	      	else{
+	      		aux.setCosto(BigDecimal.ZERO);
+	      	}
+	      	if(results[5]!=null){
+		      	aux.setNombreCliente(results[5].toString());	      		
+	      	}
+	      	else{
+	      		aux.setNombreCliente("");
+	      	}
 	      	aux.setFecha(formatter.parse(results[6].toString()));
 	      	 
 	        salida.add(aux);

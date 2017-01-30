@@ -89,24 +89,34 @@ update="datatableservice :message"/>
 		 <h:outputText value="#{service.tiempoRespuesta}" /> 
 		</p:column>  
 
-
-		<p:column headerText="T/H" title="Total de horas trabajadas" sortBy="#{service.tiempoHoras}"  style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoHoras}">		                
+ 		<p:column headerText="PHT" title="Total de horas trabajadas" sortBy="#{service.tiempoHoras}"  style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.tiempoHoras}">		                
 		 <h:outputText value="#{service.tiempoHoras}" /> 
 		</p:column> 
-
-
- 	<p:column headerText="H/R" label="Horas trabajadas en la red" sortBy="#{service.horasRed}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasRed}">		                
-		 <h:outputText value="#{service.horasRed}" /> 
-		</p:column> 
-  
- 	<p:column headerText="H/C" title="Horas trabajadas en el conmutador" sortBy="#{service.horasConmutador}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.horasConmutador}">		                
-		 <h:outputText value="#{service.horasConmutador}" /> 
-		</p:column>  
  
  	<p:column headerText="H/A" title="Horas trabajadas en antel" sortBy="#{service.horasAntel}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasAntel}">		                
 		 <h:outputText value="#{service.horasAntel}" /> 
 		</p:column> 
- 
+
+
+	<p:column headerText="H/C" title="Horas trabajadas en el conmutador" sortBy="#{service.horasConmutador}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{service.horasConmutador}">		                
+		 <h:outputText value="#{service.horasConmutador}" /> 
+		</p:column>  
+
+		
+		 	<p:column headerText="H/E" label="Horas trabajadas en la energia" sortBy="#{service.horasEnergia}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasEnergia}">		                
+		 <h:outputText value="#{service.horasEnergia}" /> 
+		</p:column>
+				
+		 	<p:column headerText="H/R" label="Horas trabajadas en la red" sortBy="#{service.horasRed}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasRed}">		                
+		 <h:outputText value="#{service.horasRed}" /> 
+		</p:column> 
+		
+			 	<p:column headerText="H/T" label="Horas trabajadas en telefonos" sortBy="#{service.horasTelefonos}" style = "width:50px;text-align:center" filterStyle="width: 40px;"  filterMatchMode="contains" filterBy="#{service.horasTelefonos}">		                
+		 <h:outputText value="#{service.horasTelefonos}" /> 
+		</p:column>	
+
+  
+
  
 
     
