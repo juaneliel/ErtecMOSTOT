@@ -15,6 +15,11 @@
   	
  	
 
+<p:fileUpload label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar" fileUploadListener="#{mb_Funcionario.upload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000000" description="Seleccione el archivo"/>
+ 
+ 	 <h:graphicImage value="/resources/fotos/c.png" height="100" width="100"/>
+ 	
+
   	
 		<p:dataTable var="funcionario" value="#{mb_Funcionario.lista}" id="datatable2"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
