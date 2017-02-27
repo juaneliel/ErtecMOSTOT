@@ -309,8 +309,9 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 </ui:include>			
 </p:dialog>	    
 
-<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="550">
+<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="450">
 <ui:include src="/templates/templateaddmanoobra.xhtml" id="addmanoobra">			
+<ui:param name="verIDOT"   value = "true"/>
 </ui:include>			
 </p:dialog>		
 	

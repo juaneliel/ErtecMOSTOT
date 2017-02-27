@@ -35,12 +35,12 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 			<p:outputLabel  value="Fecha:" for="fechamo"/>
         	<p:calendar id="fechamo" value="#{mb_ManoObra.fecha}" effect="fold" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
 
-			<p:outputLabel value="MyR:" for="myr" />   
-			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.myr}"  disabled="#{mb_ManoObra.codigosMOOBJ.verMYR==0}" 
+			<p:outputLabel value="MyR:" for="myr"  rendered="#{!verIDOT}" />   
+			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.myr}" rendered="#{!verIDOT}" 
 			  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
 			
-			<p:outputLabel value="Id OT:" for="ordenTrabajo" /> 
-			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo" value="#{mb_ManoObra.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			<p:outputLabel value="Id OT:" for="ordenTrabajo" rendered="#{verIDOT}" /> 
+			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo"  rendered="#{verIDOT}" value="#{mb_ManoObra.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
 			
 			
 			<p:outputLabel value="Tipo de Hora:" for="tipoHora" /> 
