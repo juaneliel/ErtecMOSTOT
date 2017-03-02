@@ -21,12 +21,15 @@ public class ComprasExternasOT implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CE_SEQ") 
 	private int id;
 
+	@Column(name="NombreArticulo")
+	private String nombreArticulo;
+	
 	@Column(name="ArticuloID")
 	private int articuloID;
 
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ArticuloID" , insertable = false, updatable = false)
-	private Articulo articulo;
+//	@OneToOne(fetch=FetchType.EAGER)
+//	@JoinColumn(name="ArticuloID" , insertable = false, updatable = false)
+//	private Articulo articulo;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ProveedorID" , insertable = false, updatable = false)
@@ -124,14 +127,14 @@ public class ComprasExternasOT implements Serializable {
 	}
 
 
-	public Articulo getArticulo() {
-		return articulo;
-	}
+//	public Articulo getArticulo() {
+//		return articulo;
+//	}
 
 
-	public void setArticulo(Articulo articulo) {
-		this.articulo = articulo;
-	}
+//	public void setArticulo(Articulo articulo) {
+//		this.articulo = articulo;
+//	}
 
 
 	public Proveedores getProveedor() {
@@ -141,6 +144,16 @@ public class ComprasExternasOT implements Serializable {
 
 	public void setProveedor(Proveedores proveedor) {
 		this.proveedor = proveedor;
+	}
+
+
+	public String getNombreArticulo() {
+		return nombreArticulo;
+	}
+
+
+	public void setNombreArticulo(String nombreArticulo) {
+		this.nombreArticulo = nombreArticulo;
 	}
 	
 	

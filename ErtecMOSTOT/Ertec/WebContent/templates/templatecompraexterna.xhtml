@@ -33,15 +33,10 @@
 			
 		</p:column>
 		   
-		<p:column headerText="articulo:" sortBy="#{compraExterna.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{compraExterna.articulo.descripcion}">		                
+		<p:column headerText="Articulo:" sortBy="#{compraExterna.nombreArticulo}"  filterMatchMode="contains" filterBy="#{compraExterna.nombreArticulo}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{compraExterna.articulo.descripcion}" /></f:facet>
-		         <f:facet name="input">
-<p:autoComplete id="themePojo" value="#{compraExterna.articulo}"
- completeMethod="#{mb_OT.completarArticulo}"
-var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
- converter="ConverterArticulo" forceSelection="true" minQueryLength="3"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
- 				</f:facet>
+		         <f:facet name="output"><h:outputText value="#{compraExterna.nombreArticulo}" /></f:facet>
+		         <f:facet name="input"><h:inputText value="#{compraExterna.nombreArticulo}" /></f:facet>
 			</p:cellEditor>
 		</p:column>  
 		   

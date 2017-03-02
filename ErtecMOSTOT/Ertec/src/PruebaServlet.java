@@ -1,6 +1,8 @@
 
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import mbean.mb_Articulo;
+import usuario.UsuarioLogin;
 import util.ExportMovimientoPDF;
 import util.ExportarOTPDF;
 
@@ -25,7 +29,9 @@ import util.ExportarOTPDF;
 @WebServlet("/otapdf")
 public class PruebaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	@Inject
+	private UsuarioLogin user;     
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -61,22 +67,31 @@ public class PruebaServlet extends HttpServlet {
     String idOT=request.getParameter("otID");
     System.out.println(idOT);    
     String tipo=request.getParameter("tipo");
+
     
-    ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+    String path = request.getRequestURI();
+   // String split_path[] = path.split("/");
+   // path = request.getRealPath(split_path[0]);
+    String imagePath="\\resources\\images\\letterHead.jpg";
+    //Image image = Image.getInstance(path+imagePath);
+    System.out.println("path "+path+" "+idOT);
     
-//    if (tipo.equals("ot")){
-//    	ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());      
-//    }
-//    else{
-//      if (tipo.equals("mov")){ 	
-//      	
-//      	ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());
-//      
-//      
-//      }
-//    }
-	
-	
+    
+    if(user.estaLogueado()&& Integer.parseInt(idOT)>0){
+      if (tipo.equals("ot")){
+		  	ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+		  	System.out.println("user export pdf OT "+user.getNombre());
+		  }
+		  else{
+		    if (tipo.equals("mov")){ 			    	
+	    		ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+	      	System.out.println("user export pdf mov "+user.getNombre());
+		    }
+		  }   	
+    }
+    else{
+    	//ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());     	
+    }	
 	}
 
 	/**

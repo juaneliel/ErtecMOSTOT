@@ -197,8 +197,8 @@ action="#{mb_OT.setNumeroID(ot.id)}"/>
 
 
 <p:commandButton value="Agregar Compras Externas"
-onclick="PF('addce').show();#{mb_OT.setNumeroID(ot.id)}" 
-action="#{mb_OT.setNumeroID(ot.id)}"/>  
+onclick="PF('addce').show();" 
+actionListener="#{mb_OT.setearIDOT(ot.id)}"/>  
     
 			
 			 
@@ -217,12 +217,20 @@ actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">
 <br/> 
 
 <p:column headerText="Pdf" style="width:40px" stylr="color:red">  
-<h:form target="_blank">
-<p:commandButton  icon="ui-icon-print" id="imprimir" onclick="location.href='/Ertec/otapdf?otID=#{mb_OT.numeroID}';PF('verpdf').show();"  
-action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
-</h:form>
-
+ 
+<p:commandButton  icon="ui-icon-print" id="imprimir"  onclick="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');" 
+action="#{mb_OT.urlImprimirOT(ot.id)}"  update="message"   />
+ 
 </p:column>
+
+
+<p:column headerText="Pdf" style="width:40px" stylr="color:red">  
+ 
+<p:commandButton  icon="ui-icon-print" id="imprimir2" onclick="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');" 
+action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
+ 
+</p:column>
+
    
 		  </p:rowExpansion>
 
@@ -266,8 +274,8 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
   	<p:menuitem value="Compras externas" update="datatableCE" icon="ui-icon-search" oncomplete="PF('verce').show()"/>
    	<p:menuitem value="Mano de Obra" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
    	<p:menuitem value="Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
-  	<p:menuitem value="Imprimir Ot"  icon="ui-icon-search" actionListener="#{mb_OT.setNumeroID(ot.id)}" oncomplete="#{mb_OT.setNumeroID(ot.id)};PF('verpdf').show();"/>
-   	<p:menuitem value="Imprimir Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+  	<p:menuitem value="Imprimir Ot"  icon="ui-icon-search" oncomplete="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');"/>
+   	<p:menuitem value="Imprimir Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');"/>
 		</p:contextMenu>
 	
 	
@@ -322,28 +330,6 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 </p:dialog>
 	
 
-<p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"     
-    closable="true" closeOnEscape="true" draggable="true"
-    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
-    <h:form prependId="false">
-    <h:outputFormat escape="false">
-    <iframe src="/Ertec/otapdf?otID=#{mb_OT.numeroID}"
-    name="someName" id="someId" scrolling="auto" width="100%"    height="550"  />
-    </h:outputFormat>
-    </h:form> 
-</p:dialog>	
-	
-	
-<p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" width="90%" height="550"     
-    closable="true" closeOnEscape="true" draggable="true"
-    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
-    <h:form prependId="false">
-    <h:outputFormat escape="false">
-    <iframe src="/Ertec/otapdf?otID=#{mb_OT.numeroID}"
-    name="someName" id="someId" scrolling="auto" width="100%"    height="550"  />
-    </h:outputFormat>
-    </h:form> 
-</p:dialog>	
 
 	
 	
@@ -389,3 +375,32 @@ action="#{mb_OT.setNumeroID(ot.id)}"  update="message"   />
 <!-- actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">   -->
 <!-- <f:actionListener binding="#{mb_Movimiento.setReferencia(ot.id)}" /> -->
 <!-- </p:commandButton> -->
+
+
+
+
+
+
+
+<!-- <p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"      -->
+<!--     closable="true" closeOnEscape="true" draggable="true" -->
+<!--     onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();"> -->
+<!--     <h:form prependId="false"> -->
+<!--     <h:outputFormat escape="false"> -->
+<!--     <iframe src="#{mb_OT.urlImprimirOT(ot.id)}" -->
+<!--     name="someName" id="someId" scrolling="auto" width="100%"    height="550"  /> -->
+<!--     </h:outputFormat> -->
+<!--     </h:form>  -->
+<!-- </p:dialog>	 -->
+	
+	
+<!-- <p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" width="90%" height="550"      -->
+<!--     closable="true" closeOnEscape="true" draggable="true" -->
+<!--     onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();"> -->
+<!--     <h:form prependId="false"> -->
+<!--     <h:outputFormat escape="false"> -->
+<!--     <iframe src="#{mb_OT.urlImprimirMov(ot.id)}" -->
+<!--     name="someName" id="someId" scrolling="auto" width="100%"    height="550"  /> -->
+<!--     </h:outputFormat> -->
+<!--     </h:form>  -->
+<!-- </p:dialog>	 -->

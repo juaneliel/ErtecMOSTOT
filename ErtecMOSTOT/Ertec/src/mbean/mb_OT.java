@@ -9,7 +9,8 @@ import java.util.Map;
 import util.ExportarOTPDF;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext; 
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -38,7 +39,7 @@ public class mb_OT {
 
 	private DAO_OT dao=new DAO_OT(); 
  
-	private int numeroID; 
+	private int numeroID=50; 
 	private int areaID; 
 	private int arrendamiento; 
 	private int c; 
@@ -61,7 +62,7 @@ public class mb_OT {
 	private String direccionObra;
 	private int verifAdm;
 	private String telObra;
-	
+	private String nombreArticulo;
 	private int CExternaID; 
 	private int articuloID; 
 	private int cantidad; 
@@ -86,6 +87,7 @@ public class mb_OT {
 	private Funcionario funcionarioOBJ;
 
 	private Cliente clienteOBJ;	
+	private String urlImpresion;
 	
 	public Cliente getClienteOBJ() {
 		return clienteOBJ;
@@ -102,14 +104,22 @@ public class mb_OT {
 	private ArrayList<Adicional> listaAdicionales;
 	private ArrayList<ComprasExternasOT> listaComprasExternas;
 	
-	public String imprimirOT(int otID){
+	public String urlImprimirOT(int otID){
+		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+  	String realPath=(String) servletContext.getServletPath(); 
+  	System.out.println("contexto addnexo: "+realPath+" "+servletContext+" "+servletContext.getContextPath()+" "+servletContext.getRequestURI());
+		
+		
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  return  "/otapdf.do?faces-redirect=true"+"&otID="+otID+"&tipo=ot";
+	  this.urlImpresion=  "/Ertec/otapdf?"+"&otID="+otID+"&tipo=ot";
+	  return urlImpresion;
 	}
 	
-	public String imprimirMovimientos(int otID){
+	public String urlImprimirMov(int otID){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  return  "/otapdf.do?faces-redirect=true"+"&otID="+otID+"&tipo=mov";
+		 this.urlImpresion=  "http://localhost:8080/Ertec/otapdf?faces-redirect=true"+"&otID="+otID+"&tipo=mov";
+		 System.out.println("url impresion mov "+this.urlImpresion);
+		 return urlImpresion;
 	}
 	
 	@PostConstruct	
@@ -173,7 +183,6 @@ public class mb_OT {
 		this.recargarListaComprasExternas(otID);
 	}
 
-	
 	
 	public void onRowEdit(RowEditEvent event) {
 		
@@ -412,6 +421,7 @@ public class mb_OT {
 	public String addCompraExterna(){
 		System.out.println("entro en compra");
 		ComprasExternasOT ceot = new ComprasExternasOT();
+		ceot.setNombreArticulo(nombreArticulo);
 		ceot.setCantidad(cantidad);
 		ceot.setId(CExternaID);
 		ceot.setFecha(fecha);
@@ -419,8 +429,13 @@ public class mb_OT {
 		ceot.setOtid(numeroID);
 		ceot.setPrecio_Unitario(precio_Unitario);
 
-		ceot.setProveedorID(proveedorOBJ.getProveedorID());
-		ceot.setArticuloID(articuloOBJ.getArticuloID());
+		
+		if(proveedorOBJ!=null){
+			ceot.setProveedorID(proveedorOBJ.getProveedorID());	
+		}
+		if(articuloOBJ!=null){
+			ceot.setArticuloID(articuloOBJ.getArticuloID());
+		}
 		
 		if(dao.addCompraExternaOT(ceot)){
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -535,14 +550,22 @@ public class mb_OT {
 
 
 
-	public long getNumeroID() {
+	public int getNumeroID() {
+		System.out.println("getnumeroidot:"+numeroID);
 		return numeroID;
 	}
 
-	public void setNumeroID(int numeroID) {
-		System.out.println("NUMEroid" + numeroID);
-		this.numeroID = numeroID;
+	public void setNumeroID(int nID) {
+		this.numeroID = nID;
+		System.out.println("NUMEroid " + numeroID);
+		
 	}
+	
+	public void setearIDOT(int nID) {
+		this.numeroID = nID;
+		System.out.println("seteo NUMEroid " + numeroID);
+	}
+	
 
 	public String getCliente() {
 		return cliente;
@@ -894,6 +917,22 @@ public class mb_OT {
 
 	public void setOtSelected(Ot otSelected) {
 		this.otSelected = otSelected;
+	}
+
+	public String getNombreArticulo() {
+		return nombreArticulo;
+	}
+
+	public void setNombreArticulo(String nombreArticulo) {
+		this.nombreArticulo = nombreArticulo;
+	}
+
+	public String getUrlImpresion() {
+		return urlImpresion;
+	}
+
+	public void setUrlImpresion(String urlImpresion) {
+		this.urlImpresion = urlImpresion;
 	}
 
 

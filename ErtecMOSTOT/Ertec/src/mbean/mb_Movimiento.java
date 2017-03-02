@@ -51,7 +51,7 @@ public class mb_Movimiento {
 	private String tipoOT;
 	private String tipoReferencia;
 	private BigDecimal cantidadArticulo;
-	private BigDecimal costo;
+	private BigDecimal costo=BigDecimal.ZERO;
 	private boolean verCotizacion;
 	private boolean verReferencia;
 	private boolean verCliente;

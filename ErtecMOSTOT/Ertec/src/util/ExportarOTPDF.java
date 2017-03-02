@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -36,7 +37,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 public class ExportarOTPDF {
 	
-	public static final String RESOURCE = "http://ertec.com.uy/index_htm_files/1964.jpg";
+	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
 	
     	
@@ -96,10 +97,18 @@ public class ExportarOTPDF {
  
        
        // Imagen 
-       Image img = Image.getInstance(RESOURCE);
-       img.setAbsolutePosition(20,750);
-       img.scalePercent(50);
-       document.add(img);
+       try{       
+      	 URL cl=ClassLoader.getSystemResource(RESOURCE);
+      	 System.out.println("CL "+cl);
+	       Image img = Image.getInstance(RESOURCE);
+	       img.setAbsolutePosition(20,750);
+	       img.scalePercent(50);
+	       document.add(img);
+       }
+       catch(Exception e){
+      	 System.err.println("no se pudo cargar la imagen");
+       }
+       
        
        PdfContentByte canvas = writer.getDirectContent();
        

@@ -134,14 +134,14 @@
     </p:column>
 
  
-     <p:column headerText="Editar"  style = "width:50px">				
+     <p:column headerText="Editar"  style = "width:50px" exportable="false">		
 				<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
 				</p:rowEditor>					
 	    </p:column>
 		    
 		     
 		     
-		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}" 
 			 update="datatable message" >
         <p:confirm header="Confirmacion" message="Borrar articulo #{articulo.descripcion}?" icon="ui-icon-alert" />

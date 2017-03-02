@@ -49,9 +49,9 @@ public class DAO_ComprasExternasOT {
 			
 			em.getTransaction().begin();
 			
-			if(a.getArticulo()!=null){
-			  aux.setArticuloID(a.getArticulo().getArticuloID());
-			}			
+//			if(a.getArticulo()!=null){
+//			  aux.setArticuloID(a.getArticulo().getArticuloID());
+//			}			
 			aux.setCantidad(a.getCantidad());
 			aux.setId(a.getId());
 			aux.setFecha(a.getFecha());

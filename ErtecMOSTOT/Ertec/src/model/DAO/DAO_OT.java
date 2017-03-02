@@ -229,14 +229,18 @@ public class DAO_OT {
 	
 	public ArrayList<ComprasExternasOT> getComprasExternas (int idOT){
 		EntityManager em=JpaUtil.getEntityManager();		
-		
+		if(idOT==0){
+			System.err.println("DAO_OTGetComprasExternas con idOT=0");;
+			return new ArrayList<ComprasExternasOT>();
+		}
 		try{
 			Ot ot= em.find(Ot.class,idOT);
 			return new ArrayList <ComprasExternasOT> (ot.getComprasExternas());
 		}
 		catch (Exception e){
+			System.out.println("DaoOtGetCE "+idOT);
 			e.printStackTrace();
-			return null;
+			return new ArrayList<ComprasExternasOT>();
 		}		
 	}
 	
@@ -284,11 +288,11 @@ public class DAO_OT {
 //			em.getTransaction().commit();
 //			em.close();
 			System.out.println("addcompra>>");
-			Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
+		//	Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
 			Proveedores proveedor = em.find(Proveedores.class, ce.getProveedorID());
 			em.getTransaction().begin();
 			ce.setProveedor(proveedor);
-			ce.setArticulo(articulo);
+			//ce.setArticulo(articulo);
 			em.persist(ce);
 			em.getTransaction().commit();
 			salida= true; 
@@ -428,8 +432,9 @@ public class DAO_OT {
 
 			em.getTransaction().begin();
 			aux.setProveedor(proveedor);
-			aux.setArticulo(articulo);
-			aux.setArticuloID(articulo.getArticuloID());
+		//	aux.setArticulo(articulo);
+			aux.setNombreArticulo(ce.getNombreArticulo());
+			//aux.setArticuloID(articulo.getArticuloID());
 			aux.setCantidad(ce.getCantidad());
 			aux.setId(ce.getId());
 			aux.setFecha(ce.getFecha());

@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -22,6 +24,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import javafx.util.converter.BigDecimalStringConverter;
 import model.Articulo;
+import model.ComprasExternasOT;
 import model.Movimiento;
 import model.Ot;
 import model.DAO.DAO_Articulo;
@@ -34,9 +37,13 @@ public class ExportMovimientoPDF {
   
   
   
-  
+	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	String realPath=(String) servletContext.getServletPath(); 
+	//System.out.println("contexto addnexo: ");
+	
+	
 
-  public static final String RESOURCE = "http://ertec.com.uy/index_htm_files/1964.jpg";
+  public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
   public static final String RESULT = "/home/juan/Escritorio/movimiento.pdf";
   
   public static void main(String[] args) {
@@ -59,6 +66,8 @@ public class ExportMovimientoPDF {
     DAO_Movimiento daoMov = new DAO_Movimiento();
     
     ArrayList <Movimiento> movimientos =DAO_Movimiento.getMovimientosOT(idOT);
+    ArrayList <ComprasExternasOT> cExternas =dao.getComprasExternas(idOT);
+    
     //ArrayList <Movimiento> movimientos =new ArrayList <Movimiento>();
 //    Movimiento m = new Movimiento();
 //    m.setTipoOT("Salida por OT-OR");
@@ -113,11 +122,16 @@ public class ExportMovimientoPDF {
         
         document.open();   
         
-        Image img = Image.getInstance(RESOURCE);
-        img.setAbsolutePosition(20,750);
-        img.scalePercent(50);
-        document.add(img);
-
+        try{
+	        Image img = Image.getInstance(RESOURCE);
+	        img.setAbsolutePosition(20,750);
+	        img.scalePercent(50);
+	        document.add(img);
+        }
+        catch(Exception e){
+        	 System.err.println("no se puede cargar la imagen");
+        }
+        
         PdfContentByte canvas = writer.getDirectContent();
         BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         canvas.saveState();
@@ -163,6 +177,56 @@ public class ExportMovimientoPDF {
         tabla1.addCell( cell );
         
         
+        for(ComprasExternasOT ce : cExternas){
+        	String cabecera="";
+          cabecera+="Fecha: "+ce.getFecha()+"    ";
+          cabecera+="Proveedor: "+ ce.getProveedor().getNombre()+"    ";
+          cabecera+="Comprobante: "+ce.getId()+"    "; 
+          
+          cell = new PdfPCell(new Paragraph(cabecera, new Font(FontFamily.HELVETICA, 10)));
+          cell.setColspan(5);
+          cell.setMinimumHeight(20); 
+          tabla1.addCell( cell ); 
+          
+          
+          
+          cell =new PdfPCell(new Paragraph("Externa", new Font(FontFamily.HELVETICA, 10)));
+          cell.setMinimumHeight(20);        
+          tabla1.addCell( cell );
+          
+          cell =new PdfPCell(new Paragraph(ce.getNombreArticulo(), new Font(FontFamily.HELVETICA, 10)));
+          cell.setMinimumHeight(20);        
+          tabla1.addCell( cell );
+          
+          cell =new PdfPCell(new Paragraph( ""+ ce.getCantidad() , new Font(FontFamily.HELVETICA, 10)));
+          cell.setMinimumHeight(20);        
+          tabla1.addCell( cell );
+          
+          BigDecimal costo=ce.getPrecio_Unitario();
+          
+          
+          cell =new PdfPCell(new Paragraph(""+costo, new Font(FontFamily.HELVETICA, 10)));
+          cell.setMinimumHeight(20);        
+          tabla1.addCell( cell ); 
+          
+          
+          costoLinea =costo.multiply(BigDecimal.valueOf(ce.getCantidad()));
+          costoMovimiento =costoMovimiento.add(costoLinea);
+          costoTotal=costoTotal.add(costoLinea);
+          
+          cell =new PdfPCell(new Paragraph(""+costoLinea, new Font(FontFamily.HELVETICA, 10)));
+          cell.setMinimumHeight(20);        
+          tabla1.addCell( cell );        
+          
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         for (Movimiento mov : movimientos){
           String cabecera="";
           cabecera+="Fecha: "+mov.getFecha()+"    ";
@@ -191,18 +255,19 @@ public class ExportMovimientoPDF {
             cell.setMinimumHeight(20);        
             tabla1.addCell( cell );
             
-            cell =new PdfPCell(new Paragraph(""+n.getCosto(), new Font(FontFamily.HELVETICA, 10)));
-            cell.setMinimumHeight(20);        
-            tabla1.addCell( cell );
-            
-            System.out.println("ezport " +n);
-            System.out.println("ezport " +n.getCantidad());
-            System.out.println("ezport " +n.getCosto());
-            
             BigDecimal costo=n.getCosto();
             if(mov.getCodigoMovimientoID()==4){
             	costo = BigDecimal.ZERO.subtract(DAO_Articulo.findArticulo(n.getArticuloID()).getCostoPesos());
             }
+            
+            cell =new PdfPCell(new Paragraph(""+costo, new Font(FontFamily.HELVETICA, 10)));
+            cell.setMinimumHeight(20);        
+            tabla1.addCell( cell );
+            
+            System.out.println("export " +n);
+            System.out.println("export cantidad " +n.getCantidad());
+            System.out.println("export costo " +costo);
+            
             
             costoLinea = n.getCantidad().multiply(costo);
             costoMovimiento =costoMovimiento.add(costoLinea);
