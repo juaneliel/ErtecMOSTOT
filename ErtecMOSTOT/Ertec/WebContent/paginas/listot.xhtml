@@ -22,6 +22,7 @@
 		 style="text-align:left;max-height:500px;overflow-y:scroll; 
    font-size: 90% !important;color: red;font-weight: bold;"
 		selection="#{mb_OT.otSelected}" selectionMode="single" rowKey="#{ot.id}"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
 		 >
 		 
 		 		  <f:facet name="{Exporters}">
@@ -44,12 +45,12 @@
 		        <p:columnToggler datasource="datatable2OT" trigger="toggler" />
 		    </f:facet>
 		 
-		 <p:ajax event="cellEdit" listener="#{mb_OT.onRowEdit}" update="datatableOT" />
+		 <p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="datatableOT" />
 		 
 		  <p:ajax event="rowToggle"   update="datatable3" />
 		
 
-	   <p:column style="width:16px" stylr="color:red">
+	   <p:column style="width:16px" stylr="color:red" exportable="false">		
             <p:rowToggler />
         </p:column>	
 		 
@@ -244,12 +245,12 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
  
 
 		 
-		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.ot)}">				
+		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.ot)}" exportable="false">						
 					<p:rowEditor >
 					</p:rowEditor>									
 		    </p:column>
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.ot)}">	
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.ot)}" exportable="false">		
 			<p:commandLink actionListener="#{mb_OT.delete(ot)}" 
    	
    	update="datatableOT message" >
@@ -284,22 +285,22 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
   </h:form>
 
  
-<p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad">
+<p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
 <ui:include src="/templates/templateadicional.xhtml" id="listaAdicionales">	 
 </ui:include>
 </p:dialog>	   
  
- <p:dialog header="Compras Externas" widgetVar="verce"  modal="true" width="90%" height="400">
+ <p:dialog header="Compras Externas" widgetVar="verce"  modal="true" width="90%" height="400"  dynamic="true">
 <ui:include src="/templates/templatecompraexterna.xhtml" id="listaCE">	
 </ui:include>
 </p:dialog>
 
-<p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400">
+<p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400"  dynamic="true">
 <ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">					
 </ui:include>			
 </p:dialog>	
 
-<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400">
+<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400"  dynamic="true">
 <ui:include src="/templates/templatemovimiento.xhtml" id="listaMovimientos">	
 <ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>					
 </ui:include>			
@@ -317,13 +318,13 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 </ui:include>			
 </p:dialog>	    
 
-<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="450">
+<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="450"  dynamic="true">
 <ui:include src="/templates/templateaddmanoobra.xhtml" id="addmanoobra">			
 <ui:param name="verIDOT"   value = "true"/>
 </ui:include>			
 </p:dialog>		
 	
-<p:dialog header="Agregar Movimiento" widgetVar="addmov"  modal="true" width="90%" height="550">
+<p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550" >
 <ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	
   <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			
 </ui:include>			

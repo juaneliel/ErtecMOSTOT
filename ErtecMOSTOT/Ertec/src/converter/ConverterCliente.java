@@ -36,6 +36,9 @@ public class ConverterCliente implements Converter {
                 
                 
                 ArrayList<Cliente> auxL=service.getListaClientesOBJ();   
+                if(auxL==null){
+                	return salida;
+                } 
                 for (Cliente o : auxL) {
                         String id =  Integer.toString( o.getClienteID());
                     if (value.equals(id)) {

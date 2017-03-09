@@ -86,6 +86,16 @@ public class mb_Funcionario {
 
   }  
 
+	public String urlImprimirFun(int funID){
+		//ExportarOTPDF.ExportarPDF(ot, "");
+		 String urlImpresion=  "/Ertec/exportarpdf?faces-redirect=true"+"&id="+funID+"&tipo=fun";
+		 System.out.println("url impresion ficha "+urlImpresion);
+		 return urlImpresion;
+	}
+	
+  
+  
+  
   public void copyFile(String fileName, InputStream in) {
          try {
             

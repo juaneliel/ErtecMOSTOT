@@ -16,7 +16,22 @@
 		 style="  font-size: 90% !important;color: red;font-weight: bold;
 			text-align:left;max-height:500px;overflow-y:scroll;" 
 		  lazy="true" tableStyle="" 
+		  	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+ 
 		 >
+		 
+		 	<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatable2MOV" fileName="movimientos"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatable2MOV" fileName="movimientos"  />
+	    </h:commandLink> 
+		</f:facet>
+		 
 		 
         <f:facet name="header">
 		        Movimientos		 
@@ -26,10 +41,10 @@
         
         
     <p:ajax event="rowEdit" listener="#{mb_Movimiento.onRowEdit}" update="message" />
-		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}" update="datatable3MOV" />
+		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}" update="datatableNexos" />
 		<f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" />
 		
-		<p:column style="width:16px">
+		<p:column style="width:16px" exportable="false">		
             <p:rowToggler />
 		</p:column> 
 		
@@ -61,12 +76,7 @@
            		</p:cellEditor>
 		    </p:column>
 		    
-		    			<p:column headerText="comprobante" sortBy="#{movimiento.comprobante}"  filterMatchMode="contains" filterBy="#{movimiento.comprobante}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{movimiento.comprobante}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="comprobante" value="#{movimiento.comprobante}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
-		    </p:column>
+
 		    
 		    			<p:column headerText="Contrato ID:" sortBy="#{movimiento.contratoID}"  filterMatchMode="contains" filterBy="#{movimiento.contratoID}">		                
 		        <p:cellEditor>
@@ -116,13 +126,13 @@
 					</p:cellEditor>
 				</p:column>
 
-		     <p:column headerText="Editar"  style = "width:50px">				
+		     <p:column headerText="Editar"  style = "width:50px" exportable="false">						
 					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
 					</p:rowEditor>					
 		    </p:column>
 		    
 		     
-		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">			
 		 	<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
 		 	update="message datatableMOV" >
 		    <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
@@ -138,7 +148,7 @@
 		  
 		  
 		    
-<p:commandButton value="Ver Items"  update=":panelNexos" 
+<p:commandButton value="Ver Items"  update=":datatableNexos" 
 onclick="PF('vernexos').show();"
 action="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}"/> 
 
@@ -158,14 +168,14 @@ action="#{mb_Movimiento.setMovimientoID(movimiento.movimientoID)}"/>
   	</h:form>
 			
 					
-<p:dialog header="Ver nexos" widgetVar="vernexos"  appendTo="@(body)" modal="true" width="90%" height="600">
+<p:dialog header="Ver items" widgetVar="vernexos"  appendTo="@(body)" modal="true" width="90%" height="600">
 <ui:include src="/templates/templatenexos.xhtml" id="vernexos">	
 <ui:param name="paramLista"   value = "#{mb_Movimiento.listaNexos}"/>					
 </ui:include>	
 </p:dialog>				
 			
 			
-<p:dialog header="Agregar nexos" widgetVar="addnexo" appendTo="@(body)"  modal="true" width="430" height="320">
+<p:dialog header="Agregar item" widgetVar="addnexo" appendTo="@(body)"  modal="true" width="430" height="320">
 <ui:include src="/templates/templateaddnexo.xhtml" id="addnexo">			
 </ui:include>			
 </p:dialog>					
@@ -178,6 +188,14 @@ action="#{mb_Movimiento.setMovimientoID(movimiento.movimientoID)}"/>
 <!-- 		        <p:cellEditor> -->
 <!-- 	               <f:facet name="output"><h:outputText value="#{movimiento.clienteID}" /></f:facet> -->
 <!-- 	               <f:facet name="input"><p:inputText id="clienteID" value="#{movimiento.clienteID}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
+
+
+<!-- 		    			<p:column headerText="comprobante" sortBy="#{movimiento.comprobante}"  filterMatchMode="contains" filterBy="#{movimiento.comprobante}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{movimiento.comprobante}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="comprobante" value="#{movimiento.comprobante}" style="width:100%"/></f:facet> -->
 <!--            		</p:cellEditor> -->
 <!-- 		    </p:column> -->
 

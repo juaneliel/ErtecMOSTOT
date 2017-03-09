@@ -16,11 +16,14 @@ public class ConverterCodigosMO implements Converter {
         if(value != null && value.trim().length() > 0) {
             try {
             	mb_ManoObra service = (mb_ManoObra) 
-                		fc.getExternalContext().getSessionMap().get("mb_ManoObra"); 
-                ArrayList<CodigosMO> auxL=service.getListaCodMO();   
+                		fc.getExternalContext().getSessionMap().get("mb_ManoObra");                 
                 if(service==null){
                   return salida;
                 }
+                ArrayList<CodigosMO> auxL=service.getListaCodMO();   
+                if(auxL==null){
+                	return salida;
+                } 
                 for (CodigosMO o : auxL) {
                         String id =  Integer.toString( o.getCodigo());
                     if (value.equals(id)) {

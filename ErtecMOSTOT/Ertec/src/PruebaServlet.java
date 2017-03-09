@@ -22,11 +22,12 @@ import com.itextpdf.text.pdf.PdfWriter;
 import mbean.mb_Articulo;
 import usuario.UsuarioLogin;
 import util.ExportMovimientoPDF;
+import util.ExportarFichaFuncionario;
 import util.ExportarOTPDF;
 
 
 
-@WebServlet("/otapdf")
+@WebServlet("/exportarpdf")
 public class PruebaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Inject
@@ -64,8 +65,8 @@ public class PruebaServlet extends HttpServlet {
 //      } 
       
       
-    String idOT=request.getParameter("otID");
-    System.out.println(idOT);    
+    String id=request.getParameter("id");
+    System.out.println(id);    
     String tipo=request.getParameter("tipo");
 
     
@@ -74,19 +75,25 @@ public class PruebaServlet extends HttpServlet {
    // path = request.getRealPath(split_path[0]);
     String imagePath="\\resources\\images\\letterHead.jpg";
     //Image image = Image.getInstance(path+imagePath);
-    System.out.println("path "+path+" "+idOT);
+    System.out.println("path "+path+" "+id);
     
     
-    if(user.estaLogueado()&& Integer.parseInt(idOT)>0){
+    if(user.estaLogueado()&& Integer.parseInt(id)>0){
       if (tipo.equals("ot")){
-		  	ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+		  	ExportarOTPDF.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
 		  	System.out.println("user export pdf OT "+user.getNombre());
 		  }
 		  else{
 		    if (tipo.equals("mov")){ 			    	
-	    		ExportMovimientoPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream()); 
+	    		ExportMovimientoPDF.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
 	      	System.out.println("user export pdf mov "+user.getNombre());
 		    }
+		    else{
+			    if (tipo.equals("fun")){ 			    	
+		    		ExportarFichaFuncionario.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+		      	System.out.println("user export pdf fun "+user.getNombre());
+			    }
+			  }   	
 		  }   	
     }
     else{

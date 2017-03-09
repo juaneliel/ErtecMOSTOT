@@ -5,10 +5,9 @@
 	xmlns:p="http://primefaces.org/ui">
  
  
-<ui:composition>
-	<p:panelGrid id="panelNexos"  border="2" cellpadding="5" cellspacing="1" columns="2">    
-		<h:form id="datatable3MOV"> 
-			<p:dataTable var="nexo" value="#{mb_Movimiento.listaNexos}" id="datatable4"
+<ui:composition>   
+		<h:form id="datatableNexos"> 
+			<p:dataTable var="nexo" value="#{paramLista}" id="datatable4"
 				paginator="true" rows ="10" paginatorPosition="top"  
 				resizableColumns="true" liveResize="true" draggableColumns="true" 
 				scrollable="true"   scrollWidth="100%"   
@@ -20,45 +19,75 @@
 				 	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
 			   	<p:columnToggler datasource="datatable4" trigger="toggler" />
 				</f:facet>			 
-			  <p:ajax event="cellEdit" listener="#{mb_Movimiento.editarNexo}" update="datatable4" />		 
+				
+			   
+		 <p:ajax event="rowEdit" listener="#{mb_Movimiento.editarNexo}" update="message" />
+		
 			  
-				<p:column headerText="Articulo:" sortBy="#{nexo.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{nexo.articulo.descripcion}">		                
+			  
+			  <p:column headerText="Id" sortBy="#{nexo.nexoMovimientoID}"  filterMatchMode="startsWith" filterBy="#{nexo.nexoMovimientoID}">
+		        <h:outputText  value="#{nexo.nexoMovimientoID}"/>
+		    </p:column>
+			  
+			  
+			  
+				<p:column headerText="Articulo" sortBy="#{nexo.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{nexo.articulo.descripcion}">		                
 		   		<p:cellEditor>
 		 				<f:facet name="output"><h:outputText value="#{nexo.articulo.descripcion}" /></f:facet>
-		      	<f:facet name="input"><p:inputText id="articuloId" value="#{nexo.articulo.descripcion}" style="width:100%"/></f:facet>
+		      	<f:facet name="input">
+
+		      			<p:autoComplete id="articulo" value="#{nexo.articulo}"
+			completeMethod="#{mb_Articulo.completarArticulo}"
+			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
+			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  	
+		      	
+		      	
+		      	
+		      	</f:facet>
 	     		</p:cellEditor>
 				</p:column>
 				
-				<p:column headerText="Cantidad:" sortBy="#{nexo.cantidad}"  filterMatchMode="contains" filterBy="#{nexo.cantidad}">		                
+				<p:column headerText="Cantidad" sortBy="#{nexo.cantidad}"  filterMatchMode="contains" filterBy="#{nexo.cantidad}">		                
 	        <p:cellEditor>
            <f:facet name="output"><h:outputText value="#{nexo.cantidad}" /></f:facet>
            <f:facet name="input"><p:inputText id="cantidadArticulos" value="#{nexo.cantidad}" style="width:100%"/></f:facet>
       		</p:cellEditor>
 				</p:column>
 				
-				<p:column headerText="Costo:" sortBy="#{nexo.costo}"  filterMatchMode="contains" filterBy="#{nexo.costo}">		                
+				<p:column headerText="Costo" sortBy="#{nexo.costo}"  filterMatchMode="contains" filterBy="#{nexo.costo}">		                
 	        <p:cellEditor>
             <f:facet name="output"><h:outputText value="#{nexo.costo}" /></f:facet>
             <f:facet name="input"><p:inputText id="cantidad" value="#{nexo.costo}" style="width:100%"/></f:facet>
        		</p:cellEditor>
-		    </p:column>
-		    
-		    
-
-			
+		    </p:column>			
 			
 				<p:column headerText="Editar"  style = "width:50px">				
 					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
 					</p:rowEditor>					
 		    </p:column>
 		    
-		    <p:column headerText="Borrar"  style = "width:50px">		   
-					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo)}"   update="message panelNexos"  rendered="#{mb_Usuario.puedeBorrar}"/>
-				</p:column>
+
+				
+						    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.ot)}">	
+			<p:commandLink actionListener="#{mb_Movimiento.deleteNexo(nexo,false)}" 
+   	
+    update="message datatableNexos" >
+        <p:confirm header="Confirmacion" message="Borrar Item nro:#{nexo.nexoMovimientoID}?" icon="ui-icon-alert" />
+  <span class="ui-icon ui-icon-trash"></span>
+   	</p:commandLink>    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
+        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+			</p:column>
+				
+				
+				
+				
+				
 				
 			</p:dataTable>
 		</h:form>
-	</p:panelGrid>
 				
 </ui:composition>
 </html>

@@ -23,9 +23,57 @@
 </h:head>
 
 <h:body>
-	
+	 
 
+ 
+ 
+  <h:form prependId="false">
+     
+    <p:idleMonitor timeout="#{session.maxInactiveInterval * 1000 - 3000}" onactive="redi();" >
+        <p:ajax event="idle" listener="#{mb_Usuario.onIdle}"   update="message" />
+        <p:ajax event="active" listener="#{mb_Usuario.onActive}" update="message" />
+    </p:idleMonitor>
+    
+            
+  
+ 
+    <p:dialog header="Login" widgetVar="dlg" resizable="false" modal="true" closable="false" onShow="stopCount()"  onHide="stopCount()" dynamic="true">
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="Usuario" value="Usuario" />
+            <p:inputText id="Usuario" value="#{mb_Usuario.nombre}" required="true" label="usuario" />
+ 
+            <h:outputLabel for="Clave" value="Clave" />
+            <p:password id="Clave" value="#{mb_Usuario.pass}" required="true" label="clave" />
+ 
+            <f:facet name="footer">
+                <p:commandButton value="Login" update="message" action="#{mb_Usuario.loguear}"
+                                 oncomplete="handleLoginRequest(xhr, status, args)" />
+            </f:facet>  
+        </h:panelGrid>
+    </p:dialog>
+ 
+       
+   </h:form>
+ 
+  
   	
+<script type="text/javascript">
+    function handleLoginRequest(xhr, status, args) {
+        if(args.validationFailed || !args.loggedIn) {
+            PF('dlg').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlg').hide();
+            $('#loginLink').fadeOut();
+        }
+    }
+    function redi() {
+ 	   window.location.href = "/Ertec/login.xhtml";
+ 	   return;
+ 	 }
+</script>
+    
+   
 	
 	
 	<header>
@@ -124,13 +172,9 @@
 
 <br/>
 
-<p:growl id="message" showDetail="true" style="float:left;margin-right:330px;margin-top:40px;font-size:40px" /> 
+<p:growl id="message" sticky="true"  showDetail="true" style="float:left;margin-right:330px;margin-top:40px;font-size:40px" /> 
   
 	</header>
-	
-	
-	
-	
 	
 	<div id="contenido">
 		
@@ -147,18 +191,6 @@
 
 </h:body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!--             <p:inputText style="margin-right:10px" placeholder="Search"/> -->

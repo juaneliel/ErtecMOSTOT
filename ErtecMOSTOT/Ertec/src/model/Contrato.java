@@ -24,6 +24,7 @@ public class Contrato implements Serializable {
 	@Column(name="ClienteID")
 	private int clienteID;
 	
+	//hay error en los datos de contratos
   @OneToOne(fetch=FetchType.EAGER)
   @JoinColumn(name="ClienteID" , insertable = false, updatable = false)
   private Cliente cliente;

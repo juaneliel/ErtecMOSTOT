@@ -19,9 +19,23 @@
 		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
 		 editable="true" 
 		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;"
-		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}"
                 rowsPerPageTemplate="10,50,100"
 		 >
+		 
+		 	<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatable2" fileName="clientes"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatable2" fileName="clientes"  />
+	    </h:commandLink> 
+		</f:facet>
+		 
+		 
 		 
       	<f:facet name="header">
 			Clientes	
@@ -36,7 +50,7 @@
 
 		 
 		 
-		<p:column style="width:16px">
+		<p:column style="width:16px" exportable="false">
  			<p:rowToggler />
 		</p:column> 
 		 
@@ -115,7 +129,7 @@
 		  
 		  
 		  
-		   <p:column headerText="Editar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.clientes)}">				
+		   <p:column headerText="Editar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.clientes)}" exportable="false">				
 					<p:rowEditor  >
 					</p:rowEditor>					
 		    </p:column>
@@ -123,7 +137,7 @@
 		    	   
 		    	   
 		    	   
-		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.clientes)}">	
+		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.clientes)}" exportable="false">	
 			<p:commandLink actionListener="#{mb_Cliente.delete(cliente)}" 
    	
    	update="datatablecliente message" >
@@ -163,13 +177,13 @@ action="#{mb_Cliente.setClienteIDYNombre(cliente.clienteID,cliente.nombre)}"/>
 
  </h:form> 
 					
-	<p:dialog header="Ver Contratos" widgetVar="vercontratos" appendTo="@(body)"  modal="true" width="90%" height="600">
+	<p:dialog header="Ver Contratos" widgetVar="vercontratos" appendTo="@(body)"  modal="true" width="90%" height="600"  dynamic="true">
 	<ui:include src="/templates/templatecontratos.xhtml" id="vercontratos">	 				
 	</ui:include>	
 	</p:dialog>				
 				
 				
-	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="520">
+	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="520" dynamic="true">
 	<ui:include src="/templates/templateaddcontrato.xhtml" id="addcontrato">			
 	</ui:include>			
 	</p:dialog>		

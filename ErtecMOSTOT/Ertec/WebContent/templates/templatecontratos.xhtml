@@ -15,7 +15,22 @@
 	draggableColumns="true" scrollable="true"  
 	scrollWidth="100%"  editable="true"  
 	style="text-align:left; font-size: 90% !important;color: red;"
+	 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"    
+		
 	>	 
+	
+	
+		<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatablecontratos" fileName="contratos"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatablecontratos" fileName="contratos"  />
+	    </h:commandLink> 
+		</f:facet>
  
 		<f:facet name="header">
 			Contratos
@@ -26,7 +41,7 @@
 		<p:ajax event="rowEdit" listener="#{mb_Cliente.editContrato}" update="message" />
 		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}" update="formarrendamiento" />
 
-		<p:column style="width:16px">
+		<p:column style="width:16px" exportable="false">
             <p:rowToggler />
 		</p:column> 
 
@@ -172,13 +187,13 @@
 		</p:column>
        
     
-		<p:column headerText="Editar"  style = "width:50px">				
+		<p:column headerText="Editar"  style = "width:50px" exportable="false">				
 			<p:rowEditor rendered="#{mb_Usuario.puedeActualizar}">
 			</p:rowEditor>					
 		</p:column>
 		    
 		     
-		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">	
 			<p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.deleteContrato(contrato)}" 
 				update="datatablecontratos message @([id$=formcontratos])" >
 				<p:confirm header="Confirmacion" message="Borrar #{contrato.tipo}#{contrato.contratoID}?" icon="ui-icon-alert" />
@@ -193,7 +208,7 @@
 		<p:rowExpansion>	  
  
 		    
-<p:commandButton value="Ver arrendamientos" rendered="false"
+<p:commandButton value="Ver arrendamientos" rendered="true"
 onclick="PF('verarrendamientos').show();" 
 action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/>  
 
@@ -211,13 +226,13 @@ actionListener="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contra
 	</p:dataTable>   
 </h:form>
 
-<p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="420" height="600" id="dialogdireccion">
+<p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="420" height="600" id="dialogdireccion" dynamic="true">
 <ui:include src="/templates/templateadddireccion.xhtml" id="adddireccion">	 
 </ui:include>	
 </p:dialog>	
 
 
-<p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600">
+<p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600" dynamic="true">
 <ui:include src="/templates/templatearrendamientos.xhtml" id="verarrendamientos">	
 <ui:param name="#{paramListaArrendamientos}"   value = "#{mb_Movimiento.listaArrendamientos}"/>					
 </ui:include>	

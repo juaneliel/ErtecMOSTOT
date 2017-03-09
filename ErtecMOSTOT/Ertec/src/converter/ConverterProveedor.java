@@ -22,10 +22,16 @@ public class ConverterProveedor implements Converter {
             try {
                 mb_OT service = (mb_OT) 
                 		fc.getExternalContext().getSessionMap().get("mb_OT");
+                System.out.println("entro en converterproveedor");
+                
                 if(service==null){
                   return salida;
                 }
-                ArrayList<Proveedores> auxL= service.getListaProveedoresOBJ();                
+                ArrayList<Proveedores> auxL= service.getListaProveedoresOBJ();    
+                if (auxL==null){
+                	return salida;
+                }
+                	
                 for (Proveedores o : auxL) {
                         String id =  Integer.toString( o.getProveedorID());
                     if (value.equals(id)) {

@@ -111,13 +111,13 @@ public class mb_OT {
 		
 		
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  this.urlImpresion=  "/Ertec/otapdf?"+"&otID="+otID+"&tipo=ot";
+	  this.urlImpresion=  "/Ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
 	  return urlImpresion;
 	}
 	
 	public String urlImprimirMov(int otID){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-		 this.urlImpresion=  "http://localhost:8080/Ertec/otapdf?faces-redirect=true"+"&otID="+otID+"&tipo=mov";
+		 this.urlImpresion=  "/Ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
 		 System.out.println("url impresion mov "+this.urlImpresion);
 		 return urlImpresion;
 	}

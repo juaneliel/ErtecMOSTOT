@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14759559638220" configfile="/Ertec/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="paginas/login.xhtml" x="78" y="152" id="pf14772405886000" path="/paginas/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="281" y="379" id="pf14890007452969" path="/login.xhtml"/>
 </pageflow:Pageflow>

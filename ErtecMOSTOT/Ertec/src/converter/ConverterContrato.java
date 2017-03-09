@@ -28,9 +28,10 @@ public class ConverterContrato implements Converter {
               if(service==null){
                 return salida;
               }
-              
-              
-              ArrayList<Contrato> auxL=service.getListaContratos();   
+              ArrayList<Contrato> auxL=service.getListaContratos();  
+              if(auxL==null){
+              	return salida;
+              } 
               for (Contrato o : auxL) {
                       String id =  Integer.toString( o.getId());
                   if (value.equals(id)) {

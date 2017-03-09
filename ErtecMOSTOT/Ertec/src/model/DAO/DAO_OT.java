@@ -427,11 +427,13 @@ public class DAO_OT {
 		try{	
 			ComprasExternasOT aux = em.find(ComprasExternasOT.class,ce.getId()  );			
 
-			Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
-			Proveedores proveedor = em.find(Proveedores.class, ce.getProveedorID());			
+			//Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
+			//Proveedores proveedor = em.find(Proveedores.class, ce.getProveedorID());		
+			Proveedores proveedor =ce.getProveedor();
+			
 
 			em.getTransaction().begin();
-			aux.setProveedor(proveedor);
+			
 		//	aux.setArticulo(articulo);
 			aux.setNombreArticulo(ce.getNombreArticulo());
 			//aux.setArticuloID(articulo.getArticuloID());
@@ -441,7 +443,10 @@ public class DAO_OT {
 			aux.setMoneda(ce.getMoneda());
 			aux.setOtid(ce.getOtid());
 			aux.setPrecio_Unitario(ce.getPrecio_Unitario());
-			aux.setProveedorID(proveedor.getProveedorID());			
+			if(proveedor!=null){
+				aux.setProveedor(proveedor);
+				aux.setProveedorID(proveedor.getProveedorID());		
+			}
 			//em.flush();
 			em.getTransaction().commit();
 			salida=true;

@@ -158,6 +158,7 @@ public class DAO_Movimiento {
 	  EntityManager em=JpaUtil.getEntityManager();
     boolean salida = false;
     try{  
+    	System.out.println("entro en Dao updatenexo");
       NexoMovimiento aux = em.find(NexoMovimiento.class, o.getNexoMovimientoID());
       em.getTransaction().begin();             
       aux.setCantidad(o.getCantidad());

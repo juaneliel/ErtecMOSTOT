@@ -32,7 +32,7 @@ import model.DAO.DAO_Movimiento;
 
 
 @ManagedBean (name="mb_Movimiento")
-@ViewScoped
+@SessionScoped
 public class mb_Movimiento {
 
 	private DAO_Movimiento dao=new DAO_Movimiento();
@@ -86,7 +86,7 @@ public class mb_Movimiento {
 	@PostConstruct
 	public void init(){
 		//this.listaCodigos=dao.getListaCodigos();
-
+		this.fecha=new Date();
 	  this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
 	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
 	  this.listaNexos=new ArrayList<NexoMovimiento>();
@@ -121,8 +121,9 @@ public class mb_Movimiento {
 	public void ajustesAddMovimentoOT(Cliente cliente, int referencia){
 		this.clienteOBJ=cliente;
 		this.referencia=referencia;
-		this.codigoMovimientoID=4;
+		this.codigoMovimientoID=4;//se inicializa con este valor
 		this.actualizarCotizacionYContrato(codigoMovimientoID);
+		this.listaNexos=new ArrayList<NexoMovimiento>();
 	}
  
 	
@@ -209,15 +210,16 @@ public class mb_Movimiento {
   }
 	
   public void editarNexo(RowEditEvent event) {
-    
+  	System.out.println("entro en movimiento update");
     NexoMovimiento o= (NexoMovimiento) event.getObject();
+   
     
-    
-    if(this.movimientoID==0){
-    	//this.listaTemporalNexos.
-    	return;
-    }
-    
+//    if(o.getMovimientoID()==0){
+//    	//this.listaTemporalNexos.
+//    	System.out.println("salio en editarnexo mbmov");
+//    	return;
+//    }
+//    
     
     if(dao.updateNexo(o)){        
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el item "+o.getNexoMovimientoID());
@@ -228,7 +230,7 @@ public class mb_Movimiento {
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar el item");
           FacesContext.getCurrentInstance().addMessage(null, message);           
     }   
-      System.out.println("entro en movimiento update");
+      
   }
 
 
@@ -341,31 +343,33 @@ public class mb_Movimiento {
     this.mapaArrendamiento = mapaArrendamiento;
   }
 
-  public String addNexo(){
+  public String addNexo(boolean temporal){
   	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
   	String realPath=(String) servletContext.getServletPath(); 
   	System.out.println("contexto addnexo: "+realPath);
   	//se agrega a una lista temporal
   	//if(realPath.contains("addmovimiento.xhtml")){
-  	if(listaNexos.isEmpty() || (!listaNexos.isEmpty()&&listaNexos.get(0).getMovimientoID()==0) ){
+  	//listaNexos.isEmpty() || (!listaNexos.isEmpty()&&listaNexos.get(0).getMovimientoID()==0) condicion vieja
+  	if(temporal){
   		NexoMovimiento nexo=new NexoMovimiento();
-  		nexo.setArticuloID(articuloOBJ.getArticuloID());
+  		if(articuloOBJ!=null){
+  			nexo.setArticuloID(articuloOBJ.getArticuloID());
+    		nexo.setArticulo(articuloOBJ);
+  		}
   		nexo.setCantidad(this.cantidadArticulo);
   		nexo.setCosto(costo);
   		nexo.setFecha(fecha);
   		nexo.setMovimientoID(0);		
-  		nexo.setArticulo(articuloOBJ);
   		this.listaNexos.add(nexo);
   		return null;
   	}
   	
-  	
-  	
-  	
 		String salida=null;
 		NexoMovimiento nexo=new NexoMovimiento();
-		nexo.setArticulo(articuloOBJ);//verificar
-		nexo.setArticuloID(articuloOBJ.getArticuloID());
+		if(articuloOBJ!=null){
+			nexo.setArticulo(articuloOBJ);//verificar
+			nexo.setArticuloID(articuloOBJ.getArticuloID());
+		}
 		nexo.setCantidad(this.cantidadArticulo);
 		nexo.setCosto(costo);
 		nexo.setFecha(fecha);
@@ -407,14 +411,17 @@ public class mb_Movimiento {
 		return salida;
 	} 
   
+	public void delTemporalListaNexos(NexoMovimiento nexo){
+		this.listaNexos.remove(nexo);	
+	}
   
   
-	public void deleteNexo(NexoMovimiento nexo){ 
+	public void deleteNexo(NexoMovimiento nexo,boolean temporal){ 
 		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
   	String realPath=(String) servletContext.getServletPath(); 
   	System.out.println("contexto deletenexo: "+realPath);
-  	//se agrega a una lista temporal
-  	if(realPath.contains("addmovimiento.xhtml")){ 
+  	//se elimina de una lista temporal
+  	if(temporal){ 
 			this.listaNexos.remove(nexo);			
 			return;
 		}
@@ -658,8 +665,9 @@ public class mb_Movimiento {
 		return articuloOBJ;
 	}
 
-	public void setArticuloOBJ(Articulo articuloOBJ) {
+	public void setArticuloOBJ(Articulo articuloOBJ) {		
 		this.articuloOBJ = articuloOBJ;
+		System.out.println(this.articuloOBJ);
 	}
 
  

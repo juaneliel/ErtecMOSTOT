@@ -35,7 +35,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 
 
-public class ExportarOTPDF {
+public class ExportarFichaFuncionario {
 	
 	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
@@ -49,7 +49,7 @@ public class ExportarOTPDF {
   	
   	DAO_OT dao= new DAO_OT();
   	Ot ot = dao.getOT(idOT);
-  	if(ot==null){
+  	if (ot==null){
   		return;
   	}
   	String cliente = ot.getClienteNombre();

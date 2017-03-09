@@ -65,8 +65,12 @@
 					</p:rowEditor>					
 		    </p:column>
 		    
+		    
+		    
+		    
+		    
 		    <p:column headerText="Borrar"  style = "width:50px">		   
-					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo)}"   update="@([id$=panelNexos]) message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=panelNexos]) message"  rendered="#{mb_Usuario.puedeBorrar}"/>
 				</p:column>
 				
 			</p:dataTable> 
@@ -79,8 +83,9 @@
  	 
 
  
-<p:dialog header="Agregar item" widgetVar="nuevoitem"  modal="false" resizable="false" id="nuevoitem"  >
+<p:dialog header="Agregar item" widgetVar="nuevoitem"  modal="true" resizable="false" id="nuevoitem"  appendTo="@(body)" showEffect="explode" dynamic="true">
 <ui:include src="/templates/templateaddnexo.xhtml" id="listaAdicionales">	 
+<ui:param name="paramTemporal"   value = "true"/>		
 </ui:include>
 </p:dialog>	   
  	 

@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+      
+      
+<h:head>
+ 
+ <style>
+background-color: #87B6D9; 
+ </style>
+ 
+<title>Ertec S.A.</title>
+		<h:graphicImage library="images" name="1964.jpg" /> 
+</h:head>
+
+<h:body>
+
+
+
+<h:form>
+ 
+ 
+    <p:idleMonitor timeout="30000" >
+        <p:ajax event="idle" listener="#{mb_Usuario.onIdle}"   update="message" />
+        <p:ajax event="active" listener="#{mb_Usuario.onActive}" update="message" />
+    </p:idleMonitor>
+    
+            
+ 
+ 
+    <p:growl id="message" sticky="true" showDetail="true" life="3000" />
+ 
+    <p:dialog header="Login" widgetVar="dlg" resizable="false" modal="true" closable="false"  dynamic="true" visible="true" >
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="Usuario" value="Usuario" />
+            <p:inputText id="Usuario" value="#{mb_Usuario.nombre}" required="true" label="usuario" />
+ 
+            <h:outputLabel for="Clave" value="Clave" />
+            <p:password id="Clave" value="#{mb_Usuario.pass}" required="true" label="clave" />
+ 
+            <f:facet name="footer">
+                <p:commandButton value="Login" update="message" action="#{mb_Usuario.loguear}"
+                                 oncomplete="handleLoginRequest(xhr, status, args)" />
+            </f:facet>  
+        </h:panelGrid>
+    </p:dialog>
+ 
+ 
+<script type="text/javascript">
+	  PF('dlg').show();
+    function handleLoginRequest(xhr, status, args) {
+        if(args.validationFailed || !args.loggedIn) {
+            PF('dlg').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlg').hide();
+            $('#loginLink').fadeOut();
+        }
+    }
+</script>
+    
+    
+    
+    
+</h:form>
+  	
+
+
+
+
+</h:body>
+
+</html>
+
+

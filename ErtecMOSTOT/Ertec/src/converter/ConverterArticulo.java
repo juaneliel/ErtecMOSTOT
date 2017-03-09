@@ -17,17 +17,21 @@ import model.Articulo;
 public class ConverterArticulo implements Converter {
  
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+    	System.out.println("entro en converterarticulo primero");
     	Articulo salida=null;
         if(value != null && value.trim().length() > 0) {
             try {
+            	System.out.println("entro en converterarticulo");
                 mb_Articulo service = (mb_Articulo) 
                 		fc.getExternalContext().getSessionMap().get("mb_Articulo"); 
                 if (service==null){
                   return null;
                 }
                 ArrayList<Articulo> auxL=service.getListaArticulosOBJ();  
-               
-                
+                if(auxL==null){
+                	System.err.println("lista de articulos es nula converterarticulo");
+                	return salida;
+                }         
                 
                 for (Articulo o : auxL) {
                         String id =  Integer.toString( o.getArticuloID());
@@ -46,6 +50,7 @@ public class ConverterArticulo implements Converter {
     }
  
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
+    		System.out.println("convertido articulo getAsString");
         if(object != null) {
             return String.valueOf(((Articulo) object).getArticuloID());
         }

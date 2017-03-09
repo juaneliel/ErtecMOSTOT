@@ -25,15 +25,15 @@
 		selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
 		 >
 
-			  <f:facet name="{Exporters}">
+	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2" fileName="service"   />
+	      <p:dataExporter type="xls" target="datatable2" fileName="articulos"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2" fileName="service"  />
+	      <p:dataExporter type="pdf" target="datatable2" fileName="articulos"  />
 	    </h:commandLink> 
 		</f:facet>
 

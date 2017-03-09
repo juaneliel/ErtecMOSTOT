@@ -33,6 +33,9 @@ public class ConverterFuncionario implements Converter {
                 }
                 ArrayList<Funcionario> auxL= service.getListaFuncionariosOBJ();
                 System.out.println("converter func "+auxL);
+                if(auxL==null){
+                	return salida;
+                }                
                 for (Funcionario o : auxL) {
                         String id =  Integer.toString( o.getFuncionarioID());
                     if (value.equals(id)) {

@@ -35,15 +35,29 @@ public class Filtro implements Filter {
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpServletRequest request = (HttpServletRequest) req;
 		
-		if( user==null || (!user.estaLogueado() && !request.getRequestURI().endsWith("/login.xhtml") )  ){
-			response.sendRedirect("/Ertec/paginas/login.xhtml");
+		String url=request.getRequestURL().toString().toLowerCase();
+		boolean esRecurso= url.indexOf("/javax.faces.resource/")!=-1;
+		//boolean esLogin=url.endsWith("/login.xhtml");
+		String paginaLogin=request.getContextPath() + "/login.xhtml";
+		boolean esLogin=url.endsWith(paginaLogin.toLowerCase());
+		boolean logueado=user.estaLogueado();		
+		
+		System.out.println("URL "+url + " "+paginaLogin);
+		
+		
+		if( !logueado && !esLogin && !esRecurso  ){
+			response.sendRedirect(paginaLogin);
+			System.out.println("<<<<<loguear en dofilete");
 		}
 		else{
+			System.out.println(">>>>>>no redirigir dofilte");
 			chain.doFilter(req, res);
 		}
 		
 	}
 
+	
+	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
