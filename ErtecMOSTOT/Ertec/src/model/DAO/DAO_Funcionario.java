@@ -21,6 +21,7 @@ public class DAO_Funcionario {
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
+			em.persist(f.getFicha());
 			em.persist(f);
 			em.getTransaction().commit(); 
 			salida = true;
@@ -93,7 +94,18 @@ public class DAO_Funcionario {
 			aux.setVencimientoCedula(f.getVencimientoCedula());
 			aux.setLibretaCat(f.getLibretaCat());
 			aux.setVencimientoLibreta(f.getVencimientoLibreta());
+			aux.setFoto(f.getFoto());			
+			if(f.getFicha()!=null){
+				aux.setFicha(f.getFicha());
+				aux.setFichaID(f.getFichaID());
+			}
+			else{
+				aux.setFichaID(0);
+			}
 			
+			aux.setEducaciones(f.getEducaciones());
+			aux.setActividadAnteriores(f.getActividadAnteriores());
+			aux.setCapacitaciones(f.getCapacitaciones());
 			
 			//em.flush();
 			em.getTransaction().commit();
@@ -281,6 +293,11 @@ public class DAO_Funcionario {
 	  return salida;
 	}
 	
+	
+	public Funcionario getFuncionario(int idFuncionario){
+    EntityManager em=JpaUtil.getEntityManager();
+    return em.find(Funcionario.class, idFuncionario);
+	}
 	
 	
 }

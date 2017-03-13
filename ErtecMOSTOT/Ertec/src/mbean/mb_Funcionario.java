@@ -10,8 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext; 
 import org.primefaces.event.FileUploadEvent;
-
-
+import org.primefaces.event.FlowEvent;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +21,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.servlet.ServletContext;
@@ -30,6 +30,10 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
+import model.ActividadAnterior;
+import model.Capacitacion;
+import model.Educacion;
+import model.FichaPersonal;
 import model.Funcionario;
 import model.DAO.DAO_Funcionario;
 
@@ -59,13 +63,24 @@ public class mb_Funcionario {
   private String libretaCat;  
   private Date vencimientoLibreta;
 	private ArrayList <Funcionario> lista;
-	private ArrayList<Funcionario> funcionariosHallados=new ArrayList<Funcionario>();
+	private ArrayList <Educacion> listaEducacion=new ArrayList<Educacion>();
+	private ArrayList <Capacitacion> listaCapacitacion=new ArrayList<Capacitacion>();
+	private ArrayList <ActividadAnterior> listaActividadAnterior=new ArrayList<ActividadAnterior>();
+	private FichaPersonal ficha=new FichaPersonal();
 	
+
+	private ArrayList<Funcionario> funcionariosHallados=new ArrayList<Funcionario>();
+	private String urlImpresion;
 	private Funcionario funcionarioOBJ;
 	private ArrayList<Funcionario> listaFuncionariosOBJ=new ArrayList<Funcionario>(); 
-	
+  private String nombreArchivo="foto.jpg";
 	private Funcionario funcionarioSelected;
+	private FileUploadEvent eventUpload;
+	private Educacion educacion=new Educacion();
+	private Capacitacion capacitacion=new Capacitacion();
+	private ActividadAnterior actividadAnterior=new ActividadAnterior();
 	
+	private byte[] foto;
 	@PostConstruct
 	public void init(){
 		this.recargarLista ();
@@ -73,27 +88,40 @@ public class mb_Funcionario {
 	}
 	
 	private String destination="/resources/fotos/";
-	 
+	
   public void upload(FileUploadEvent event) {  
       FacesMessage msg = new FacesMessage("Success! ", event.getFile().getFileName() + " is uploaded.");  
       FacesContext.getCurrentInstance().addMessage(null, msg);
-      // Do what you want with the file        
+      // Do what you want with the file     
+      eventUpload=event;
+      this.funcionarioSelected.setFoto(eventUpload.getFile().getContents());
+      dao.update(funcionarioSelected);
+      
       try {
-          copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
+      	//nombreArchivo event.getFile().getFileName()
+      	//habria que tomar el final del archivo y agregarselo al nombre
+      	
+          copyFile(this.nombreArchivo, event.getFile().getInputstream());
       } catch (IOException e) {
           e.printStackTrace();
       }
-
   }  
 
-	public String urlImprimirFun(int funID){
-		//ExportarOTPDF.ExportarPDF(ot, "");
-		 String urlImpresion=  "/Ertec/exportarpdf?faces-redirect=true"+"&id="+funID+"&tipo=fun";
-		 System.out.println("url impresion ficha "+urlImpresion);
-		 return urlImpresion;
+public void subirArchivoNombrado(){
+	
+	try {
+	//nombreArchivo event.getFile().getFileName()
+	//habria que tomar el final del archivo y agregarselo al nombre
+	    copyFile(this.nombreArchivo, this.eventUpload.getFile().getInputstream());
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
 	
-  
+}
+ 
+public void subirArchivo(FileUploadEvent evento){
+	foto=evento.getFile().getContents();
+}
   
   
   public void copyFile(String fileName, InputStream in) {
@@ -117,11 +145,76 @@ public class mb_Funcionario {
               out.flush();
               out.close();
             
-              System.out.println("New file created!");
+              System.out.println("Exito se creo un nuevo archivo!");
               } catch (IOException e) {
               System.out.println(e.getMessage());
               }
   } 	
+  
+  //*************Ficha personal*************//
+  
+  public void agregarEducacion(){
+  	Educacion edu=new Educacion();
+  	edu.setAnios(educacion.getAnios());
+  	edu.setTitulo(educacion.getTitulo());
+  	edu.setInstituto(educacion.getInstituto());
+  	this.educacion=new Educacion();
+  	this.listaEducacion.add(edu);
+  }
+  
+  public void agregarActividadAnterior(){
+  	this.listaActividadAnterior.add(this.actividadAnterior);
+  }
+  
+  public void agregarCapacitacion(){
+  	this.listaCapacitacion.add(this.capacitacion);
+  }
+  
+  
+  private boolean skip;
+  
+ 
+   
+  public void save() {        
+      FacesMessage msg = new FacesMessage("Successful", "Welcome ");
+      FacesContext.getCurrentInstance().addMessage(null, msg);
+  }
+   
+  public boolean isSkip() {
+      return skip;
+  }
+
+  public void setSkip(boolean skip) {
+      this.skip = skip;
+  }
+  public String onFlowProcess(FlowEvent event) {
+    if(skip) {
+        skip = false;   //reset in case user goes back
+        return "confirm";
+    }
+    else {
+        return event.getNewStep();
+    }
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+	public String urlImprimirFun(){
+		//ExportarOTPDF.ExportarPDF(ot, "");
+		long funID=0;
+		if(this.funcionarioSelected!=null){
+			funID =this.funcionarioSelected.getFuncionarioID();
+		} 
+		 this.urlImpresion=  "/Ertec/exportarpdf?faces-redirect=true"+"&id="+funID+"&tipo=fun";
+		 System.out.println("url impresion ficha "+this.urlImpresion);
+		 return this.urlImpresion;
+	}
 	
 	public String add(){
 		String salida=null;
@@ -140,24 +233,26 @@ public class mb_Funcionario {
     f.setVencimientoCedula(vencimientoCedula);
     f.setLibretaCat(libretaCat);
     f.setVencimientoLibreta(vencimientoLibreta);
-    
+    f.setCapacitaciones(listaCapacitacion);
+    f.setActividadAnteriores(listaActividadAnterior);
+    f.setEducaciones(listaEducacion);
+    f.setFicha(ficha);
     
 		if (dao.add(f)){
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego "+f.getNombre());
+	    FacesContext.getCurrentInstance().addMessage(null, message);
 			salida= "/paginas/funcionarios.xhtml?faces-redirect=true";
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "El nombre ya existe"+f.getNombre());
-	        FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar"+f.getNombre());
+	    FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR"+f.getFuncionarioID());
 		recargarLista ();
 		return salida;
 	}
 	
-	public void onRowSelect(){
-		
-	}
-	
+ 
 	public void onRowEdit(RowEditEvent event) {
 		
 		Funcionario f= (Funcionario) event.getObject();
@@ -470,6 +565,14 @@ public class mb_Funcionario {
 		this.funcionarioSelected = funcionarioSelected;
 	}
 
+	public String getUrlImpresion() {
+		return urlImpresion;
+	}
+
+	public void setUrlImpresion(String urlImpresion) {
+		this.urlImpresion = urlImpresion;
+	}
+
 
 
  
@@ -501,6 +604,122 @@ public class mb_Funcionario {
 //	//return "/paginas/funcionarios.xhtml?faces-redirect=true";
 //}
 //
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	public String getNombreArchivo() {
+		return nombreArchivo;
+	}
+
+
+
+
+
+	public void setNombreArchivo(String nombreArchivo) {
+		this.nombreArchivo = nombreArchivo;
+	}
+
+	public ArrayList<Educacion> getListaEducacion() {
+		return listaEducacion;
+	}
+
+	public void setListaEducacion(ArrayList<Educacion> listaEducacion) {
+		this.listaEducacion = listaEducacion;
+	}
+
+	public ArrayList<Capacitacion> getListaCapacitacion() {
+		return listaCapacitacion;
+	}
+
+	public void setListaCapacitacion(ArrayList<Capacitacion> listaCapacitacion) {
+		this.listaCapacitacion = listaCapacitacion;
+	}
+
+	public ArrayList<ActividadAnterior> getListaActividadAnterior() {
+		return listaActividadAnterior;
+	}
+
+	public void setListaActividadAnterior(ArrayList<ActividadAnterior> listaActividadAnterior) {
+		this.listaActividadAnterior = listaActividadAnterior;
+	}
+
+	public FileUploadEvent getEventUpload() {
+		return eventUpload;
+	}
+
+	public void setEventUpload(FileUploadEvent eventUpload) {
+		this.eventUpload = eventUpload;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	} 
+ 
+ 
+	public FichaPersonal getFicha() {
+		return ficha;
+	}
+
+	public void setFicha(FichaPersonal ficha) {
+		this.ficha = ficha;
+	}
+
+	public Educacion getEducacion() {
+		return educacion;
+	}
+
+	public void setEducacion(Educacion educacion) {
+		this.educacion = educacion;
+	}
+
+	public Capacitacion getCapacitacion() {
+		return capacitacion;
+	}
+
+	public void setCapacitacion(Capacitacion capacitacion) {
+		this.capacitacion = capacitacion;
+	}
+
+	public ActividadAnterior getActividadAnterior() {
+		return actividadAnterior;
+	}
+
+	public void setActividadAnterior(ActividadAnterior actividadAnterior) {
+		this.actividadAnterior = actividadAnterior;
+	}
+
+ 
+
+ 
+	
+	
+	
+	
 	
 	
 	

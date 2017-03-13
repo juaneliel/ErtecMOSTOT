@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import model.FichaPersonal;
 
 import javax.persistence.*;
 
@@ -18,45 +20,76 @@ public class Funcionario implements Serializable {
   @Column(name="FuncionarioID")
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FUN_SEQ") 
   private int funcionarioID;
-
-  @Column(name="Cedula")
-  private String cedula;
+ 
+	@Lob()
+	private byte[] foto;
   
+	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinColumn(name="fichaID" , insertable = false, updatable = false)
+	private FichaPersonal ficha;
+	
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
+	private List<ActividadAnterior> actividadAnteriores;
+	
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
+	private List<Capacitacion> capacitaciones;
+	
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
+	private List<Educacion> educaciones;
+  
+  private int fichaID; 
+	public List<ActividadAnterior> getActividadAnteriores() {
+		return actividadAnteriores;
+	}
+
+	public void setActividadAnteriores(List<ActividadAnterior> actividadAnteriores) {
+		this.actividadAnteriores = actividadAnteriores;
+	}
+
+	public List<Capacitacion> getCapacitaciones() {
+		return capacitaciones;
+	}
+
+	public void setCapacitaciones(List<Capacitacion> capacitaciones) {
+		this.capacitaciones = capacitaciones;
+	}
+
+	public List<Educacion> getEducaciones() {
+		return educaciones;
+	}
+
+	public void setEducaciones(List<Educacion> educaciones) {
+		this.educaciones = educaciones;
+	}
+ 
+  
+  @Column(name="Cedula")
+  private String cedula;  
   @Temporal(TemporalType.DATE)
   @Column(name="VencimientoCedula")
   private Date vencimientoCedula;
-
   @Column(name="LibretaCat")
-  private String libretaCat; 
-  
+  private String libretaCat;   
   @Temporal(TemporalType.DATE)
   @Column(name="VencimientoLibreta")
   private Date vencimientoLibreta;
-
   private String activo;
-
   private String alias;
-
   private String area;
-
   private String cat;
-
   private String direccion;
-
   private String email;
-
   private int idEnService;
-
   private double lat;
-
   private double lng;
-
   private String nombre;
-
   private String telefono;
-
-
+  
   public Funcionario() {
+  	
   }
 
   @Temporal(TemporalType.DATE)
@@ -66,7 +99,6 @@ public class Funcionario implements Serializable {
   @Temporal(TemporalType.DATE)
   @Column(name="Nacimiento")
   private Date nacimiento;
-
   
   public int getFuncionarioID() {
     return this.funcionarioID;
@@ -96,7 +128,17 @@ public class Funcionario implements Serializable {
     return this.area;
   }
 
-  public void setArea(String area) {
+ 
+
+	public int getFichaID() {
+		return fichaID;
+	}
+
+	public void setFichaID(int fichaID) {
+		this.fichaID = fichaID;
+	}
+
+	public void setArea(String area) {
     this.area = area;
   }
 
@@ -211,6 +253,22 @@ public class Funcionario implements Serializable {
   public void setVencimientoLibreta(Date vencimientoLibreta) {
     this.vencimientoLibreta = vencimientoLibreta;
   }
+
+	public FichaPersonal getFicha() {
+		return ficha;
+	}
+
+	public void setFicha(FichaPersonal ficha) {
+		this.ficha = ficha;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
 
 }
 

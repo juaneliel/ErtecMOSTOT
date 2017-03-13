@@ -26,10 +26,34 @@
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
+  <filter>
+	  <filter-name>Primefaces Upload Filter</filter-name>
+	  <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	  <init-param>
+	  	<param-name>treshodSize</param-name>
+	  	<param-value>512000</param-value>
+	  </init-param>
+	  <init-param>
+	  	<param-name>uploadDirectory</param-name>
+	  	<param-value>/home/juan/archivosFichaPersonal</param-value>
+	  </init-param>
+  </filter>
+  <filter-mapping>
+   <filter-name>Primefaces Upload Filter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>  
+  </filter-mapping>
+  
+  
   <session-config>
     <session-timeout>10</session-timeout>
   </session-config>
   <welcome-file-list>
     <welcome-file>login.xhtml</welcome-file>
   </welcome-file-list>
+  
+      <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsf</location>
+    </error-page>
+  
 </web-app>

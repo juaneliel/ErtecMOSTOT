@@ -2,28 +2,32 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	
 	<persistence-unit name="MOSTOT"  transaction-type="RESOURCE_LOCAL">
-		<class>model.Area</class>
-		<class>model.Proveedores</class>
-		<class>model.Articulo</class>
-		<class>model.Usuario</class>
+		<class>model.ActividadAnterior</class>
 		<class>model.Adicional</class>
-		<class>model.NexoMovimiento</class>
-		<class>model.Referencia</class>
+		<class>model.Area</class>
+		<class>model.Arrendamiento</class>
+		<class>model.Articulo</class>
+		<class>model.Capacitacion</class>
+		<class>model.Cliente</class>
+		<class>model.Cod_Movimiento</class>
 		<class>model.CodigosMO</class>
 		<class>model.ComprasExternasOT</class>
-		<class>model.Cliente</class>
-		<class>model.TipoOT</class>
-		<class>model.ManoObra</class>
-		<class>model.Ot</class>
-		<class>model.CuentasCorriente</class>
-		<class>model.Movimiento</class>
-		<class>model.Funcionario</class>
-		<class>model.DireccionContrato</class>
 		<class>model.Contrato</class>
-		<class>model.Arrendamiento</class>
-		<class>model.Reclamo</class>
-		<class>model.Cod_Movimiento</class>
+		<class>model.CuentasCorriente</class>
 		<class>model.DatosGlobale</class>
+		<class>model.DireccionContrato</class>
+		<class>model.Educacion</class>
+		<class>model.FichaPersonal</class>
+		<class>model.Funcionario</class>
+		<class>model.ManoObra</class>
+		<class>model.Movimiento</class>
+		<class>model.NexoMovimiento</class>
+		<class>model.Ot</class>
+		<class>model.Proveedores</class>
+		<class>model.Reclamo</class>
+		<class>model.Referencia</class>
+		<class>model.TipoOT</class>
+		<class>model.Usuario</class>
 		
 		
 		

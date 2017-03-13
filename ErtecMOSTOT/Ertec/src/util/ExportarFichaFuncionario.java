@@ -3,8 +3,11 @@ package util;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import javax.faces.context.FacesContext;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.servlet.ServletOutputStream;
 
 import java.io.FileNotFoundException;
@@ -19,7 +22,10 @@ import java.io.FileOutputStream;
 import java.io.FileOutputStream;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import model.FichaPersonal;
+import model.Funcionario;
 import model.Ot;
+import model.DAO.DAO_Funcionario;
 import model.DAO.DAO_OT;
 
 import java.math.BigDecimal;
@@ -36,51 +42,58 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 
 public class ExportarFichaFuncionario {
-	
-	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
+	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";	
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
+	public static final String FOTO = "http://localhost:8080/Ertec/resources/fotos/foto.jpg";
 	
     	
-  public static void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
+  public static void ExportarPDF(int idFuncionario, ServletOutputStream sOS  )   {
   
   	//String RESULT = "/home/juan/Escritorio/OT.pdf";
   	
   	//FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/1964.pdf");
   	
-  	DAO_OT dao= new DAO_OT();
-  	Ot ot = dao.getOT(idOT);
-  	if (ot==null){
+  	DAO_Funcionario dao= new DAO_Funcionario();
+  	Funcionario f = dao.getFuncionario(idFuncionario);
+  	if (f==null){
   		return;
   	}
-  	String cliente = ot.getClienteNombre();
-    String direccion = "Sin datos";
-    String telCliente =  "Sin datos";
-    int ccte=0;
-    int c=0;
-    int arr=ot.getArrendamiento();
-    int mant=ot.getMantenimiento();
+  	
+    String nombre=f.getNombre();
+    String email=f.getEmail();
+    String telefono=f.getTelefono();
+    String activo=f.getActivo();
+    String alias=f.getAlias();
+    String area=f.getArea();
+    String cat=f.getCat();
+    String direccion=f.getDireccion(); 
+    Date nacimiento=f.getNacimiento();
+    Date carneSalud=f.getCarneSalud();
+		String cedula=f.getCedula();
+		Date vencimientoCedula=f.getVencimientoCedula();
+		String libretaCat=f.getLibretaCat();
+		Date vencimientoLibreta=f.getVencimientoLibreta();
+    String primerNombre="";
+  	 String segundoNombre="";
+  	 String primerApellido="";
+  	 String segundoApellido="";
+  	 String ciudadania="";	
+  	 Date ingreso;	
+  	 String credencialCivica="";
     
-  	if(ot.getNroCliente()!=0){
-  	  cliente = ot.getCliente().getNombre();
-  	  direccion = ot.getCliente().getDirCliente();
-      telCliente =  ot.getCliente().getTelCliente();
-//      if(ot.getCliente()!=null && ot.getCliente().getCuentacorriente()!=null ){
-//        ccte=ot.getCliente().getCuentacorriente().getCuentaID();  
-//      }  
-       ccte=ot.getCliente().getCuentaCorriente(); 
-      
-      
-  	}
-    int numeroCliente=ot.getNroCliente();    
-    String lugarDeObra= ot.getDireccionObra();
-    String telObra = ot.getTelObra(); 
-    int verifadm=ot.getVerifAdm();
-   // int idOT=ot.getId();	
-  	BigDecimal pres= ot.getPresupuesto();
-  	int oc= ot.getOC();
-  	int ped = ot.getPedido();  	
-  	int r=ot.getR();
-  	String trabajo = ot.getTrabajo();
+    
+		FichaPersonal ficha= f.getFicha();
+		if(ficha!=null){
+			primerNombre=ficha.getPrimerNombre();
+			segundoNombre=ficha.getSegundoNombre();
+			primerApellido=ficha.getPrimerApellido();
+			segundoApellido=ficha.getSegundoApellido();
+			ciudadania=ficha.getCiudadania();
+			credencialCivica=ficha.getCredencialCivica();
+			
+			//FOTO=ficha.getPathFoto();
+			
+		}
   	
    try {
   	 
@@ -102,7 +115,7 @@ public class ExportarFichaFuncionario {
        // Imagen 
        try{       
       	 URL cl=ClassLoader.getSystemResource(RESOURCE);
-      	 System.out.println("CL "+cl);
+      	 
 	       Image img = Image.getInstance(RESOURCE);
 	       img.setAbsolutePosition(20,750);
 	       img.scalePercent(50);
@@ -116,71 +129,58 @@ public class ExportarFichaFuncionario {
        PdfContentByte canvas = writer.getDirectContent();
        
        BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-       canvas.saveState();
-       canvas.beginText();
-       canvas.moveText(420,780);
-       canvas.setFontAndSize(bf, 10);
-       canvas.showText("ORDEN DE TRABAJO");
-       canvas.endText();
-       canvas.restoreState();
-       
-       canvas.saveState();
-       canvas.beginText();
-       canvas.moveText(440,750);
-       canvas.setFontAndSize(bf, 12);
-       canvas.showText("Nro: "+Integer.toString(idOT));
-       canvas.endText();
-       canvas.restoreState();
-       
 
+
+       
+       // foto
+       try{       
+//      	 URL cl=ClassLoader.getSystemResource(FOTO); 
+//	       Image img = Image.getInstance(FOTO);
+	       Image img = Image.getInstance(f.getFoto());
+	    //   System.out.println("CL "+cl);
+	       img.setAbsolutePosition(450,750);
+	       img.scaleAbsoluteHeight(50);
+	       img.scaleAbsoluteWidth(50);
+	       document.add(img);
+       }
+       catch(Exception e){
+      	 System.err.println("no se pudo cargar la imagen");
+       }
+       
+       
+       canvas.saveState();
+       canvas.beginText();
+       canvas.moveText(440,730);
+       canvas.setFontAndSize(bf, 12);
+       canvas.showText("ID: "+Integer.toString(idFuncionario));
+       canvas.endText();
+       canvas.restoreState();
+        
        
        // Creacion de tabla 1         
        PdfPTable tabla1 = new PdfPTable(2);    
-       tabla1.setTotalWidth(350);  
-       PdfPCell cell =new PdfPCell(new Paragraph("CLIENTE: "+cliente, new Font(FontFamily.HELVETICA, 10)));
+       tabla1.setTotalWidth(550);  
+       PdfPCell cell =new PdfPCell(new Paragraph("Apellidos: "+primerApellido+" "+segundoApellido, new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);
        
        tabla1.addCell( cell );
-       tabla1.addCell( new PdfPCell(new Paragraph("ID: "+ numeroCliente , new Font(FontFamily.HELVETICA, 10))));         
+       tabla1.addCell( new PdfPCell(new Paragraph("Nombres: "+ primerNombre+" "+segundoNombre , new Font(FontFamily.HELVETICA, 10))));         
        
-       cell =new PdfPCell(new Paragraph("DIRECCION: " +direccion , new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("Ciudadania: " +ciudadania , new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );         
-       tabla1.addCell( new PdfPCell(new Paragraph( "TEL: "+telCliente, new Font(FontFamily.HELVETICA, 10))));
+       tabla1.addCell( new PdfPCell(new Paragraph( "F. Nacimiento: "+nacimiento, new Font(FontFamily.HELVETICA, 10))));
        
-       cell =new PdfPCell(new Paragraph("LUGAR DE OBRA: "+ lugarDeObra , new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("Cedula: "+ cedula , new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );   
-       tabla1.addCell( new PdfPCell(new Paragraph("TEL " + telObra, new Font(FontFamily.HELVETICA, 10))));
-       tabla1.setWidths( new int[]{ 10,5 } );
+       tabla1.addCell( new PdfPCell(new Paragraph("C.Civica: " + credencialCivica, new Font(FontFamily.HELVETICA, 10))));
+       tabla1.setWidths( new int[]{ 1,1 } );
        tabla1.writeSelectedRows(0, -1, 20, 710, canvas);
                   
        
        
-       PdfPTable tabla2 = new PdfPTable(1); 
-       tabla2.setTotalWidth(90);         
-       tabla2.addCell( new PdfPCell(new Paragraph("C.CTE.: "+ccte, new Font(FontFamily.HELVETICA, 8))));
-       tabla2.addCell( new PdfPCell(new Paragraph("ARR.: "+ arr, new Font(FontFamily.HELVETICA, 8))));
-       tabla2.addCell( new PdfPCell(new Paragraph("MANT.: " +mant  , new Font(FontFamily.HELVETICA, 8))));
-       tabla2.addCell( new PdfPCell(new Paragraph("VERIF ADM.: "+verifadm, new Font(FontFamily.HELVETICA, 8)))); 
-       tabla2.writeSelectedRows(0, -1, 380, 710, canvas);
-       
       
-       
-       PdfPTable tabla3 = new PdfPTable(2); 
-       tabla3.setTotalWidth(90);  
-       PdfPCell celdaFinal = new PdfPCell(new Paragraph("PRES.: "+pres, new Font(FontFamily.HELVETICA, 8)));
-       celdaFinal.setColspan(2);  
-       tabla3.addCell( celdaFinal);
-       celdaFinal = new PdfPCell(new Paragraph("O.C.: "+ oc, new Font(FontFamily.HELVETICA, 8)));
-       celdaFinal.setColspan(2);  
-       tabla3.addCell( celdaFinal);
-       celdaFinal = new PdfPCell(new Paragraph("PED.: " +ped, new Font(FontFamily.HELVETICA, 8)));
-       celdaFinal.setColspan(2);  
-       tabla3.addCell( celdaFinal);
-       tabla3.addCell( new PdfPCell(new Paragraph("C.: "+c, new Font(FontFamily.HELVETICA, 8)))); 
-       tabla3.addCell( new PdfPCell(new Paragraph("R.: "+r, new Font(FontFamily.HELVETICA, 8)))); 
-       tabla3.writeSelectedRows(0, -1, 480, 710, canvas);
        
        
        
@@ -188,7 +188,7 @@ public class ExportarFichaFuncionario {
        canvas.beginText();
        canvas.moveText(20,635);
        canvas.setFontAndSize(bf, 10);
-       canvas.showText("TRABAJO A EFECTUAR:");
+       canvas.showText("Educacion:");
        canvas.endText();
        canvas.restoreState();
        
@@ -196,7 +196,7 @@ public class ExportarFichaFuncionario {
        PdfPTable tabla4 = new PdfPTable(1); 
        tabla4.setTotalWidth(550);   
        
-       cell = new PdfPCell(new Paragraph(trabajo, new Font(FontFamily.HELVETICA, 12)));
+       cell = new PdfPCell(new Paragraph("Un maleducado", new Font(FontFamily.HELVETICA, 12)));
   	 cell.setMinimumHeight(20);
        tabla4.addCell(cell); 
        

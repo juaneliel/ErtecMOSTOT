@@ -13,13 +13,13 @@
  
 	<h:form id="datatable">
 	
-	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatable2"
+	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatable2"  emptyMessage="Sin Registros"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   
 		 editable="true" 
 		 style="text-align:left;max-height:500px;overflow-y:scroll; 
    	font-size: 90% !important;color: red;font-weight: bold;"
-		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+		 paginatorTemplate="{vercol} {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
     
 		
 		selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
@@ -37,9 +37,20 @@
 	    </h:commandLink> 
 		</f:facet>
 
-		<f:facet name="header">
-		        Articulos
-		</f:facet>
+ 
+		
+				 	<f:facet name="{titulo}">
+		        Articulos		 		        
+		    </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatable2" trigger="toggler" >
+		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
+		        </p:columnToggler> 
+		    </f:facet> 
+		
+		
 		 
 		<p:ajax event="rowEdit" listener="#{mb_Articulo.onRowEdit}" update="message" />	 
 		<f:event type="preRenderView" listener="#{mb_Articulo.recargarLista}" />

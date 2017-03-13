@@ -42,7 +42,7 @@ update="datatableservice :message"/>
 	<p:dataTable var="contrato" value="#{mb_Reclamo.listaSinVisitar}" id="datatableservice"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"  scrollHeigth="500" 
-		 editable="true"  paginatorPosition="top"  
+		 editable="true"  paginatorPosition="top"   emptyMessage="Sin Registros"
 		 styleClass="estiloDataTable"
 		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                

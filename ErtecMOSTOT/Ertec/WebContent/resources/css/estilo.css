@@ -1,6 +1,8 @@
 @CHARSET "UTF-8";
 
-
+.ui-datatable-empty-message {
+    display: ;
+}
 
 .ui-row-editor{
     display: inline;

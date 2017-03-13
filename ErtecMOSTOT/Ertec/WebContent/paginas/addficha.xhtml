@@ -48,7 +48,7 @@
 							 	    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
 							  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
 								
-								    <h:outputLabel value="V.C.Salud" for="cds" /> 			    	    
+								    <h:outputLabel value="Carne de Salud" for="cds" /> 			    	    
 							 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" /> 
 								    
 										<h:outputLabel value="Cedula:" for="cedula" /> 	
@@ -62,48 +62,18 @@
 									 
 							 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
 							       <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
-							    							                    
-                </h:panelGrid>
-            </p:panel>
-        </p:tab>
-				<p:tab id="ficha" title="Datos privados" rendered="true">
-            <p:panel header="Instituciones de educacion">
-                <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputText value="Ciudadania " />
-		                <p:inputText value="#{mb_Funcionario.ficha.ciudadania}" />
+							    
+							                    
                 </h:panelGrid>
             </p:panel>
         </p:tab>
         <p:tab id="educacion" title="Educacion" rendered="true">
-            <p:panel header="Instituciones de educacion">        
+            <p:panel header="Instituciones de educacion">
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value"> 
-		                <h:panelGrid columns="2" columnClasses="label, value">
-		                	<h:outputText value="Institucion:" />		                	
-	                    <p:inputText value="#{mb_Funcionario.educacion.instituto}" />
-	                    <h:outputText value="Anos:" />
-	                    <p:inputText value="#{mb_Funcionario.educacion.anios}" />	
-	                    <h:outputText value="Titulo:" />
-	                    <p:inputText value="#{mb_Funcionario.educacion.titulo}" />		                                       
-	                    <h:commandButton value="Add" actionListener="#{mb_Funcionario.agregarEducacion}" />
-		                </h:panelGrid>		                
-		                <h:panelGrid columns="2" columnClasses="label, value">
-		                	<h:form>
-								    		<p:dataTable value="#{mb_Funcionario.listaEducacion}" var="e"  emptyMessage="Sin Registros"	>								
-									    		<p:column headerText="Instituto"  visible="true" sortBy="#{e.instituto}"  filterMatchMode="contains" filterBy="#{e.instituto}">		                
-		  											<h:outputText value="#{e.instituto}" />
-									    		</p:column>
-									    		<p:column headerText="Anos"  visible="true" sortBy="#{e.anios}"  filterMatchMode="contains" filterBy="#{e.anios}">		                
-		  											<h:outputText value="#{e.anios}" />
-									    		</p:column>
-									    		<p:column headerText="Titulo"  visible="true" sortBy="#{e.titulo}"  filterMatchMode="contains" filterBy="#{e.titulo}">		                
-		  											<h:outputText value="#{e.titulo}" />
-									    		</p:column>
-								    		</p:dataTable>
-								    	</h:form>
-		                </h:panelGrid>
-                 </h:panelGrid>
+                <h:panelGrid columns="2" columnClasses="label, value">
+                    <h:outputText value="Street: " />
+                    <p:inputText value="#{mb_Funcionario.email}" />
+                </h:panelGrid>
             </p:panel>
         </p:tab>
         <p:tab id="actividadesanteriores" title="Actividades anteriores" rendered="true">
@@ -137,7 +107,7 @@
                         <h:outputText value="#{mb_Funcionario.email}" styleClass="outputLabel"/>
                     </h:panelGrid> 
                 </h:panelGrid> 
-                <p:commandButton value="Guardar" action="#{mb_Funcionario.add}" update="message" process="@this"/>
+                <p:commandButton value="Submit" actionListener="#{mb_Funcionario.add}" update="message" process="@this"/>
             </p:panel>
         </p:tab>
 	 </p:wizard>
