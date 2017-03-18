@@ -22,19 +22,12 @@ public class ActividadAnterior implements Serializable {
 	private String causaRetiro;
 	private String sueldo;
 	private String detalle;
-	private String otros;
-	private int funcionarioID;
+	private String otros; 
 	public ActividadAnterior() {
 		super();
 	}
 	
-	public int getFuncionarioID() {
-		return funcionarioID;
-	}
-
-	public void setFuncionarioID(int funcionarioID) {
-		this.funcionarioID = funcionarioID;
-	}
+ 
  
 	public int getActividadAnteriorID() {
 		return actividadAnteriorID;

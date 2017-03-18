@@ -13,8 +13,7 @@
   	
   	<h:form id="formfuncionarios" enctype="multipart/form-data">
   	
- 	
-
+  
 
 
   	
@@ -24,7 +23,7 @@
 		 editable="true" 
 		 style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"		
 		 selection="#{mb_Funcionario.funcionarioSelected}" selectionMode="single" rowKey="#{funcionario.funcionarioID}"
-		 paginatorTemplate="{vercol} {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+		 paginatorTemplate=" {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {agregar} {vercol}"
     
 		 
 		 >
@@ -34,11 +33,15 @@
 		    </f:facet>
 		 
 		 <f:facet name="{vercol}">   
-		    <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right" icon="ui-icon-calculator" />
 		        <p:columnToggler datasource="datatable2" trigger="toggler" >
 		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
 		        </p:columnToggler> 
 		    </f:facet> 
+		    
+		  <f:facet name="{agregar}">    
+		 <p:commandButton value="Agregar" ajax="false" action="/paginas/addfuncionarios.xhtml?faces-redirect=true" style="float:left"/>   
+      </f:facet>
 		 
 		 <p:ajax event="rowEdit" listener="#{mb_Funcionario.onRowEdit}" update="message" />
 	 
@@ -47,8 +50,7 @@
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
 	      <p:dataExporter type="xls" target="datatable2" fileName="articulos"   />
-	    </h:commandLink>
-	
+	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
 	      <p:dataExporter type="pdf" target="datatable2" fileName="articulos"  />
@@ -205,8 +207,7 @@
 		    </p:column>
 		     
 		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.funcionarios)}" exportable="false">			
-			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}" 
-   	
+			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}"    	
    	update="formfuncionarios message" >
         <p:confirm header="Confirmacion" message="Borrar a #{funcionario.nombre}?" icon="ui-icon-alert" />
   <span class="ui-icon ui-icon-trash"></span>
@@ -252,6 +253,9 @@
          name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
      </iframe>
 </p:dialog>
+
+ 
+
 
 <p:dialog id="subirarchivo"  widgetVar="subirarchivo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  width="600" height="300"  >
  <h:form>

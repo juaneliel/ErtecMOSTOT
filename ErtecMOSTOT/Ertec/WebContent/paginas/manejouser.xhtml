@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+
+
+
+      
+<ui:define name="cuerpo"> 
+
+
+ <h:form>        
+		<p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+		
+			<f:facet name="header">
+				Modificar datos	 
+			</f:facet>
+			
+			  <h:outputLabel value="Nombre:" for="nom" /> 
+				<p:inputText  value="#{mb_Usuario.usuario.nombre}" id="nom" disabled="true"/>
+				
+				<h:outputLabel value="Clave anterior: *" for="clave"  /> 
+				<p:password  id="clave"  value="#{mb_Usuario.claveVieja}" required="true"/> 
+				
+				<h:outputLabel value="Clave nueva: *" for="cn"  /> 
+				<p:password  id="cn"  value="#{mb_Usuario.claveNueva}" required="true"/>  
+		
+				<h:outputLabel value="Email: *" for="email"  /> 
+				<p:inputText id="email"  value="#{mb_Usuario.email}" required="true"/>  
+
+
+			<h:commandButton value="Actualizar datos" action="#{mb_Usuario.updateClave }"   />	  
+		   	
+		</p:panelGrid> 
+ 
+ 
+ </h:form>
+        
+
+
+
+
+</ui:define>
+</ui:composition>

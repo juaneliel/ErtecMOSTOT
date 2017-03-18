@@ -39,7 +39,7 @@ import model.DAO.DAO_Funcionario;
 
 
 @ManagedBean(name="mb_Funcionario")
-@SessionScoped
+@ViewScoped
 public class mb_Funcionario {
 
 	private DAO_Funcionario dao=new DAO_Funcionario();
@@ -74,11 +74,15 @@ public class mb_Funcionario {
 	private Funcionario funcionarioOBJ;
 	private ArrayList<Funcionario> listaFuncionariosOBJ=new ArrayList<Funcionario>(); 
   private String nombreArchivo="foto.jpg";
-	private Funcionario funcionarioSelected;
+	private Funcionario funcionarioSelected=new Funcionario();
 	private FileUploadEvent eventUpload;
 	private Educacion educacion=new Educacion();
 	private Capacitacion capacitacion=new Capacitacion();
 	private ActividadAnterior actividadAnterior=new ActividadAnterior();
+	private boolean habEdiFun;
+	private UploadedFile file;
+	 
+ 
 	
 	private byte[] foto;
 	@PostConstruct
@@ -87,10 +91,17 @@ public class mb_Funcionario {
 		//revisarVencimiento();
 	}
 	
+	public void preRender() {
+    if (!FacesContext.getCurrentInstance().isPostback()) {
+    	habEdiFun=false;
+    	this.ficha=new FichaPersonal();
+    }
+}
+	
 	private String destination="/resources/fotos/";
 	
   public void upload(FileUploadEvent event) {  
-      FacesMessage msg = new FacesMessage("Success! ", event.getFile().getFileName() + " is uploaded.");  
+      FacesMessage msg = new FacesMessage("Exito ", event.getFile().getFileName() + " se subio el archivo.");  
       FacesContext.getCurrentInstance().addMessage(null, msg);
       // Do what you want with the file     
       eventUpload=event;
@@ -107,6 +118,11 @@ public class mb_Funcionario {
       }
   }  
 
+public void generarFicha(){
+	dao.generarFicha();
+}
+  
+  
 public void subirArchivoNombrado(){
 	
 	try {
@@ -115,10 +131,16 @@ public void subirArchivoNombrado(){
 	    copyFile(this.nombreArchivo, this.eventUpload.getFile().getInputstream());
 	} catch (IOException e) {
 	    e.printStackTrace();
-	}
-	
+	}	
 }
  
+public void upload(){
+  FacesMessage msg = new FacesMessage("Success! ",file.getFileName() + " is uploaded.");  
+  FacesContext.getCurrentInstance().addMessage(null, msg);
+  // Do what you want with the file    
+  this.funcionarioSelected.setFoto(file.getContents());
+}
+
 public void subirArchivo(FileUploadEvent evento){
 	foto=evento.getFile().getContents();
 }
@@ -154,20 +176,18 @@ public void subirArchivo(FileUploadEvent evento){
   //*************Ficha personal*************//
   
   public void agregarEducacion(){
-  	Educacion edu=new Educacion();
-  	edu.setAnios(educacion.getAnios());
-  	edu.setTitulo(educacion.getTitulo());
-  	edu.setInstituto(educacion.getInstituto());
-  	this.educacion=new Educacion();
-  	this.listaEducacion.add(edu);
+  	this.listaEducacion.add(educacion);
+  	this.educacion=new Educacion();  	
   }
   
-  public void agregarActividadAnterior(){
-  	this.listaActividadAnterior.add(this.actividadAnterior);
+  public void agregarActividadAnterior(){  	
+  	this.listaActividadAnterior.add(actividadAnterior);
+  	actividadAnterior=new ActividadAnterior();
   }
   
   public void agregarCapacitacion(){
   	this.listaCapacitacion.add(this.capacitacion);
+  	capacitacion=new Capacitacion();
   }
   
   
@@ -337,10 +357,10 @@ public void subirArchivo(FileUploadEvent evento){
 		return "/paginas/addfuncionarios.xhtml";
 	}
 	
-	public ArrayList <Funcionario> completarFuncionario(String query){
-		this.listaFuncionariosOBJ=dao.completarFuncionario(query);
-		return listaFuncionariosOBJ;
-	}
+//	public ArrayList <Funcionario> completarFuncionario(String query){
+//		this.listaFuncionariosOBJ=dao.completarFuncionario(query);
+//		return listaFuncionariosOBJ;
+//	}
 	
 	
 	//Getter y setter
@@ -713,15 +733,20 @@ public void subirArchivo(FileUploadEvent evento){
 		this.actividadAnterior = actividadAnterior;
 	}
 
- 
+	public boolean isHabEdiFun() {
+		return habEdiFun;
+	}
 
- 
-	
-	
-	
-	
-	
-	
+	public void setHabEdiFun(boolean habEdiFun) {
+		this.habEdiFun = habEdiFun;
+	} 
+	 public UploadedFile getFile() {
+     return file;
+ }
+
+ public void setFile(UploadedFile file) {
+     this.file = file;
+ }
 	
 	
 	

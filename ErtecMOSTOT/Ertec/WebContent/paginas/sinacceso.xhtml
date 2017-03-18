@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo">  
+    <div style="float:right;margin-right:430px;margin-top:0px;font-size:22px"> 
+     <h:outputLabel id="sinacceso" label="sinacceso" value="No tiene autorización para ver esta página por favor contacte a su administrador"  />  
+    </div>
+ 	 
+<h:graphicImage library="images" name="sinacceso.jpg" style="margin-left:30px;height:auto;widht:auto"/>   
+</ui:define>
+</ui:composition>

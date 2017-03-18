@@ -17,8 +17,7 @@
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   
 		 editable="true" 
-		 style="text-align:left;max-height:500px;overflow-y:scroll; 
-   	font-size: 90% !important;color: red;font-weight: bold;"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;"
 		 paginatorTemplate="{vercol} {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
     
 		
@@ -146,13 +145,13 @@
 
  
      <p:column headerText="Editar"  style = "width:50px" exportable="false">		
-				<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+				<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">
 				</p:rowEditor>					
 	    </p:column>
 		    
 		     
 		     
-		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">	
+		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','articulo')}"> exportable="false">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}" 
 			 update="datatable message" >
         <p:confirm header="Confirmacion" message="Borrar articulo #{articulo.descripcion}?" icon="ui-icon-alert" />

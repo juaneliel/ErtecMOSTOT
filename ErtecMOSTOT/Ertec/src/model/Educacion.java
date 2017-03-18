@@ -13,8 +13,7 @@ public class Educacion implements Serializable {
 	private String instituto;
 	private String anios;
 	private String titulo;
-	private String pathArchivo;
-	private int funcionarioID;
+	private String pathArchivo; 
   public Educacion() {
 		super();
 	}
@@ -56,11 +55,6 @@ public class Educacion implements Serializable {
 	public void setPathArchivo(String pathArchivo) {
 		this.pathArchivo = pathArchivo;
 	}
-	public int getFuncionarioID() {
-		return funcionarioID;
-	}
-	public void setFuncionarioID(int funcionarioID) {
-		this.funcionarioID = funcionarioID;
-	}
+
 
 }

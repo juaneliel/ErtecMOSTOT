@@ -13,20 +13,21 @@ import javax.inject.Inject;
 
 import mbean.mb_Cliente;
 import mbean.mb_Funcionario;
+import mbean.mb_Usuario;
 import model.Funcionario;
  
 @FacesConverter("ConverterFuncionario")
 public class ConverterFuncionario implements Converter {
 
   @Inject
-  private mb_Funcionario service;
+  private mb_Usuario service;
   
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
     	Funcionario salida=null;
         if(value != null && value.trim().length() > 0) {
             try { 
-            	mb_Funcionario service = (mb_Funcionario) 
-            	    fc.getExternalContext().getSessionMap().get("mb_Funcionario"); 
+            	mb_Usuario service = (mb_Usuario) 
+            	    fc.getExternalContext().getSessionMap().get("mb_Usuario"); 
                 System.out.println("funcionario converter: "+service);
                 if(service==null){
                   return salida;

@@ -11,68 +11,142 @@
       
  
 <ui:define name="cuerpo"> 
-	<h:form>			
+	<h:form enctype="multipart/form-data"> 
+	 
 	
 	<p:wizard flowListener="#{mb_Funcionario.onFlowProcess}"  backLabel="atras" nextLabel="siguiente">
         <p:tab id="personal" title="Datos personales">
             <p:panel header="Detalles personales">
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputLabel value="Nombre *" for="n" />
-								    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.nombre}" required="true" /> 
+                <h:panelGrid columns="3" columnClasses="label, value">
+                	<h:panelGrid columns="2" columnClasses="label, value">
+                			<h:outputLabel value="Nombre *" for="n" />
+									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.nombre}" required="true" /> 
+									    
+									    <h:outputLabel value="Alias:" for="alias" /> 
+									    <p:inputText id="alias" value="#{mb_Funcionario.alias}" />  
+									    
+									    <h:outputLabel value="Direccion:" for="direccion" /> 
+									    <p:inputText id="direccion" value="#{mb_Funcionario.direccion}" />
+									    
+									    <h:outputLabel value="Telefono:" for="t" />    
+									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.telefono}"  />
+									    
+									    <h:outputLabel value="Email:" for="e" />
+									    <p:inputText id="e" label="email" value="#{mb_Funcionario.email}"  /> 
+									  	 
+                	</h:panelGrid>        
+                	<h:panelGrid columns="2" columnClasses="label, value">
+  									    
+											<h:outputLabel value="Cedula:" for="cedula" /> 	
+									    <p:inputText id="cedula" value="#{mb_Funcionario.cedula}"  />
+									    
+											<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
+								      <p:calendar id="vcedula" value="#{mb_Funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
+									    									    
+								 			<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
+									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.libretaCat}"  /> 
+									    
+								 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
+								      <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
 								      
-								    <h:outputLabel value="Email" for="e" />
-								    <p:inputText id="e" label="email" value="#{mb_Funcionario.email}"  />  
-								     
-								    <h:outputLabel value="Telefono" for="t" />    
-								    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.telefono}"  />     
-								    
-								    <h:outputLabel value="Activo:" for="activo" />    
-								    <p:selectOneMenu id="activo" value="#{mb_Funcionario.activo}" style="width:85%"    >
-											<f:selectItem  itemLabel="Si" itemValue="Si" />
-											<f:selectItem   itemLabel="No" itemValue="No" />
-										</p:selectOneMenu >	
-								    
-								    <h:outputLabel value="Alias:" for="alias" /> 
-								    <p:inputText id="alias" value="#{mb_Funcionario.alias}" />
-								    
-								    <h:outputLabel value="Area:" for="area" /> 
-								    <p:inputText id="area" value="#{mb_Funcionario.area}" />
-								    
-								    <h:outputLabel value="Categoria:" for="cat" />    
-								    <p:inputText id="cat" value="#{mb_Funcionario.cat}" />
-								    
-								    <h:outputLabel value="Direccion:" for="direccion" /> 
-								    <p:inputText id="direccion" value="#{mb_Funcionario.direccion}" />
-								    
-							 	    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
-							  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
-								
-								    <h:outputLabel value="V.C.Salud" for="cds" /> 			    	    
-							 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" /> 
-								    
-										<h:outputLabel value="Cedula:" for="cedula" /> 	
-								    <p:inputText id="cedula" value="#{mb_Funcionario.cedula}" style="width:100%"/>
-							           		  
-										<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
-							      <p:calendar id="vcedula" value="#{mb_Funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
-									 
-										<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
-								    <p:inputText id="CatLibreta" value="#{mb_Funcionario.libretaCat}" style="width:100%"/> 
-									 
-							 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
-							       <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
-							    							                    
-                </h:panelGrid>
+								      <h:outputLabel value="V.C.Salud:" for="cds" /> 			    	    
+								 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" />
+									           			
+                	</h:panelGrid>               
+	                <h:panelGrid columns="2" columnClasses="label, value">									     
+
+											<h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
+								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />    
+								      									    									    
+									    <h:outputLabel value="Area:" for="area" /> 
+									    <p:inputText id="area" value="#{mb_Funcionario.area}" />	
+									    								 	        		  
+										  <h:outputLabel value="Activo:" for="activo" />    
+									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.activo}" style="width:85%"    >
+												<f:selectItem  itemLabel="Si" itemValue="Si" />
+												<f:selectItem   itemLabel="No" itemValue="No" />
+											</p:selectOneMenu >	       
+											
+											<h:outputLabel value="Categoria:" for="cat" />    
+									    <p:inputText id="cat" value="#{mb_Funcionario.cat}" />										
+								    							                    
+	                </h:panelGrid>
+	                
+	                 <h:outputLabel for="image" value="Seleccione imagen" />
+                <p:fileUpload value="#{mb_Funcionario.file}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+                
+                  <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="false" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
+             multiple="false"  ajax="false" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
+ 
+                
+                
+                <f:facet name="footer">
+                    <h:commandButton value="Submit" ajax="false" 
+                                     actionListener="#{mb_Funcionario.upload()}"/></f:facet>
+         	                
+	          	</h:panelGrid>
+	          	   <h:graphicImage value="#{mb_Funcionario.foto}" width="50" height="50"></h:graphicImage>
+                  
             </p:panel>
         </p:tab>
 				<p:tab id="ficha" title="Datos privados" rendered="true">
             <p:panel header="Instituciones de educacion">
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputText value="Ciudadania " />
-		                <p:inputText value="#{mb_Funcionario.ficha.ciudadania}" />
-                </h:panelGrid>
+                <h:panelGrid columns="3" columnClasses="label, value">
+                	<h:panelGrid columns="2" columnClasses="label, value">
+                			<h:outputText value="Primer nombre" />
+			              	<p:inputText value="#{mb_Funcionario.ficha.primerNombre}" />             
+			                <h:outputText value="Segundo nombre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.segundoNombre}" />
+	                    <h:outputText value="Primer apellido" />
+			                <p:inputText value="#{mb_Funcionario.ficha.primerApellido}" />
+			                <h:outputText value="Segundo apellido" />
+			                <p:inputText value="#{mb_Funcionario.ficha.segundoApellido}" />    
+			                <h:outputText value="Ciudadania" />
+			                <p:inputText value="#{mb_Funcionario.ficha.ciudadania}" />
+			                <h:outputText value="Nacimiento" />			                
+								      <p:calendar value="#{mb_Funcionario.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" /> 
+	                    <h:outputText value="Ingreso" />
+								      <p:calendar value="#{mb_Funcionario.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" />  
+			                <h:outputText value="Cedula" />
+			                <p:inputText value="#{mb_Funcionario.ficha.cedula}" />
+                	</h:panelGrid>
+                	<h:panelGrid columns="2" columnClasses="label, value">
+	                    <h:outputText value="C. Civica" />
+			                <p:inputText value="#{mb_Funcionario.ficha.credencialCivica}" />
+			                <h:outputText value="Nombre padre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.nombrePadre}" />
+			                <h:outputText value="Direccion padre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.direccionPadre}" />	
+			                <h:outputText value="telefonoPadre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.telefonoPadre}" />	
+			                <h:outputText value="Nombre madre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.nombreMadre}" />	
+			                <h:outputText value="Direccion madre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.direccionMadre}" />		
+			                <h:outputText value="Telefono madre" />
+			                <p:inputText value="#{mb_Funcionario.ficha.telefonoMadre}" />	
+                	</h:panelGrid>
+	                <h:panelGrid columns="2" columnClasses="label, value">	   
+			                <h:outputText value="Nombre conyuge" />
+			                <p:inputText value="#{mb_Funcionario.ficha.nombreConyuge}" />	
+			                <h:outputText value="Direccion conyuge" />
+			                <p:inputText value="#{mb_Funcionario.ficha.direccionConyuge}" />
+			                <h:outputText value="Telefono conyuge" />
+			                <p:inputText value="#{mb_Funcionario.ficha.telefonoConyuge}" />
+			                <h:outputText value="Fecha egreso" />
+								      <p:calendar value="#{mb_Funcionario.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" />   
+			                <h:outputText value="Motivo egreso" />
+			                <p:inputText value="#{mb_Funcionario.ficha.motivoEgreso}" />
+			                <h:outputText value="Nombre aviso urgencias:" />
+			                <p:inputText value="#{mb_Funcionario.ficha.nombreAvisarUrgencia}" />
+			                <h:outputText value="Dir. avi. urgencia" />
+			                <p:inputText value="#{mb_Funcionario.ficha.direccionAvisarUrgencia}" />
+			                <h:outputText value="tel. avi. urgencia" />
+			                <p:inputText value="#{mb_Funcionario.ficha.telefonoAvisarUrgencia}" />
+			            </h:panelGrid>    
+	          	</h:panelGrid>
             </p:panel>
         </p:tab>
         <p:tab id="educacion" title="Educacion" rendered="true">
@@ -85,23 +159,30 @@
 	                    <h:outputText value="Anos:" />
 	                    <p:inputText value="#{mb_Funcionario.educacion.anios}" />	
 	                    <h:outputText value="Titulo:" />
-	                    <p:inputText value="#{mb_Funcionario.educacion.titulo}" />		                                       
-	                    <h:commandButton value="Add" actionListener="#{mb_Funcionario.agregarEducacion}" />
+	                    <p:inputText value="#{mb_Funcionario.educacion.titulo}" />	
+	                    <h:outputText value="Imagen:" />
+	                    <p:inputText value="#{mb_Funcionario.educacion.pathArchivo}" />	                    
+	                    
+	                    	                                       
+	                    <h:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarEducacion}" />
+	                    
+	                    
 		                </h:panelGrid>		                
-		                <h:panelGrid columns="2" columnClasses="label, value">
-		                	<h:form>
+		                <h:panelGrid columns="2" columnClasses="label, value">		                	
 								    		<p:dataTable value="#{mb_Funcionario.listaEducacion}" var="e"  emptyMessage="Sin Registros"	>								
 									    		<p:column headerText="Instituto"  visible="true" sortBy="#{e.instituto}"  filterMatchMode="contains" filterBy="#{e.instituto}">		                
-		  											<h:outputText value="#{e.instituto}" />
+		  										<h:outputText value="#{e.instituto}" />
 									    		</p:column>
 									    		<p:column headerText="Anos"  visible="true" sortBy="#{e.anios}"  filterMatchMode="contains" filterBy="#{e.anios}">		                
-		  											<h:outputText value="#{e.anios}" />
+		  										<h:outputText value="#{e.anios}" />
 									    		</p:column>
 									    		<p:column headerText="Titulo"  visible="true" sortBy="#{e.titulo}"  filterMatchMode="contains" filterBy="#{e.titulo}">		                
-		  											<h:outputText value="#{e.titulo}" />
-									    		</p:column>
+		  										<h:outputText value="#{e.titulo}" />
+		  										</p:column>
+		  										<p:column headerText="Imagen"  visible="true" sortBy="#{e.pathArchivo}"  filterMatchMode="contains" filterBy="#{e.pathArchivo}">		                
+		  										<h:outputText value="#{e.pathArchivo}" />	
+		  										</p:column>									    		
 								    		</p:dataTable>
-								    	</h:form>
 		                </h:panelGrid>
                  </h:panelGrid>
             </p:panel>
@@ -109,19 +190,103 @@
         <p:tab id="actividadesanteriores" title="Actividades anteriores" rendered="true">
             <p:panel header="Empleos previos">
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputText value="Street: " />
-                    <p:inputText value="#{mb_Funcionario.email}" />
-                </h:panelGrid>
+                
+                 <h:panelGrid columns="2" columnClasses="label, value"> 
+		                <h:panelGrid columns="2" columnClasses="label, value">
+		                	<h:outputText value="Desde" />		                	
+								      <p:calendar value="#{mb_Funcionario.actividadAnterior.desde}" pattern="dd-MM-yyyy" mask="true" />    
+		                	<h:outputText value="Hasta" />		         
+								      <p:calendar value="#{mb_Funcionario.actividadAnterior.hasta}" pattern="dd-MM-yyyy" mask="true" />     
+		                	<h:outputText value="Firma" />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.firma}" />
+		                	<h:outputText value="Puesto" />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.puesto}" />
+		                	<h:outputText value="Causa ret." />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.causaRetiro}" />	                                       
+		                	<h:outputText value="sueldo" />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.sueldo}" />	
+		                	<h:outputText value="detalle" />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.detalle}" />	
+		                	<h:outputText value="otros" />		                	
+	                    <p:inputText value="#{mb_Funcionario.actividadAnterior.otros}" />
+	                    
+                                       
+	                    <h:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarActividadAnterior}" />
+	                    
+	                    
+		                </h:panelGrid>		                
+		                <h:panelGrid columns="2" columnClasses="label, value">		                	
+								    		<p:dataTable value="#{mb_Funcionario.listaActividadAnterior}" var="aa"  emptyMessage="Sin Registros"	>								
+									    		<p:column headerText="Desde"  visible="true" sortBy="#{aa.desde}"  filterMatchMode="contains" filterBy="#{aa.desde}">		                
+		  										<h:outputText value="#{aa.desde}" />
+									    		</p:column>
+									    		<p:column headerText="Hasta"  visible="true" sortBy="#{aa.hasta}"  filterMatchMode="contains" filterBy="#{aa.hasta}">		                
+		  										<h:outputText value="#{aa.hasta}" />
+									    		</p:column>									    		
+									    		<p:column headerText="Firma"  visible="true" sortBy="#{aa.firma}"  filterMatchMode="contains" filterBy="#{aa.firma}">		                
+		  										<h:outputText value="#{aa.firma}" />
+									    		</p:column>		
+									    		<p:column headerText="Puesto"  visible="true" sortBy="#{aa.puesto}"  filterMatchMode="contains" filterBy="#{aa.puesto}">		                
+		  										<h:outputText value="#{aa.puesto}" />
+									    		</p:column>									    		
+									    		<p:column headerText="Cau. Ret."  visible="true" sortBy="#{aa.causaRetiro}"  filterMatchMode="contains" filterBy="#{aa.causaRetiro}">		                
+		  										<h:outputText value="#{aa.causaRetiro}" />
+									    		</p:column>	
+									    	   <p:column headerText="Sueldo"  visible="true" sortBy="#{aa.sueldo}"  filterMatchMode="contains" filterBy="#{aa.sueldo}">		                
+		  										<h:outputText value="#{aa.sueldo}" />
+									    		</p:column>									    		
+									    		<p:column headerText="detalle"  visible="true" sortBy="#{aa.detalle}"  filterMatchMode="contains" filterBy="#{aa.detalle}">		                
+		  										<h:outputText value="#{aa.detalle}" />
+									    		</p:column>		
+										    	<p:column headerText="Otros"  visible="true" sortBy="#{aa.otros}"  filterMatchMode="contains" filterBy="#{aa.otros}">		                
+		  										<h:outputText value="#{aa.otros}" />
+									    		</p:column>										    		
+									    		
+									    		
+								    		</p:dataTable>
+		                </h:panelGrid>
+                 </h:panelGrid>
+                
+                
             </p:panel>
         </p:tab>
-        <p:tab id="cursos" title="Cursos" rendered="true">
+        <p:tab id="cursos" title="Capacitacion" rendered="true">
             <p:panel header="Cursos realizados">
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputText value="Street: " />
-                    <p:inputText value="#{mb_Funcionario.email}" />
-                </h:panelGrid>
+                
+                 <h:panelGrid columns="2" columnClasses="label, value"> 
+		                <h:panelGrid columns="2" columnClasses="label, value">
+	                		<h:outputText value="fecha" />		
+								      <p:calendar value="#{mb_Funcionario.capacitacion.fecha}" pattern="dd-MM-yyyy" mask="true" />   
+	                    <h:outputText value="actividad" />		                	
+	                    <p:inputText value="#{mb_Funcionario.capacitacion.actividad}" />	                    
+ 	                		<h:outputText value="capacitacion" />		                	
+	                    <p:inputText value="#{mb_Funcionario.capacitacion.capacitacion}" />
+	                    <h:outputText value="observaciones" />		                	
+	                    <p:inputText value="#{mb_Funcionario.capacitacion.observaciones}" />
+	                    <h:outputText value="pathArchivo" />		                	
+	                    <p:inputText value="#{mb_Funcionario.capacitacion.pathArchivo}" />  	                    
+	                                                                                             
+	                    <h:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarCapacitacion}" />
+		                </h:panelGrid>		                
+		                <h:panelGrid columns="2" columnClasses="label, value">		                	
+								    		<p:dataTable value="#{mb_Funcionario.listaCapacitacion}" var="cap"  emptyMessage="Sin Registros"	>								
+									    		<p:column headerText="Fecha"  visible="true" sortBy="#{cap.fecha}"  filterMatchMode="contains" filterBy="#{cap.fecha}">		                
+		  										<h:outputText value="#{cap.fecha}" />
+									    		</p:column>
+									    		<p:column headerText="Actividad"  visible="true" sortBy="#{cap.actividad}"  filterMatchMode="contains" filterBy="#{cap.actividad}">		                
+		  										<h:outputText value="#{cap.actividad}" />
+									    		</p:column>
+									    		<p:column headerText="capacitacion"  visible="true" sortBy="#{cap.capacitacion}"  filterMatchMode="contains" filterBy="#{cap.capacitacion}">		                
+		  										<h:outputText value="#{cap.capacitacion}" />
+									    		</p:column>
+									    		<p:column headerText="observaciones"  visible="true" sortBy="#{cap.observaciones}"  filterMatchMode="contains" filterBy="#{cap.observaciones}">		                
+		  										<h:outputText value="#{cap.observaciones}" />
+									    		</p:column>
+									    		
+                 			</p:dataTable>
+		                </h:panelGrid>
+                 </h:panelGrid>
             </p:panel>
         </p:tab>      
         
@@ -158,4 +323,22 @@
 
 
 
+<!-- 		                <h:outputText value="" /> -->
+<!-- 		                <p:inputText value="#{mb_Funcionario.ficha.}" /> -->
+<!-- 		                <h:outputText value="" /> -->
+<!-- 		                <p:inputText value="#{mb_Funcionario.ficha.}" /> -->
+<!-- 		                <h:outputText value="" /> -->
+<!-- 		                <p:inputText value="#{mb_Funcionario.ficha.}" /> -->
+<!-- 		                <h:outputText value="" /> -->
+<!-- 		                <p:inputText value="#{mb_Funcionario.ficha.}" /> -->
 
+
+<!-- 	private String pathCedula1; -->
+<!-- 	private String pathCedula2; -->
+<!-- 	private String pathCredencial1; -->
+<!-- 	private String pathCredencial2; -->
+<!-- 	private String pathCarneSalud1; -->
+<!-- 	private String pathCarneSalud2; -->
+<!-- 	private String pathLibretaConducir1; -->
+<!-- 	private String pathLibretaConducir2;	 -->
+<!-- 	private String pathFoto; -->

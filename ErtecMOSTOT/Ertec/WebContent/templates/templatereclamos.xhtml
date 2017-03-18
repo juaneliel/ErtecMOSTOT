@@ -238,13 +238,13 @@
 		  
 		  
 		  
-		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.reclamos)}">				
+		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR','reclamo')}">				
 					<p:rowEditor>
 					</p:rowEditor>	
 									
 		    </p:column>
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.reclamos)}" >	
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','reclamo')}" >	
 			<p:commandLink actionListener="#{mb_Reclamo.delete(reclamo)}" 
    	
    	update="formreclamo message" >

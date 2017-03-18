@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+            
+<ui:define name="cuerpo"> 
+
+
+ <h:form>        
+		<p:panelGrid id="panel" columns="2" border="1"  >    
+		
+			<f:facet name="header">
+				Agregar usuario			 
+			</f:facet>
+			
+			  <h:outputLabel value="Nombre:*" for="nom" /> 
+				<p:inputText ajax="true" value="#{mb_Usuario.auxUser.nombre}" id="nom" required="true"/>
+				
+				<h:outputLabel value="Clave: *" for="clave"  /> 
+				<p:password  id="clave"  value="#{mb_Usuario.auxUser.clave}" required="true"/> 
+				
+				<h:outputLabel value="Email: *" for="email"  /> 
+				<p:inputText  id="email"  value="#{mb_Usuario.auxUser.email}" required="true"/> 
+
+			
+      <h:outputLabel value="A.Usuarios:"  for="admin"/> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoAdmin}" style="width:80%" id="admin" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	  
+			    
+			<h:outputLabel value="A.Articulos;" for="aa" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoArticulos}" style="width:80%" id="aa" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	         
+			
+			<h:outputLabel value="A.Clientes" for="aclie"/> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoClientes}" style="width:80%" id="aclie" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	  
+			    
+			<h:outputLabel value="A.Ficha Personal:" for="aficha" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoFichaPersonal}" style="width:80%" id="aficha" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  articulos
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>    
+			    
+			<h:outputLabel value="A.Funcionarios:" for="afun" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoFuncionarios}" style="width:80%" id="afun" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  articulos
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>			
+		
+		
+					<h:outputLabel value="A.Mano Obra;" for="amo"  /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoManodeobra}" style="width:80%" id="amo" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	
+		
+					<h:outputLabel value="A.Movimiento:" for="afuhn" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoMovimientos}" style="width:80%" id="afuhn" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>		
+		
+		<h:outputLabel value="A.O.T," for="am" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoOt}" style="width:80%" id="am" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	         
+			
+			<h:outputLabel value="A.Proveedores" for="apro" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoProveedores}" style="width:80%" id="apro" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	 
+					
+					<h:outputLabel value="A.Reclamos;" for="arec" /> 
+			<p:selectOneMenu value="#{mb_Usuario.auxUser.accesoReclamos}" style="width:80%" id="arec" required="true">					
+	       <f:selectItem itemLabel="NADA" itemValue="NADA" />
+	       <f:selectItem itemLabel="VER" itemValue="VER" />  
+	       <f:selectItem itemLabel="AGREGAR" itemValue="AGREGAR" />
+	       <f:selectItem itemLabel="EDITAR" itemValue="EDITAR" />  
+	       <f:selectItem itemLabel="BORRAR" itemValue="BORRAR" />                     
+			</p:selectOneMenu>	   
+		
+
+			<h:commandButton value="Agregar" action="#{mb_Usuario.addUsuario }"   />	  
+		   	
+		</p:panelGrid> 
+ 
+ 
+ </h:form>
+        
+
+
+
+
+</ui:define>
+</ui:composition>

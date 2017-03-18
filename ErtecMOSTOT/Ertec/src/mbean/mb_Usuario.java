@@ -25,8 +25,9 @@ import org.primefaces.model.Visibility;
 import enumerados.EnumAccesoPagina;
 import model.Funcionario;
 import model.Usuario;
+import model.UsuarioLogin;
+import model.DAO.DAO_Funcionario;
 import model.DAO.DAO_Usuario;
-import usuario.UsuarioLogin;
 
 import javax.faces.bean.SessionScoped;
 import util.JpaUtil;
@@ -36,12 +37,10 @@ import util.JpaUtil;
 public class mb_Usuario {
 
 	@Inject
-	private UsuarioLogin usuario;
+	private UsuarioLogin usuarioLogueado;
 	
 	private String nombre;
 	private String pass;
-	private boolean puedeActualizar;
-	private boolean puedeBorrar;
 	private EnumAccesoPagina articulos; 
 	private EnumAccesoPagina clientes; 
 	private EnumAccesoPagina funcionarios;
@@ -52,11 +51,63 @@ public class mb_Usuario {
 	private EnumAccesoPagina manodeobra;
 	private EnumAccesoPagina admin; 
 	private String email;
+	private String claveVieja;
+	private String claveNueva;
+	private Usuario auxUser=new Usuario();
+	
+/***************Seccion  logueado********************/
+	
+	//se usa cuando el usuario se loguea o cuando se modifican sus accesos
+	private void actualizarAccesosLogueado(Usuario u){
+		 email=u.getEmail();
+		 usuarioLogueado.actualizarAccesos(u);
+	}
+	
+	public boolean  acceso(String nivelRequerido,String recurso){
+		return this.usuarioLogueado.acceso(nivelRequerido,recurso); 
+	} 
+	
+	public String loguear(){
+		System.out.println("login>"+nombre);
+		Usuario u=DAO_Usuario.login(nombre, pass);		
+		if (u!=null){
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.addCallbackParam("loggedIn", true);
+			actualizarAccesosLogueado(u);
+			return this.usuarioLogueado.getPaginaReingreso();
+			//return "/paginas/reclamos.xhtml?faces-redirect=true";//cambiar a una pagina standar
+		}
+		else{			
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Ingreso","Corrija la contraseña o el usuario ");
+				context.addMessage(null,mensaje);
+		}
+		return null;		
+	}
+	  
+	public String logout (){
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		
+//			HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+//				.getExternalContext().getSession(false);
+//				session.invalidate();
+		this.usuarioLogueado.setNombre(null);
+		return "/login.xhtml?faces-redirect=true";
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	private DAO_Usuario dao=new DAO_Usuario();
 	
 	private  List<Boolean> viewFuncionarios;
 	private ArrayList<Usuario> lista;
+
+	private ArrayList<Funcionario> listaFuncionariosOBJ;
 	
   @PostConstruct  
   public void init(){
@@ -64,21 +115,39 @@ public class mb_Usuario {
     recargarLista();
   }
 	
-  public String onIdle() {
+  public void onIdle() {
     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
                                     "Sin actividad.", "Deberas loguearte nuevamente"));
-    return "/paginas/login.xhtml?faces-redirect=true"; 
+    return ;//"/paginas/login.xhtml?faces-redirect=true"; 
 }
 
-public void onActive() {
-    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                    "Bienvenido nuevamente", "Logueate por favor"));
-}
+  public String addUsuario(){
+  	String salida=null;
+  	if (dao.add(this.auxUser)){
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego "+auxUser.getNombre());
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+			salida=  "/paginas/usuarios.xhtml?faces-redirect=true";
+		}
+		else{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar intente con otro nombre de usuario");
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		System.out.println(">>AGREGAR"+auxUser.getNombre());
+		recargarLista ();
+		auxUser=new Usuario();
+		return salida;
+  }
+  
+	public void onActive() {
+	    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+	                                    "Bienvenido nuevamente", "Logueate por favor"));
+	}
 
 	private void initViewFuncionarios(){
 	  viewFuncionarios=Arrays.asList(true, true, true, true, false,false, false, false, true, false, false,
 	      false, false, false,false   ,false,false);
 	}	
+	
   public List<Boolean> getViewFuncionarios() {
     return viewFuncionarios;
   }  
@@ -89,36 +158,8 @@ public void onActive() {
   
   public void onToggleFuncionarios(ToggleEvent e) {
     viewFuncionarios.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
-  } 
-  
-	
-	public String add(){
-		String salida=null;
-		Usuario u=new Usuario(); 
-    u.setAdmin(admin.toString());
-    u.setArticulos(articulos.toString());
-    u.setClave(pass.toString());
-    u.setClientes(clientes.toString());
-    u.setFuncionarios(funcionarios.toString());
-    u.setManodeobra(manodeobra.toString());
-    u.setMovimientos(movimientos.toString());
-    u.setNombre(nombre);
-    u.setOt(ot.toString());
-    u.setProveedores(proveedores.toString());
-    u.setReclamos(reclamos.toString());
-    u.setEmail(email);
-    
-    
-		if (dao.add(u)){
-			salida= "/paginas/usuarios.xhtml?faces-redirect=true";
-		}
-		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "El nombre ya existe"+u.getNombre());
-	    FacesContext.getCurrentInstance().addMessage(null, message);
-		} 
-		recargarLista ();
-		return salida;
-	}
+  }  
+ 
   
 	public void delete(Usuario f){ 
 		if (dao.delete(f) ){
@@ -129,7 +170,7 @@ public void onActive() {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el funcionario "+f.getNombre());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
-        recargarLista ();
+    recargarLista ();
 	}
   
   public boolean igualNombre(String nom){
@@ -144,7 +185,7 @@ public void onActive() {
 		System.out.println("entro en usuario update");
   	if(dao.update(u)){    		 
   		if(u.getNombre().toUpperCase().equals(this.nombre.toUpperCase())){
-  			this.actualizarAccesos(u); 
+  			this.actualizarAccesosLogueado(u); 
   			System.out.println("verclientOnrowEdit: "+clientes);
   		}
   		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el Usuario "+u.getNombre());
@@ -156,117 +197,48 @@ public void onActive() {
   	}  	
       
   }
-	
-  
-  
-  
-  
-  
   
   public void recargarLista(){
   	this.lista=dao.getLista();
   }
-  
-  
  
-
-
-  public String loguear(){
-		System.out.println("login>"+nombre);
-		Usuario u=DAO_Usuario.login(nombre, pass);
-			
-		if (u!=null){
-			RequestContext context = RequestContext.getCurrentInstance();
-			context.addCallbackParam("loggedIn", true);
-			actualizarAccesos(u);
-			return "/paginas/reclamos.xhtml?faces-redirect=true";
-		}
-		else{
-			
+  public String updateClave(){
+  	if(dao.updateClave(this.usuarioLogueado, claveVieja, claveNueva,email)){
 			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Ingreso","Corrija la contraseña o el usuario ");
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizada","Los datos se han modificado");
 			context.addMessage(null,mensaje);
-		}
-			
-		
-//		if (nombre.equals("ertec")&& pass.equals("123") ){
-//			usuario.setNombre(nombre);
-//			return "/paginas/funcionarios.xhtml?faces-redirect=true";
-//		}
-//		else{
-//			
-//			FacesContext context = FacesContext.getCurrentInstance();
-//			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Ingreso","Corrija la contraseña o el usuario ");
-//			context.addMessage(null,mensaje);
-//		}
-		return null;
-		
-	}
+			this.nombre="";
+			this.claveVieja="";
+			this.claveNueva="";
+			return "/paginas/usuarios.xhtml?faces-redirect=true";
+  	}
+  	else{
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo actualizar los datos");
+			context.addMessage(null,mensaje);
+  	}
+  	return null;
+  }
+
+ 
   
-  
-  private void actualizarAccesos(Usuario u){
-  	System.out.println("+++"+u.getPuedeActualizar());
-		usuario.setNombre(nombre);
-		if (u.getPuedeActualizar()==1){
-			puedeActualizar=true;
-		}
-		else{
-			puedeActualizar=false;
-		}
-		if (u.getPuedeBorrar()==1){
-			puedeBorrar=true;
-		}
-		else{
-			puedeBorrar=false;
-		} 
-		
-		articulos = EnumAccesoPagina.valueOf(u.getArticulos());		
-		clientes= EnumAccesoPagina.valueOf(u.getClientes()); 
-		funcionarios = EnumAccesoPagina.valueOf(u.getFuncionarios());
-		movimientos= EnumAccesoPagina.valueOf(u.getMovimientos());
-		ot= EnumAccesoPagina.valueOf(u.getOt());
-		proveedores= EnumAccesoPagina.valueOf(u.getProveedores());
-		admin= EnumAccesoPagina.valueOf(u.getAdmin());			
-		manodeobra=EnumAccesoPagina.valueOf(u.getManodeobra());
-		reclamos=EnumAccesoPagina.valueOf(u.getReclamos()); 
-	}
   
   
 
-	public String logout (){
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		
-		
-		
-//		
-//			HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-//				.getExternalContext().getSession(false);
-//				session.invalidate();
-				this.usuario.setNombre(null);
-					return "/login.xhtml?faces-redirect=true";
-	}
+
 
 
 
 
 	public UsuarioLogin getUsuario() {
-		return usuario;
+		return usuarioLogueado;
 	}
 
 	public void setUsuario(UsuarioLogin usuario) {
-		this.usuario = usuario;
+		this.usuarioLogueado = usuario;
 	}
 
-	public void setPuedeActualizar(boolean puedeActualizar) {
-		this.puedeActualizar = puedeActualizar;
-	}
 
-	public void setPuedeBorrar(boolean puedeBorrar) {
-		this.puedeBorrar = puedeBorrar;
-	}
-	
-	
-	
 	
 	
 
@@ -289,22 +261,14 @@ public void onActive() {
 		this.pass = pass;
 	}
 
-	public boolean getPuedeActualizar() {
-		return puedeActualizar;
-	}
-
-	public boolean getPuedeBorrar() {
-		return puedeBorrar;
-	}
 
 
-	public boolean acceso(String nivel,String acceso) {
-		EnumAccesoPagina acc=EnumAccesoPagina.valueOf(acceso);
-		EnumAccesoPagina niv=EnumAccesoPagina.valueOf(nivel);	
-		int comp=acc.compareTo(niv);
-		//System.out.println(">>>acc "+nivel+" "+acceso+" "+comp);
-		return comp>=0;
-	}
+	
+
+	//se le pasa el nivel que se pretende y luego el acceso que tiene el usuario logueado
+	//se puede mejorar usando loginUser como el logueado actual
+
+	
 
 
 	public EnumAccesoPagina getArticulos() {
@@ -422,7 +386,44 @@ public void onActive() {
 	
 	
 	
-	
+	public ArrayList <Funcionario> completarFuncionario(String query){
+		this.listaFuncionariosOBJ=DAO_Funcionario.completarFuncionario(query);
+		return listaFuncionariosOBJ;
+	}
+
+	public ArrayList<Funcionario> getListaFuncionariosOBJ() {
+		return listaFuncionariosOBJ;
+	}
+
+	public void setListaFuncionariosOBJ(ArrayList<Funcionario> listaFuncionariosOBJ) {
+		this.listaFuncionariosOBJ = listaFuncionariosOBJ;
+	}
+
+	public Usuario getAuxUser() {
+		return auxUser;
+	}
+
+	public void setAuxUser(Usuario auxUser) {
+		this.auxUser = auxUser;
+	}
+
+	public String getClaveVieja() {
+		return claveVieja;
+	}
+
+	public void setClaveVieja(String claveVieja) {
+		this.claveVieja = claveVieja;
+	}
+
+	public String getClaveNueva() {
+		return claveNueva;
+	}
+
+	public void setClaveNueva(String claveNueva) {
+		this.claveNueva = claveNueva;
+	}
+
+
 	
 	
 	

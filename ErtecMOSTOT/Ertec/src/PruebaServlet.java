@@ -20,7 +20,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import mbean.mb_Articulo;
-import usuario.UsuarioLogin;
+import model.UsuarioLogin;
 import util.ExportMovimientoPDF;
 import util.ExportarFichaFuncionario;
 import util.ExportarOTPDF;

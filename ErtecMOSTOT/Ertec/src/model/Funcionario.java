@@ -23,24 +23,25 @@ public class Funcionario implements Serializable {
  
 	@Lob()
 	private byte[] foto;
-  
-	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
-	@JoinColumn(name="fichaID" , insertable = false, updatable = false)
+ 
+	
+	@OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(name="fichaID", referencedColumnName="fichaID")
 	private FichaPersonal ficha;
 	
-	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
 	private List<ActividadAnterior> actividadAnteriores;
 	
-	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
 	private List<Capacitacion> capacitaciones;
 	
-	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
 	private List<Educacion> educaciones;
   
-  private int fichaID; 
+ // private int fichaID; 
 	public List<ActividadAnterior> getActividadAnteriores() {
 		return actividadAnteriores;
 	}
@@ -130,13 +131,13 @@ public class Funcionario implements Serializable {
 
  
 
-	public int getFichaID() {
-		return fichaID;
-	}
-
-	public void setFichaID(int fichaID) {
-		this.fichaID = fichaID;
-	}
+//	public int getFichaID() {
+//		return fichaID;
+//	}
+//
+//	public void setFichaID(int fichaID) {
+//		this.fichaID = fichaID;
+//	}
 
 	public void setArea(String area) {
     this.area = area;

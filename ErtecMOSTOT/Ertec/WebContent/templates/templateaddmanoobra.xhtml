@@ -17,7 +17,7 @@
 		 	
 			<p:outputLabel title="Ingrese parte del nombre o id del funcionario" value="Funcionario :" for="fid" />  
 			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_ManoObra.funcionarioOBJ}"
-					 completeMethod="#{mb_Funcionario.completarFuncionario}"
+					 completeMethod="#{mb_Usuario.completarFuncionario}"
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					 converter="ConverterFuncionario" forceSelection="true" 
 					  style="float:right !important;margin:0px 0px 3px 0px;" required="true"/> 

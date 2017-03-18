@@ -4,53 +4,43 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 
-/**
- * The persistent class for the Usuario database table.
- * 
- */
+ 
 @Entity
 @NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="Nombre")
+  public Usuario() {
+		super();
+	}
+	
+	@Id 
 	private String nombre;
 
-	private String admin;
-
-	private String articulos;
-
-	@Column(name="Clave")
 	private String clave;
+	
+	private String accesoAdmin;
 
-	private String clientes;
+	private String accesoArticulos;
+
+	private String accesoClientes;
 
 	private String email;
 
-	private String funcionarios;
+	private String accesoFuncionarios;
 
-	private String manodeobra;
+	private String accesoManodeobra;
 
-	private String movimientos;
+	private String accesoMovimientos;
 
-	private String ot;
+	private String accesoOt;
 
-	private String proveedores;
+	private String accesoProveedores;
 
-	@Column(name="PuedeActualizar")
-	private int puedeActualizar;
+	private String accesoReclamos;
 
-	@Column(name="PuedeBorrar")
-	private int puedeBorrar;
-
-	private String reclamos;
-
-	private int verFichaPersonal;
-
-	public Usuario() {
-	}
-
+	private String accesoFichaPersonal;
+ 
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -59,116 +49,101 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public String getAdmin() {
-		return this.admin;
-	}
-
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
-
-	public String getArticulos() {
-		return this.articulos;
-	}
-
-	public void setArticulos(String articulos) {
-		this.articulos = articulos;
-	}
-
 	public String getClave() {
-		return this.clave;
+		return clave;
 	}
 
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
 
-	public String getClientes() {
-		return this.clientes;
+	public String getAccesoAdmin() {
+		return accesoAdmin;
 	}
 
-	public void setClientes(String clientes) {
-		this.clientes = clientes;
+	public void setAccesoAdmin(String accesoAdmin) {
+		this.accesoAdmin = accesoAdmin;
+	}
+
+	public String getAccesoArticulos() {
+		return accesoArticulos;
+	}
+
+	public void setAccesoArticulos(String accesoArticulos) {
+		this.accesoArticulos = accesoArticulos;
+	}
+
+	public String getAccesoClientes() {
+		return accesoClientes;
+	}
+
+	public void setAccesoClientes(String accesoClientes) {
+		this.accesoClientes = accesoClientes;
 	}
 
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getFuncionarios() {
-		return this.funcionarios;
+	public String getAccesoFuncionarios() {
+		return accesoFuncionarios;
 	}
 
-	public void setFuncionarios(String funcionarios) {
-		this.funcionarios = funcionarios;
+	public void setAccesoFuncionarios(String accesoFuncionarios) {
+		this.accesoFuncionarios = accesoFuncionarios;
 	}
 
-	public String getManodeobra() {
-		return this.manodeobra;
+	public String getAccesoManodeobra() {
+		return accesoManodeobra;
 	}
 
-	public void setManodeobra(String manodeobra) {
-		this.manodeobra = manodeobra;
+	public void setAccesoManodeobra(String accesoManodeobra) {
+		this.accesoManodeobra = accesoManodeobra;
 	}
 
-	public String getMovimientos() {
-		return this.movimientos;
+	public String getAccesoMovimientos() {
+		return accesoMovimientos;
 	}
 
-	public void setMovimientos(String movimientos) {
-		this.movimientos = movimientos;
+	public void setAccesoMovimientos(String accesoMovimientos) {
+		this.accesoMovimientos = accesoMovimientos;
+	}	
+
+	public String getAccesoOt() {
+		return accesoOt;
 	}
 
-	public String getOt() {
-		return this.ot;
+	public void setAccesoOt(String accesoOt) {
+		this.accesoOt = accesoOt;
 	}
 
-	public void setOt(String ot) {
-		this.ot = ot;
+	public String getAccesoProveedores() {
+		return accesoProveedores;
 	}
 
-	public String getProveedores() {
-		return this.proveedores;
+	public void setAccesoProveedores(String accesoProveedores) {
+		this.accesoProveedores = accesoProveedores;
 	}
 
-	public void setProveedores(String proveedores) {
-		this.proveedores = proveedores;
+	public String getAccesoReclamos() {
+		return accesoReclamos;
 	}
 
-	public int getPuedeActualizar() {
-		return this.puedeActualizar;
+	public void setAccesoReclamos(String accesoReclamos) {
+		this.accesoReclamos = accesoReclamos;
 	}
 
-	public void setPuedeActualizar(int puedeActualizar) {
-		this.puedeActualizar = puedeActualizar;
+	public String getAccesoFichaPersonal() {
+		return accesoFichaPersonal;
 	}
 
-	public int getPuedeBorrar() {
-		return this.puedeBorrar;
-	}
-
-	public void setPuedeBorrar(int puedeBorrar) {
-		this.puedeBorrar = puedeBorrar;
-	}
-
-	public String getReclamos() {
-		return this.reclamos;
-	}
-
-	public void setReclamos(String reclamos) {
-		this.reclamos = reclamos;
-	}
-
-	public int getVerFichaPersonal() {
-		return this.verFichaPersonal;
-	}
-
-	public void setVerFichaPersonal(int verFichaPersonal) {
-		this.verFichaPersonal = verFichaPersonal;
-	}
+	public void setAccesoFichaPersonal(String accesoFichaPersonal) {
+		this.accesoFichaPersonal = accesoFichaPersonal;
+	}    
+ 
 
 }

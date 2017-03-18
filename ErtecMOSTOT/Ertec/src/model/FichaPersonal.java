@@ -11,7 +11,7 @@ public class FichaPersonal implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FP_SEQ") 
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FP_SEQ") 
 	private int fichaID;	
 	private String primerNombre;
 	private String segundoNombre;
@@ -32,8 +32,9 @@ public class FichaPersonal implements Serializable {
 	private String direccionConyuge;
 	private String telefonoMadre;
 	private String telefonoPadre;
-	private String telefonoConyuge;	
-	private String fechaEgreso;
+	private String telefonoConyuge;
+	@Temporal(TemporalType.DATE) 
+	private Date fechaEgreso;	 
 	private String motivoEgreso;
 	private String nombreAvisarUrgencia;
 	private String direccionAvisarUrgencia;
@@ -48,6 +49,8 @@ public class FichaPersonal implements Serializable {
 	private String pathLibretaConducir2;	
 	private String pathFoto;
 
+	
+ 
 	
 	public String getPathFoto() {
 		return pathFoto;
@@ -181,10 +184,11 @@ public class FichaPersonal implements Serializable {
 	public void setTelefonoConyuge(String telefonoConyuge) {
 		this.telefonoConyuge = telefonoConyuge;
 	}
-	public String getFechaEgreso() {
+ 
+	public Date getFechaEgreso() {
 		return fechaEgreso;
 	}
-	public void setFechaEgreso(String fechaEgreso) {
+	public void setFechaEgreso(Date fechaEgreso) {
 		this.fechaEgreso = fechaEgreso;
 	}
 	public String getMotivoEgreso() {
@@ -259,5 +263,6 @@ public class FichaPersonal implements Serializable {
 	public void setPathLibretaConducir2(String pathLibretaConducir2) {
 		this.pathLibretaConducir2 = pathLibretaConducir2;
 	}
+ 
    
 }

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import mbean.mb_Cliente; 
 import model.Cliente;
-import usuario.UsuarioLogin;
+import model.UsuarioLogin;
  
 @FacesConverter("ConverterCliente")
 public class ConverterCliente implements Converter {

@@ -17,8 +17,8 @@
     <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatable2"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
-		 editable="true" 
-		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;"
+		 editable="true" paginatorPosition="top"
+		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;" 
 		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}"
                 rowsPerPageTemplate="10,50,100"
 		 >

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo">  
+    <div style="float:right;margin-right:430px;margin-top:0px;font-size:22px"> 
+     <h:outputLabel id="sinacceso" label="sinacceso" value="Bienvenido a Ertec MOSTOT"  />  
+    </div>
+ 	 
+<h:graphicImage library="images" name="bienvenidos.gif" style="margin-left:30px;height:auto;widht:auto"/>  
+<br/>
+En la seccion de usuarios se establecen niveles de acceso donde el nivel basico es nada, le sigue que habilita
+al usuario a ver las paginas, editar, borrar, donde cada nivel de acceso incluye a los anteriores es decir
+que el nivel "borrar" incluye a los demás.
+En caso de querer acceder a una pagina de la que no se posee acceso se redirige a una pagina que indica este error.
+Los botones del menu desaparecen segun el acceso, si no se puede ver no aparecen los botones en el menu, en caso
+de no poder editar no aparecen los botones en las listas de despliegue e igual sucede con el boton de borrar
+<br/>
+Para evitar errores el usuario Ertec no se puede borrar ni tampoco editar el acceso a usuarios, es decir Ertec puede
+siempre acceder a usuarios y nunca se borrara.
+El sistema permite ademas cambiar la clave de los usuarios, la misma se encripta, 
+ 
+</ui:define>
+</ui:composition>

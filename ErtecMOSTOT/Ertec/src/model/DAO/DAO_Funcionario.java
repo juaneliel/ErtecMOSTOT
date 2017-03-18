@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.persistence.EntityManager; 
 import javax.persistence.TypedQuery;
 
+import model.FichaPersonal;
 import model.Funcionario;
 import util.JpaUtil;
 
@@ -20,8 +21,7 @@ public class DAO_Funcionario {
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false;
 		try{			
-			em.getTransaction().begin();
-			em.persist(f.getFicha());
+			em.getTransaction().begin();			
 			em.persist(f);
 			em.getTransaction().commit(); 
 			salida = true;
@@ -31,14 +31,14 @@ public class DAO_Funcionario {
 		 }finally{ 
 	    	  if(em.isOpen() ){
 				  em.close();
-			  }		
+			}		
 		}
 		return salida;
 	}
 
 	
 	
-	public ArrayList<Funcionario> completarFuncionario(String buscar){
+	public static ArrayList<Funcionario> completarFuncionario(String buscar){
 		ArrayList<Funcionario> salida= new ArrayList<Funcionario>();
 		
 		
@@ -76,17 +76,15 @@ public class DAO_Funcionario {
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{	
-			Funcionario aux = em.find(Funcionario.class, f.getFuncionarioID());			
-			
-			em.getTransaction().begin();
-			 
+			Funcionario aux = em.find(Funcionario.class, f.getFuncionarioID());						
+			em.getTransaction().begin();			 
 	    aux.setNombre(f.getNombre());
 	    aux.setEmail(f.getEmail());
 	    aux.setTelefono(f.getTelefono());
 	    aux.setActivo(f.getActivo());
 	    aux.setAlias(f.getAlias());
 	    aux.setArea(f.getArea());
-	    aux.setCat(f.getCat());
+	    aux.setCat(f.getCat());    
 	    aux.setDireccion(f.getDireccion()); 
 			aux.setNacimiento(f.getNacimiento());
 			aux.setCarneSalud(f.getCarneSalud());
@@ -94,14 +92,11 @@ public class DAO_Funcionario {
 			aux.setVencimientoCedula(f.getVencimientoCedula());
 			aux.setLibretaCat(f.getLibretaCat());
 			aux.setVencimientoLibreta(f.getVencimientoLibreta());
-			aux.setFoto(f.getFoto());			
-			if(f.getFicha()!=null){
-				aux.setFicha(f.getFicha());
-				aux.setFichaID(f.getFichaID());
-			}
-			else{
-				aux.setFichaID(0);
-			}
+			aux.setFoto(f.getFoto());	 		
+
+
+			
+			
 			
 			aux.setEducaciones(f.getEducaciones());
 			aux.setActividadAnteriores(f.getActividadAnteriores());
@@ -120,6 +115,27 @@ public class DAO_Funcionario {
 		}
 		return salida;
 	}	
+	
+	public void generarFicha(){
+		EntityManager em=JpaUtil.getEntityManager(); 
+		try{			
+			em.getTransaction().begin(); 
+			for (int i=1;i<124;i++){
+				FichaPersonal fp=new FichaPersonal();
+				fp.setFichaID(i);
+				fp.setFuncionarioID(i);
+				em.persist(fp);
+			}
+			em.getTransaction().commit(); 
+		}
+		catch (Exception e){
+			e.printStackTrace();	
+		}finally{ 
+	    	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}
+	}
 	
 	public boolean delete(Funcionario f){ 
 		EntityManager em=JpaUtil.getEntityManager();

@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import usuario.UsuarioLogin;
+import model.UsuarioLogin;
 
 
 
@@ -26,7 +26,6 @@ public class Filtro implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -39,24 +38,32 @@ public class Filtro implements Filter {
 		boolean esRecurso= url.indexOf("/javax.faces.resource/")!=-1;
 		//boolean esLogin=url.endsWith("/login.xhtml");
 		String paginaLogin=request.getContextPath() + "/login.xhtml";
+		String paginaSinAcceso=request.getContextPath() + "/paginas/sinacceso.xhtml";
 		boolean esLogin=url.endsWith(paginaLogin.toLowerCase());
 		boolean logueado=user.estaLogueado();		
 		
 		System.out.println("URL "+url + " "+paginaLogin);
 		
 		
+		
 		if( !logueado && !esLogin && !esRecurso  ){
+			//user.setPaginaReingreso(url);
 			response.sendRedirect(paginaLogin);
-			System.out.println("<<<<<loguear en dofilete");
+			System.out.println("<<<<<loguear en dofileter");
 		}
 		else{
-			System.out.println(">>>>>>no redirigir dofilte");
+			//esta logueado se verifica si tiene acceso de ver la pagina
+			if(!tieneAcceso(url,user)){
+				response.sendRedirect(paginaSinAcceso); 
+			}			
+			System.out.println(">>>>>>no redirigir dofilter");
 			chain.doFilter(req, res);
-		}
-		
+		}		
 	}
 
-	
+	private boolean tieneAcceso(String url,UsuarioLogin user){
+		return user.accesoVerUrl(url); 
+	}
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {

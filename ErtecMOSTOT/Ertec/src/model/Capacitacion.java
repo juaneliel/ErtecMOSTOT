@@ -17,8 +17,8 @@ public class Capacitacion implements Serializable {
 	private String actividad;
 	private String capacitacion;
 	private String observaciones;
-	private String pathArchivo;
-	private int funcionarioID;
+	private String pathArchivo; 
+ 
 	public Capacitacion() {
 		super();
 	}
@@ -61,10 +61,5 @@ public class Capacitacion implements Serializable {
 	public void setPathArchivo(String pathArchivo) {
 		this.pathArchivo = pathArchivo;
 	}
-	public int getFuncionarioID() {
-		return funcionarioID;
-	}
-	public void setFuncionarioID(int funcionarioID) {
-		this.funcionarioID = funcionarioID;
-	}	
+ 	
 }

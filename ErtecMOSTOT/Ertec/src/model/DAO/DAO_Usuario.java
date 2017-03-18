@@ -7,10 +7,12 @@ import javax.persistence.TypedQuery;
 
 import model.Proveedores;
 import model.Usuario;
+import model.UsuarioLogin;
 import util.JpaUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class DAO_Usuario {
+	
 	public boolean add(Usuario f){
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false;
@@ -53,29 +55,55 @@ public class DAO_Usuario {
 		return salida;
 	}
 	
+	public boolean updateClave(UsuarioLogin u,String claveVieja,String claveNueva,String email){
+		EntityManager em=JpaUtil.getEntityManager();
+		boolean salida = false;
+		try{	
+			em.getTransaction().begin();
+			Usuario aux = em.find(Usuario.class, u.getNombre());	
+			String textoSinEncriptar=claveVieja; 
+			String cleveMD5=DigestUtils.md5Hex(textoSinEncriptar); 	 
+			if(aux.getClave().equals(cleveMD5)){				 
+				textoSinEncriptar=claveNueva; 
+				cleveMD5=DigestUtils.md5Hex(textoSinEncriptar); 			
+				aux.setClave(cleveMD5);				
+				salida=true;
+				System.out.println("entro en update clave");
+			}	
+			aux.setEmail(email);
+			em.getTransaction().commit();
+		}
+		catch (Exception e){
+			e.printStackTrace();			
+		}finally{ 
+			if(em.isOpen() ){
+				em.close();
+			}		
+		}
+		return salida;
+	}
+	
+	
 	public boolean update(Usuario u){ 
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{	
-			Usuario aux = em.find(Usuario.class, u.getNombre());			
-			
+			Usuario aux = em.find(Usuario.class, u.getNombre());					
 			em.getTransaction().begin();
-			aux.setAdmin(u.getAdmin());
-			aux.setArticulos(u.getArticulos());
-			
+			aux.setAccesoAdmin(u.getAccesoAdmin());
+			aux.setAccesoArticulos(u.getAccesoArticulos());			
 			//String textoSinEncriptar=u.getClave(); 
 		//	String cleveMD5=DigestUtils.md5Hex(textoSinEncriptar); 			
 		//	aux.setClave(cleveMD5);
-			aux.setClientes(u.getClientes());
-			aux.setFuncionarios(u.getFuncionarios());
-			aux.setManodeobra(u.getManodeobra());
-			aux.setMovimientos(u.getMovimientos());
-			aux.setNombre(u.getNombre());
-			aux.setOt(u.getOt());
-			aux.setProveedores(u.getProveedores());
-			aux.setReclamos(u.getReclamos());
-			aux.setEmail(u.getEmail());
-			
+			aux.setAccesoClientes(u.getAccesoClientes());
+			aux.setAccesoFichaPersonal(u.getAccesoFichaPersonal());
+			aux.setAccesoFuncionarios(u.getAccesoFuncionarios());
+			aux.setAccesoManodeobra(u.getAccesoManodeobra());
+			aux.setAccesoMovimientos(u.getAccesoMovimientos());
+			aux.setAccesoOt(u.getAccesoOt());
+			aux.setAccesoProveedores(u.getAccesoProveedores());
+			aux.setAccesoReclamos(u.getAccesoProveedores());  
+			aux.setEmail(u.getEmail());			
 			//em.flush();
 			em.getTransaction().commit();
 			salida=true;
@@ -94,7 +122,7 @@ public class DAO_Usuario {
 		try{
 			EntityManager em=JpaUtil.getEntityManager(); 
 			Usuario u =em.find(Usuario.class,nombre );
-			if(u==null){
+			if(u==null){				
 				return null;
 			}
 			String claveMD5=DigestUtils.md5Hex(clave); 		
@@ -107,7 +135,7 @@ public class DAO_Usuario {
 			}
 		}
 		catch(Exception e){
-
+			e.printStackTrace();
 		}
 		return null;
 	}
