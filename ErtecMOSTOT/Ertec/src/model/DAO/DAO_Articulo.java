@@ -83,7 +83,7 @@ public class DAO_Articulo {
 	}
 	
 	
-	public ArrayList<Articulo> completarArticulo(String buscar){
+	public static ArrayList<Articulo> completarArticulo(String buscar){
 		ArrayList<Articulo> salida= new ArrayList<Articulo>();
 		
 		String consulta="";
@@ -177,12 +177,8 @@ public class DAO_Articulo {
 		boolean salida=false;
 		EntityManager em=JpaUtil.getEntityManager();
 		try{
-			
-			
-			Articulo aux = em.find(Articulo.class, a.getArticuloID());			
-			
-			em.getTransaction().begin();
-			
+			Articulo aux = em.find(Articulo.class, a.getArticuloID());	
+			em.getTransaction().begin();			
 			aux.setArticuloID(a.getArticuloID());
 			aux.setCalidad(a.getCalidad());
 			aux.setCostoDolares(a.getCostoDolares());
@@ -194,9 +190,7 @@ public class DAO_Articulo {
 			aux.setStock(a.getStock());
 			aux.setStockMinimo(a.getStockMinimo());
 			aux.setUltimoCostoDolares(a.getUltimoCostoDolares());
-			aux.setUltimoCostoPesos(a.getUltimoCostoPesos());
-			
-			em.flush();
+			aux.setUltimoCostoPesos(a.getUltimoCostoPesos());			
 			em.getTransaction().commit();
 			salida=true;
 		}

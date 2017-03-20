@@ -127,12 +127,12 @@
 				</p:column>
 
 		     <p:column headerText="Editar"  style = "width:50px" exportable="false">						
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					<p:rowEditor    rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" >
 					</p:rowEditor>					
 		    </p:column>
-		    
 		     
-		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">			
+		     
+		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" exportable="false">			
 		 	<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
 		 	update="message datatableMOV" >
 		    <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />

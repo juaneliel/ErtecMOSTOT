@@ -32,7 +32,7 @@ import model.DAO.DAO_Movimiento;
 
 
 @ManagedBean (name="mb_Movimiento")
-@SessionScoped
+@ViewScoped
 public class mb_Movimiento {
 
 	private DAO_Movimiento dao=new DAO_Movimiento();

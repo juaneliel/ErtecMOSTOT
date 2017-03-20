@@ -114,12 +114,12 @@
   
     
         <p:column headerText="Editar"  style = "width:50px" exportable="false">				
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','proveedor')}">
 					</p:rowEditor>					
 		    </p:column>
 		    
 		     
-			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">	
+			<p:column headerText="Borrar"  style = "width:50px" rendered="#{mb_Usuario.acceso('EDITAR','proveedor')}" exportable="false">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Proveedores.delete(proveedor)}" 
 			 update="datatable2PRO message">
 			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />

@@ -11,6 +11,7 @@ import javax.faces.convert.FacesConverter;
 
 import mbean.mb_Articulo;
 import mbean.mb_OT;
+import mbean.mb_Usuario;
 import model.Articulo;
  
 @FacesConverter("ConverterArticulo")
@@ -22,8 +23,8 @@ public class ConverterArticulo implements Converter {
         if(value != null && value.trim().length() > 0) {
             try {
             	System.out.println("entro en converterarticulo");
-                mb_Articulo service = (mb_Articulo) 
-                		fc.getExternalContext().getSessionMap().get("mb_Articulo"); 
+            	mb_Usuario service = (mb_Usuario) 
+                		fc.getExternalContext().getSessionMap().get("mb_Usuario"); 
                 if (service==null){
                   return null;
                 }

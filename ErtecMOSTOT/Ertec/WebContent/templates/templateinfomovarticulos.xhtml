@@ -6,48 +6,53 @@
  
  
 <ui:composition>
-	<p:panelGrid id="panelinfomovart"  border="2" cellpadding="5" cellspacing="1" columns="2">    
-		<h:form id="datatable3MOV"> 
+	  
+		<h:form id="panelinfomovart"> 
 		
-				<p:outputLabel for="maskIni" value="Fecha inicial:" />
+		
+<p:panelGrid        columns="3">  
+<p:panelGrid      columns="2"> 		
+<p:outputLabel for="maskIni" value="Fecha inicial:" />
 <p:calendar id="maskIni" value="#{mb_Articulo.fechaIni}" required="true" pattern="dd-MM-yyyy" mask="true"  effect="fold" />
- 
-
+</p:panelGrid>
+<p:panelGrid    columns="2"> 
 <p:outputLabel for="maskFin" value="  Fecha final:"   />
 <p:calendar id="maskFin" value="#{mb_Articulo.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
- 
+</p:panelGrid>
 <p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_Articulo.filtrarInfoMovArticulo}"   
 update="dtinfomovart :message"/>
+</p:panelGrid>
 		
 		
 			<p:dataTable var="infoma" value="#{mb_Articulo.filtrado}" id="dtinfomovart"
 				paginator="true" rows ="10" paginatorPosition="top"  
 				resizableColumns="true" liveResize="true" draggableColumns="true" 
 				scrollable="true"   scrollWidth="100%"   
-				 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-    
+				paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    		rowsPerPageTemplate="10,50,100"
 				editable="true" 
 				style="text-align:center"
 				>			 
-				<f:facet name="header">
-			  	Movimientos de Articulo
-				 	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-			   	<p:columnToggler datasource="dtinfomovart" trigger="toggler" />
+				<f:facet name="{titulo}">
+			  	Movimientos de Articulo				 
 				</f:facet>			  	 
 			  
 			  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
 	      <p:dataExporter type="xls" target="dtinfomovart" fileName="service"   />
-	    </h:commandLink>
-	
+	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
 	      <p:dataExporter type="pdf" target="dtinfomovart" fileName="service"  />
 	    </h:commandLink> 
 		</f:facet>
 			  
- 
+     		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="dtinfomovart" trigger="toggler" > 
+		        </p:columnToggler> 
+		    </f:facet> 
 		 
 		 		<p:column headerText="Mov.id" sortBy="#{infoma.movimientoID}"  filterMatchMode="contains" filterBy="#{infoma.movimientoID}">		                
 		 <h:outputText value="#{infoma.movimientoID}" /> 
@@ -100,7 +105,7 @@ update="dtinfomovart :message"/>
 			
 		</h:form>
 		
-	</p:panelGrid>
+	
 	
 	
 

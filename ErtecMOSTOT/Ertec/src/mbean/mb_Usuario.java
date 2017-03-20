@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
@@ -23,9 +24,11 @@ import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
 import enumerados.EnumAccesoPagina;
+import model.Articulo;
 import model.Funcionario;
 import model.Usuario;
 import model.UsuarioLogin;
+import model.DAO.DAO_Articulo;
 import model.DAO.DAO_Funcionario;
 import model.DAO.DAO_Usuario;
 
@@ -91,6 +94,9 @@ public class mb_Usuario {
 //			HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
 //				.getExternalContext().getSession(false);
 //				session.invalidate();
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.addCallbackParam("loggedIn", false);
 		this.usuarioLogueado.setNombre(null);
 		return "/login.xhtml?faces-redirect=true";
 	}
@@ -108,6 +114,8 @@ public class mb_Usuario {
 	private ArrayList<Usuario> lista;
 
 	private ArrayList<Funcionario> listaFuncionariosOBJ;
+
+	private ArrayList<Articulo> listaArticulosOBJ;
 	
   @PostConstruct  
   public void init(){
@@ -383,7 +391,10 @@ public class mb_Usuario {
 		this.email = email;
 	}
 	
-	
+	public ArrayList <Articulo> completarArticulo(String query){
+		this.listaArticulosOBJ=DAO_Articulo.completarArticulo(query);
+		return listaArticulosOBJ;
+	}
 	
 	
 	public ArrayList <Funcionario> completarFuncionario(String query){
@@ -423,7 +434,19 @@ public class mb_Usuario {
 		this.claveNueva = claveNueva;
 	}
 
+	public ArrayList<Articulo> getListaArticulosOBJ() {
+		return listaArticulosOBJ;
+	}
 
+	public UsuarioLogin getUsuarioLogueado() {
+		return usuarioLogueado;
+	}
+
+ 
+
+	public void setListaArticulosOBJ(ArrayList<Articulo> listaArticulosOBJ) {
+		this.listaArticulosOBJ = listaArticulosOBJ;
+	}
 	
 	
 	

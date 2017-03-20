@@ -11,37 +11,33 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name="Articulos")
-@NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a ORDER BY a.articuloID DESC")
-
-@SequenceGenerator(name = "ART_SEQ", sequenceName = "ARTICULO_SEQ", initialValue = 533292, allocationSize = 1)
-
+@NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a")
 public class Articulo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ART_SEQ")//se ingresan a mano
-	@Column(name="ArticuloID")
+	@Column(name="ArticuloID",columnDefinition="Decimal(10,2) default '0.00'")
 	private int articuloID;
 
 	@Column(name="Calidad")
 	private String calidad;
 
-	@Column(name="CostoDolares")
+	@Column(name="CostoDolares",columnDefinition="Decimal(10,2) default '0.00'")
 	private BigDecimal costoDolares;
 
-	@Column(name="CostoPesos")
+	@Column(name="CostoPesos",columnDefinition="Decimal(10,2) default '0.00'")
 	private BigDecimal costoPesos;
 
 	@Column(name="Descripcion")
 	private String descripcion;
 
-	@Column(name="Medida")
-	private int medida;
+	@Column(name="Medida",columnDefinition="Decimal(10,2) default '0.00'")
+	private BigDecimal medida;
 
 	@Column(name="Observacion")
 	private String observacion;
 
-	@Column(name="PrecioVenta")
+	@Column(name="PrecioVenta",columnDefinition="Decimal(10,2) default '0.00'")
 	private BigDecimal precioVenta;
 
 	@Column(name="Stock")
@@ -50,13 +46,14 @@ public class Articulo implements Serializable {
 	@Column(name="StockMinimo")
 	private BigDecimal stockMinimo;
 
-	@Column(name="UltimoCostoDolares")
+	@Column(name="UltimoCostoDolares",columnDefinition="Decimal(10,2) default '0.00'")
 	private BigDecimal ultimoCostoDolares;
 
-	@Column(name="UltimoCostoPesos")
+	@Column(name="UltimoCostoPesos",columnDefinition="Decimal(10,2) default '0.00'")
 	private BigDecimal ultimoCostoPesos;
 
 	public Articulo() {
+		super();
 	}
 
 	public int getArticuloID() {
@@ -99,11 +96,11 @@ public class Articulo implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public int getMedida() {
+	public BigDecimal getMedida() {
 		return this.medida;
 	}
 
-	public void setMedida(int medida) {
+	public void setMedida(BigDecimal medida) {
 		this.medida = medida;
 	}
 

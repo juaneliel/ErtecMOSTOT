@@ -68,7 +68,7 @@
 		    
 
 				
-						    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.ot)}">	
+						    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','ot')}">	
 			<p:commandLink actionListener="#{mb_Movimiento.deleteNexo(nexo,false)}" 
    	
     update="message datatableNexos" >

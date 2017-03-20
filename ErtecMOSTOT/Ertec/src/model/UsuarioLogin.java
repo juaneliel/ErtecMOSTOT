@@ -79,7 +79,7 @@ public class UsuarioLogin implements Serializable {
          case "movimiento":
            acceso = this.getAccesoMovimientos();
            break;
-         case "ot":
+         case "ordendetrabajo":
            acceso = this.getAccesoOt();
            break;
          case "proveedor":
@@ -122,8 +122,8 @@ public class UsuarioLogin implements Serializable {
 		if(url.contains("movimiento")){
 			return this.acceso("VER", "movimiento");
 		}
-		if(url.contains("ot")){
-			return this.acceso("VER", "ot");
+		if(url.contains("ordendetrabajo")){
+			return this.acceso("VER", "ordendetrabajo");
 		}
 		if(url.contains("proveedor")){
 			return this.acceso("VER", "proveedor");

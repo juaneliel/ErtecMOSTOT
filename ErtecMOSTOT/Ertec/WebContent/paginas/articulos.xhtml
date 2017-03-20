@@ -11,28 +11,28 @@
       
 <ui:define name="cuerpo"> 
  
-	<h:form id="datatable">
+	<h:form id="formarticulos" onkeypress="if (event.keyCode == 13) { return false; }">
 	
-	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatable2"  emptyMessage="Sin Registros"
+	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatablearticulos" widgetVar="datatablearticulos" emptyMessage="Sin Registros"
+		 selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
+	
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   
-		 editable="true" 
-		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;"
-		 paginatorTemplate="{vercol} {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-    
-		
-		selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
+		 editable="true"  
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
 		 >
 
 	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2" fileName="articulos"   />
+	      <p:dataExporter type="xls" target="datatablearticulos" fileName="articulos"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2" fileName="articulos"  />
+	      <p:dataExporter type="pdf" target="datatablearticulos" fileName="articulos"  />
 	    </h:commandLink> 
 		</f:facet>
 
@@ -41,10 +41,14 @@
 				 	<f:facet name="{titulo}">
 		        Articulos		 		        
 		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addarticulos').show()" style="float:left"/>      
+      </f:facet>
 		 
 		 <f:facet name="{vercol}">   
 		    <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-		        <p:columnToggler datasource="datatable2" trigger="toggler" >
+		        <p:columnToggler datasource="datatablearticulos" trigger="toggler" >
 		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
 		        </p:columnToggler> 
 		    </f:facet> 
@@ -53,6 +57,13 @@
 		 
 		<p:ajax event="rowEdit" listener="#{mb_Articulo.onRowEdit}" update="message" />	 
 		<f:event type="preRenderView" listener="#{mb_Articulo.recargarLista}" />
+		
+		
+		<p:column headerText=""  style = "width:0px" exportable="false">		
+				<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">
+				</p:rowEditor>					
+	    </p:column>
+		
 
 		<p:column headerText="ID:" sortBy="#{articulo.articuloID}"  filterMatchMode="startsWith" filterBy="#{articulo.articuloID}">		                
 			<h:outputText  value="#{articulo.articuloID}"/>
@@ -61,22 +72,33 @@
 		<p:column headerText="Descripcion:" sortBy="#{articulo.descripcion}"  filterMatchMode="contains" filterBy="#{articulo.descripcion}">		                
 			<p:cellEditor>
 	      <f:facet name="output"><h:outputText value="#{articulo.descripcion}" /></f:facet>
-	      <f:facet name="input"><p:inputText id="descripcion" value="#{articulo.descripcion}" style="width:100%"/></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="descripcion" value="#{articulo.descripcion}" rows="4"   style="width:100%;heigth:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>  
    
 		<p:column headerText="Precio Ven:" sortBy="#{articulo.precioVenta}"  filterMatchMode="startsWith" filterBy="#{articulo.precioVenta}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{articulo.precioVenta}" /></f:facet>
-				<f:facet name="input"><p:inputText id="precioventa" value="#{articulo.precioVenta}" style="width:100%"/></f:facet>
+				<f:facet name="input"><p:inputNumber id="precioventa" value="#{articulo.precioVenta}" emptyValue="0" thousandSeparator="" 
+				decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+			</f:facet>				 
 			</p:cellEditor>
 		</p:column> 
+ 
+ 		<p:column headerText="Medida:" sortBy="#{articulo.medida}"  filterMatchMode="startsWith" filterBy="#{articulo.medida}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{articulo.medida}" /></f:facet> 
+				<f:facet name="input"><p:inputNumber id="medida2" value="#{articulo.medida}" emptyValue="0" thousandSeparator="" 
+					decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
  
  		<p:column headerText="Calidad:" sortBy="#{articulo.calidad}"  filterMatchMode="contains" filterBy="#{articulo.calidad}">		                
 			<p:cellEditor>
 	      <f:facet name="output"><h:outputText value="#{articulo.calidad}" /></f:facet>
 	      <f:facet name="input">
-					<p:selectOneMenu id="calidad" value="#{mb_Articulo.calidad}" style="width:85%">
+					<p:selectOneMenu id="calidad" value="#{articulo.calidad}" style="width:85%">
 						<f:selectItem  itemLabel="N" itemValue="N" />
 						<f:selectItem   itemLabel="A" itemValue="A" />
 					</p:selectOneMenu>	
@@ -84,32 +106,31 @@
 			</p:cellEditor>
 		</p:column>
 
-		<p:column headerText="Medida:" sortBy="#{articulo.medida}"  filterMatchMode="startsWith" filterBy="#{articulo.medida}">		                
-			<p:cellEditor>
-	    	<f:facet name="output"><h:outputText value="#{articulo.medida}" /></f:facet>
-	   		<f:facet name="input"><p:inputText id="medida" value="#{articulo.medida}" style="width:100%"/></f:facet>
-			</p:cellEditor>
-		</p:column>
+
  
  
   	<p:column headerText="Observacion:" sortBy="#{articulo.observacion}"  filterMatchMode="contains" filterBy="#{articulo.observacion}">		                
 			<p:cellEditor>
 			  <f:facet name="output"><h:outputText value="#{articulo.observacion}" /></f:facet>
-			  <f:facet name="input"><p:inputText id="observacion" value="#{articulo.observacion}" style="width:100%"/></f:facet>
+			  <f:facet name="input"><p:inputTextarea  id="observacion" rows="4" value="#{articulo.observacion}"  /></f:facet>
 			</p:cellEditor>
 		</p:column>
      
 		<p:column headerText="Costo Pes" sortBy="#{articulo.costoPesos}"  filterMatchMode="startsWith" filterBy="#{articulo.costoPesos}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{articulo.costoPesos}" /></f:facet>
-				<f:facet name="input"><p:inputText id="costopesos" value="#{articulo.costoPesos}" style="width:100%"/></f:facet>
+				<f:facet name="input"><p:inputNumber id="costopesos" value="#{articulo.costoPesos}" emptyValue="0" thousandSeparator="" 
+				decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+				</f:facet>
 			</p:cellEditor>
 		</p:column>
  
 		<p:column headerText="Costo Dol:" sortBy="#{articulo.costoDolares}"  filterMatchMode="startsWith" filterBy="#{articulo.costoDolares}">		                
 			<p:cellEditor>
 		  	<f:facet name="output"><h:outputText value="#{articulo.costoDolares}" /></f:facet>
-		 		<f:facet name="input"><p:inputText id="costodolares" value="#{articulo.costoDolares}" style="width:100%"/></f:facet>
+		 		<f:facet name="input"><p:inputNumber id="costodolares" value="#{articulo.costoDolares}" emptyValue="0" thousandSeparator="" 
+				decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+				</f:facet>
 			</p:cellEditor>
 		</p:column>
  
@@ -118,78 +139,194 @@
 		<p:column headerText="Stock:" sortBy="#{articulo.stock}"  filterMatchMode="startsWith" filterBy="#{articulo.stock}">		                
       <p:cellEditor>
        <f:facet name="output"><h:outputText value="#{articulo.stock}" /></f:facet>
-       <f:facet name="input"><p:inputText id="stock" value="#{articulo.stock}" style="width:100%"/></f:facet>
+       <f:facet name="input">       
+					<p:inputMask converterMessage="Ingrese un valor de stock" min="0" id="referencia" label="stock" value="#{articulo.stock}" required="true" maxlength="9" >
+						<p:keyFilter regEx="/[0-9_]/i" />
+						<f:validateDoubleRange minimum="0" />  
+					</p:inputMask>
+       </f:facet>
+       
+       
   		</p:cellEditor>
    	</p:column>
  
 		<p:column headerText="Stock min:" sortBy="#{articulo.stockMinimo}"  filterMatchMode="startsWith" filterBy="#{articulo.stockMinimo}">		                
       <p:cellEditor>
         <f:facet name="output"><h:outputText value="#{articulo.stockMinimo}" /></f:facet>
-        <f:facet name="input"><p:inputText id="stockminimo" value="#{articulo.stockMinimo}" style="width:100%"/></f:facet>
+        <f:facet name="input">
+				<p:inputMask converterMessage="Ingrese un valor de stock minimo" min="0" id="stockminimo" label="stockminimo" value="#{articulo.stockMinimo}" maxlength="9" >
+					<p:keyFilter regEx="/[0-9_]/i" />
+					<f:validateDoubleRange minimum="0" />  
+				</p:inputMask>
+			</f:facet>
    		</p:cellEditor>
 		</p:column>
 
 		<p:column headerText="Ult.Cos.Pes.:" sortBy="#{articulo.ultimoCostoPesos}"  filterMatchMode="startsWith" filterBy="#{articulo.ultimoCostoPesos}">		                
 			<p:cellEditor>
 	     	<f:facet name="output"><h:outputText value="#{articulo.ultimoCostoPesos}" /></f:facet>
-	    	<f:facet name="input"><p:inputText id="ultimoCostoPesos" value="#{articulo.ultimoCostoPesos}" style="width:100%"/></f:facet>
+	    	<f:facet name="input"><p:inputNumber id="ultimoCostoPesos" value="#{articulo.ultimoCostoPesos}" emptyValue="0" thousandSeparator="" 
+					decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+				</f:facet>
     	</p:cellEditor>
 		</p:column>
     
 		<p:column headerText="Ult Cos Dol:" sortBy="#{articulo.ultimoCostoDolares}"  filterMatchMode="startsWith" filterBy="#{articulo.ultimoCostoDolares}">		                
     	<p:cellEditor>
 	      <f:facet name="output"><h:outputText value="#{articulo.ultimoCostoDolares}" /></f:facet>
-	      <f:facet name="input"><p:inputText id="ultimocostodolares" value="#{articulo.ultimoCostoDolares}" style="width:100%"/></f:facet>
+	      <f:facet name="input"><p:inputNumber id="ultimocostodolares" value="#{articulo.ultimoCostoDolares}" emptyValue="0" thousandSeparator="" 
+					decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+				</f:facet>
 			</p:cellEditor>
     </p:column>
-
- 
-     <p:column headerText="Editar"  style = "width:50px" exportable="false">		
-				<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">
-				</p:rowEditor>					
-	    </p:column>
-		    
-		     
-		     
-		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','articulo')}"> exportable="false">	
-			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}" 
-			 update="datatable message" >
-        <p:confirm header="Confirmacion" message="Borrar articulo #{articulo.descripcion}?" icon="ui-icon-alert" />
-    </p:commandButton>
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    </p:confirmDialog>
-			</p:column>  
-		     
-
-    
+   
     
 </p:dataTable>
 
-		 	<p:contextMenu for="datatable2">
+	<p:contextMenu for="datatablearticulos">
   	<p:menuitem value="Ver Movimientos asociados" update="panelinfomovart" actionListener="#{mb_Articulo.limpiarFiltrado()}" icon="ui-icon-search" oncomplete="PF('verma').show()"/>
-		</p:contextMenu>  
+		<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','articulo')}" value="Borrar" update="formarticulos message"  actionListener="#{mb_Articulo.delete(mb_Articulo.artSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar articulo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>		
+	</p:contextMenu>  
 
 
 
 
-	</h:form>
+</h:form>
+	
+
+<p:confirmDialog dynamic="true" header="Borrar articulo #{mb_Articulo.describimeSeleccionado()} ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>	 
 	
 		 
 <p:dialog header="Movimientos de Articulo" widgetVar="verma"  modal="true" width="90%" height="400" id="verma">
 <ui:include src="/templates/templateinfomovarticulos.xhtml" id="movart">	 
 </ui:include>
-</p:dialog>	   
+</p:dialog>	 
+
+
+<script type="text/javascript">
+    function handleLoginRequest(xhr, status, args) {
+        if(args.validationFailed ) {
+            PF('addarticulos').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addarticulos').hide(); 
+        }
+    }
+    function redi() {
+    	//PF('dlg').show();
+    	
+ 	   window.location.href = "/ertec/login.xhtml";
+ 	   return;
+ 	 }
+</script>
+
+<p:dialog id="addarticulos" header="Agregar articulo"  widgetVar="addarticulos" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+  <p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+
+			<h:outputLabel value="Articulo Id:*" for="articuloID" /> 
+			<p:inputMask required="true" validator="#{mb_Articulo.validarArticuloID}" id="articuloID" label="articuloid" value="#{mb_Articulo.articuloAdd.articuloID}" 
+			 converterMessage="Ingrese un valor de stock minimo" min="0" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>	
+			    
+			<h:outputLabel value="Descripción:*" for="descripcion" />
+			<p:inputText id="descripcion" label="descripcion" value="#{mb_Articulo.articuloAdd.descripcion}" required="true" /> 
+			
+			<h:outputLabel value="Precio Venta:" for="precioVenta" />
+			<p:inputNumber id="precioVenta" label="precioVenta" value="#{mb_Articulo.articuloAdd.precioVenta}" 
+			 emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			
+			
+			<h:outputLabel value="Medida:" for="medida" />
+			<p:inputNumber id="medida" label="medida" value="#{mb_Articulo.articuloAdd.medida}"  
+			emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			
+		   
+			<h:outputLabel value="Calidad:" for="calidad" />
+			<p:selectOneMenu id="calidad" value="#{mb_Articulo.articuloAdd.calidad}" style="width:85%">
+				<f:selectItem  itemLabel="N" itemValue="N" />
+				<f:selectItem   itemLabel="A" itemValue="A" />
+			</p:selectOneMenu>			 
+			
+			
+			<h:outputLabel value="Observación:" for="observacion" />
+			<p:inputText id="Observacion" label="observacion" value="#{mb_Articulo.articuloAdd.observacion}"  /> 	
+
+			<h:outputLabel value="C.Pesos:" for="costoPesos" />
+			<p:inputNumber id="costoPesos" label="costoPesos" value="#{mb_Articulo.articuloAdd.costoPesos}"  
+				emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>					   			
+					    
+			<h:outputLabel value="C.Dolares:" for="costoDolares" />
+			<p:inputNumber id="costoDolares" label="costoDolares" value="#{mb_Articulo.articuloAdd.costoDolares}" 
+			  emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+			
+
+				    
+			  
+			<h:outputLabel value="Stock:" for="stock" />
+			<p:inputMask converterMessage="Ingrese un valor de stock" min="0" id="referencia" label="stock" value="#{mb_Articulo.articuloAdd.stock}" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>			
+
+
+			<h:outputLabel value="Stock Minimo:" for="stockMinimo" /> 
+			<p:inputMask converterMessage="Ingrese un valor de stock minimo" min="0" id="stockMinimo" label="stockMinimo" value="#{mb_Articulo.articuloAdd.stockMinimo}" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>	
+
+			<h:outputLabel value="U.C.Pesos:" for="ultimoCostoPesos" />
+			<p:inputNumber id="ultimoCostoPesos" label="ultimoCostoPesos" value="#{mb_Articulo.articuloAdd.ultimoCostoPesos}"  
+       emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+      		
+			<h:outputLabel value="U.C.Dolares:" for="ultimoCostoDolares" />
+			<p:inputNumber id="ultimoCostoDolares" label="ultimoCostoDolares" value="#{mb_Articulo.articuloAdd.ultimoCostoDolares}"  
+			 emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			 
+			 
+  		
+			<p:commandButton value="Agregar" actionListener="#{mb_Articulo.add }"  oncomplete="handleLoginRequest(xhr, status, args)" update="@([id$=datatablearticulos]) message" />	
+
+		   	
+		</p:panelGrid>
+ </h:form>
+ </p:dialog>
+
+
+
+
+
+  
 
 </ui:define>
 </ui:composition>   
 
+<!-- 			<h:commandButton value="Limpiar" actionListener="#{mb_Articulo.limpiarVariables}"   />	   -->
 
 
 
-
-
+		     
+<!-- 		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','articulo')}"  exportable="false">	 -->
+<!-- 			 <p:commandLink icon="ui-icon-trash" id="trash"  actionListener="#{mb_Articulo.delete(articulo)}"  -->
+<!-- 			 update="datatable message" > -->
+<!--         <p:confirm header="Confirmacion" message="Borrar articulo #{articulo.descripcion}?" icon="ui-icon-alert" /> -->
+<!--       <span class="ui-icon ui-icon-trash"></span> -->
+<!--    	</p:commandLink>  -->
+<!--     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade"> -->
+<!--         <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" /> -->
+<!--         <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" /> -->
+<!--     </p:confirmDialog> -->
+<!-- 			</p:column>   -->
+		 
 
 
 

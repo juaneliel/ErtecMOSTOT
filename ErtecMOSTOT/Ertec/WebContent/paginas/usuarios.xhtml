@@ -20,7 +20,7 @@
 		 editable="true" 
 		 style="text-align:left;font-size: 90% !important;font-weight: bold; " 
 		  paginatorTemplate=" {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {agregar} {vercol}"
-    
+    paginatorPosition="top"
 		 >
 		 
     
@@ -31,6 +31,9 @@
 		 	 	<f:facet name="{titulo}">
 		        Usuarios		 		        
 		    </f:facet>
+		     <f:facet name="footer">
+        Lista usuarios.
+    </f:facet>
 		 
 		 <f:facet name="{vercol}">  
 					<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
@@ -241,7 +244,7 @@
  </h:form> 
 	
 
-<p:dialog id="modificardatos" header="Modificar Datos"  widgetVar="modificardatos" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  width="450" height="200"  >
+<p:dialog id="modificardatos" header="Modificar Datos"  widgetVar="modificardatos" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  >
  <h:form> 
  	<p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    
 			

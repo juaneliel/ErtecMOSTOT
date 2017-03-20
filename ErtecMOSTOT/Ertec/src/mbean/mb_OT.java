@@ -16,7 +16,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 import javax.faces.bean.ManagedBean; 
-import javax.faces.bean.SessionScoped; 
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import model.Adicional; 
 import model.Articulo;
@@ -34,7 +35,7 @@ import model.DAO.DAO_OT;
 
 
 @ManagedBean(name="mb_OT", eager = true)
-@SessionScoped
+@ViewScoped
 public class mb_OT {
 
 	private DAO_OT dao=new DAO_OT(); 

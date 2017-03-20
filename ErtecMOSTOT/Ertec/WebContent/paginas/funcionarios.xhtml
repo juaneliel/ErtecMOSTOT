@@ -19,13 +19,12 @@
   	
 		<p:dataTable var="funcionario" value="#{mb_Funcionario.lista}" id="datatable2" emptyMessage="Sin Registros"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-		 scrollable="true" scrollHeight="500"   scrollWidth="100%"  
-		 editable="true" 
+		 scrollable="true"     scrollWidth="100%"  
+		 editable="true" stickyHeader="true"
 		 style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"		
 		 selection="#{mb_Funcionario.funcionarioSelected}" selectionMode="single" rowKey="#{funcionario.funcionarioID}"
-		 paginatorTemplate=" {titulo} {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {agregar} {vercol}"
-    
-		 
+		 paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {agregar} {vercol}"
+    rowsPerPageTemplate="10,50,100"		 
 		 >
 		 
 		 	<f:facet name="{titulo}">
@@ -201,12 +200,12 @@
 		 
 	 
 		 
-		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.funcionarios)}" exportable="false">						
+		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR','funcionario')}" exportable="false">						
 					<p:rowEditor >
 					</p:rowEditor>									
 		    </p:column>
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.funcionarios)}" exportable="false">			
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','funcionario')}" exportable="false">			
 			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}"    	
    	update="formfuncionarios message" >
         <p:confirm header="Confirmacion" message="Borrar a #{funcionario.nombre}?" icon="ui-icon-alert" />

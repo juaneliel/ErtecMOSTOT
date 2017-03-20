@@ -61,7 +61,7 @@
 			
 			
 				<p:column headerText="Editar"  style = "width:50px">				
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
+					<p:rowEditor    >
 					</p:rowEditor>					
 		    </p:column>
 		    
@@ -70,7 +70,7 @@
 		    
 		    
 		    <p:column headerText="Borrar"  style = "width:50px">		   
-					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=panelNexos]) message"  rendered="#{mb_Usuario.puedeBorrar}"/>
+					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=panelNexos]) message"  />
 				</p:column>
 				
 			</p:dataTable> 

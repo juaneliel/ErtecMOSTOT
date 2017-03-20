@@ -13,7 +13,7 @@
      
 		<p:outputLabel value="Articulo:" for="articulo" />  		         
 		<p:autoComplete id="articulo" value="#{mb_Movimiento.articuloOBJ}"
-			completeMethod="#{mb_Articulo.completarArticulo}"
+			completeMethod="#{mb_Usuario.completarArticulo}"
 			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
 			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  		          
 		    

@@ -17,7 +17,7 @@
     <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatable2"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
-		 editable="true" paginatorPosition="top"
+		 editable="true"  
 		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;" 
 		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}"
                 rowsPerPageTemplate="10,50,100"
@@ -129,7 +129,7 @@
 		  
 		  
 		  
-		   <p:column headerText="Editar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.clientes)}" exportable="false">				
+		   <p:column headerText="Editar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('EDITAR','cliente')}" exportable="false">				
 					<p:rowEditor  >
 					</p:rowEditor>					
 		    </p:column>
@@ -137,7 +137,7 @@
 		    	   
 		    	   
 		    	   
-		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.clientes)}" exportable="false">	
+		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','cliente')}" exportable="false">	
 			<p:commandLink actionListener="#{mb_Cliente.delete(cliente)}" 
    	
    	update="datatablecliente message" >
