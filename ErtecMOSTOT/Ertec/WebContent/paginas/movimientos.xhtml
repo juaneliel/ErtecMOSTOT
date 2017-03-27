@@ -9,11 +9,261 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
       
-<ui:define name="cuerpo">   	 
-	<ui:include src="/templates/templatemovimiento.xhtml">
-	   <ui:param name="paramLista"   value = "#{mb_Movimiento.lista}"/>
-	</ui:include>	
+<ui:define name="cuerpo"> 
+ 
+	<h:form id="formmovimiento" onkeypress="if (event.keyCode == 13) { return false; }">
+	
+	
+	<p:dataTable var="movimiento" value="#{mb_Movimiento.lista}" id="datatablemovimiento" widgetVar="datatablemovimiento"
+		 selection="#{mb_Movimiento.movSelected}" selectionMode="single" rowKey="#{movimiento.movimientoID}"	
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
+
+	<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatablearticulos" fileName="articulos"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatablearticulos" fileName="articulos"  />
+	    </h:commandLink> 
+		</f:facet>
+
+ 
+		
+				 	<f:facet name="{titulo}">
+		        Movimientos		 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addmovimiento').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
+      </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		     <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="formmovimiento" trigger="toggler" />
+    </f:facet> 
+		
+		
+		 <p:ajax event="rowEdit" listener="#{mb_Movimiento.onRowEdit}" update="message" /> 
+		<f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" />
+		
+	    <p:column headerText=""  style = "width:0px" exportable="false"  rendered="#{mb_Usuario.acceso('EDITAR','movimiento')}">						
+					<p:rowEditor    >
+					</p:rowEditor>					
+		    </p:column>
+		
+		<p:column headerText="MovimientoID"  sortBy="#{movimiento.movimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.movimientoID}">		                
+			<p:cellEditor>
+	       		<f:facet name="output"><h:outputText value="#{movimiento.movimientoID}" /></f:facet>
+	        	<f:facet name="input"><p:inputText id="MovimientoID" value="#{movimiento.movimientoID}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+		<p:column headerText="cod ID" sortBy="#{movimiento.codigoMovimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.codigoMovimientoID}">		                
+		    <p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{movimiento.codigoString}" /></f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{movimiento.codigoMovimientoID}" style="width:100%">
+				    	<f:selectItems value="#{mb_Movimiento.listaCodMovimientosComun}" var="cm" 
+				        itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
+					</p:selectOneMenu>				 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+
+		    
+				<p:column headerText="Nombre Cliente:" style="min-width:100px;" sortBy="#{movimiento.nombreCliente}"  filterMatchMode="contains" filterBy="#{movimiento.nombreCliente}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.nombreCliente}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="nomCliente" value="#{movimiento.nombreCliente}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+
+		    
+		    			<p:column headerText="Contrato ID:" sortBy="#{movimiento.contratoID}"  filterMatchMode="contains" filterBy="#{movimiento.contratoID}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.contratoID}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="contratoid" value="#{movimiento.contratoID}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="Tipo ot" sortBy="#{movimiento.tipoOT}"  filterMatchMode="contains" filterBy="#{movimiento.tipoOT}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.tipoOT}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="tipoOT" value="#{movimiento.tipoOT}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="cotizacion" sortBy="#{movimiento.cotizacion}"  filterMatchMode="contains" filterBy="#{movimiento.cotizacion}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.cotizacion}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="cotizadion" value="#{movimiento.cotizacion}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="referencia" sortBy="#{movimiento.referencia}"  filterMatchMode="contains" filterBy="#{movimiento.referencia}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.referencia}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="referencia" value="#{movimiento.referencia}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    
+		    			<p:column headerText="tipoReferencia" sortBy="#{movimiento.tipoReferencia}"  filterMatchMode="contains" filterBy="#{movimiento.tipoReferencia}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{movimiento.tipoReferencia}" /></f:facet>
+	               <f:facet name="input">
+	              <p:selectOneMenu value="#{movimiento.tipoReferencia}" style="width:100%">
+                       <f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
+                       itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+                   </p:selectOneMenu>
+	                
+	                </f:facet>
+           		</p:cellEditor>
+		    </p:column>	 
+		 
+ 				<p:column headerText="Fecha:" sortBy="#{movimiento.fecha}"  filterMatchMode="contains" filterBy="#{movimiento.fecha}">		                
+					<p:cellEditor>
+						<f:facet name="output"><p:calendar mindate="#{movimiento.fecha}" maxdate="#{nexo.fecha}"  id="maskoutmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+						<f:facet name="input"> <p:calendar id="maskinmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+					</p:cellEditor>
+				</p:column>
+
+		 
+		     
+		     
+	
+
+</p:dataTable>
+
+	<p:contextMenu for="datatablemovimiento">
+		<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','articulo')}" value="Borrar" update="formmovimiento message"  actionListener="#{mb_Movimiento.delete(mb_Movimiento.movSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar articulo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>		
+	</p:contextMenu>  
+
+
+
+
+</h:form>
+	
+
+<p:confirmDialog dynamic="true" header="Borrar articulo #{mb_Articulo.describimeSeleccionado()} ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>	 
+	
+		 
+<p:dialog header="Movimientos de Articulo" widgetVar="verma"  modal="true" width="90%" height="400" id="verma">
+<ui:include src="/templates/templateinfomovarticulos.xhtml" id="movart">	 
+</ui:include>
+</p:dialog>	 
+
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) {
+    	alert("Hello! I am an alert box!!");
+        if(args.validationFailed ) {
+            PF('addarticulos').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addarticulos').hide(); 
+            PF('datatablearticulos').addRow();
+        }
+    }    
+</script>
+
+<p:dialog id="addmovimiento" header="Agregar movimiento"  widgetVar="addmovimiento" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+  <p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+
+			<h:outputLabel value="Articulo Id:*" for="articuloID" /> 
+			<p:inputMask required="true" validator="#{mb_Articulo.validarArticuloID}" id="articuloID" label="articuloid" value="#{mb_Articulo.articuloAdd.articuloID}" 
+			 converterMessage="Ingrese un valor de stock minimo" min="0" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>	
+			    
+			<h:outputLabel value="Descripción:*" for="descripcion" />
+			<p:inputText id="descripcion" label="descripcion" value="#{mb_Articulo.articuloAdd.descripcion}" required="true" /> 
+			
+			<h:outputLabel value="Precio Venta:" for="precioVenta" />
+			<p:inputNumber id="precioVenta" label="precioVenta" value="#{mb_Articulo.articuloAdd.precioVenta}" 
+			 emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			
+			
+			<h:outputLabel value="Medida:" for="medida" />
+			<p:inputNumber id="medida" label="medida" value="#{mb_Articulo.articuloAdd.medida}"  
+			emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			
+		   
+			<h:outputLabel value="Calidad:" for="calidad" />
+			<p:selectOneMenu id="calidad" value="#{mb_Articulo.articuloAdd.calidad}" style="width:85%">
+				<f:selectItem  itemLabel="N" itemValue="N" />
+				<f:selectItem   itemLabel="A" itemValue="A" />
+			</p:selectOneMenu>			 
+			
+			
+			<h:outputLabel value="Observación:" for="observacion" />
+			<p:inputText id="Observacion" label="observacion" value="#{mb_Articulo.articuloAdd.observacion}"  /> 	
+
+			<h:outputLabel value="C.Pesos:" for="costoPesos" />
+			<p:inputNumber id="costoPesos" label="costoPesos" value="#{mb_Articulo.articuloAdd.costoPesos}"  
+				emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>					   			
+					    
+			<h:outputLabel value="C.Dolares:" for="costoDolares" />
+			<p:inputNumber id="costoDolares" label="costoDolares" value="#{mb_Articulo.articuloAdd.costoDolares}" 
+			  emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/> 
+			
+
+				    
+			  
+			<h:outputLabel value="Stock:" for="stock" />
+			<p:inputMask converterMessage="Ingrese un valor de stock" min="0" id="referencia" label="stock" value="#{mb_Articulo.articuloAdd.stock}" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>			
+
+
+			<h:outputLabel value="Stock Minimo:" for="stockMinimo" /> 
+			<p:inputMask converterMessage="Ingrese un valor de stock minimo" min="0" id="stockMinimo" label="stockMinimo" value="#{mb_Articulo.articuloAdd.stockMinimo}" maxlength="9" >
+				<p:keyFilter regEx="/[0-9_]/i" />
+				<f:validateDoubleRange minimum="0" />  
+			</p:inputMask>	
+
+			<h:outputLabel value="U.C.Pesos:" for="ultimoCostoPesos" />
+			<p:inputNumber id="ultimoCostoPesos" label="ultimoCostoPesos" value="#{mb_Articulo.articuloAdd.ultimoCostoPesos}"  
+       emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+      		
+			<h:outputLabel value="U.C.Dolares:" for="ultimoCostoDolares" />
+			<p:inputNumber id="ultimoCostoDolares" label="ultimoCostoDolares" value="#{mb_Articulo.articuloAdd.ultimoCostoDolares}"  
+			 emptyValue="0" thousandSeparator="" decimalSeparator="," minValue="0" maxValue="99999999.99"/>
+			 
+			 
+  		
+			<p:commandButton value="Agregar" actionListener="#{mb_Movimiento.add }"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatablemovimiento]) message" />	
+
+		   	
+		</p:panelGrid>
+ </h:form>
+ </p:dialog>
+
+
+
+
+
+  
+
 </ui:define>
-</ui:composition>
-
-
+</ui:composition>   

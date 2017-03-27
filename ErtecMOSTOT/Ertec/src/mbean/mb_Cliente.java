@@ -8,9 +8,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 import model.Cliente;
@@ -19,7 +22,7 @@ import model.DAO.DAO_Cliente;
 
 
 @ManagedBean (name="mb_Cliente")
-@SessionScoped
+@ViewScoped
 public class mb_Cliente implements Serializable{
 
   private static final long serialVersionUID = 1L;
@@ -35,23 +38,13 @@ public class mb_Cliente implements Serializable{
 	private String nombre; 
 	private String rucCliente; 
 	private String telCliente;
-	private ArrayList <Contrato> listaContratos =new ArrayList <Contrato>();
-	private ArrayList<Cliente> listaClientesOBJ=new ArrayList<Cliente>();
+	private ArrayList <Contrato> listaContratos =new ArrayList <Contrato>(); 
 	 
-	private int id;  
-	private int contratoID; 
-	private int corredorID; 
-	private String direccion; 
-	private String equipo;  
-	private Date fechaFin;  
-	private Date fechaInicio; 
-	private String localidad; 
-	private String retirado; 
-	private String tipo; 
-	private String zona;
-	private int cuentaCorriente;
-	private int topeMesesVisita;
 	
+	private Cliente clienteAdd=new Cliente();
+	private Cliente cliSelected;
+	private Contrato conSelected;
+	private Contrato contratoAdd=new Contrato();
 	
 	
 	
@@ -71,14 +64,7 @@ public class mb_Cliente implements Serializable{
 	}
 	
 	
-	public void agregarDireccion(int clienteID, int contratoID,String tipo,Date inicio,Date fin){
-	  this.contratoID=contratoID;
-	  this.clienteID=clienteID;
-	  this.tipo=tipo;
-	  this.setFechaInicio(inicio);
-	  this.setFechaFin(fin);
-	  System.out.println("agregardireccion "+tipo+" "+clienteID);
-	}
+ 
 	
 	
 	public void setClienteIDYNombre(int clienteID, String nombre){
@@ -88,201 +74,152 @@ public class mb_Cliente implements Serializable{
 	
 	
 	
-	public void setListaClientesOBJ(ArrayList<Cliente> listaClientesOBJ) {
-		this.listaClientesOBJ = listaClientesOBJ;
-	}
+	 
 
 	@PostConstruct	
 	public void init(){
-		this.recargar();
-	}
-	
-	public void recargar(){
 		this.lista=dao.getLista();
-		System.out.println("lista de clientes "+ lista.size());
 	}
 	
-	public ArrayList <Cliente> completarCliente(String query){
-		this.listaClientesOBJ = DAO_Cliente.completarCliente(query); 
-		return listaClientesOBJ;
-		
-	}
+
 	
-	
+
 	
 	public void onRowEdit(RowEditEvent event) {
-		
 		Cliente f= (Cliente) event.getObject();
-		
-		
-    	if(dao.update(f)){    		
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el cliente ");
-            FacesContext.getCurrentInstance().addMessage(null, message); 
-            //recargarLista();
-    	}
-    	else{
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar el cliente");
-            FacesContext.getCurrentInstance().addMessage(null, message);           
-    	}  	
-        System.out.println("entro en cliente update");
-    }
-	
-	
-	public void limpiarVariables(){
-		setClienteID(0);
-		setCorredorID(0);
-		setDireccion("");
-		setEquipo("");
-		setFechaFin(null);
-		setFechaInicio(null);
-		setLocalidad("");
-		setRetirado("NO");
-		setTipo("");
-		setZona("");
-	}
+  	if(dao.update(f)){    		
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el cliente ");
+          FacesContext.getCurrentInstance().addMessage(null, message); 
+          //recargarLista();
+  	}
+  	else{
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar el cliente");
+          FacesContext.getCurrentInstance().addMessage(null, message);           
+  	}  	
+      System.out.println("entro en cliente update");
+  } 
 	
 	public String add(){
 		String salida=null;
-		Cliente f = new Cliente();
-		f.setClienteID(clienteID);
-		f.setCredito(credito);
-		f.setDirCliente(dirCliente);
-		f.setLocCliente(locCliente);
-		f.setNombre(nombre);
-		f.setRucCliente(rucCliente);
-		f.setTelCliente(telCliente);
-		f.setCuentaCorriente(cuentaCorriente);
-		limpiarVariables();
-		if (dao.add (f)){
-			salida= "/paginas/clientes.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el cliente: "+ f.getNombre());
+		if (dao.add (clienteAdd)){
+			salida= "/paginas/clientes.xhtml";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el cliente: "+ clienteAdd.getNombre());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
+	        //recargar ();
+	        this.lista.add(clienteAdd);
+	        clienteAdd=new Cliente();
+	        RequestContext reqCtx = RequestContext.getCurrentInstance();
+	        reqCtx.update("formcliente:datatablecliente");
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el cliente");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR cliente"+f.getClienteID() );		
-		recargar ();
-		this.limpiarVariables();
+		System.out.println(">>AGREGAR cliente"+clienteAdd.getClienteID() );		
+//		recargar ();
+//		this.limpiarVariables();
 		return salida;
 	}
 	
 	public void delete(Cliente f){ 
 		if (dao.delete(f) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el cliente "+f.getNombre());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+      FacesContext.getCurrentInstance().addMessage(null, message);	
+      lista.remove(f); 
+      DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+          .findComponent("formcliente:datatablecliente");
+      if (dataTable != null) {
+      	dataTable.reset();
+      }
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el cliente "+f.getNombre() + "es posible que este en uso por una OT"  );
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        recargar ();
+    //recargar ();
 	}
 	
 	 public void deleteContrato(Contrato o){ 
 	    if (dao.deleteContrato(o) ){
 	      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el contrato "+o.getId());
-	          FacesContext.getCurrentInstance().addMessage(null, message);      
+        FacesContext.getCurrentInstance().addMessage(null, message); 
+        this.listaContratos.remove(o);
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+            .findComponent("formcontratos:datatablecontratos");
+        if (dataTable != null) {
+        	dataTable.reset();
+        }   
 	    }
 	    else{
 	      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el contrato "+o.getId() );
 	          FacesContext.getCurrentInstance().addMessage(null, message);      
 	    }
 	    //return "/paginas/funcionarios.xhtml?faces-redirect=true";
-	    this.recargarListaContratos(o.getClienteID());
+//	    this.recargarListaContratos(o.getClienteID());
 	  }
 	
 
 	
 	public void recargarListaContratos(int cliID){
 		System.out.println("recargarlista");
-		this.listaContratos=dao.getContratosCliente(cliID);
-		
+		this.listaContratos=dao.getContratosCliente(cliID);		
 	}
 	
-	
-	public ArrayList<Cliente> getListaClientesOBJ(){		
-		return this.listaClientesOBJ;
+	public void setListaContratosCliSel(){
+		this.listaContratos= dao.getContratosCliente(this.cliSelected.getClienteID());		
 	}
 	
+ 
+	
+	public void previoAddDireccion(){
+		contratoAdd.setClienteID(conSelected.getClienteID());
+		contratoAdd.setContratoID(conSelected.getContratoID());
+		contratoAdd.setTipo(conSelected.getTipo());	
+		contratoAdd.setFechaInicio(conSelected.getFechaInicio());	
+		contratoAdd.setFechaFin(conSelected.getFechaFin());	 
+		contratoAdd.setTopeMesesVisita(conSelected.getTopeMesesVisita());
+	}
+
 	public String addDireccionContrato(){
 		String salida= null;
-		Contrato c = new Contrato();
-		c.setContratoID(contratoID);			
-		c.setClienteID(clienteID);
-		c.setCorredorID(corredorID);
-		c.setDireccion(direccion);
-		c.setEquipo(equipo);
-		c.setFechaFin(fechaFin);
-		c.setFechaInicio(fechaInicio);
-		c.setLocalidad(localidad);
-		c.setRetirado(retirado);
-		c.setTipo(tipo);
-		c.setZona(zona);
-		c.setTopeMesesVisita(topeMesesVisita);
 		
-		if (dao.addContrato (c)){
+		if (dao.addDireccion(contratoAdd)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la direccion al contrato "+c.getTipo()+c.getContratoID());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la direccion al contrato "+contratoAdd.getTipo()+contratoAdd.getContratoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
+	        this.listaContratos.add(contratoAdd);
+	    		contratoAdd=new Contrato();
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar la direccion");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR contrato"+c.getContratoID() );		
-		this.recargarListaContratos(clienteID);
-		limpiarVariablesContrato();
+		System.out.println(">>AGREGAR contrato"+contratoAdd.getContratoID() );		
+		
 		return salida;
 	}
 	
 	public String addContrato(){
 		String salida= null;
-		Contrato c = new Contrato();
-		c.setContratoID(0);			
-		c.setClienteID(clienteID);
-		c.setCorredorID(corredorID);
-		c.setDireccion(direccion);
-		c.setEquipo(equipo);
-		c.setFechaFin(fechaFin);
-		c.setFechaInicio(fechaInicio);
-		c.setLocalidad(localidad);
-		c.setRetirado(retirado);
-		c.setTipo(tipo);
-		c.setZona(zona);
-		c.setTopeMesesVisita(topeMesesVisita);
-		
-		if (dao.addContrato (c)){
+		contratoAdd.setClienteID(this.cliSelected.getClienteID());
+		if (dao.addContrato (contratoAdd)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato "+c.getTipo()+c.getContratoID());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato "+contratoAdd.getTipo()+contratoAdd.getContratoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
+	    		this.listaContratos.add(contratoAdd);
+	    		contratoAdd=new Contrato();
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar el contrato");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR contrato"+c.getContratoID() );		
-		this.recargarListaContratos(clienteID);
-		limpiarVariablesContrato();
+		System.out.println(">>AGREGAR contrato"+contratoAdd.getContratoID() );		
+
 		return salida;
 	}
 
-	public void limpiarVariablesContrato(){
-		setContratoID(0);
-		
-		setClienteID(0);
-		setCorredorID(0);
-		setDireccion("");
-		setEquipo("");
-		setFechaFin(null);
-		setFechaInicio(null);
-		setLocalidad("");
-		setRetirado("NO");
-		setTipo("");
-		setZona("");
-	}
+ 
 	
 	public ArrayList<Cliente> getLista() {
 		System.out.println("lista de clientes "+ lista.size());
@@ -359,122 +296,48 @@ public class mb_Cliente implements Serializable{
 
 	public void setListaContratos(ArrayList<Contrato> listaContratos) {
 		this.listaContratos = listaContratos;
+	} 
+
+	public Cliente getClienteAdd() {
+		return clienteAdd;
 	}
 
-	public int getId() {
-		return id;
+
+	public void setClienteAdd(Cliente clienteAdd) {
+		this.clienteAdd = clienteAdd;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+
+	public Cliente getCliSelected() {
+		return cliSelected;
 	}
 
-	public int getContratoID() {
-		return contratoID;
+
+	public void setCliSelected(Cliente cliSelected) {
+		this.cliSelected = cliSelected;
 	}
 
-	public void setContratoID(int contratoID) {
-		this.contratoID = contratoID;
+
+	public Contrato getConSelected() {
+		return conSelected;
 	}
 
-	public int getCorredorID() {
-		return corredorID;
+
+	public void setConSelected(Contrato conSelected) {
+		this.conSelected = conSelected;
 	}
 
-	public void setCorredorID(int corredorID) {
-		this.corredorID = corredorID;
+
+	public Contrato getContratoAdd() {
+		return contratoAdd;
 	}
 
-	public String getDireccion() {
-		return direccion;
-	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setContratoAdd(Contrato contratoAdd) {
+		this.contratoAdd = contratoAdd;
 	}
-
-	public String getEquipo() {
-		return equipo;
-	}
-
-	public void setEquipo(String equipo) {
-		this.equipo = equipo;
-	}
-
-	public Date getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
-	}
-
-	public Date getFechaInicio() {
-		return fechaInicio;
-	}
-
-	public void setFechaInicio(Date fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
-
-	public String getLocalidad() {
-		return localidad;
-	}
-
-	public void setLocalidad(String localidad) {
-		this.localidad = localidad;
-	}
-
+	
  
-
-	public String getRetirado() {
-		return retirado;
-	}
-
-
-	public void setRetirado(String retirado) {
-		this.retirado = retirado;
-	}
-
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getZona() {
-		return zona;
-	}
-
-	public void setZona(String zona) {
-		this.zona = zona;
-	}
-
-
-	public int getCuentaCorriente() {
-		return cuentaCorriente;
-	}
-
-
-	public void setCuentaCorriente(int cuentaCorriente) {
-		this.cuentaCorriente = cuentaCorriente;
-	}
-
-
-	public int getTopeMesesVisita() {
-		return topeMesesVisita;
-	}
-
-
-	public void setTopeMesesVisita(int topeMesesVisita) {
-		this.topeMesesVisita = topeMesesVisita;
-	}
-	
-	
-	
 	
 	
 	

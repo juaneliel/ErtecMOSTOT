@@ -339,7 +339,7 @@ public class DAO_OT {
 //		return salida;
 //	}
 	
-	public ArrayList<Proveedores> completarProveedor(String buscar){
+	public static ArrayList<Proveedores> completarProveedor(String buscar){
 		ArrayList<Proveedores> salida= new ArrayList<Proveedores>();
 		
 		

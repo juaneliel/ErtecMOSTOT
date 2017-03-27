@@ -1,5 +1,8 @@
 package mbean;
-
+ 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,15 +13,26 @@ import util.ExportarOTPDF;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter; 
+import javafx.scene.transform.Rotate;
 import javax.faces.bean.ManagedBean; 
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-
 import model.Adicional; 
 import model.Articulo;
 import model.Cliente;
@@ -30,6 +44,7 @@ import model.Ot;
 import model.Proveedores;
 import model.TipoOT;
 import model.DAO.DAO_Cliente;
+import model.DAO.DAO_ManoObra;
 import model.DAO.DAO_Movimiento;
 import model.DAO.DAO_OT;  
 
@@ -39,14 +54,13 @@ import model.DAO.DAO_OT;
 public class mb_OT {
 
 	private DAO_OT dao=new DAO_OT(); 
- 
-	private int numeroID=50; 
+ 	private int numeroID=50; 
 	private int areaID; 
 	private int arrendamiento; 
 	private int c; 
 	private int c_Corriente; 
 	private String cliente; 
-	private BigDecimal factura; 
+	private BigDecimal factura=BigDecimal.ZERO; 
 	private Date fechaFacturada; 
 	private Date fechaInicio; 
 	private Date fechaTerminada; 
@@ -54,12 +68,11 @@ public class mb_OT {
 	private int nro_Cliente; 
 	private int oC; 
 	private int pedido; 
-	private BigDecimal presupuesto; 
+	private BigDecimal presupuesto=BigDecimal.ZERO; 
 	private String proceso; 
 	private int r; 
 	private int tipoID; 
-	private String trabajo;
-	
+	private String trabajo;	
 	private String direccionObra;
 	private int verifAdm;
 	private String telObra;
@@ -70,25 +83,35 @@ public class mb_OT {
 	private Date fecha; 
 	private String moneda; 
 	private BigDecimal precio_Unitario=BigDecimal.ZERO; 
-	private int proveedorID;
-	
+	private int proveedorID;	
 	private int adicionalOTID;
 	private String especificacionAdicional;
-	private int adicionalID;
-	
+	private int adicionalID;	
  	private Articulo articuloOBJ;
 //	private ArrayList<Articulo> listaArticulosOBJ=new ArrayList<Articulo>(); 
 	private Ot otSelected;
-	
+	private Adicional adiSelected;
+	private Movimiento movSelected;
+	private ComprasExternasOT ceSelected;
+	private ManoObra moSelected;	
 	private Proveedores proveedorOBJ;
-	private ArrayList<Proveedores> listaProveedoresOBJ; 
-	
-	private ArrayList<TipoOT>  listaTiposOT;
-	
+	private ArrayList<Proveedores> listaProveedoresOBJ; 	
+	private ArrayList<TipoOT>  listaTiposOT;	
 	private Funcionario funcionarioOBJ;
-
 	private Cliente clienteOBJ;	
 	private String urlImpresion;
+	private ArrayList<Ot> lista=new ArrayList<Ot>();
+	private ArrayList<Movimiento> listaMovimientos=new ArrayList<Movimiento>();
+	private ArrayList<ManoObra> listaManoObra=new ArrayList<ManoObra>();
+	private ArrayList<Adicional> listaAdicionales=new ArrayList<Adicional>();
+	private ArrayList<ComprasExternasOT> listaComprasExternas=new ArrayList<ComprasExternasOT>();
+	private ComprasExternasOT compraexternaAdd=new ComprasExternasOT();
+	private Movimiento movimientoAdd = new Movimiento();
+	private ManoObra manodeobraAdd = new ManoObra();
+	private Adicional adicionalAdd=new Adicional();
+	private Date fechaIni;
+	private Date fechaFin;
+	
 	
 	public Cliente getClienteOBJ() {
 		return clienteOBJ;
@@ -98,12 +121,6 @@ public class mb_OT {
 		this.clienteOBJ = clienteOBJ;
 	}
 	
-	private ArrayList<Ot> lista=new ArrayList<Ot>();
-	private ArrayList<Movimiento> listaMovimientos;
-	private ArrayList<ManoObra> listaManoObra;
-	
-	private ArrayList<Adicional> listaAdicionales;
-	private ArrayList<ComprasExternasOT> listaComprasExternas;
 	
 	public String urlImprimirOT(int otID){
 		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -112,13 +129,13 @@ public class mb_OT {
 		
 		
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  this.urlImpresion=  "/Ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
+	  this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
 	  return urlImpresion;
 	}
 	
 	public String urlImprimirMov(int otID){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-		 this.urlImpresion=  "/Ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
+		 this.urlImpresion=  "/ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
 		 System.out.println("url impresion mov "+this.urlImpresion);
 		 return urlImpresion;
 	}
@@ -134,10 +151,8 @@ public class mb_OT {
 	}
 	
 	
-	public void filtrarPorFechasManoObraOT(){
-		mb_ManoObra mb = (mb_ManoObra) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_ManoObra");  
-		mb.setOrdenTrabajo(numeroID);
-		this.listaManoObra = mb.filtrarPorFechasManoObraOT();		
+	public void filtrarPorFechasManoObraOT(){		
+		this.listaManoObra=DAO_ManoObra.getFiltradaPorFechasYOT(fechaIni, fechaFin, this.otSelected.getId());
 	}
 	
 	
@@ -165,11 +180,36 @@ public class mb_OT {
 		System.out.println("<<< lista mano de obra size= "+this.listaManoObra.size());
 	}
 	
-	public void recargarListaAdicionales(int idOT){
-		System.out.println("<<< oiitd "+idOT);
-		this.listaAdicionales = dao.getAdicionales(idOT);
-		System.out.println("<<< lista adicionales size= "+this.listaAdicionales.size());
+	public void recargarAdiocionalSelected(){
+		this.numeroID=otSelected.getId();
+		this.adicionalAdd.setOtid(numeroID);
+		this.listaAdicionales = dao.getAdicionales(this.otSelected.getId());
 	}
+	
+	public void recargarCESelected(){
+		this.numeroID=otSelected.getId();
+		this.compraexternaAdd.setOtid(numeroID);
+		this.listaComprasExternas=dao.getComprasExternas(numeroID);
+	}
+	public void recargarManodeobraSelected(){
+		this.numeroID=otSelected.getId();
+		this.manodeobraAdd.setOrdenTrabajo(numeroID);
+		this.listaManoObra = dao.getListaManoObraOT(this.otSelected.getId());
+	}
+	
+	public void recargarMovimientoSelected(){
+		this.numeroID=otSelected.getId();
+		this.movimientoAdd.setReferencia(numeroID);
+		this.listaMovimientos=dao.getListaMovimientosOT(this.otSelected.getId());
+	}
+	
+	
+//	
+//	public void recargarListaAdicionales(int idOT){
+//		System.out.println("<<< oiitd "+idOT);
+//		this.listaAdicionales = dao.getAdicionales(idOT);
+//		System.out.println("<<< lista adicionales size= "+this.listaAdicionales.size());
+//	}
 	
 	public void recargarListaComprasExternas(int idOT){
 		System.out.println("<<< oiitd "+idOT);
@@ -177,12 +217,12 @@ public class mb_OT {
 		System.out.println("<<< lista compras externas size= "+this.listaComprasExternas.size());
 	}
 	
-	public void recargarCombo(int otID){
-		this.recargarListaManoObra(otID);
-		this.recargarListaMovimientos(otID);
-		this.recargarListaAdicionales(otID);
-		this.recargarListaComprasExternas(otID);
-	}
+//	public void recargarCombo(int otID){
+//		this.recargarListaManoObra(otID);
+//		this.recargarListaMovimientos(otID);
+//		this.recargarListaAdicionales(otID);
+//		this.recargarListaComprasExternas(otID);
+//	}
 
 	
 	public void onRowEdit(RowEditEvent event) {
@@ -275,14 +315,15 @@ public class mb_OT {
 		String salida=null;
 		Adicional a=new Adicional();
 		a.setEspecificacion(especificacionAdicional);
-		a.setOtid(numeroID);
+		a.setOtid(otSelected.getId());
 		
 		System.out.println("entro en addadicional");
 		if(dao.addAdicionalOT(a)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego el adicional a la OT");
 			context.addMessage(null,mensaje);
-			this.recargarListaAdicionales(numeroID);
+			//this.recargarListaAdicionales(numeroID);
+			this.listaAdicionales.add(a);
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -332,14 +373,15 @@ public class mb_OT {
 		
 		if (dao.deleteAdicional(adi) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el adicional  "+adi.getAdicionalID());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	        FacesContext.getCurrentInstance().addMessage(null, message);	
+	    this.listaAdicionales.remove(adi);
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se pudo eliminar "+adi.getAdicionalID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        this.recargarListaAdicionales(numeroID);;
+        //this.recargarListaAdicionales(numeroID);;
         System.out.println("entro en delete adicional");		
 	}
 	
@@ -424,33 +466,29 @@ public class mb_OT {
 		ComprasExternasOT ceot = new ComprasExternasOT();
 		ceot.setNombreArticulo(nombreArticulo);
 		ceot.setCantidad(cantidad);
-		ceot.setId(CExternaID);
+		//ceot.setId(CExternaID);
 		ceot.setFecha(fecha);
 		ceot.setMoneda(moneda);
-		ceot.setOtid(numeroID);
+		ceot.setOtid(otSelected.getId());
 		ceot.setPrecio_Unitario(precio_Unitario);
-
-		
-		if(proveedorOBJ!=null){
+	  if(proveedorOBJ!=null){
 			ceot.setProveedorID(proveedorOBJ.getProveedorID());	
 		}
 		if(articuloOBJ!=null){
 			ceot.setArticuloID(articuloOBJ.getArticuloID());
-		}
-		
+		}		
 		if(dao.addCompraExternaOT(ceot)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la compra externa a la OT");
 			context.addMessage(null,mensaje);
-			this.recargarListaComprasExternas(numeroID);
+			this.listaComprasExternas.add(ceot);
+			//this.recargarListaComprasExternas(numeroID);
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar la compra externa");
 			context.addMessage(null,mensaje);
-		}
-		
-		
+		}		
 		return null;
 	} 
 
@@ -459,7 +497,8 @@ public class mb_OT {
 		if (dao.deleteCompraExterna(ce) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino la compra externa  "+ce.getId());
 	        FacesContext.getCurrentInstance().addMessage(null, message);	
-	        this.recargarListaComprasExternas(numeroID);
+	        //this.recargarListaComprasExternas(numeroID);
+	        this.listaComprasExternas.remove(ce);
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se pudo eliminar "+ce.getId());
@@ -489,10 +528,13 @@ public class mb_OT {
 //		return listaArticulosOBJ;
 //	}
 	
-	public ArrayList <Proveedores> completarProveedor(String query){
-		this.listaProveedoresOBJ=dao.completarProveedor(query);
-		return listaProveedoresOBJ;
-	} 
+//	 public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+//     Document pdf = (Document) document;
+//     pdf.open();
+//     pdf.setPageSize(PageSize.A4.rotate());
+// }
+	
+
 	
 	 public List<String> completeText(String query) {
 	        List<String> results = new ArrayList<String>();
@@ -504,12 +546,17 @@ public class mb_OT {
 	    }
 	
 	//se le pasa un movimiento el movimiento se agrega mediante el daoOT que llama al otro daoMOV
-	public void addManoObra(ManoObra mo){
-		if(dao.addManoObraOT(mo)){
+	public void addManoObra(){
+		manodeobraAdd.setOrdenTrabajo(this.otSelected.getId());
+		manodeobraAdd.setClienteID(manodeobraAdd.getCliente().getClienteID());
+		manodeobraAdd.setFuncionarioID(manodeobraAdd.getFuncionario().getFuncionarioID());
+		if(dao.addManoObraOT(manodeobraAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la mano de obra a la OT");
 			context.addMessage(null,mensaje);
-			this.recargarListaManoObra(numeroID);
+			this.listaManoObra.add(manodeobraAdd);
+			//this.recargarListaManoObra(numeroID);
+			manodeobraAdd=new ManoObra();
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -999,7 +1046,210 @@ public class mb_OT {
 //	}
 	
 	
-	
+  public void imprimirOT(){
+  	Document documento = new Document(PageSize.A4);
+  	ByteArrayOutputStream baos= new ByteArrayOutputStream();
+  	try{
+  		PdfWriter writer=PdfWriter.getInstance(documento, baos);
+  		documento.open();
+  		documento.add( new Paragraph("Hola") );
+
+      PdfContentByte canvas = writer.getDirectContent();
+  	   // Creacion de tabla 1         
+      PdfPTable tabla1 = new PdfPTable(15);    
+      tabla1.setTotalWidth(550);  
+      
+      PdfPCell cell;
+      
+      cell=new PdfPCell(new Paragraph("Id", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+      
+      cell=new PdfPCell(new Paragraph("Cliente", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+      
+      cell=new PdfPCell(new Paragraph("Lugar", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+      
+      cell=new PdfPCell(new Paragraph("Telef", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );    
+ 
+      cell=new PdfPCell(new Paragraph("Trabajo", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );    
+ 
+      cell=new PdfPCell(new Paragraph("Proceso", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("Presupuesto", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("Pedido", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("Factura", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("O.C.", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("C.", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell ); 
+      
+      cell=new PdfPCell(new Paragraph("R.", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );     
+      
+      cell=new PdfPCell(new Paragraph("F.Inicio", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+
+      cell=new PdfPCell(new Paragraph("F.Fin", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+      
+      cell=new PdfPCell(new Paragraph("F.Facturada", new Font(FontFamily.HELVETICA, 10)));
+      cell.setMinimumHeight(20);      
+      tabla1.addCell( cell );
+      
+      
+      
+      for(Ot l : lista){
+      	 cell=new PdfPCell(new Paragraph("2", new Font(FontFamily.HELVETICA, 9)));
+         cell.setMinimumHeight(20);      
+         tabla1.addCell( cell );
+
+      }
+      
+     
+     
+      
+      tabla1.setWidths( new int[]{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1} );
+      tabla1.writeSelectedRows(0, -1, 10, 710, canvas);
+                 
+      
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  	}
+  	catch(Exception e){
+  		e.printStackTrace();	  		
+  	}
+  	documento.close();
+  	FacesContext contexto = FacesContext.getCurrentInstance();
+  	Object response = contexto.getExternalContext().getResponse();
+  	if(response instanceof HttpServletResponse){
+  		HttpServletResponse hsr = (HttpServletResponse) response;
+  		hsr.setContentType("application/pdf");
+  		hsr.setHeader("Content-disposition","attachment; filename=listaot.pdf");
+  		hsr.setContentLength(baos.size());
+  		try {
+				ServletOutputStream out = hsr.getOutputStream();
+				baos.writeTo(out);
+				out.flush();					
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+  		contexto.responseComplete();	  		
+  	}	  	
+  }
+
+	public Adicional getAdiSelected() {
+		return adiSelected;
+	}
+
+	public void setAdiSelected(Adicional adiSelected) {
+		this.adiSelected = adiSelected;
+	}
+
+	public Movimiento getMovSelected() {
+		return movSelected;
+	}
+
+	public void setMovSelected(Movimiento movSelected) {
+		this.movSelected = movSelected;
+	}
+
+	public ComprasExternasOT getCeSelected() {
+		return ceSelected;
+	}
+
+	public void setCeSelected(ComprasExternasOT ceSelected) {
+		this.ceSelected = ceSelected;
+	}
+
+	public ManoObra getMoSelected() {
+		return moSelected;
+	}
+
+	public void setMoSelected(ManoObra moSelected) {
+		this.moSelected = moSelected;
+	}
+
+	public ComprasExternasOT getCompraexternaAdd() {
+		return compraexternaAdd;
+	}
+
+	public void setCompraexternaAdd(ComprasExternasOT compraexternaAdd) {
+		this.compraexternaAdd = compraexternaAdd;
+	}
+
+	public Movimiento getMovimientoAdd() {
+		return movimientoAdd;
+	}
+
+	public void setMovimientoAdd(Movimiento movimientoAdd) {
+		this.movimientoAdd = movimientoAdd;
+	}
+
+	public ManoObra getManodeobraAdd() {
+		return manodeobraAdd;
+	}
+
+	public void setManodeobraAdd(ManoObra manodeobraAdd) {
+		this.manodeobraAdd = manodeobraAdd;
+	}
+
+	public Adicional getAdicionalAdd() {
+		return adicionalAdd;
+	}
+
+	public void setAdicionalAdd(Adicional adicionalAdd) {
+		this.adicionalAdd = adicionalAdd;
+	}
+
+	public Date getFechaIni() {
+		return fechaIni;
+	}
+
+	public void setFechaIni(Date fechaIni) {
+		this.fechaIni = fechaIni;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
 	
 	
 

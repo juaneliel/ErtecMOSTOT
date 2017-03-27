@@ -166,50 +166,42 @@ public class DAO_Cliente {
 		return salida;
 	}
 			
-	
 	public boolean addContrato(Contrato c){
-System.out.println("addContrato "+c.getContratoID());
-    	EntityManager em=JpaUtil.getEntityManager(); 
-    	DatosGlobale dg = em.find(DatosGlobale.class, 1);
-    	if(c.getContratoID()==0){
-	    	if(c.getTipo().equals("A")){
-	    		int seq=dg.getArrendamiento_Seq();
-	    		c.setContratoID(seq);
-	    		dg.setArrendamiento_Seq(++seq);
-	    	}
-	    	else {
-					if(c.getTipo().equals("M")){
-						int seq=dg.getMantenimiento_Seq();
-		    		c.setContratoID(seq);
-		    		dg.setMantenimiento_Seq(++seq);
-					}
-				}
-    	}
-    	
-//		String consulta="";
-//		
-//		if(c.getTipo().equals("A")){
-//			consulta = "UPDATE ArrMan_Seq SET `Arrendamiento_Seq` = `Arrendamiento_Seq` +1";
-//			Query q = em.createNativeQuery(consulta);   
-//			q.executeUpdate();
-//			
-//	    salida= (ArrayList<Contrato>) q.getResultList();
-//			
-//			"select `Arrendamiento_Seq` from ArrMan_Seq";
-//		}
-//		else {
-//			if(c.getTipo().equals("M")){
-//				consulta="UPDATE ArrMan_Seq SET `Mantenimiento_Seq` = `Mantenimiento_Seq` +1";
-//			}
-//		}
-//		
-//    System.out.println(">>>daoreclamo consulta filtrarSinVisitar>"+ consulta);     
-//    Query q = em.createNativeQuery(consulta,Contrato.class);            
-//    salida= (ArrayList<Contrato>) q.getResultList();
-		
-		//modificar esto para que los id de los contratos se acomoden para arrendamiento
-		//y para mantenemiento
-		
+		System.out.println("addContrato "+c.getContratoID());
+  	EntityManager em=JpaUtil.getEntityManager(); 
+  	DatosGlobale dg = em.find(DatosGlobale.class, 1);//se obtiene los valores de la primer entidad hay que mejorar esta forma de hacerlo  	 
+  	if(c.getTipo().equals("A")){
+  		int seq=dg.getArrendamiento_Seq();
+  		c.setContratoID(seq);
+  		dg.setArrendamiento_Seq(++seq);
+  	}
+  	else {
+			if(c.getTipo().equals("M")){
+				int seq=dg.getMantenimiento_Seq();
+    		c.setContratoID(seq);
+    		dg.setMantenimiento_Seq(++seq);
+			}
+		}	 
+		boolean salida=false;
+		try{			
+			em.getTransaction().begin();
+			em.persist(c);
+			em.getTransaction().commit(); 
+			salida = true;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		 }finally{ 
+	    	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}
+		return salida;
+	}
+	
+	public boolean addDireccion(Contrato c){
+		System.out.println("adddireccion "+c.getContratoID());
+  	EntityManager em=JpaUtil.getEntityManager();  		
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();

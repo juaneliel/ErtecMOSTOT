@@ -7,33 +7,59 @@
  
  	<ui:composition>
  	
-<h:form id="datatableCE">
+<h:form id="datatableCE"> 
  
-
-<p:dataTable var="compraExterna" value="#{mb_OT.listaComprasExternas}" id="datatable2CE" 
- paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
- draggableColumns="true" scrollable="true"  
- scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
-  tableStyle="color:red" 
- 
- >	 
+ 	<p:dataTable var="compraExterna" value="#{mb_OT.listaComprasExternas}" id="datatablecompraexterna" widgetVar="datatablecompraexterna"
+			selection="#{mb_OT.ceSelected}" selectionMode="single" rowKey="#{compraExterna.id}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
  
  	<f:facet name="header">
-        Compra externa
+       
+    </f:facet>
+    
+    	  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatablecompraexterna" fileName="ot"   />
+	    </h:commandLink>	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatablecompraexterna" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>
+		 
+		 <f:facet name="{titulo}">
+		        Compra externa	        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar" actionListener="#{mb_OT.recargarCESelected}"   oncomplete="PF('addcompraexterna').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+      </f:facet>     
+    
+     <f:facet name="{vercol}"> 
         <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-        <p:columnToggler datasource="datatable2CE" trigger="toggler" />
+        <p:columnToggler datasource="datatablecompraexterna" trigger="toggler" />
     </f:facet>
     
     <p:ajax event="rowEdit" listener="#{mb_OT.editCompraExterna}" update="message" />
 		 
-	 
+	    <p:column headerText=""  style = "width:0px"  rendered="#{mb_Usuario.acceso('EDITAR','ordendetrabajo')}" exportable="false">						
+					<p:rowEditor     >
+					</p:rowEditor>					
+		    </p:column>
 
-		 <p:column headerText="Compra ext id:" sortBy="#{compraExterna.id}"  filterMatchMode="contains" filterBy="#{compraExterna.id}">		                
+		 <p:column headerText="Id" sortBy="#{compraExterna.id}"  filterMatchMode="contains" filterBy="#{compraExterna.id}">		                
 		  <h:outputText value="#{compraExterna.id}" />
 			
 		</p:column>
 		   
-		<p:column headerText="Articulo:" sortBy="#{compraExterna.nombreArticulo}"  filterMatchMode="contains" filterBy="#{compraExterna.nombreArticulo}">		                
+		<p:column headerText="Articulo" sortBy="#{compraExterna.nombreArticulo}"  filterMatchMode="contains" filterBy="#{compraExterna.nombreArticulo}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{compraExterna.nombreArticulo}" /></f:facet>
 		         <f:facet name="input"><h:inputText value="#{compraExterna.nombreArticulo}" /></f:facet>
@@ -41,7 +67,7 @@
 		</p:column>  
 		   
 		 		 
-		<p:column headerText="cantidad:" sortBy="#{compraExterna.cantidad}"  filterMatchMode="contains" filterBy="#{compraExterna.cantidad}">		                
+		<p:column headerText="Cantidad" sortBy="#{compraExterna.cantidad}"  filterMatchMode="contains" filterBy="#{compraExterna.cantidad}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{compraExterna.cantidad}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="cantidad" value="#{compraExterna.cantidad}" style="width:100%"/></f:facet>
@@ -50,7 +76,7 @@
 		
  
 		
-		<p:column headerText="Fecha:" sortBy="#{compraExterna.fecha}"  filterMatchMode="contains" filterBy="#{compraExterna.fecha}">		                
+		<p:column headerText="Fecha" sortBy="#{compraExterna.fecha}"  filterMatchMode="contains" filterBy="#{compraExterna.fecha}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><p:calendar mindate="#{compraExterna.fecha}" maxdate="#{compraExterna.fecha}" id="maskout" value="#{compraExterna.fecha}" pattern="dd-MM-yyyy" mask="true" />
  </f:facet>
@@ -61,7 +87,7 @@
 		
 		
 		 
-		 		<p:column headerText="moneda:" sortBy="#{compraExterna.moneda}"  filterMatchMode="contains" filterBy="#{compraExterna.moneda}">		                
+		 		<p:column headerText="Moneda" sortBy="#{compraExterna.moneda}"  filterMatchMode="contains" filterBy="#{compraExterna.moneda}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{compraExterna.moneda}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="moneda" value="#{compraExterna.moneda}" style="width:100%"/></f:facet>
@@ -70,42 +96,38 @@
     
       
 		 
-		 <p:column headerText="proveedor:" sortBy="#{compraExterna.proveedor.nombre}"  filterMatchMode="contains" filterBy="#{compraExterna.proveedor.nombre}">		                
+		 <p:column headerText="Proveedor" sortBy="#{compraExterna.proveedor.nombre}"  filterMatchMode="contains" filterBy="#{compraExterna.proveedor.nombre}">		                
 		   <p:cellEditor>
 		   		
 		         <f:facet name="output"><h:outputText value="#{compraExterna.proveedor.nombre}" /></f:facet>
 		         <f:facet name="input"> 
 <p:autoComplete id="provee" value="#{compraExterna.proveedor}"
-completeMethod="#{mb_OT.completarProveedor}"
+completeMethod="#{mb_Usuario.completarProveedor}"
 var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 converter="ConverterProveedor" forceSelection="true" minQueryLength="1"  
-style="float:left !important;margin:0px 0px 3px 0px;"/>   
+ />   
 		         </f:facet>
 			</p:cellEditor>
 		</p:column>
 		 
 		 
-		<p:column headerText="precio_Unitario:" sortBy="#{compraExterna.precio_Unitario}"  filterMatchMode="contains" filterBy="#{compraExterna.precio_Unitario}">		                
+		<p:column headerText="P.Uni." sortBy="#{compraExterna.precio_Unitario}"  filterMatchMode="contains" filterBy="#{compraExterna.precio_Unitario}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{compraExterna.precio_Unitario}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="precio_Unitario" value="#{compraExterna.precio_Unitario}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
-    
 
     
     
-        <p:column headerText="Editar"  style = "width:50px">				
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
-					</p:rowEditor>					
-		    </p:column>
+     
 		    
 		     
 		     
-			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" exportable="false">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_OT.deleteCompraExterna(compraExterna)}" 
-			 update="datatable2CE message" >
+			 update="datatablecompraexterna message" >
 			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 			 </p:commandButton>
 			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -124,6 +146,69 @@ style="float:left !important;margin:0px 0px 3px 0px;"/>
 
 
 </h:form>
+
+
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addcompraexterna').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addcompraexterna').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+
+
+<p:dialog id="addcompraexterna" appendTo="@(body)" header="Agregar articulo"  widgetVar="addcompraexterna" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+
+
+ <h:form>    
+			<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+		
+			<p:outputLabel value="Id OT:" for="otID" />
+		       <p:outputLabel id="otID" label="otID" value="#{mb_OT.numeroID}"   style="float:left  !important;margin:0px 0px 3px 0px;"/>
+
+
+  				<p:outputLabel value="Articulo:" for="nombreArticulo" /> 
+			<p:inputText id="nombreArticulo" value="#{mb_OT.nombreArticulo}"   required="true"/>  
+
+ 				<p:outputLabel value="Cantidad:" for="cantidad" /> 
+			<p:inputNumber id="cantidad" value="#{mb_OT.cantidad}" />  
+		       
+	       <p:outputLabel for="fecha" value="Fecha:" />
+        	<p:calendar id="fecha" value="#{mb_OT.fecha}"  pattern="dd-MM-yyyy" mask="true" effect="fold" required="true" />	
+	              
+				<p:outputLabel value="moneda:" for="moneda" /> 
+			<p:inputText id="moneda" label="moneda" value="#{mb_OT.moneda}"  /> 
+			 
+	         <p:outputLabel value="precio_Unitario:" for="precio_Unitario" />   
+			<p:inputNumber id="precio_Unitario" value="#{mb_OT.precio_Unitario}" />  
+         
+	       
+<p:outputLabel value="Proveedor:" for="provee" />
+<p:autoComplete id="provee" value="#{mb_OT.proveedorOBJ}" required="true"
+ completeMethod="#{mb_Usuario.completarProveedor}"  queryDelay="1000"
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterProveedor" forceSelection="true"   />        
+	       
+	<p:commandButton value="Agregar" actionListener="#{mb_OT.addCompraExterna}"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatablecompraexterna]) message" />	
+ 		    
+		   	
+			</h:panelGrid>
+	 </h:form>
+
+</p:dialog>
+
+
+
+
+
+
 
 	</ui:composition>
 </html>

@@ -7,54 +7,98 @@
  
  	<ui:composition>
  	
+<h:form  > 	
+ 	<p:panelGrid        columns="3">  
+<p:panelGrid      columns="2"> 		
+<p:outputLabel for="maskIni" value="Fecha inicial:" />
+<p:calendar id="maskIni" value="#{mb_OT.fechaIni}"   pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+</p:panelGrid>
+<p:panelGrid    columns="2"> 
+<p:outputLabel for="maskFin" value="  Fecha final:"   />
+<p:calendar id="maskFin" value="#{mb_OT.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
+</p:panelGrid>
+<p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_OT.filtrarPorFechasManoObraOT}"   
+update=":datatableMO:datatable2MO :message"/>
+</p:panelGrid>
+ </h:form>	
+ 	
 <h:form id="datatableMO">
 
+			<p:dataTable var="mo" value="#{mb_OT.listaManoObra}" id="datatable2MO" widgetVar="datatable2MO"
+			selection="#{mb_OT.moSelected}" selectionMode="single" rowKey="#{mo.manoObraID}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
 
 
-<p:outputLabel for="maskIni" value="Fecha inicial:" />
-<p:calendar id="maskIni" value="#{mb_ManoObra.fechaIni}" pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+
  
-
-<p:outputLabel for="maskFin" value="  Fecha final:" />
-<p:calendar id="maskFin" value="#{mb_ManoObra.fechaFin}" pattern="dd-MM-yyyy" mask="true" effect="fold" />
- 
-<p:commandButton value="Buscar"  icon="ui-icon-trash" id="Buscar" action="#{mb_OT.filtrarPorFechasManoObraOT}"   
-update="datatable2MO :message"/>
-			 
-
-
-
-
-<p:dataTable var="mo" value="#{mb_OT.listaManoObra}" id="datatable2MO" 
- paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
- draggableColumns="true" scrollable="true"  
- scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
-  tableStyle="color:red" 
- 
- >	 
- 
- 	<f:facet name="header">
-        Mano de obra 
+    
+    	  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatable2MO" fileName="ot"   />
+	    </h:commandLink>	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatable2MO" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>
+		 
+				<f:facet name="{titulo}">
+		       Mano de obra	 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  oncomplete="PF('addmanodeobra').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+     </f:facet>      
+       
+		 
+		 <f:facet name="{vercol}">
         <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
         <p:columnToggler datasource="datatable2MO" trigger="toggler" />
-    </f:facet>
+		 </f:facet> 
+		 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     <p:ajax event="rowEdit" listener="#{mb_ManoObra.onRowEdit}" update="message" />
 		 
 	
-
+		 		   <p:column toggleable="false" headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','manodeobra')}" exportable="true" >				
+					<p:rowEditor >
+					</p:rowEditor>									
+		    </p:column>
 		 
-		 
-		 
-		 
-		<p:column headerText="Clliente:" sortBy="#{mo.clienteNombre}"  filterMatchMode="contains" filterBy="#{mo.clienteNombre}">		                
+		 		<p:column headerText="Id" sortBy="#{mo.manoObraID}"  filterMatchMode="contains" filterBy="#{mo.manoObraID}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.clienteNombre}" /></f:facet>
+		         <f:facet name="output"><h:outputText value="#{mo.manoObraID}" /></f:facet>
+		         <f:facet name="input"><p:inputText id="mid" value="#{mo.manoObraID}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+		 
+		<p:column headerText="Cliente:" sortBy="#{mo.clienteNombre}"  filterMatchMode="contains" filterBy="#{mo.clienteNombre}">		                
+		   <p:cellEditor>
+		         <f:facet name="output"><h:outputText value="#{mo.cliente.nombre}" /></f:facet>
 		         <f:facet name="input">
 		         <p:autoComplete  id="cliente" value="#{mo.cliente}"
- completeMethod="#{mb_Cliente.completarCliente}" 
+ completeMethod="#{mb_Usuario.completarCliente}" 
 var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- converter="ConverterCliente" forceSelection="true" style="float:left !important;margin:0px 0px 3px 0px;"/> 
+ converter="ConverterCliente" forceSelection="true" /> 
 		         
 			     </f:facet>
 			</p:cellEditor>
@@ -68,7 +112,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		         <f:facet name="output"><h:outputText value="#{mo.funcionario.nombre}" /></f:facet>
 		         <f:facet name="input">
 					<p:autoComplete id="funcionario" value="#{mo.funcionario}"
-					 completeMethod="#{mb_Funcionario.completarFuncionario}"
+					 completeMethod="#{mb_Usuario.completarFuncionario}"
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					 converter="ConverterFuncionario" forceSelection="true" 
 					  style="float:left !important;margin:0px 0px 3px 0px;"
@@ -76,8 +120,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					  /> 
 				  </f:facet>
 			</p:cellEditor>
-		</p:column>
-		
+		</p:column>		
 		
 		    
 		
@@ -129,12 +172,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
        	
 
-		<p:column headerText="Mano Obra ID" sortBy="#{mo.manoObraID}"  filterMatchMode="contains" filterBy="#{mo.manoObraID}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.manoObraID}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="mid" value="#{mo.manoObraID}" style="width:100%"/></f:facet>
-			</p:cellEditor>
-		</p:column>
+
     
      
      		<p:column headerText="T. Contrato" sortBy="#{mo.TContrato}"  filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
@@ -179,12 +217,9 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
     
         
 		    		 
-		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR',mb_Usuario.manodeobra)}">				
-					<p:rowEditor >
-					</p:rowEditor>									
-		    </p:column>
+
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR',mb_Usuario.manodeobra)}">	
+		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','manodeobra')}">	
 			<p:commandLink actionListener="#{mb_ManoObra.delete(mo)}" 
    	
    	update="datatable2MO message" >
@@ -207,6 +242,86 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 
 </h:form>
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addmanodeobra').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addmanodeobra').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+<p:dialog id="addmanodeobra" header="Agregar articulo" appendTo="@(body)" widgetVar="addmanodeobra" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+
+ <h:form >
+
+ 	 <p:panelGrid id="panelAddMO"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			 
+
+		 	
+			<p:outputLabel title="Ingrese parte del nombre o id del funcionario" value="Funcionario :" for="fid" />  
+			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_OT.manodeobraAdd.funcionario}"
+					 completeMethod="#{mb_Usuario.completarFuncionario}"
+					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+					 converter="ConverterFuncionario" forceSelection="true" 
+					  style="float:right !important;margin:0px 0px 3px 0px;" required="true"/> 
+			 
+		  
+
+
+			<p:outputLabel value="Cliente" for="cliente" />
+<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_OT.manodeobraAdd.cliente}"
+ completeMethod="#{mb_Usuario.completarCliente}" 
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" style="float:right !important;margin:0px 0px 3px 0px;"/> 
+		
+			
+			<p:outputLabel  value="Fecha:" for="fechamo"/>
+        	<p:calendar id="fechamo" value="#{mb_OT.manodeobraAdd.fecha}" effect="fold" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+
+			<p:outputLabel value="MyR:" for="myr"  rendered="#{!verIDOT}" />   
+			<p:inputText id="myr" label="myr" value="#{mb_OT.manodeobraAdd.myr}" rendered="#{!verIDOT}" 
+			  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
+			
+			<p:outputLabel value="Id OT:" for="ordenTrabajo" rendered="#{verIDOT}" /> 
+			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo"  rendered="#{verIDOT}" value="#{mb_OT.manodeobraAdd.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			
+			
+			<p:outputLabel value="Tipo de Hora:" for="tipoHora" /> 
+			<p:selectOneMenu value="#{mb_OT.manodeobraAdd.tipoHora}" style="width:80%" id="tipoHora" required="true" >					
+                <f:selectItem itemLabel="Comun" itemValue="COMUN" />
+                <f:selectItem itemLabel="Extra. comun" itemValue="EXT-C" /> 
+                <f:selectItem itemLabel="Extra. excepcional" itemValue="EXT-E" />                       
+            </p:selectOneMenu>
+  
+ 
+			<p:outputLabel value="Tipo de Mano:" for="tipoMano" />   			  
+			<p:selectOneMenu value="#{mb_OT.manodeobraAdd.tipoMano}" style="width:80%" id="tipoMano" required="true" >					
+                   <f:selectItem itemLabel="Trabajadas" itemValue="T" />
+                   <f:selectItem itemLabel="Perdidas" itemValue="P" />                       
+            </p:selectOneMenu>
+                
+
+			<p:outputLabel value="Total de horas:" for="totalHora" /> 
+			<p:inputNumber  id="totalHora" value="#{mb_OT.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="." />  
+						
+			<p:commandButton value="Agregar" actionListener="#{mb_OT.addManoObra}"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatable2MO]) message" />	
+ 
+		</p:panelGrid>
+ 
+</h:form>
+
+
+
+</p:dialog>
+
+
+
 
 	</ui:composition>
 </html>

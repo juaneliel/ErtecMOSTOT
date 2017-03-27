@@ -107,16 +107,28 @@ public class DAO_ManoObra {
 	
 	public ArrayList<ManoObra> getFiltradaPorFechas(Date fechaIni, Date fechaFin){
 		ArrayList<ManoObra> salida=new ArrayList<ManoObra>();
-		
-		  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		  String fi = formatter.format(fechaIni);
-		  String ff = formatter.format(fechaFin);
+	  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	  String fi;
+	  String ff;
+		String consulta="Select mo from ManoObra mo "; 
 		 
-		
-		
-		String consulta="Select mo from ManoObra mo  where fecha BETWEEN '" +
-				fi + "' AND '" + ff + "'" ;
-			
+	  if (fechaIni!=null){
+	  	fi = formatter.format(fechaIni);
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+="where fecha BETWEEN '" +
+	  				fi + "' AND '" + ff + "'" ;
+	  	}
+	  	else{
+	  		consulta+=" where fecha >= '"+ fi+"'" ;
+	  	}
+	  }
+	  else{
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+=" where fecha <= '"+ ff+"'" ;
+	  	}
+	  }
 		EntityManager em=JpaUtil.getEntityManager();
 		TypedQuery<ManoObra> query= em.createQuery(consulta, ManoObra.class);
 		try{
@@ -133,17 +145,30 @@ public class DAO_ManoObra {
 	}
 
 	
-	public ArrayList<ManoObra> getFiltradaPorFechasYOT(Date fechaIni, Date fechaFin, int idOT){
+	public static ArrayList<ManoObra> getFiltradaPorFechasYOT(Date fechaIni, Date fechaFin, int idOT){
 		ArrayList<ManoObra> salida=new ArrayList<ManoObra>();
+		String consulta="Select mo from ManoObra mo  where ordenTrabajo = " +  idOT;
+		
 		
 		  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		  String fi = formatter.format(fechaIni);
-		  String ff = formatter.format(fechaFin);
+		  String fi=null;
+		  String ff=null;
 		 
+		 if(fechaIni!=null){
+			 fi = formatter.format(fechaIni);
+			 if(fechaFin!=null){
+				 consulta+=" AND fecha BETWEEN '" +	fi + "' AND '" + ff + "'";					
+			 }
+			 else{
+				 consulta+=" AND fecha >= '" +	fi + "'";					
+			 }
+		 }
+		 else{
+			 if(fechaFin!=null){
+				 consulta+=" AND fecha <= '" +	ff + "'";	
+			 }
+		 }
 		
-		
-		String consulta="Select mo from ManoObra mo  where fecha BETWEEN '" +
-				fi + "' AND '" + ff + "' AND ordenTrabajo = " +  idOT;
 			
 		EntityManager em=JpaUtil.getEntityManager();
 		TypedQuery<ManoObra> consultaFuncionario= em.createQuery(consulta, ManoObra.class);
@@ -189,20 +214,15 @@ public class DAO_ManoObra {
 			em.getTransaction().begin();
 			
 			//seteos
-			if(o.getCliente()!=null){
-			  aux.setClienteID(o.getCliente().getClienteID());
+			if(o.getCliente()!=null){ 
 			  aux.setClienteNombre(o.getCliente().getNombre());
 			}		
 
 			aux.setCodigo(o.getCodigo());
 			aux.setFecha(o.getFecha());
-			if (o.getFuncionario()!=null){
-		     aux.setFuncionarioID(o.getFuncionario().getFuncionarioID());
+			if (o.getFuncionario()!=null){ 
 		     aux.setFuncionario(o.getFuncionario());
-			}
-			else{
-			  aux.setFuncionarioID(o.getFuncionarioID());
-			}
+			} 
 
 			aux.setManoObraID(o.getManoObraID());
 			aux.setMyr(o.getManoObraID());

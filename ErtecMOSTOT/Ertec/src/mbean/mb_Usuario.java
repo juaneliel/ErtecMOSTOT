@@ -1,10 +1,12 @@
 package mbean;
 
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +18,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
@@ -23,13 +27,22 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import enumerados.EnumAccesoPagina;
 import model.Articulo;
+import model.Cliente;
 import model.Funcionario;
+import model.Proveedores;
 import model.Usuario;
 import model.UsuarioLogin;
 import model.DAO.DAO_Articulo;
+import model.DAO.DAO_Cliente;
 import model.DAO.DAO_Funcionario;
+import model.DAO.DAO_OT;
 import model.DAO.DAO_Usuario;
 
 import javax.faces.bean.SessionScoped;
@@ -116,11 +129,17 @@ public class mb_Usuario {
 	private ArrayList<Funcionario> listaFuncionariosOBJ;
 
 	private ArrayList<Articulo> listaArticulosOBJ;
-	
+
+	private ArrayList<Cliente> listaClientesOBJ;
+
+	private ArrayList<Proveedores> listaProveedoresOBJ;
+
+	 
   @PostConstruct  
   public void init(){
     initViewFuncionarios();
     recargarLista();
+    FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("es"));
   }
 	
   public void onIdle() {
@@ -396,12 +415,21 @@ public class mb_Usuario {
 		return listaArticulosOBJ;
 	}
 	
+	public ArrayList <Cliente> completarCliente(String query){
+		this.listaClientesOBJ = DAO_Cliente.completarCliente(query); 
+		return listaClientesOBJ;		
+	}
 	
 	public ArrayList <Funcionario> completarFuncionario(String query){
 		this.listaFuncionariosOBJ=DAO_Funcionario.completarFuncionario(query);
 		return listaFuncionariosOBJ;
 	}
 
+	public ArrayList <Proveedores> completarProveedor(String query){
+		this.listaProveedoresOBJ=DAO_OT.completarProveedor(query);
+		return listaProveedoresOBJ;
+	} 
+	
 	public ArrayList<Funcionario> getListaFuncionariosOBJ() {
 		return listaFuncionariosOBJ;
 	}
@@ -447,10 +475,58 @@ public class mb_Usuario {
 	public void setListaArticulosOBJ(ArrayList<Articulo> listaArticulosOBJ) {
 		this.listaArticulosOBJ = listaArticulosOBJ;
 	}
+
+	public ArrayList<Cliente> getListaClientesOBJ() {
+		return listaClientesOBJ;
+	}
+
+	public void setListaClientesOBJ(ArrayList<Cliente> listaClientesOBJ) {
+		this.listaClientesOBJ = listaClientesOBJ;
+	}
+
+	public void setUsuarioLogueado(UsuarioLogin usuarioLogueado) {
+		this.usuarioLogueado = usuarioLogueado;
+	}
 	
 	
 	
-	
-	
+  public ArrayList<Proveedores> getListaProveedoresOBJ() {
+		return listaProveedoresOBJ;
+	}
+
+	public void setListaProveedoresOBJ(ArrayList<Proveedores> listaProveedoresOBJ) {
+		this.listaProveedoresOBJ = listaProveedoresOBJ;
+	}
+
+	public void imprimir(){
+  	Document documento = new Document(PageSize.A4);
+  	ByteArrayOutputStream baos= new ByteArrayOutputStream();
+  	try{
+  		PdfWriter.getInstance(documento, baos);
+  		documento.open();
+  		documento.add( new Paragraph("Hola") );
+  	}
+  	catch(Exception e){
+  		e.printStackTrace();	  		
+  	}
+  	documento.close();
+  	FacesContext contexto = FacesContext.getCurrentInstance();
+  	Object response = contexto.getExternalContext().getResponse();
+  	if(response instanceof HttpServletResponse){
+  		HttpServletResponse hsr = (HttpServletResponse) response;
+  		hsr.setContentType("application/pdf");
+  		hsr.setHeader("Content-disposition","attachment; filename=listaot.pdf");
+  		hsr.setContentLength(baos.size());
+  		try {
+				ServletOutputStream out = hsr.getOutputStream();
+				baos.writeTo(out);
+				out.flush();					
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+  		contexto.responseComplete();	  		
+  	}	  	
+  }
 	
 }

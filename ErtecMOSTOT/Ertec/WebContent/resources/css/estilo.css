@@ -47,7 +47,7 @@
   font-size:11px;
 }
    
-  .ui-datatable-resizable tbody td, .ui-datatable-resizable tfoot td {
+.ui-datatable-resizable tbody td, .ui-datatable-resizable tfoot td {
     white-space: normal;
 }
 
@@ -57,6 +57,10 @@
 
 .ui-datatable .ui-column-filter{
 	width:90%;
+}
+
+.ui-widget-header .ui-inputfield, .ui-widget-content .ui-inputfield{
+	width:99%;
 }
 
 .ui-inputfield{
@@ -89,7 +93,7 @@
 
  
  
- .ui-datatable-odd {
+.ui-datatable-odd {
     background: #eeeeec ;
 }
 
@@ -110,7 +114,6 @@ color:red
 .ui-widget-header{ 
 	background: #70b087 -moz-linear-gradient(top,rgba(255,255,255,0.8),rgba(255,255,255,0));
 }
-
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
 	background: #fb7e22 -moz-linear-gradient(top,rgba(255,255,255,0.8),rgba(255,255,255,0));

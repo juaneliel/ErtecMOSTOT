@@ -7,16 +7,16 @@
  
 <ui:composition>
  	
-<h:form id="formcontratos">
- 
+<h:form id="formcontratos"> 
 
-	<p:dataTable var="contrato" value="#{mb_Cliente.listaContratos}" id="datatablecontratos" 
-	paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
-	draggableColumns="true" scrollable="true"  
-	scrollWidth="100%"  editable="true"  
-	style="text-align:left; font-size: 90% !important;color: red;"
-	 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"    
-		
+	<p:dataTable var="contrato" value="#{mb_Cliente.listaContratos}" id="datatablecontratos"  widgetVar="datatablecontratos" 
+		selection="#{mb_Cliente.conSelected}" selectionMode="single" rowKey="#{contrato.contratoID}"	
+		paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		editable="true"  paginatorPosition="top"  emptyMessage="Sin Registros"
+		style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"		
 	>	 
 	
 	
@@ -31,22 +31,31 @@
 	      <p:dataExporter type="pdf" target="datatablecontratos" fileName="contratos"  />
 	    </h:commandLink> 
 		</f:facet>
- 
-		<f:facet name="header">
-			Contratos
-			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
- 			<p:columnToggler datasource="datatablecontratos" trigger="toggler" />
-    </f:facet>
     
+			<f:facet name="{titulo}">
+		 		Contratos		 		        
+			</f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addcontrato').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}"/>      
+      </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right" icon="ui-icon-calculator" />
+ 			  <p:columnToggler datasource="datatablecontratos" trigger="toggler" /> 	 
+		 </f:facet> 
+
 		<p:ajax event="rowEdit" listener="#{mb_Cliente.editContrato}" update="message" />
 		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}" update="formarrendamiento" />
 
-		<p:column style="width:16px" exportable="false">
-            <p:rowToggler />
-		</p:column> 
+		<p:column headerText=""  style = "width:0px" exportable="false">				
+			<p:rowEditor rendered="#{mb_Usuario.acceso('EDITAR','cliente')}" >
+			</p:rowEditor>					
+		</p:column>
+		    
 
 
- 		<p:column headerText="Tipo" sortBy="#{contrato.tipo}"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
+ 		<p:column headerText="Tipo" sortBy="#{contrato.tipo}" style="text-align:center;width:40px;"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{contrato.tipo}" />  
@@ -61,7 +70,7 @@
 		</p:column>
 
 
-		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startsWith" filterBy="#{contrato.contratoID}">		                
+		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterMatchMode="startsWith" filterBy="#{contrato.contratoID}">		                
  
 		  <p:cellEditor>
 				<f:facet name="output">
@@ -81,7 +90,7 @@
 		  
 		</p:column>
 				 		 
-		<p:column headerText="Corredor" sortBy="#{contrato.corredorID}"  filterMatchMode="contains" filterBy="#{contrato.corredorID}">		                
+		<p:column headerText="Cor" sortBy="#{contrato.corredorID}" style="text-align:center;width:40px;" filterMatchMode="contains" filterBy="#{contrato.corredorID}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{contrato.corredorID}" />  
@@ -132,7 +141,7 @@
 		</p:column>
  
   
-		<p:column headerText="Retirado" sortBy="#{contrato.retirado}"  filterMatchMode="contains" filterBy="#{contrato.retirado}">		                
+		<p:column headerText="Ret" sortBy="#{contrato.retirado}" style="text-align:center;width:40px;" filterMatchMode="contains" filterBy="#{contrato.retirado}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{contrato.retirado}" />  
@@ -150,7 +159,7 @@
 
 		
  
-		<p:column headerText="Zona" sortBy="#{contrato.zona}"  filterMatchMode="contains" filterBy="#{contrato.zona}">		                
+		<p:column headerText="Zona" sortBy="#{contrato.zona}" style="text-align:center;width:40px;"  filterMatchMode="contains" filterBy="#{contrato.zona}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<h:outputText value="#{contrato.zona}" />  
@@ -162,7 +171,7 @@
 		</p:column>
     
     
-		<p:column headerText="Inicio" sortBy="#{contrato.fechaInicio}"  filterMatchMode="contains" filterBy="#{contrato.fechaInicio}">		                
+		<p:column headerText="Inicio" sortBy="#{contrato.fechaInicio}" style="text-align:center;width:70px;" filterMatchMode="contains" filterBy="#{contrato.fechaInicio}">		                
 			<p:cellEditor>
 				<f:facet name="output">
   				<p:calendar mindate="#{contrato.fechaInicio}" maxdate="#{contrato.fechaInicio}" id="contratoInicio" value="#{contrato.fechaInicio}"
@@ -174,7 +183,7 @@
 			</p:cellEditor>
 		</p:column>
     
-		<p:column headerText="Fin" sortBy="#{contrato.fechaFin}"  filterMatchMode="contains" filterBy="#{contrato.fechaFin}">		                
+		<p:column headerText="Fin" sortBy="#{contrato.fechaFin}" style="text-align:center;width:70px;" filterMatchMode="contains" filterBy="#{contrato.fechaFin}">		                
 			<p:cellEditor>
 				<f:facet name="output">
   				<p:calendar mindate="#{contrato.fechaFin}" maxdate="#{contrato.fechaFin}" id="contratoFin" value="#{contrato.fechaFin}"
@@ -187,44 +196,129 @@
 		</p:column>
        
     
-		<p:column headerText="Editar"  style = "width:50px" exportable="false">				
-			<p:rowEditor rendered="#{mb_Usuario.puedeActualizar}">
-			</p:rowEditor>					
+    
+    
+    
+    		<p:column headerText="T.S.V" sortBy="#{contrato.topeMesesVisita}" style="text-align:center;width:40px;"  filterMatchMode="contains" filterBy="#{contrato.topeMesesVisita}">		                
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{contrato.topeMesesVisita}" />  
+				</f:facet>
+		 		<f:facet name="input">
+					 <p:inputMask converterMessage="Ingrese un maximo de tiempo sin ser visitado"  min="1" id="topemesesvisita" label="topemesesvisita" value="#{contrato.topeMesesVisita}"  maxlength="2" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
+		  	   </p:inputMask>
+				</f:facet>
+			</p:cellEditor>
 		</p:column>
-		    
-		     
-		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}" exportable="false">	
-			<p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Cliente.deleteContrato(contrato)}" 
-				update="datatablecontratos message @([id$=formcontratos])" >
-				<p:confirm header="Confirmacion" message="Borrar #{contrato.tipo}#{contrato.contratoID}?" icon="ui-icon-alert" />
-		 	</p:commandButton>
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-	     	<p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-	   		<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</p:column> 
-		   
-		    	  
-		<p:rowExpansion>	  
- 
-		    
-<p:commandButton value="Ver arrendamientos" rendered="true"
-onclick="PF('verarrendamientos').show();" 
-action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/>  
+		
+		
+	 
 
-		    
-<p:commandButton value="Agregar Direccion" 
-onclick="PF('adddireccion').show();" update="formadddireccion"
-actionListener="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contratoID,contrato.tipo,contrato.fechaInicio,contrato.fechaFin)}"/>  
-	    
- 	
-		</p:rowExpansion>		   
-		   
-		   
+		 
 		   
 		   
 	</p:dataTable>   
+	
+	<p:contextMenu for="datatablecontratos">
+  	<p:menuitem value="Ver arrendamientos" rendered="true"  
+    	onclick="PF('verarrendamientos').show();"   
+     	action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/> 
+		<p:menuitem	value="Agregar Direccion"  rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}"  
+			oncomplete="PF('adddireccion').show();" update="formadddireccion"
+			actionListener="#{mb_Cliente.previoAddDireccion}"/>			
+		<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','cliente')}" value=" Borrar" update="formcontratos message"  actionListener="#{mb_Cliente.deleteContrato(mb_Cliente.conSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar contrato" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>		
+	</p:contextMenu> 
+	
+	
+	
 </h:form>
+
+
+
+		
+					
+<script type="text/javascript">
+    function handleAddConRequest(xhr, status, args) {
+        if(args.validationFailed ) {
+            PF('addcontrato').jq.effect("shake", {times:5}, 100);
+        }
+        else { 
+            PF('addcontrato').hide(); 
+            //PF('datatablecontratos').addRow();
+            
+        }
+    }    
+</script>
+					
+
+					
+<p:dialog id="addcontrato" appendTo="@(body)" header="Agregar contrato"  widgetVar="addcontrato" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+  
+ 
+	<h:form id="formaddcontrato">         
+	  <p:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+
+		<p:outputLabel value="Cliente:" for="cliente" /> 
+		<p:outputLabel disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.cliSelected.nombre}"  /> 
+			 
+		<p:outputLabel value="Tipo:" for="tipo" />   
+		<p:selectOneMenu disabled="#{paramListaArrendamientos}" id="tipo" value="#{mb_Cliente.contratoAdd.tipo}" style="width:85%">
+	  	<f:selectItem itemLabel="Arrendamiento" itemValue="A" />
+	    <f:selectItem itemLabel="Mantenimiento" itemValue="M" />
+		</p:selectOneMenu>		 			 
+			 
+		<p:outputLabel value="Corredor:" for="corredorID" />
+ 		<p:inputMask converterMessage="Ingrese un valor de corredor"  id="corredorID" label="corredorID" value="#{mb_Cliente.contratoAdd.corredorID}" maxlength="10" >
+      	<p:keyFilter regEx="/[0-9_]/i" /> 
+  	</p:inputMask>
+ 
+		<p:outputLabel value="Equipo:" for="equipo" />   
+		<h:inputText id="equipo" value="#{mb_Cliente.contratoAdd.equipo}"/>  
+ 
+		<p:outputLabel value="Direccion:" for="direccion" />   
+		<h:inputText id="direccion" value="#{mb_Cliente.contratoAdd.direccion}" />  
+		 
+		<p:outputLabel value="Localidad:" for="localidad" />   
+		<h:inputText id="localidad" value="#{mb_Cliente.contratoAdd.localidad}" />  
+				 		 
+		 <p:outputLabel value="Retirado:" for="retirado" />    
+  		<p:selectOneMenu id="retirado" value="#{mb_Cliente.contratoAdd.retirado}" style="width:85%">
+	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />
+	        <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+		</p:selectOneMenu>	
+  
+  
+
+		 			 
+		<p:outputLabel value="Zona:" for="zona" />   
+		<h:inputText id="zona" value="#{mb_Cliente.contratoAdd.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+
+		<p:outputLabel  value="Inicio" for="fechaInicio" />
+		<p:calendar id="fechaInicio" value="#{mb_Cliente.contratoAdd.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+ 	
+ 		<p:outputLabel for="fechaFin" value="FechaFin:" />
+		<p:calendar id="fechaFin" value="#{mb_Cliente.contratoAdd.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+  
+		<p:outputLabel value="tope sin visitas" for="topemesesvisita" />    
+ 		 <p:inputMask converterMessage="Ingrese un maximo de tiempo sin ser visitado"  min="1" id="topemesesvisita" label="topemesesvisita" value="#{mb_Cliente.contratoAdd.topeMesesVisita}"  maxlength="2" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
+		  	</p:inputMask>
+	
+	
+		<p:commandButton value="Agregar"   oncomplete="handleAddConRequest(xhr, status, args)"  actionListener ="#{mb_Cliente.addContrato}"  update="message @([id$=formcontratos])"  />
+   
+      </p:panelGrid>
+   
+    </h:form>
+ 
+</p:dialog>
+
+
 
 <p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="420" height="600" id="dialogdireccion" dynamic="true">
 <ui:include src="/templates/templateadddireccion.xhtml" id="adddireccion">	 
@@ -239,13 +333,5 @@ actionListener="#{mb_Cliente.agregarDireccion(contrato.clienteID,contrato.contra
 </p:dialog>		
 
 
-	
-
-
-
-
 </ui:composition>
 </html>
- 	
-
-

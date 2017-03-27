@@ -43,19 +43,25 @@ public class mb_Articulo {
 	private Articulo articuloAdd=new Articulo();
 	private ArrayList<Articulo> listaArticulosOBJ=new ArrayList<Articulo>(); 
 
+	@PostConstruct
+	public void init (){
+		recargarLista();
+	}
+	
 	public String add(){
 		
 		String salida=null;
 		if (dao.add (articuloAdd)){
-			salida=  "/paginas/articulos.xhtml";
-			recargarLista ();
+			salida=  "/paginas/articulos.xhtml";			
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el articulo "+articuloAdd.getDescripcion());
       FacesContext.getCurrentInstance().addMessage(null, message);
+      //recargarLista ();
+      this.lista.add(articuloAdd);
       articuloAdd=new Articulo();
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar");
-	        FacesContext.getCurrentInstance().addMessage(null, message);
+	    FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR"+articuloAdd.getDescripcion());
 		return salida;
@@ -68,23 +74,23 @@ public class mb_Articulo {
 	public void limpiarFiltrado(){
 		this.articuloID=this.artSelected.getArticuloID();
 		System.out.println("limpiarFiltrado "+articuloID);
-		this.filtrado=new ArrayList<DAO_infoMovDeArticulos>();
-		
+		this.filtrado=new ArrayList<DAO_infoMovDeArticulos>();		
 	}
 	
-	public void delete(Articulo f){ 
-		if (dao.delete(f) ){
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el articulo "+f.getDescripcion());
+	public void delete(Articulo a){ 
+		if (dao.delete(a) ){
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el articulo "+a.getDescripcion());
       FacesContext.getCurrentInstance().addMessage(null, message);	
-      recargarLista ();
+      lista.remove(a);
+      //usado para recargar cuando se borra filtrado
       DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
           .findComponent("formarticulos:datatablearticulos");
-  if (dataTable != null) {
-      dataTable.reset();
-  }
+      if (dataTable != null) {
+      	dataTable.reset();
+      }
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede eliminar el articulo "+f.getDescripcion() + " es posible que este referenciado en un movimiento "+f.getDescripcion());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede eliminar el articulo "+a.getDescripcion() + " es posible que este referenciado en un movimiento "+a.getDescripcion());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
@@ -110,10 +116,7 @@ public class mb_Articulo {
         
     }
 
-	@PostConstruct
-	public void init (){
-		recargarLista();
-	}
+
 	
 	public void recargarLista(){
 		lista=dao.getLista ();

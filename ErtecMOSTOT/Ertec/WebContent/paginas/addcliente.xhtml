@@ -23,33 +23,30 @@
    		<f:facet name="header">
 			Agregar Cliente
 		</f:facet>
-    
-    <h:outputLabel value="Id:" for="id" />
-    <h:inputText id="id" label="id" value="#{mb_Cliente.clienteID}"  /> 
-    
+     
     
     <h:outputLabel value="Nombre" for="n" />
-    <h:inputText id="n" label="nombre" value="#{mb_Cliente.nombre}"  /> 
+    <h:inputText id="n" label="nombre" value="#{mb_Cliente.clienteAdd.nombre}"  /> 
       
      <h:outputLabel value="Direccion" for="dir" />
-    <h:inputText id="dir" label="direccion" value="#{mb_Cliente.dirCliente}"  /> 
+    <h:inputText id="dir" label="direccion" value="#{mb_Cliente.clienteAdd.dirCliente}"  /> 
      
      
       <h:outputLabel value="Localidad" for="loc" />
-    <h:inputText id="loc" label="locCliente" value="#{mb_Cliente.locCliente}"  /> 
+    <h:inputText id="loc" label="locCliente" value="#{mb_Cliente.clienteAdd.locCliente}"  /> 
     
      
       <h:outputLabel value="Telefono:" for="telCliente" />
-    <h:inputText id="telCliente" label="telCliente" value="#{mb_Cliente.telCliente}"  /> 
+    <h:inputText id="telCliente" label="telCliente" value="#{mb_Cliente.clienteAdd.telCliente}"  /> 
             
       <h:outputLabel value="RUC:" for="rucCliente" /> 
       
-	               		<p:inputMask   id="rucCliente" value="#{mb_Cliente.rucCliente}" >
+	               		<p:inputMask   id="rucCliente" value="#{mb_Cliente.clienteAdd.rucCliente}" >
 								      	<p:keyFilter regEx="/[0-9_]/i" /> 
 								  	</p:inputMask>
      
       <h:outputLabel value="Credito:" for="credito" />
-      <p:selectOneMenu value="#{mb_Cliente.credito}" style="width:80%" id="credito" required="true" >					
+      <p:selectOneMenu value="#{mb_Cliente.clienteAdd.credito}" style="width:80%" id="credito" required="true" >					
 	       <f:selectItem itemLabel="SI" itemValue="SI" />
 	       <f:selectItem itemLabel="NO" itemValue="NO" />                       
 			</p:selectOneMenu>
@@ -57,7 +54,7 @@
     
      <h:outputLabel value="Cta Corriente:" for="ctacorriente" />  
     
-    <p:inputMask   id="ctacorriente" value="#{mb_Cliente.cuentaCorriente}"    >
+    <p:inputMask   id="ctacorriente" value="#{mb_Cliente.clienteAdd.cuentaCorriente}"    >
 								      	<p:keyFilter regEx="/[0-9_]/i" /> 
 								  	</p:inputMask>
     
@@ -81,7 +78,6 @@
 
 </ui:define>
 </ui:composition>
-
 
 
 

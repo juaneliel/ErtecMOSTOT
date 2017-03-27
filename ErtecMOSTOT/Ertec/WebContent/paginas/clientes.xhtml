@@ -10,49 +10,57 @@
 	xmlns:p="http://primefaces.org/ui">
       
 <ui:define name="cuerpo"> 
-  	
-  <h:form id="datatablecliente">
-  
-  
-    <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatable2"
+
+ <h:form id="formcliente"  onkeypress="if (event.keyCode == 13) { return false; }">
+ 
+  <p:dataTable var="cliente" value="#{mb_Cliente.lista}" id="datatablecliente" widgetVar="datatablecliente"
+		selection="#{mb_Cliente.cliSelected}" selectionMode="single" rowKey="#{cliente.clienteID}"	
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-		 scrollable="true" scrollHeight="500"  scrollWidth="100%"   
-		 editable="true"  
-		 style="text-align:left;font-size: 90% !important;color: red;font-weight: bold;" 
-		 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {Exporters}"
-                rowsPerPageTemplate="10,50,100"
-		 >
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"		
+	>
 		 
 		 	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2" fileName="clientes"   />
+	      <p:dataExporter type="xls" target="datatablecliente" fileName="clientes"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2" fileName="clientes"  />
+	      <p:dataExporter type="pdf" target="datatablecliente" fileName="clientes"  />
 	    </h:commandLink> 
 		</f:facet>
 		 
 		 
+		 		
+      	
+      	 <f:facet name="{titulo}">
+		        Clientes		 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  oncomplete="PF('addcliente').show()" style="float:left"
+		  	rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}" />      
+      </f:facet>
 		 
-      	<f:facet name="header">
-			Clientes	
-			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-			<p:columnToggler datasource="datatable2" trigger="toggler" />
-      	</f:facet>
+		 <f:facet name="{vercol}">   
+		    	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+					<p:columnToggler datasource="datatablecliente" trigger="toggler" />      	 
+		    </f:facet> 
+      	
 		 
 		<p:ajax event="rowEdit" listener="#{mb_Cliente.onRowEdit}" update="message" />	 
-		<p:ajax event="rowToggle" listener="#{mb_Cliente.recargarListaContratos(cliente.clienteID)}" update="expansioncliente" /> 
+	
 		 
 		 
-
-		 
-		 
-		<p:column style="width:16px" exportable="false">
- 			<p:rowToggler />
-		</p:column> 
+   <p:column headerText=""  style = "width:0px"  rendered="#{mb_Usuario.acceso('EDITAR','cliente')}" exportable="false">				
+			<p:rowEditor  >
+			</p:rowEditor>					
+    </p:column>
 		 
 		<p:column headerText="Id" sortBy="#{cliente.clienteID}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="startsWith" filterBy="#{cliente.clienteID}">
 			<h:outputText  value="#{cliente.clienteID}"/>
@@ -61,7 +69,8 @@
 		<p:column headerText="Nombre" sortBy="#{cliente.nombre}"  filterMatchMode="contains" filterBy="#{cliente.nombre}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{cliente.nombre}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="nombre" value="#{cliente.nombre}" style="width:100%"/></f:facet>
+	       		<f:facet name="input"><p:inputTextarea id="nombre" value="#{cliente.nombre}" rows="2" style="width:100%"/></f:facet>      		
+	       		
         	</p:cellEditor>
 		</p:column> 
 		 
@@ -90,16 +99,10 @@
 		  	<p:column headerText="RUC" sortBy="#{cliente.rucCliente}"  filterMatchMode="contains" filterBy="#{cliente.rucCliente}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{cliente.rucCliente}" /></f:facet>
-	               <f:facet name="input">               
-	               		<p:inputMask   id="rucCliente" value="#{cliente.rucCliente}" >
-								      	<p:keyFilter regEx="/[0-9_]/i" /> 
-								  	</p:inputMask>	               
+	               <f:facet name="input"><p:inputText   id="rucCliente" value="#{cliente.rucCliente}" />    
 	               </f:facet>
            		</p:cellEditor>
 		    </p:column>
-		  
- 
-
 		  
 		  
 		  <p:column headerText="Credito" sortBy="#{cliente.credito}" style = "width:50px;text-align:center" filterStyle="width: 40px;" filterMatchMode="contains" filterBy="#{cliente.credito}">		                
@@ -118,83 +121,109 @@
 		   	<p:column headerText="Cta corriente" sortBy="#{cliente.cuentaCorriente}"  filterMatchMode="contains" filterBy="#{cliente.cuentaCorriente}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{cliente.cuentaCorriente}" /></f:facet>
-	               <f:facet name="input">
-	               
-	               <p:inputMask   id="ctacorriente" value="#{cliente.cuentaCorriente}"    >
-								      	<p:keyFilter regEx="/[0-9_]/i" /> 
-								  	</p:inputMask>
+	               <f:facet name="input">	     
+	               			<p:inputMask converterMessage="El valor debe ser mayor a 0 y máximo 9 dígitos" min="0" id="ctacorriente" label="ctacorriente" value="#{cliente.cuentaCorriente}" maxlength="9" >
+											<p:keyFilter regEx="/[0-9_]/i" />
+												<f:validateDoubleRange minimum="0" />  
+											</p:inputMask>	 
 								 </f:facet>
            		</p:cellEditor>
 		    </p:column>
 		  
 		  
-		  
-		   <p:column headerText="Editar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('EDITAR','cliente')}" exportable="false">				
-					<p:rowEditor  >
-					</p:rowEditor>					
-		    </p:column>
- 
-		    	   
-		    	   
-		    	   
-		 <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','cliente')}" exportable="false">	
-			<p:commandLink actionListener="#{mb_Cliente.delete(cliente)}" 
-   	
-   	update="datatablecliente message" >
-        <p:confirm header="Confirmacion" message="Borrar cliente: #{cliente.nombre}?" icon="ui-icon-alert" />
-  <span class="ui-icon ui-icon-trash"></span>
-   	</p:commandLink>    
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
-        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    </p:confirmDialog>
-			</p:column>
-		    	   
-		    	   
-		    	   
-		    	   
-		    	   
-		    	   
-		    	   
-		    	   
-		    	   
-	   <p:rowExpansion id="expansioncliente">
-   		  
-		    
-<p:commandButton value="Ver Contratos"  update=":formcontratos"
-onclick="PF('vercontratos').show();"
-action="#{mb_Cliente.recargarListaContratos(cliente.clienteID)}"/> 
+ 	    	   
 
-		    
-<p:commandButton value="Agregar Contrato" update=":formcontratos :formaddcontrato"
-onclick="PF('addcontrato').show();" 
-action="#{mb_Cliente.setClienteIDYNombre(cliente.clienteID,cliente.nombre)}"/>  
-	    
- 	
-   </p:rowExpansion>
 	
 	</p:dataTable>
+	
+<p:contextMenu for="datatablecliente">
+  	<p:menuitem value=" Ver / agregar Contratos"  update=":formcontratos :vercontratos"
+			oncomplete="PF('vercontratos').show();"
+			action="#{mb_Cliente.setListaContratosCliSel()}" icon="ui-icon-search"/>
+		<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','cliente')}" value=" Borrar" update="formcliente message"  actionListener="#{mb_Cliente.delete(mb_Cliente.cliSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar cliente" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>		
+	</p:contextMenu> 
 
  </h:form> 
+				
+<p:confirmDialog dynamic="true" header="Borrar cliente" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>				
+				
 					
-	<p:dialog header="Ver Contratos" widgetVar="vercontratos" appendTo="@(body)"  modal="true" width="90%" height="600"  dynamic="true">
-	<ui:include src="/templates/templatecontratos.xhtml" id="vercontratos">	 				
+<script type="text/javascript">
+function handleAddRequest(xhr, status, args) {
+
+    if(args.validationFailed ) {
+    	alert("fallo validacion");
+        PF('addcliente').jq.effect("shake", {times:5}, 100);
+    }
+    else {
+    	
+        PF('addcliente').hide(); 
+       // PF('datatablecliente').addRow();
+    }
+}   
+</script>
+					
+
+					
+<p:dialog id="addcliente" header="Agregar cliente"  widgetVar="addcliente" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+  <p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">  
+       
+    <h:outputLabel value="Nombre:*" for="n" />
+    <p:inputText id="n" label="nombre" value="#{mb_Cliente.clienteAdd.nombre}" required="true"   /> 
+      
+     <h:outputLabel value="Dirección:" for="dir" />
+    <p:inputText id="dir" label="direccion" value="#{mb_Cliente.clienteAdd.dirCliente}"  /> 
+     
+     
+      <h:outputLabel value="Localidad:" for="loc" />
+    <p:inputText id="loc" label="locCliente" value="#{mb_Cliente.clienteAdd.locCliente}"  /> 
+    
+     
+      <h:outputLabel value="Telefono:" for="telCliente" />
+    <p:inputText id="telCliente" label="telCliente" value="#{mb_Cliente.clienteAdd.telCliente}"  /> 
+            
+      <h:outputLabel value="RUC:" for="rucCliente" /> 
+			<p:inputText   id="rucCliente" value="#{mb_Cliente.clienteAdd.rucCliente}" /> 
+     
+      <h:outputLabel value="Credito:" for="credito" />
+      <p:selectOneMenu value="#{mb_Cliente.clienteAdd.credito}" style="width:80%" id="credito" required="true" >					
+	       <f:selectItem itemLabel="SI" itemValue="SI" />
+	       <f:selectItem itemLabel="NO" itemValue="NO" />                       
+			</p:selectOneMenu>
+       
+    
+     <h:outputLabel value="Cta Corriente:" for="ctacorriente" />   
+  	<p:inputMask converterMessage="Ingrese un valor de cta corriente" min="0" id="ctacorriente" label="ctacorriente" value="#{mb_Cliente.clienteAdd.cuentaCorriente}" maxlength="9" >
+		<p:keyFilter regEx="/[0-9_]/i" />
+			<f:validateDoubleRange minimum="0" />  
+		</p:inputMask>	
+
+       
+		
+			<p:commandButton value="Agregar" actionListener="#{mb_Cliente.add }"  oncomplete="handleAddRequest(xhr, status, args);"
+			update="@([id$=datatablecliente]) message" />	
+
+		 
+     
+</p:panelGrid>
+</h:form>
+</p:dialog>
+ 				
+	<p:dialog header="Ver contratos de #{mb_Cliente.cliSelected.nombre} ( id: #{mb_Cliente.cliSelected.clienteID} )" widgetVar="vercontratos" id="vercontratos" appendTo="@(body)"  modal="true" width="90%" height="600"  dynamic="true">
+	<ui:include src="/templates/templatecontratos.xhtml" id="vercontratos">	 
 	</ui:include>	
 	</p:dialog>				
 				
-				
-	<p:dialog header="Agregar Contratos" widgetVar="addcontrato" appendTo="@(body)" modal="true" width="430" height="520" dynamic="true">
-	<ui:include src="/templates/templateaddcontrato.xhtml" id="addcontrato">			
-	</ui:include>			
-	</p:dialog>		
+	
 
 
 
 </ui:define>
 </ui:composition>
-
-
-
-
-
-

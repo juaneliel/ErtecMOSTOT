@@ -53,7 +53,8 @@ public class mb_ManoObra {
 	private DAO_Funcionario daoF=new DAO_Funcionario();
 	private ArrayList<ManoObra> lista ;
 	private ArrayList<CodigosMO> listaCodMO ;	 
-	
+	private ManoObra moSelected;
+	private ManoObra manodeobraAdd=new ManoObra(); 
 	
 	private Funcionario funcionarioOBJ;
 	private Cliente clienteOBJ;
@@ -84,13 +85,11 @@ public class mb_ManoObra {
 		String salida= null;
     	
     	ManoObra o = new ManoObra();
-    	o.setCliente(clienteOBJ);
-    	o.setClienteID(clienteOBJ.getClienteID());
+    	o.setCliente(clienteOBJ); 
     	o.setClienteNombre(clienteOBJ.getNombre());
 		o.setCodigo(this.getCodigosMOOBJ().getCodigo());
 		o.setFecha(fecha);
-		o.setFuncionario(funcionarioOBJ);
-		o.setFuncionarioID(funcionarioOBJ.getFuncionarioID());
+		o.setFuncionario(funcionarioOBJ); 
 		o.setMyr(myr);
 		o.setNContrato(NContrato);
 		o.setOrdenTrabajo(ordenTrabajo);
@@ -149,14 +148,14 @@ public class mb_ManoObra {
 	
 	public void delete(ManoObra o){ 
 		if(dao.delete(o)){
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino MO del funcionario "+ o.getFuncionarioID()  );
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino MO del funcionario "+ o.getFuncionario().getFuncionarioID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 	        System.out.println("MBmo delete");
 	        this.recargarLista();
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Borrado", "Error no se pudo borrar "+ o.getFuncionarioID()  );
-	        FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Borrado", "Error no se pudo borrar "+ o.getFuncionario().getFuncionarioID()  );
+	    FacesContext.getCurrentInstance().addMessage(null, message);
 		} 		
 	}	
 	
@@ -184,9 +183,9 @@ public class mb_ManoObra {
 		this.lista=dao.getFiltradaPorFechas(fechaIni,fechaFin); 
 	}
 	
-	public ArrayList<ManoObra> filtrarPorFechasManoObraOT(){
-		return dao.getFiltradaPorFechasYOT(fechaIni, fechaFin, ordenTrabajo);
-	}
+//	public ArrayList<ManoObra> filtrarPorFechasManoObraOT(){
+//		return dao.getFiltradaPorFechasYOT(fechaIni, fechaFin, ordenTrabajo);
+//	}
 	
 	
 
@@ -401,7 +400,25 @@ public class mb_ManoObra {
 
 	public void setListaCodigosMOOBJ(ArrayList<CodigosMO> listaCodigosMOOBJ) {
 		this.listaCodigosMOOBJ = listaCodigosMOOBJ;
-	}	
+	}
+
+	public ManoObra getMoSelected() {
+		return moSelected;
+	}
+
+	public void setMoSelected(ManoObra moSelected) {
+		this.moSelected = moSelected;
+	}
+
+	public ManoObra getManodeobraAdd() {
+		return manodeobraAdd;
+	}
+
+	public void setManodeobraAdd(ManoObra manodeobraAdd) {
+		this.manodeobraAdd = manodeobraAdd;
+	}
+	
+	
 }
 
 

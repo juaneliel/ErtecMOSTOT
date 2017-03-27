@@ -25,7 +25,7 @@ update="dtinfomovart :message"/>
 		
 		
 			<p:dataTable var="infoma" value="#{mb_Articulo.filtrado}" id="dtinfomovart"
-				paginator="true" rows ="10" paginatorPosition="top"  
+				paginator="true" rows ="10" paginatorPosition="top"  emptyMessage="Sin Registros"
 				resizableColumns="true" liveResize="true" draggableColumns="true" 
 				scrollable="true"   scrollWidth="100%"   
 				paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"

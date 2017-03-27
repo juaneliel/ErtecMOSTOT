@@ -310,6 +310,14 @@ public class Ot implements Serializable {
 		return this.tipoID;
 	}
 
+	public int getoC() {
+		return oC;
+	}
+
+	public void setoC(int oC) {
+		this.oC = oC;
+	}
+
 	public void setTipoID(int tipoID) {
 		this.tipoID = tipoID;
 	}

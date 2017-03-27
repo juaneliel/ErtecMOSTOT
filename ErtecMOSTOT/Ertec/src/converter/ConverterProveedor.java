@@ -10,6 +10,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 import mbean.mb_OT;
+import mbean.mb_Usuario;
 import model.Articulo;
 import model.Proveedores;
  
@@ -20,8 +21,8 @@ public class ConverterProveedor implements Converter {
     	Proveedores salida=null;
         if(value != null && value.trim().length() > 0) {
             try {
-                mb_OT service = (mb_OT) 
-                		fc.getExternalContext().getSessionMap().get("mb_OT");
+                mb_Usuario service = (mb_Usuario) 
+                		fc.getExternalContext().getSessionMap().get("mb_Usuario");
                 System.out.println("entro en converterproveedor");
                 
                 if(service==null){

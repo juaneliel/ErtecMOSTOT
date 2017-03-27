@@ -37,7 +37,7 @@
 		      	<f:facet name="input">
 
 		      			<p:autoComplete id="articulo" value="#{nexo.articulo}"
-			completeMethod="#{mb_Articulo.completarArticulo}"
+			completeMethod="#{mb_Usuario.completarArticulo}"
 			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
 			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  	
 		      	
@@ -68,7 +68,7 @@
 		    
 
 				
-						    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','ot')}">	
+						    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}">	
 			<p:commandLink actionListener="#{mb_Movimiento.deleteNexo(nexo,false)}" 
    	
     update="message datatableNexos" >

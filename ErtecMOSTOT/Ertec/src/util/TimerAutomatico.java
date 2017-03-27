@@ -18,11 +18,12 @@ import model.DAO.DAO_Funcionario;
 @LocalBean
 public class TimerAutomatico {
 
-  @Schedule(second = "0", minute = "*", hour = "*/10", dayOfWeek = "Mon-Sun", dayOfMonth = "*", month = "*", year = "*", info = "Temporizador")
+	
+  @Schedule(second = "0", minute = "0", hour = "16", dayOfWeek = "Mon-Sun", dayOfMonth = "*", month = "*", year = "*", info = "Temporizador")
   private void scheduledTimeout(Timer t) {  
     System.out.println("XXXXXminuto mas");
-    //buscarCarnetDeSalud();
-    //buscarCumpleaños();
+    buscarCarnetDeSalud();
+    buscarCumpleaños();
   }
   
   
@@ -34,12 +35,12 @@ public class TimerAutomatico {
       System.out.println("tamaño de avisados "+lfavisar.size());
       for(Funcionario f : lfcumplen){     
         if(f.getEmail()!=null&&f.getEmail().contains("@")){
-          String deseo="Feliz cumpleaños "+f.getNombre() +" te deseamos tus amigos del laburo, que la pases muy lindo en tu dia, alegria :D"+"\n\n ERTEC S.A.";
+          String deseo="Feliz cumpleaños "+f.getNombre() +" te deseamos tus amigos del trabajo, que la pases muy lindo en tu dia, alegria :D"+"\n\n ERTEC S.A.";
           Mail.sendEmail(f.getEmail(), "Feliz cumple",deseo);
         }
         for (Funcionario r : lfavisar ){          
           if(r.getEmail()!=null&&r.getEmail().contains("@")){
-            String aviso="Hoy es el cumpleaños de "+f.getNombre() +", recuerda enviarle saludos...y algun regalito :D"+"\n\n ERTEC S.A.";
+            String aviso="Hoy es el cumpleaños de "+f.getNombre() +", recuerda enviarle saludos :D"+"\n\n ERTEC S.A.";
            // Mail.sendEmail(r.getEmail(), "Cumpleaños",aviso);
           }
         }

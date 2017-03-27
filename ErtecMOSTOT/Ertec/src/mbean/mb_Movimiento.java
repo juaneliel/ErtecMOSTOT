@@ -68,6 +68,9 @@ public class mb_Movimiento {
 	private ArrayList<NexoMovimiento> listaNexos;
 	private ArrayList<Arrendamiento> listaArrendamientos;
 	private ArrayList<NexoMovimiento> listaTemporalNexos;
+	private Movimiento movSelected;
+	private Movimiento movimientoAdd = new Movimiento();
+	
 	
 	//private ArrayList<Codigo> listaCodigos;
 	private ArrayList<Cod_Movimiento> listaCodMovimientosComun;
@@ -781,6 +784,22 @@ public class mb_Movimiento {
 
 	public void setEditarContrato(boolean editarContrato) {
 		EditarContrato = editarContrato;
+	}
+
+	public Movimiento getMovSelected() {
+		return movSelected;
+	}
+
+	public void setMovSelected(Movimiento movSelected) {
+		this.movSelected = movSelected;
+	}
+
+	public Movimiento getMovimientoAdd() {
+		return movimientoAdd;
+	}
+
+	public void setMovimientoAdd(Movimiento movimientoAdd) {
+		this.movimientoAdd = movimientoAdd;
 	}
 
  

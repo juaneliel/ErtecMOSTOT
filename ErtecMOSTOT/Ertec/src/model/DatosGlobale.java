@@ -3,11 +3,9 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+//se utiliza para separar arrendamientos de mantenimientos con id distintos
 
-/**
- * The persistent class for the DatosGlobales database table.
- * 
- */
+
 @Entity
 @Table(name="DatosGlobales")
 @NamedQuery(name="DatosGlobale.findAll", query="SELECT d FROM DatosGlobale d")

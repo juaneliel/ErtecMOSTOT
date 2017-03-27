@@ -9,7 +9,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-import mbean.mb_Cliente; 
+import mbean.mb_Cliente;
+import mbean.mb_Usuario;
 import model.Cliente;
 import model.UsuarioLogin;
  
@@ -24,8 +25,8 @@ public class ConverterCliente implements Converter {
     	Cliente salida=null;
         if(value != null && value.trim().length() > 0) {
             try {
-                mb_Cliente service = (mb_Cliente) 
-                    fc.getExternalContext().getSessionMap().get("mb_Cliente"); 
+            	mb_Usuario service = (mb_Usuario) 
+                    fc.getExternalContext().getSessionMap().get("mb_Usuario"); 
                 System.out.println("converter cliente fc"+fc);
                 System.out.println("converter cliente external"+fc.getExternalContext());
                 System.out.println("converter cliente map"+fc.getExternalContext().getSessionMap());

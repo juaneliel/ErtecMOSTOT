@@ -7,8 +7,8 @@
  
   <ui:composition>
 
-    <h:form id="datatableMOV">
-      <p:dataTable var="movimiento" value="#{paramLista}" id="datatable2MOV"  emptyMessage="Sin Registros"
+    <h:form id="formmovimiento">
+      <p:dataTable var="movimiento" value="#{paramLista}" id="formmovimientoimiento"  emptyMessage="Sin Registros"
 		 paginator="true" rows ="50" paginatorPosition="top"  
 		 resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"  scrollWidth="100%"   
@@ -23,12 +23,12 @@
 		 	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2MOV" fileName="movimientos"   />
+	      <p:dataExporter type="xls" target="formmovimientoimiento" fileName="movimientos"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2MOV" fileName="movimientos"  />
+	      <p:dataExporter type="pdf" target="formmovimientoimiento" fileName="movimientos"  />
 	    </h:commandLink> 
 		</f:facet>
 		 
@@ -36,7 +36,7 @@
         <f:facet name="header">
 		        Movimientos		 
 		        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-		        <p:columnToggler datasource="datatable2MOV" trigger="toggler" />
+		        <p:columnToggler datasource="formmovimientoimiento" trigger="toggler" />
         </f:facet>
         
         
@@ -134,7 +134,7 @@
 		     
 		 <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" exportable="false">			
 		 	<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
-		 	update="message datatableMOV" >
+		 	update="message formmovimiento" >
 		    <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 		 	</p:commandButton>
 		 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

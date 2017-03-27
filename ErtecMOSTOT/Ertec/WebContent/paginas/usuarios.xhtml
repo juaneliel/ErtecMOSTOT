@@ -41,19 +41,10 @@
 		    </f:facet> 
 		    
 		  <f:facet name="{agregar}">    
-		 <p:commandButton value="Agregar"  onclick="PF('agregaruser').show()" style="float:left"/>   
-		 	 <p:commandButton value="Modificar Datos"  onclick="PF('modificardatos').show()" style="float:left"/>   
+		 <p:commandButton value="Agregar"  onclick="PF('agregaruser').show()" style="float:left" rendered="#{mb_Usuario.acceso('AGREGAR','admin')}"/>   
+		 	 <p:commandButton value="Modificar Datos"  onclick="PF('modificardatos').show()" style="float:left"  />   
   
-      </f:facet>
-		 	
-		  
-		 	
-		 	
-		 	
-		 	
-		 		  
-	 
-		 
+      </f:facet>		 
 		 
 		<p:column headerText="Nombre" sortBy="#{usuario.nombre}"  filterMatchMode="startsWith" filterBy="#{usuario.nombre}">
 			<h:outputText  value="#{usuario.nombre}"/>
@@ -222,8 +213,8 @@
 		    </p:column> 
 		 
 	    	   
-		   <p:column headerText="Edi"  style = "width:30px">				
-					<p:rowEditor     rendered="#{mb_Usuario.acceso('EDITAR','admin')}">
+		   <p:column headerText="Edi"  style = "width:30px"  rendered="#{mb_Usuario.acceso('EDITAR','admin')}">				
+					<p:rowEditor    >
 					</p:rowEditor>					
 		    </p:column>
 		     

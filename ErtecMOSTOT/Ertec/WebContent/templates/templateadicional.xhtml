@@ -8,31 +8,59 @@
  	<ui:composition>
  	
 <h:form id="datatableADI">
+  
  
-
-<p:dataTable var="adicional" value="#{mb_OT.listaAdicionales}" id="datatable2ADI" 
- paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
- draggableColumns="true" scrollable="true"  
- scrollWidth="100%"  editable="true" style="text-align:left;max-height:500px;overflow-y:scroll;" 
-  tableStyle="color:red" 
+<p:dataTable var="adicional" value="#{mb_OT.listaAdicionales}" id="datatableadicional" widgetVar="datatableadicional"
+			selection="#{mb_OT.adiSelected}" selectionMode="single" rowKey="#{adicional.adicionalID}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
+		 
  
- >	 
- 
- 	<f:facet name="header">
-        Adicional 
-        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-        <p:columnToggler datasource="datatable2ADI" trigger="toggler" />
-    </f:facet>
+ 						 	<f:facet name="{titulo}">
+		      Adicionales	 		        
+		    </f:facet>
+		    
+     		 		  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatableadicional" fileName="ot"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatableadicional" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>		    
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar" actionListener="#{mb_OT.recargarAdiocionalSelected}"  oncomplete="PF('addadicional').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+      </f:facet>      
+       
+		 
+		 <f:facet name="{vercol}">   
+		       <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatableadicional" trigger="toggler" />
+		    </f:facet>
     
     <p:ajax event="rowEdit" listener="#{mb_OT.editAdicional}" update="message" />
 
-		<p:column headerText="ID adicional:" sortBy="#{adicional.especificacion}"  filterMatchMode="contains" filterBy="#{adicional.especificacion}">		                
+        <p:column headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','ordendetrabajo')}" exportable="false">					
+					<p:rowEditor    >
+					</p:rowEditor>					
+		    </p:column>
+
+		<p:column headerText="Id" sortBy="#{adicional.adicionalID}"  filterMatchMode="contains" filterBy="#{adicional.adicionalID}">		                
 		    <h:outputText value="#{adicional.adicionalID}" />
 		</p:column>
 
 
 		 
-		<p:column headerText="Descripcion:" sortBy="#{adicional.especificacion}"  filterMatchMode="contains" filterBy="#{adicional.especificacion}">		                
+		<p:column headerText="Descripcion" sortBy="#{adicional.especificacion}"  filterMatchMode="contains" filterBy="#{adicional.especificacion}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{adicional.especificacion}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="cliente" value="#{adicional.especificacion}" style="width:100%"/></f:facet>
@@ -43,15 +71,12 @@
 
     
     
-        <p:column headerText="Editar"  style = "width:50px">				
-					<p:rowEditor    rendered="#{mb_Usuario.puedeActualizar}">
-					</p:rowEditor>					
-		    </p:column>
+
 		    
 		     
-			<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
+			<p:column headerText="Borrar"  style = "width:50px" rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" exportable="false">		
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_OT.deleteAdicional(adicional)}" 
-			 update="datatable2ADI message">
+			 update="datatableadicional message">
 			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 			 </p:commandButton>
 			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -70,6 +95,29 @@
 
 
 </h:form>
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addadicional').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addadicional').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+<p:dialog header="Agregar Adicional" id="addadicional" widgetVar="addadicional"  appendTo="@(body)"  modal="true" >
+	 <h:form>          
+			<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
+			    <p:outputLabel value="Especificacion:" for="especificacion" />
+			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.especificacionAdicional}" required="true" />			     
+			<p:commandButton value="Agregar" actionListener="#{mb_OT.addAdicional}"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatableadicional]) message" />				   	
+			</h:panelGrid> 
+	 </h:form>	
+</p:dialog>	
 
 	</ui:composition>
 </html>

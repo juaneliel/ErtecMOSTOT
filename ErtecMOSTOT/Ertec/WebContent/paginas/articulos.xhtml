@@ -13,12 +13,11 @@
  
 	<h:form id="formarticulos" onkeypress="if (event.keyCode == 13) { return false; }">
 	
-	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatablearticulos" widgetVar="datatablearticulos" emptyMessage="Sin Registros"
-		 selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"
-	
+	<p:dataTable var="articulo" value="#{mb_Articulo.lista}" id="datatablearticulos" widgetVar="datatablearticulos"
+		 selection="#{mb_Articulo.artSelected}" selectionMode="single" rowKey="#{articulo.articuloID}"	
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-		 scrollable="true"    scrollWidth="100%"   
-		 editable="true"  
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
 		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
     rowsPerPageTemplate="10,50,100"	
@@ -43,7 +42,7 @@
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  onclick="PF('addarticulos').show()" style="float:left"/>      
+		  <p:commandButton value="Agregar"  onclick="PF('addarticulos').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','articulo')}"/>      
       </f:facet>
 		 
 		 <f:facet name="{vercol}">   
@@ -59,8 +58,8 @@
 		<f:event type="preRenderView" listener="#{mb_Articulo.recargarLista}" />
 		
 		
-		<p:column headerText=""  style = "width:0px" exportable="false">		
-				<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">
+		<p:column headerText=""  style = "width:0px" exportable="false" rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">		
+				<p:rowEditor    >
 				</p:rowEditor>					
 	    </p:column>
 		
@@ -210,20 +209,15 @@
 
 
 <script type="text/javascript">
-    function handleLoginRequest(xhr, status, args) {
+    function handleAddRequest(xhr, status, args) { 
         if(args.validationFailed ) {
             PF('addarticulos').jq.effect("shake", {times:5}, 100);
         }
         else {
             PF('addarticulos').hide(); 
+            PF('datatablearticulos').addRow();
         }
-    }
-    function redi() {
-    	//PF('dlg').show();
-    	
- 	   window.location.href = "/ertec/login.xhtml";
- 	   return;
- 	 }
+    }    
 </script>
 
 <p:dialog id="addarticulos" header="Agregar articulo"  widgetVar="addarticulos" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
@@ -294,7 +288,8 @@
 			 
 			 
   		
-			<p:commandButton value="Agregar" actionListener="#{mb_Articulo.add }"  oncomplete="handleLoginRequest(xhr, status, args)" update="@([id$=datatablearticulos]) message" />	
+			<p:commandButton value="Agregar" actionListener="#{mb_Articulo.add }"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatablearticulos]) message" />	
 
 		   	
 		</p:panelGrid>

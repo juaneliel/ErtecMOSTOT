@@ -12,57 +12,69 @@
       
 <ui:define name="cuerpo"> 
   	  	
-  	<h:form id="datatableOT">
+  	<h:form id="formordendetrabajo">
   	
-		<p:dataTable   var="ot" value="#{mb_OT.lista}" id="datatable2OT"  emptyMessage="Sin Registros"
+  		
+  	 
+			<p:dataTable var="ot" value="#{mb_OT.lista}" id="datatableordendetrabajo" widgetVar="datatableordendetrabajo"
+			selection="#{mb_OT.otSelected}" selectionMode="single" rowKey="#{ot.id}"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-		 scrollable="false"      scrollWidth="100%"   
-		 editable="true"   
-		 tableStyle="height:auto;" 
-		 style="text-align:left;max-height:500px;overflow-y:scroll; 
-   font-size: 90% !important;color: red;font-weight: bold;"
-		selection="#{mb_OT.otSelected}" selectionMode="single" rowKey="#{ot.id}"
-		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
 		 >
 		 
 		 		  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2OT" fileName="ot"   />
+	      <p:dataExporter type="xls" target="datatableordendetrabajo" fileName="ot"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2OT" fileName="ot"  />
+	      <p:dataExporter type="pdf" target="datatableordendetrabajo" fileName="ot"   />
 	    </h:commandLink> 
 		</f:facet>
 		 
-		 
-		 	<f:facet name="header">
-		        Ordenes de Trabajo
-		 
-		        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-		        <p:columnToggler datasource="datatable2OT" trigger="toggler" />
+						 	<f:facet name="{titulo}">
+		       Orden de trabajo		 		        
 		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addordendetrabajo').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+      
+		  <p:commandButton value="imp" ajax="false"  action="#{mb_OT.imprimirOT()}" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+      </f:facet>      
+       
 		 
-		 <p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="datatableOT" />
+		 <f:facet name="{vercol}">   
+		      <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		       <p:columnToggler datasource="datatableordendetrabajo" trigger="toggler" />
+		    </f:facet> 
+		 
+		        
+		 
+		 <p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="formordendetrabajo" />
 		 
 		  <p:ajax event="rowToggle"   update="datatable3" />
 		
 
-	   <p:column style="width:16px" stylr="color:red" exportable="false">		
-            <p:rowToggler />
-        </p:column>	
+	 		   <p:column  headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','ordendetrabajo')}" exportable="false">						
+					<p:rowEditor >
+					</p:rowEditor>									
+		    </p:column>
+		     
 		 
 		 
 		 
-		 
-			<p:column headerText="Id" sortBy="#{ot.id}"  filterMatchMode="startsWith" filterBy="#{ot.id}">
+			<p:column headerText="Id" sortBy="#{ot.id}" style="width:40px;" filterMatchMode="startsWith" filterBy="#{ot.id}">
 		        <h:outputText  value="#{ot.id}"/>
 		    </p:column>
 		 
 
-		<p:column style="min-width:200px" headerText="Cliente:" sortBy="#{ot.clienteNombre}"  filterMatchMode="contains" filterBy="#{ot.clienteNombre}">		                
+		<p:column   headerText="Cliente" sortBy="#{ot.clienteNombre}"  filterMatchMode="contains" filterBy="#{ot.clienteNombre}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{ot.clienteNombre}" /></f:facet>
 	               <f:facet name="input"><p:inputText id="cliente" value="#{ot.clienteNombre}" style="width:100%"/></f:facet>
@@ -79,10 +91,22 @@
     </p:tooltip>
 
 
-
+		<p:column   headerText="Lugar" sortBy="#{ot.direccionObra}"  filterMatchMode="contains" filterBy="#{ot.direccionObra}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.direccionObra}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="lugar" value="#{ot.direccionObra}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+	</p:column>	 
+	
+			<p:column   headerText="Tel" sortBy="#{ot.telObra}"  filterMatchMode="contains" filterBy="#{ot.telObra}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.telObra}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="Tel" value="#{ot.telObra}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+	</p:column>
 
 		    		 
-			<p:column style="min-width:200px" headerText="Trabajo:" sortBy="#{ot.trabajo}"  filterMatchMode="contains" filterBy="#{ot.trabajo}">		                
+			<p:column headerText="Trabajo:" sortBy="#{ot.trabajo}"  filterMatchMode="contains" filterBy="#{ot.trabajo}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{ot.trabajo}" /></f:facet>
 	               <f:facet name="input"><p:inputText id="trabajo" value="#{ot.trabajo}" style="width:100%"/></f:facet>
@@ -90,7 +114,7 @@
 		    </p:column>
 
 
-			<p:column headerText="Proc" sortBy="#{ot.proceso}"  filterMatchMode="contains" filterBy="#{ot.proceso}">		                
+			<p:column headerText="Proc" style="min-width:40px;" sortBy="#{ot.proceso}"  filterMatchMode="contains" filterBy="#{ot.proceso}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{ot.proceso}" /></f:facet>
 	               <f:facet name="input"><p:inputText id="proceso" value="#{ot.proceso}" style="width:100%"/></f:facet>
@@ -99,13 +123,20 @@
 
 		 
 	
-			 <p:column headerText="Pres" sortBy="#{ot.presupuesto}"  filterMatchMode="contains" filterBy="#{ot.presupuesto}">		                
+			 <p:column headerText="Pres" style="min-width:40px;" sortBy="#{ot.presupuesto}"  filterMatchMode="contains" filterBy="#{ot.presupuesto}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{ot.presupuesto}" /></f:facet>
 	               <f:facet name="input"><p:inputText id="presupuesto" value="#{ot.presupuesto}" style="width:100%"/></f:facet>
            		</p:cellEditor>
 		    </p:column>
 		    		 
+		  
+		  	<p:column headerText="Ped" sortBy="#{ot.pedido}"  filterMatchMode="contains" filterBy="#{ot.pedido}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.pedido}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="pedido" value="#{ot.pedido}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
 		  
 		    		 
 			<p:column headerText="Fact" sortBy="#{ot.factura}"  filterMatchMode="contains" filterBy="#{ot.factura}">		                
@@ -115,17 +146,30 @@
            		</p:cellEditor>
 		    </p:column>
 		    
-	   
-		    		  
-	   	    		 
-
-		    
-
-
-	  
-	  
-	  
-				<p:column headerText="F.Inicio"  style="min-width:100px;"  sortBy="#{ot.fechaInicio}"  filterMatchMode="contains" filterBy="#{ot.fechaInicio}">		                
+	   			<p:column headerText="O. C." style="min-width:40px;" sortBy="#{ot.oC}"  filterMatchMode="contains" filterBy="#{ot.oC}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.oC}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="oc" value="#{ot.oC}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>
+		    		      	
+		    		      	
+		    	   			<p:column headerText="C." style="min-width:40px;"  sortBy="#{ot.c}"  filterMatchMode="contains" filterBy="#{ot.c}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.c}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="c" value="#{ot.c}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>		      	
+		    		      	
+		   <p:column headerText="R." sortBy="#{ot.r}" style="min-width:40px;" filterMatchMode="contains" filterBy="#{ot.r}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.r}" /></f:facet>
+	               <f:facet name="input"><p:inputText id="r" value="#{ot.r}" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+		    </p:column>		      	
+		    		      	
+	  	  
+				<p:column headerText="F.Inicio"    sortBy="#{ot.fechaInicio}"  filterMatchMode="contains" filterBy="#{ot.fechaInicio}">		                
 				   <p:cellEditor>
 				         <f:facet name="output">
 				         	<p:calendar mindate="#{ot.fechaInicio}" maxdate="#{ot.fechaInicio}" id="inicio" value="#{ot.fechaInicio}"
@@ -136,7 +180,7 @@
 					</p:cellEditor>
 				</p:column>
 	  
-	  				<p:column headerText="F.Fin"  style="min-width:100px;"  sortBy="#{ot.fechaTerminada}"  filterMatchMode="contains" filterBy="#{ot.fechaTerminada}">		                
+	  				<p:column headerText="F.Fin"    sortBy="#{ot.fechaTerminada}"  filterMatchMode="contains" filterBy="#{ot.fechaTerminada}">		                
 				   <p:cellEditor>
 				         <f:facet name="output">
 				         	<p:calendar mindate="#{ot.fechaTerminada}" maxdate="#{ot.fechaTerminada}" id="terminadaout" value="#{ot.fechaTerminada}"
@@ -148,7 +192,7 @@
 				</p:column>
 	  
 	  
-	  				<p:column headerText="F.Facturada"  style="min-width:100px;"  sortBy="#{ot.fechaFacturada}"  filterMatchMode="contains" filterBy="#{ot.fechaFacturada}">		                
+	  				<p:column headerText="F.Facturada"   sortBy="#{ot.fechaFacturada}"  filterMatchMode="contains" filterBy="#{ot.fechaFacturada}">		                
 				   <p:cellEditor>
 				         <f:facet name="output">
 				         	<p:calendar mindate="#{ot.fechaFacturada}" maxdate="#{ot.fechaFacturada}" id="facturada" value="#{ot.fechaFacturada}"
@@ -237,46 +281,24 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 
 
  
-
-
-
-
-
- 
-
-		 
-		 		   <p:column toggleable="false" headerText="Edit"  style = "width:20px" rendered="#{mb_Usuario.acceso('EDITAR','ot')}" exportable="false">						
-					<p:rowEditor >
-					</p:rowEditor>									
-		    </p:column>
-		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','ot')}" exportable="false">		
-			<p:commandLink actionListener="#{mb_OT.delete(ot)}" 
-   	
-   	update="datatableOT message" >
-        <p:confirm header="Confirmacion" message="Borrar OT nro:#{ot.id}?" icon="ui-icon-alert" />
-  <span class="ui-icon ui-icon-trash"></span>
-   	</p:commandLink>    
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
-        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    </p:confirmDialog>
-			</p:column>
-
-
- 
 		    	   
 		      
 		</p:dataTable>
 	
 	
-		<p:contextMenu for="datatable2OT">
-  	<p:menuitem value="Adicionales" update="datatableADI" icon="ui-icon-search" oncomplete="PF('verad').show()"/>
-  	<p:menuitem value="Compras externas" update="datatableCE" icon="ui-icon-search" oncomplete="PF('verce').show()"/>
-   	<p:menuitem value="Mano de Obra" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
-   	<p:menuitem value="Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
-  	<p:menuitem value="Imprimir Ot"  icon="ui-icon-search" oncomplete="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');"/>
-   	<p:menuitem value="Imprimir Movimientos" update="datatableADI" icon="ui-icon-search" oncomplete="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');"/>
+		<p:contextMenu for="datatableordendetrabajo">
+  	<p:menuitem value="Adicionales" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
+  	<p:menuitem value="Compras externas" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
+   	<p:menuitem value="Mano de Obra" actionListener="#{mb_OT.recargarManodeobraSelected}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
+   	<p:menuitem value="Movimientos"  actionListener="#{mb_OT.recargarMovimientoSelected}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
+   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
+	  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
+	     actionListener="#{mb_OT.delete(mb_OT.otSelected)}" icon="ui-icon-trash" >
+		<p:confirm   header="Borrar orden de trabajo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>	
+		
+		
 		</p:contextMenu>
 	
 	
@@ -285,6 +307,14 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
   </h:form>
 
  
+
+<p:confirmDialog dynamic="true" header="Borrar Orden de trabajo ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>
+
+
 <p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
 <ui:include src="/templates/templateadicional.xhtml" id="listaAdicionales">	 
 </ui:include>
@@ -308,12 +338,12 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 
 
 
-<p:dialog header="Agregar Adicional" id="addad" widgetVar="addad"  modal="true" width="580px" height="230">
+<p:dialog header="Agregar Adicional" id="addad" widgetVar="addad"  modal="true" width="580px" height="230"  dynamic="true">
 <ui:include src="/templates/templateaddadicional.xhtml" id="addadicional">			
 </ui:include>			
 </p:dialog>	
 
-<p:dialog header="Agregar Compra Externa" widgetVar="addce"  modal="true" width="450" height="390">
+<p:dialog header="Agregar Compra Externa" widgetVar="addce"  modal="true" width="450" height="390"  dynamic="true">
 <ui:include src="/templates/templateaddcompraexterna.xhtml" id="listaComprasExternasOUT">			
 </ui:include>			
 </p:dialog>	    
@@ -324,7 +354,7 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 </ui:include>			
 </p:dialog>		
 	
-<p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550" >
+<p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550"  dynamic="true">
 <ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	
   <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			
 </ui:include>			
@@ -332,11 +362,99 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 	
 
 
+
+
+
+
+
+
+		
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addordendetrabajo').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addordendetrabajo').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+<p:dialog id="addordendetrabajo" header="Agregar articulo"  widgetVar="addordendetrabajo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+
+	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
+			 
+ 
+<p:outputLabel value="Cliente" for="cliente" />
+<p:autoComplete  id="cliente" value="#{mb_OT.clienteOBJ}"
+ completeMethod="#{mb_Usuario.completarCliente}" required="true"
+var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ converter="ConverterCliente" forceSelection="true" /> 
+
+
+ 
+			<p:outputLabel  value="Lugar de la Obra:" for="lugar"/>
+        	<p:inputText id="lugar" value="#{mb_OT.direccionObra}" required="true" />	
+ 
+ 
+ 			<p:outputLabel value="Telefono:" for="telObra" />  
+				<p:inputText id="telObra" label="lugar" value="#{mb_OT.telObra}"  />  
+ 
+			     <p:outputLabel value="Trabajo:" for="trabajo" />
+			       <p:inputText id="trabajo" label="trabajo" value="#{mb_OT.trabajo}" />	       	
+ 
+
+   <p:outputLabel value="Presupuesto:" for="pre" />   
+		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.presupuesto}" />	       	
+		   
+	 				<p:outputLabel value="Pedido:" for="ped" /> 
+					<p:inputText id="ped" label="ped" value="#{mb_OT.pedido}"/>	       	
+	 		 
+					<p:outputLabel value="O. C.:" for="oc" />
+			       <p:inputText id="oc" label="ccte" value="#{mb_OT.oC}" />	       	
+			 
+	 				<p:outputLabel value="C:" for="c" />
+	 				<p:inputText id="c" label="c" value="#{mb_OT.c}"  /> 
+	 		 
+	 				<p:outputLabel value="R:" for="r" />
+					<p:inputText id="r" label="r" value="#{mb_OT.r}" />	       	 
+ 
+   
+	
+				
+			<p:commandButton value="Agregar" actionListener="#{mb_OT.add}"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatableordendetrabajo]) message" />	
+
+		   	
+		</p:panelGrid>
+ </h:form>
+ </p:dialog>
 	
 	
 	
+<p:dialog header="Ot en PDF" widgetVar="verpdfot" id="verpdfot"  modal="true"  dynamic="true"  width="90%"  height="550"
+    closable="true" closeOnEscape="true" draggable="true"
+    onHide="jQuery('#someId1').hide();" onShow="jQuery('#someId1').show();">
+    <h:form prependId="false">
+    <h:outputFormat escape="false">
+    <iframe src="#{mb_OT.urlImprimirOT(mb_OT.otSelected.id)}"
+    name="someName" id="someId1"   width="100%"  height="900"   />
+    </h:outputFormat>
+    </h:form> 
+</p:dialog>		
 	
-	
+<p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" dynamic="true"   width="90%" height="550"
+    closable="true" closeOnEscape="true" draggable="true"
+    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
+    <h:form prependId="false">
+    <h:outputFormat escape="false">
+    <iframe src="#{mb_OT.urlImprimirMov(mb_OT.otSelected.id)}" name="someName" id="someId"   width="100%"  height="900"  />
+    </h:outputFormat>
+    </h:form> 
+</p:dialog>	
 	
 	
 	  
@@ -383,25 +501,4 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 
 
 
-<!-- <p:dialog header="Ot en PDF" widgetVar="verpdf" id="verpdf"  modal="true" width="90%" height="550"      -->
-<!--     closable="true" closeOnEscape="true" draggable="true" -->
-<!--     onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();"> -->
-<!--     <h:form prependId="false"> -->
-<!--     <h:outputFormat escape="false"> -->
-<!--     <iframe src="#{mb_OT.urlImprimirOT(ot.id)}" -->
-<!--     name="someName" id="someId" scrolling="auto" width="100%"    height="550"  /> -->
-<!--     </h:outputFormat> -->
-<!--     </h:form>  -->
-<!-- </p:dialog>	 -->
-	
-	
-<!-- <p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" width="90%" height="550"      -->
-<!--     closable="true" closeOnEscape="true" draggable="true" -->
-<!--     onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();"> -->
-<!--     <h:form prependId="false"> -->
-<!--     <h:outputFormat escape="false"> -->
-<!--     <iframe src="#{mb_OT.urlImprimirMov(ot.id)}" -->
-<!--     name="someName" id="someId" scrolling="auto" width="100%"    height="550"  /> -->
-<!--     </h:outputFormat> -->
-<!--     </h:form>  -->
-<!-- </p:dialog>	 -->
+
