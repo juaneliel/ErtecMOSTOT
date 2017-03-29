@@ -6,34 +6,54 @@
  
  
 <ui:composition>
-
  	
- 	
- <h:form id="formAddItemList">
+ <h:form id="formitem">
     
 
 		
-		<p:commandButton value="Agregar Item" 
-		onclick="PF('nuevoitem').show();"
-		action="#{mb_OT.setNumeroID(ot.id)}"/>  
+	 
 		
-		
-		
-		
-		<p:panelGrid id="panelNexos"  border="2" cellpadding="5" cellspacing="1" columns="2">     
-			<p:dataTable var="nexo" value="#{mb_Movimiento.listaNexos}" id="datatable4"
-				paginator="true" rows ="10" paginatorPosition="top"  
-				resizableColumns="true" liveResize="true" draggableColumns="true" 
-				scrollable="true"   scrollWidth="100%"   
-				editable="true" 
-				style="text-align:center"
-				>			 
-				<f:facet name="header">
-			  	Especificacion
-				 	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-			   	<p:columnToggler datasource="datatable4" trigger="toggler" />
-				</f:facet>			 
-			  <p:ajax event="cellEdit" listener="#{mb_Movimiento.editarNexo}" update="datatable4" />		 
+		   <p:dataTable var="nexo" value="#{mb_Movimiento.listaNexos}" id="datatableitem" widgetVar="datatableitem" 
+			selection="#{mb_Movimiento.nexSelected}" selectionMode="single" rowKey="#{nexo.nexoMovimientoID}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros" paginatorPosition="top"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
+		 
+		 
+		 <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatableitem" fileName="ot"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatableitem" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>
+		 
+			<f:facet name="{titulo}">
+		       Item	 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('additem').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
+     </f:facet>      
+		 
+		  <f:facet name="{vercol}">   
+		      <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		       <p:columnToggler datasource="datatableitem" trigger="toggler" />
+		    </f:facet> 
+		 
+		        
+		 
+				
+				 
+			  <p:ajax event="cellEdit" listener="#{mb_Movimiento.editarNexo}" update="datatableitem" />		 
 			  
 				<p:column headerText="Articulo:" sortBy="#{nexo.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{nexo.articulo.descripcion}">		                
 		   		<p:cellEditor>
@@ -70,11 +90,10 @@
 		    
 		    
 		    <p:column headerText="Borrar"  style = "width:50px">		   
-					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=panelNexos]) message"  />
+					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=datatableitem]) message"  />
 				</p:column>
 				
-			</p:dataTable> 
-	</p:panelGrid>
+			</p:dataTable>  
 		
 		
 		
@@ -83,8 +102,8 @@
  	 
 
  
-<p:dialog header="Agregar item" widgetVar="nuevoitem"  modal="true" resizable="false" id="nuevoitem"  appendTo="@(body)" showEffect="explode" dynamic="true">
-<ui:include src="/templates/templateaddnexo.xhtml" id="listaAdicionales">	 
+<p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="false" id="additem"  appendTo="@(body)" showEffect="explode" dynamic="true">
+<ui:include src="/templates/templateaddnexo.xhtml" id="listanexos">	 
 <ui:param name="paramTemporal"   value = "true"/>		
 </ui:include>
 </p:dialog>	   

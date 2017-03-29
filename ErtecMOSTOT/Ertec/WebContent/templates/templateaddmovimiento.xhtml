@@ -18,7 +18,7 @@
 	 	 
 	 	 
 		<p:outputLabel value="Fecha:" for="fecha" /> 
-		<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.fecha}" required="true" />	
+		<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.movimientoAdd.fecha}" required="true" />	
 			
 	
 		<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
@@ -48,7 +48,7 @@
  		
  		<h:outputLabel  value="Cliente:" for="cliente" rendered="#{mb_Movimiento.verCliente}" />
 		 	<p:autoComplete  rendered="#{mb_Movimiento.verCliente}" id="cliente" value="#{mb_Movimiento.clienteOBJ}" required="true"   disabled="#{!mb_Movimiento.editarCliente}"
- 				completeMethod="#{mb_Cliente.completarCliente}" 
+ 				completeMethod="#{mb_Usuario.completarCliente}" 
 				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
  				converter="ConverterCliente" forceSelection="true"
  				style="float:left !important;margin:0px 0px 3px 0px;width:90%"> 

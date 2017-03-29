@@ -25,7 +25,7 @@ public class Funcionario implements Serializable {
 	private byte[] foto;
  
 	
-	@OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL, optional = false)
+	@OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name="fichaID", referencedColumnName="fichaID")
 	private FichaPersonal ficha;
 	

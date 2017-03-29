@@ -1,0 +1,284 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>
+  <h:form id="formmovimiento">
+    <p:dataTable var="movimiento" value="#{paramLista}" id="datatablemovimiento" widgetVar="datatablemovimiento"
+		 selection="#{mb_Movimiento.movSelected}" selectionMode="single" rowKey="#{movimiento.movimientoID}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros" paginatorPosition="top"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+     rowsPerPageTemplate="10,50,100"	
+		>
+		 
+		<f:facet name="{Exporters}">
+		  <h:commandLink>
+		    <p:graphicImage name="/images/excel.png" width="24"/>
+		    <p:dataExporter type="xls" target="datatablemovimiento" fileName="ot"   />
+		  </h:commandLink>		
+		  <h:commandLink>
+		    <p:graphicImage name="/images/pdf.png" width="24"/>
+		    <p:dataExporter type="pdf" target="datatablemovimiento" fileName="ot"   />
+		  </h:commandLink> 
+		</f:facet>
+		 
+		<f:facet name="{titulo}">
+			Movimiento	 		        
+		</f:facet>
+		    
+		<f:facet name="{agregar}">    
+			<p:commandButton value="Agregar" actionListener="#{mb_Movimiento.setCodIni(paramCodIni)}" oncomplete="PF('addmovimiento').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
+		</f:facet>
+		 
+		<f:facet name="{vercol}">   
+			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		  <p:columnToggler datasource="datatablemovimiento" trigger="toggler" />
+		</f:facet> 
+		    
+    <p:ajax event="rowEdit" listener="#{mb_Movimiento.onRowEdit}" update="message" />
+		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}" update="datatableNexos" />
+		<f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" />
+		
+		<p:column headerText=""  style="width:0px" exportable="false" rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}">						
+			<p:rowEditor     >
+			</p:rowEditor>					
+		</p:column>
+		
+		
+		<p:column headerText="MovimientoID"  sortBy="#{movimiento.movimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.movimientoID}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.movimientoID}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="MovimientoID" value="#{movimiento.movimientoID}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		 
+		<p:column headerText="cod ID" sortBy="#{movimiento.codigoMovimientoID}"  filterMatchMode="contains" filterBy="#{movimiento.codigoMovimientoID}">		                
+	  	<p:cellEditor>
+				<f:facet name="output"><h:outputText value="#{movimiento.codigoString}" /></f:facet>
+				<f:facet name="input">
+					<p:selectOneMenu value="#{movimiento.codigoMovimientoID}" style="width:100%">
+					 	<f:selectItems value="#{mb_Movimiento.listaCodMovimientosComun}" var="cm" 
+				      itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
+					</p:selectOneMenu>				 
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		     
+		<p:column headerText="Nombre Cliente:" style="min-width:100px;" sortBy="#{movimiento.nombreCliente}"  filterMatchMode="contains" filterBy="#{movimiento.nombreCliente}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.nombreCliente}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="nomCliente" value="#{movimiento.nombreCliente}" style="width:100%"/></f:facet>
+    	</p:cellEditor>
+		</p:column>
+			    
+		<p:column headerText="Contrato ID:" sortBy="#{movimiento.contrato.contratoID}"  filterMatchMode="contains" filterBy="#{movimiento.contrato.contratoID}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.contrato.contratoID}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="contratoid" value="#{movimiento.contrato.contratoID}" style="width:100%"/></f:facet>
+     	</p:cellEditor>
+		</p:column>
+		    
+		<p:column headerText="Tipo ot" sortBy="#{movimiento.tipoOT}"  filterMatchMode="contains" filterBy="#{movimiento.tipoOT}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.tipoOT}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="tipoOT" value="#{movimiento.tipoOT}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		    
+		<p:column headerText="cotizacion" sortBy="#{movimiento.cotizacion}"  filterMatchMode="contains" filterBy="#{movimiento.cotizacion}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.cotizacion}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="cotizadion" value="#{movimiento.cotizacion}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		    
+		<p:column headerText="referencia" sortBy="#{movimiento.referencia}"  filterMatchMode="contains" filterBy="#{movimiento.referencia}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.referencia}" /></f:facet>
+	      <f:facet name="input"><p:inputText id="referencia" value="#{movimiento.referencia}" style="width:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>
+		    
+		<p:column headerText="tipoReferencia" sortBy="#{movimiento.tipoReferencia}"  filterMatchMode="contains" filterBy="#{movimiento.tipoReferencia}">		                
+			<p:cellEditor>
+	    	<f:facet name="output"><h:outputText value="#{movimiento.tipoReferencia}" /></f:facet>
+	      <f:facet name="input">
+	    		<p:selectOneMenu value="#{movimiento.tipoReferencia}" style="width:100%">
+      			<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
+        			itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+        	</p:selectOneMenu>
+       	</f:facet>
+      </p:cellEditor>
+		</p:column>	 
+		 
+ 		<p:column headerText="Fecha:" sortBy="#{movimiento.fecha}"  filterMatchMode="contains" filterBy="#{movimiento.fecha}">		                
+			<p:cellEditor>
+				<f:facet name="output"><p:calendar mindate="#{movimiento.fecha}" maxdate="#{movimiento.fecha}"  id="maskoutmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+				<f:facet name="input"> <p:calendar id="maskinmovimiento" value="#{movimiento.fecha}" pattern="dd-MM-yyyy" mask="true" /></f:facet>
+			</p:cellEditor>
+		</p:column>
+
+		   
+		     
+		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" exportable="false">			
+			<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
+				update="message formmovimiento" >
+		  <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+		 	</p:commandButton>
+		 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		    <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		    <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		 	</p:confirmDialog>
+		</p:column>
+			    	  
+		<p:rowExpansion>		  
+			<p:commandButton value="Ver Items"  update=":datatableNexos" 
+				onclick="PF('vernexos').show();" ajax="false"
+				action="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}"/>				
+					    
+			<p:commandButton value="Agregar Item" 
+				onclick="PF('addnexo').show();" ajax="false"
+				action="#{mb_Movimiento.movimientoAdd.setMovimientoID(movimiento.movimientoID)}"/>		
+		</p:rowExpansion> 	      
+	</p:dataTable>
+</h:form>
+		
+					
+<p:dialog header="Ver items" widgetVar="vernexos"  appendTo="@(body)" modal="true" width="90%" height="600">
+	<ui:include src="/templates/templatenexos.xhtml" id="vernexos">	
+		<ui:param name="paramLista"   value = "#{mb_Movimiento.listaNexos}"/>					
+	</ui:include>	
+</p:dialog>				
+				
+<p:dialog id="addmovimiento" header="Agregar movimiento"  appendTo="@(body)"   widgetVar="addmovimiento" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+	<p:panelGrid id="panel0"  border="2" cellpadding="5" cellspacing="1" columns="2" >
+	
+	  <h:panelGrid   style="width:300px"  >
+			<h:form >
+				<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2" style="float:left">   
+				 
+					<p:outputLabel value="Fecha:" for="fecha" /> 
+					<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.movimientoAdd.fecha}" required="true" />	
+										
+					<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
+					<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.movimientoAdd.codigoMovimientoID}" required="true">
+						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.movimientoAdd.codigoMovimientoID )}" update="tipoReferencia foraddnexo referencia cotizacion" />
+						<f:selectItems value="#{paramListaCodMov}" var="cm" 
+							itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
+					</p:selectOneMenu>
+			
+					<p:outputLabel value="Tipo Referencia:" for="tipoReferencia" /> 
+					<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.movimientoAdd.tipoReferencia}"  required="true">
+						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(  mb_Movimiento.movimientoAdd.codigoMovimientoID   )}" />
+						<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
+							itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+		   	  </p:selectOneMenu>
+		   	
+					<p:outputLabel value="Referencia:" for="referencia"  visible="#{mb_Movimiento.verReferencia}"/> 
+					<p:inputMask converterMessage="Ingrese un valor de referencia" disabled="#{!mb_Movimiento.editarReferencia}" min="1" id="referencia" label="referencia" value="#{mb_Movimiento.movimientoAdd.referencia}" required="true" maxlength="10" >
+		      	<p:keyFilter regEx="/[0-9_]/i" />
+		      	<f:validateDoubleRange minimum="1" />  
+		  		</p:inputMask>
+		 		
+		 			<h:outputLabel  value="Cliente:" for="cliente" rendered="#{mb_Movimiento.verCliente}" />
+				 	<p:autoComplete  rendered="#{mb_Movimiento.verCliente}" id="cliente" value="#{mb_Movimiento.movimientoAdd.cliente}" required="true"   disabled="#{!mb_Movimiento.editarCliente}"
+		 				completeMethod="#{mb_Usuario.completarCliente}" 
+						var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+		 				converter="ConverterCliente" forceSelection="true"
+		 				 > 
+		 				<p:ajax event="itemSelect" listener="#{mb_Cliente.recargarListaContratos(mb_Movimiento.movimientoAdd.cliente.clienteID)}" update="contrato" />  				
+						<f:facet name="itemtip">
+	          	<h:panelGrid columns="2" cellpadding="3">  
+	           		<h:outputText value="ID:" />
+	              <h:outputText value="#{theme.clienteID}" />
+	           
+	              <h:outputText value="Direccion:" />
+	              <h:outputText value="#{theme.dirCliente}" />
+	
+	              <h:outputText value="Telefono:" />
+	            	<h:outputText value="#{theme.telCliente}" />
+							</h:panelGrid>
+	         	</f:facet>
+					</p:autoComplete>
+									
+					<p:outputLabel value="Contrato:" for="contrato"  rendered="#{mb_Movimiento.verContrato}"/> 
+					<p:selectOneMenu rendered="#{mb_Movimiento.verContrato}" id="contrato" value="#{mb_Movimiento.movimientoAdd.contrato}"  panelStyle="width:180px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+				 		disabled="#{!mb_Movimiento.editarContrato}">
+						<f:selectItems value="#{mb_Cliente.listaContratos}" var="contrato" title="dale" 			
+							itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					
+						<p:column>
+			      	<h:outputText value="#{t.tipo}#{t.contratoID}" />
+			      </p:column>   
+								
+						<p:column>
+			      	<h:outputText value="#{t.direccion}" />
+			      </p:column>   
+			            
+			      <p:column>
+			      	<h:outputText value="#{t.equipo}" />
+			      </p:column>            
+		   		</p:selectOneMenu>
+		   						 
+					<p:outputLabel value="Cotizacion:" for="cotizacion" /> 
+					<p:inputText disabled="#{!mb_Movimiento.verCotizacion}"  required="true" id="cotizacion" label="cotizacion" value="#{mb_Movimiento.movimientoAdd.cotizacion}">	
+						<f:validateDoubleRange minimum="0.01" />
+					</p:inputText>		 
+		
+			    <h:commandButton value="Guardar" action="#{mb_Movimiento.add}"  />			
+		    </p:panelGrid>	 
+  		</h:form>
+		</h:panelGrid>
+ 
+		<h:panelGrid>
+			<ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos">	
+			<ui:param name="paramTemporal"   value = "true"/>					
+			</ui:include>	
+		</h:panelGrid>
+		
+	</p:panelGrid>
+</p:dialog>
+
+		
+				
+				
+				
+				
+				
+				
+	</ui:composition>
+</html>
+
+		 
+<!-- 			<p:column headerText="Cliente ID:" style="min-width:100px;" sortBy="#{movimiento.clienteID}"  filterMatchMode="contains" filterBy="#{movimiento.clienteID}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{movimiento.clienteID}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="clienteID" value="#{movimiento.clienteID}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
+
+
+<!-- 		    			<p:column headerText="comprobante" sortBy="#{movimiento.comprobante}"  filterMatchMode="contains" filterBy="#{movimiento.comprobante}">		                 -->
+<!-- 		        <p:cellEditor> -->
+<!-- 	               <f:facet name="output"><h:outputText value="#{movimiento.comprobante}" /></f:facet> -->
+<!-- 	               <f:facet name="input"><p:inputText id="comprobante" value="#{movimiento.comprobante}" style="width:100%"/></f:facet> -->
+<!--            		</p:cellEditor> -->
+<!-- 		    </p:column> -->
+
+
+
+<!-- 			<ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos">	 -->
+<!-- 			<ui:param name="paramTemporal"   value = "true"/>					 -->
+<!-- 			</ui:include>	 -->
+
+<!-- <p:dialog header="Agregar item" widgetVar="addnexo" appendTo="@(body)"  modal="true" width="430" height="320" dynamic="true"> -->
+<!-- <ui:include src="/templates/templateaddnexo.xhtml" id="addnexo">			 -->
+<!-- </ui:include>			 -->
+<!-- </p:dialog>					 -->
+
+

@@ -8,6 +8,9 @@ import java.util.Date;
 
 @Entity
 @NamedQuery(name="NexoMovimiento.findAll", query="SELECT n FROM NexoMovimiento n")
+
+@SequenceGenerator(name = "NEX_SEQ", sequenceName = "NEXO_SEQ", initialValue = 1, allocationSize = 1)
+
 public class NexoMovimiento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -17,25 +20,26 @@ public class NexoMovimiento implements Serializable {
 //	private Movimiento movimiento;
 //	   
 //	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NEX_SEQ")	
+	@Column(name="NexoMovimientoID")
+	private int nexoMovimientoID;
 	 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ArticuloID" , insertable = false, updatable = false)
 	private Articulo articulo;
 	
 	
-	@Id
-	@Column(name="NexoMovimientoID")
-	private int nexoMovimientoID;
+
 
 	@Column(name="ArticuloID")
 	private int articuloID;
 
 	@Column(name="Cantidad")
-	private BigDecimal cantidad;
+	private BigDecimal cantidad=BigDecimal.ZERO;
 
 	@Column(name="Costo")
-	private BigDecimal costo;
+	private BigDecimal costo=BigDecimal.ZERO;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="Fecha")

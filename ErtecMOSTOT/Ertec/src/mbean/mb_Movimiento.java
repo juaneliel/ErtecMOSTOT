@@ -36,22 +36,7 @@ import model.DAO.DAO_Movimiento;
 public class mb_Movimiento {
 
 	private DAO_Movimiento dao=new DAO_Movimiento();
-	 
 
-	private int movimientoID;
-	private int clienteID;
-	private int codigoMovimientoID;
-	private int comprobante;
-	private int contratoID;
-	private BigDecimal cotizacion;
-	private Date fecha;
-	private String nombreCliente;
-	private int nroMovimiento;
-	private int referencia;
-	private String tipoOT;
-	private String tipoReferencia;
-	private BigDecimal cantidadArticulo;
-	private BigDecimal costo=BigDecimal.ZERO;
 	private boolean verCotizacion;
 	private boolean verReferencia;
 	private boolean verCliente;
@@ -69,8 +54,9 @@ public class mb_Movimiento {
 	private ArrayList<Arrendamiento> listaArrendamientos;
 	private ArrayList<NexoMovimiento> listaTemporalNexos;
 	private Movimiento movSelected;
+	private NexoMovimiento nexSelected;
 	private Movimiento movimientoAdd = new Movimiento();
-	
+	private NexoMovimiento nexoAdd = new NexoMovimiento();
 	
 	//private ArrayList<Codigo> listaCodigos;
 	private ArrayList<Cod_Movimiento> listaCodMovimientosComun;
@@ -79,9 +65,7 @@ public class mb_Movimiento {
 	
 	
 	private ArrayList<Referencia> listaReferencias;
-	
-	private Cliente clienteOBJ;
-	private Articulo articuloOBJ;
+	  
 	private int spinnerDevolucion;
 	private Map<Integer,Integer> mapaArrendamiento = new HashMap<Integer, Integer>();
 	private Contrato contratoOBJ;
@@ -89,7 +73,7 @@ public class mb_Movimiento {
 	@PostConstruct
 	public void init(){
 		//this.listaCodigos=dao.getListaCodigos();
-		this.fecha=new Date();
+		movimientoAdd.setFecha(new Date());
 	  this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
 	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
 	  this.listaNexos=new ArrayList<NexoMovimiento>();
@@ -107,7 +91,7 @@ public class mb_Movimiento {
 	}
 	
 	public void recargarListaArrendamientos (int clienteID){ 
-	  this.clienteID=clienteID;
+	  this.movimientoAdd.setClienteID(clienteID);
 	  this.mapaArrendamiento.clear();
 	  this.listaArrendamientos =  dao.getArrendado ( clienteID);
 	}
@@ -122,16 +106,21 @@ public class mb_Movimiento {
 	}
 	
 	public void ajustesAddMovimentoOT(Cliente cliente, int referencia){
-		this.clienteOBJ=cliente;
-		this.referencia=referencia;
-		this.codigoMovimientoID=4;//se inicializa con este valor
-		this.actualizarCotizacionYContrato(codigoMovimientoID);
+		this.movimientoAdd.setCliente(cliente);
+		this.movimientoAdd.setReferencia(referencia);
+		this.movimientoAdd.setCodigoMovimientoID(4);//se inicializa con este valor
+		this.actualizarCotizacionYContrato(movimientoAdd.getCodigoMovimientoID());
 		this.listaNexos=new ArrayList<NexoMovimiento>();
 	}
  
+	//inicializa el valor inicial de codmov
+	public void setCodIni (int cod){
+		movimientoAdd.setCodigoMovimientoID(cod);
+		this.actualizarCotizacionYContrato(cod);
+	}
 	
 	
-	public String devolver(){ 
+	public String devolver(int clienteID){ 
 	  System.out.println("mapa:"+mapaArrendamiento);
 	  
 	  //se crea un movimiento de tipo X y se le pone como otID el valor otid del mb  
@@ -139,9 +128,9 @@ public class mb_Movimiento {
     Movimiento aux=new Movimiento();      
     aux.setComprobante(0);
     aux.setCotizacion(BigDecimal.ZERO);
-    aux.setContratoID(0);
-    if(clienteOBJ !=null){
-      aux.setNombreCliente(clienteOBJ.getNombre());
+    aux.setContrato(null);
+    if(movimientoAdd.getCliente() !=null){
+      aux.setNombreCliente(movimientoAdd.getCliente().getNombre());
     }
     aux.setReferencia(this.otID);
     aux.setTipoOT("D");
@@ -160,36 +149,25 @@ public class mb_Movimiento {
 	}
 	
 	
-	public String add(){
-		String salida=null; 
+	public String add(){		
+		String salida=null;  
+		if(movimientoAdd.getCliente() !=null){
+			movimientoAdd.setNombreCliente(movimientoAdd.getCliente().getNombre());
+			movimientoAdd.setClienteID(movimientoAdd.getCliente().getClienteID()); 
+    } 
 		
-		Movimiento aux=new Movimiento();			
-		aux.setComprobante(comprobante);
-		aux.setCotizacion(cotizacion);
-		aux.setContratoID(contratoID);
-		if(clienteOBJ !=null){
-      aux.setNombreCliente(clienteOBJ.getNombre());
-      aux.setClienteID(clienteOBJ.getClienteID()); 
-    }
-		aux.setReferencia(referencia);
-		aux.setTipoOT(tipoOT);
-		aux.setTipoReferencia(tipoReferencia);  
-		aux.setFecha(fecha);
-		aux.setCodigoMovimientoID(codigoMovimientoID);
-		
-			
-		
-		if (DAO_Movimiento.add (aux, this.listaNexos)){
+		if (DAO_Movimiento.add (movimientoAdd, this.listaNexos)){
 			salida= "/paginas/movimientos.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Se agrego el movimiento "+aux.getMovimientoID());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Se agrego el movimiento "+movimientoAdd.getMovimientoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
+	    this.lista.add(movimientoAdd);
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el movimiento");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR"+aux.getMovimientoID());
-		recargarLista ();
+		System.out.println(">>AGREGAR"+movimientoAdd.getMovimientoID());
+		//recargarLista ();
 		return salida; 
 		
 	}
@@ -243,69 +221,15 @@ public class mb_Movimiento {
 		if (dao.delete(f) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el movimiento "+f.getMovimientoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	    lista.remove(f);
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el movimiento intente borrar todos los items del movimiento ");
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        recargarLista ();
+        //recargarLista ();
 	}
- 
-
-	
-
-	//se seleccionan el valor para hacer update	
-	public String selecToUpdateMovimiento(Movimiento m){		
-		//agregar las variables
-		getVariables(m);		
-		return "/paginas/updatemovimiento.xhtml?faces-redirect=true";
-	}
-	
-	//se efectua el update
-	public String update(){
-		Movimiento m = setVariables();
-		dao.update (m);
-		limpiarVariables();
-		return "/paginas/movimientos.xhtml?faces-redirect=true";
-	}
-	
-
-	
-	//se le se setean los valores al objeto movimiento
-	private Movimiento setVariables(){
-		Movimiento aux=new Movimiento();
-		aux.setMovimientoID(movimientoID);			
-		aux.setComprobante(comprobante);
-		aux.setCotizacion(cotizacion);
-		aux.setContratoID(contratoID);
-		aux.setNombreCliente(nombreCliente);
-		aux.setNroMovimiento(nroMovimiento);
-		aux.setReferencia(referencia);
-		aux.setTipoOT(tipoOT);
-		aux.setTipoReferencia(tipoReferencia);  
-		aux.setFecha(fecha);
-		aux.setCodigoMovimientoID(codigoMovimientoID);
-		aux.setClienteID(clienteID);
-		return aux;
-	}
-	
-	//se toman los valores del objeto movimiento a las variables del mb
-	private void getVariables(Movimiento f){
-		this.clienteID=f.getClienteID();
-		this.codigoMovimientoID=f.getCodigoMovimientoID();
-		this.comprobante=f.getComprobante();
-		this.contratoID=f.getContratoID();
-		this.cotizacion=f.getCotizacion();
-		this.fecha=f.getFecha();
-		this.movimientoID=f.getMovimientoID();
-		this.nombreCliente=f.getNombreCliente();
-		this.nroMovimiento=f.getNroMovimiento();
-		this.referencia=f.getReferencia();
-		this.tipoOT=f.getTipoOT();
-		this.tipoReferencia=f.getTipoReferencia();	
-	}	
-	
 	
 	//usado para ingreso de movimiento si se habilitan los campos de cotizacion o de contrato
 	public void actualizarCotizacionYContrato(int cod){
@@ -321,11 +245,7 @@ public class mb_Movimiento {
 		this.EditarCotizacion=cm.getEditarCotizacion()==1;
 		this.EditarReferencia=cm.getEditarReferencia()==1; 
 		this.EditarCliente=cm.getEditarCliente()==1;
-		this.EditarContrato=cm.getEditarContrato()==1;
-		
-		
-		
-		
+		this.EditarContrato=cm.getEditarContrato()==1;		
 		System.out.println("codigo en actualizar mov "+cod); 	 
 	}
 
@@ -347,38 +267,22 @@ public class mb_Movimiento {
   }
 
   public String addNexo(boolean temporal){
-  	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-  	String realPath=(String) servletContext.getServletPath(); 
-  	System.out.println("contexto addnexo: "+realPath);
-  	//se agrega a una lista temporal
-  	//if(realPath.contains("addmovimiento.xhtml")){
-  	//listaNexos.isEmpty() || (!listaNexos.isEmpty()&&listaNexos.get(0).getMovimientoID()==0) condicion vieja
-  	if(temporal){
-  		NexoMovimiento nexo=new NexoMovimiento();
-  		if(articuloOBJ!=null){
-  			nexo.setArticuloID(articuloOBJ.getArticuloID());
-    		nexo.setArticulo(articuloOBJ);
-  		}
-  		nexo.setCantidad(this.cantidadArticulo);
-  		nexo.setCosto(costo);
-  		nexo.setFecha(fecha);
-  		nexo.setMovimientoID(0);		
-  		this.listaNexos.add(nexo);
+  	 if(temporal){ 
+  		if(nexoAdd.getArticulo()!=null){
+  			nexoAdd.setArticuloID(nexoAdd.getArticulo().getArticuloID()); 
+  		}  		
+  		nexoAdd.setMovimientoID(0);		
+  		this.listaNexos.add(nexoAdd);
+  		nexoAdd=new NexoMovimiento();
   		return null;
   	}
   	
 		String salida=null;
 		NexoMovimiento nexo=new NexoMovimiento();
-		if(articuloOBJ!=null){
-			nexo.setArticulo(articuloOBJ);//verificar
-			nexo.setArticuloID(articuloOBJ.getArticuloID());
+		if(nexoAdd.getArticulo()!=null){ 
+			nexoAdd.setArticuloID(nexoAdd.getArticulo().getArticuloID());
 		}
-		nexo.setCantidad(this.cantidadArticulo);
-		nexo.setCosto(costo);
-		nexo.setFecha(fecha);
-		nexo.setMovimientoID(movimientoID);		
-		
-		
+		nexoAdd.setMovimientoID(this.movSelected.getMovimientoID());			
 		System.out.println("entro en addnexo");
 		if(dao.addNexo(nexo)){
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -395,24 +299,20 @@ public class mb_Movimiento {
 	}
 	
   
-	public  String addmovdesdemenu() {
-		this.codigoMovimientoID=0;
-		this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
-	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
-	
-		this.listaReferencias=dao.getListaReferencias();
-		this.verReferencia=false;
-		this.verCotizacion=false;
-		this.verCosto=false;
-		this.clienteID=0;
-		this.listaNexos=new ArrayList<NexoMovimiento>();
-		this.listaTemporalNexos=new ArrayList<NexoMovimiento>();
-		limpiarVariables();
-		
-		
-		String salida= "/paginas/addmovimiento.xhtml?faces-redirect=true"; 
-		return salida;
-	} 
+//	public  String addmovdesdemenu() {
+//		this.codigoMovimientoID=0;
+//		this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
+//	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();	
+//		this.listaReferencias=dao.getListaReferencias();
+//		this.verReferencia=false;
+//		this.verCotizacion=false;
+//		this.verCosto=false;
+//		this.clienteID=0;
+//		this.listaNexos=new ArrayList<NexoMovimiento>();
+//		this.listaTemporalNexos=new ArrayList<NexoMovimiento>();		 
+//		String salida= "/paginas/addmovimiento.xhtml?faces-redirect=true"; 
+//		return salida;
+//	} 
   
 	public void delTemporalListaNexos(NexoMovimiento nexo){
 		this.listaNexos.remove(nexo);	
@@ -454,140 +354,8 @@ public class mb_Movimiento {
 	public void recargarListaNexos(int movimientoID){
 		 this.listaNexos = dao.getNexos(movimientoID);		
 	}
-	
-	
-	private void limpiarVariables(){
-		this.referencia=0;
-		this.cantidadArticulo=BigDecimal.ZERO;
-		this.costo=BigDecimal.ZERO;
-		this.cotizacion=BigDecimal.ZERO;
-		this.movimientoID=0;
-		
-	}
-	
- 
-	
-	public void findMovimiento(){
-		Movimiento f=this.setVariables();		
-		dao.findMovimiento(f);
-	}		
-	
-	
-
-	public int getClienteID() {
-		return clienteID;
-	}
-
-
-	public void setClienteID(int clienteID) {
-		this.clienteID = clienteID;
-	}
-
-
-	public int getCodigoMovimientoID() {
-		return codigoMovimientoID;
-	}
-
-
-	public void setCodigoMovimientoID(int codigoMovimientoID) {
-		this.codigoMovimientoID = codigoMovimientoID;
-	}
-
-
-	public int getComprobante() {
-		return comprobante;
-	}
-
-
-	public void setComprobante(int comprobante) {
-		this.comprobante = comprobante;
-	}
-
-
-	public int getContratoID() {
-		return contratoID;
-	}
-
-
-	public void setContratoID(int contratoID) {
-		this.contratoID = contratoID;
-	}
-
-
-	public BigDecimal getCotizacion() {
-		return cotizacion;
-	}
-
-
-	public void setCotizacion(BigDecimal cotizacion) {
-		this.cotizacion = cotizacion;
-	}
-
-
-	public String getNombreCliente() {
-		return nombreCliente;
-	}
-
-
-	public void setNombreCliente(String nombreCliente) {
-		this.nombreCliente = nombreCliente;
-	}
-
-
-	public int getNroMovimiento() {
-		return nroMovimiento;
-	}
-
-
-	public void setNroMovimiento(int nroMovimiento) {
-		this.nroMovimiento = nroMovimiento;
-	}
-
-
-	public int getReferencia() {
-		return referencia;
-	}
-
-
-	public void setReferencia(int referencia) {
-		this.referencia = referencia;
-	}
-
-
-	public String getTipoOT() {
-		return tipoOT;
-	}
-
-
-	public void setTipoOT(String tipoOT) {
-		this.tipoOT = tipoOT;
-	}
-
-
-	public String getTipoReferencia() {
-		return tipoReferencia;
-	}
-
-
-	public void setTipoReferencia(String tipoReferencia) {
-		this.tipoReferencia = tipoReferencia;
-	}
-
-	public int getMovimientoID() {
-		return movimientoID;
-	}
-
-	public void setMovimientoID(int movimientoID) {
-		this.movimientoID = movimientoID;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
+	 
+	 
 
 	public ArrayList<Movimiento> getLista() {
 		return lista;
@@ -656,39 +424,10 @@ public class mb_Movimiento {
 		this.verReferencia = verReferencia;
 	}
 
-	public Cliente getClienteOBJ() {
-		return clienteOBJ;
-	}
-
-	public void setClienteOBJ(Cliente clienteOBJ) {
-		this.clienteOBJ = clienteOBJ;
-	}
-
-	public Articulo getArticuloOBJ() {
-		return articuloOBJ;
-	}
-
-	public void setArticuloOBJ(Articulo articuloOBJ) {		
-		this.articuloOBJ = articuloOBJ;
-		System.out.println(this.articuloOBJ);
-	}
+ 
 
  
-	public BigDecimal getCantidadArticulo() {
-    return cantidadArticulo;
-  }
-
-  public void setCantidadArticulo(BigDecimal cantidadArticulo) {
-    this.cantidadArticulo = cantidadArticulo;
-  }
-
-  public BigDecimal getCosto() {
-		return costo;
-	}
-
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
-	}
+	 
 	
   public ArrayList<Arrendamiento> getListaArrendamientos() {
     return listaArrendamientos;
@@ -800,6 +539,22 @@ public class mb_Movimiento {
 
 	public void setMovimientoAdd(Movimiento movimientoAdd) {
 		this.movimientoAdd = movimientoAdd;
+	}
+
+	public NexoMovimiento getNexoAdd() {
+		return nexoAdd;
+	}
+
+	public void setNexoAdd(NexoMovimiento nexoAdd) {
+		this.nexoAdd = nexoAdd;
+	}
+
+	public NexoMovimiento getNexSelected() {
+		return nexSelected;
+	}
+
+	public void setNexSelected(NexoMovimiento nexSelected) {
+		this.nexSelected = nexSelected;
 	}
 
  

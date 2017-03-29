@@ -28,14 +28,18 @@ public class Movimiento implements Serializable {
 
  
 
-	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="MovimientoID", referencedColumnName="MovimientoID")
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="MovimientoID", referencedColumnName="MovimientoID") 
 	private List<NexoMovimiento> nexos;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="clienteID" , insertable = false, updatable = false)
 	private Cliente cliente;
 		
+	@OneToOne(fetch=FetchType.LAZY,optional=true) 
+	@JoinColumn(name="contratoID", referencedColumnName="id", insertable = false, updatable = false)
+	private Contrato contrato;
+	
 	
 	@Column(name="ClienteID")
 	private int clienteID;
@@ -46,8 +50,7 @@ public class Movimiento implements Serializable {
 	@Column(name="Comprobante")
 	private int comprobante;
 
-	@Column(name="ContratoID")
-	private int contratoID;
+ 
 
 	@Column(name="Cotizacion")
 	private BigDecimal cotizacion;
@@ -105,14 +108,7 @@ public class Movimiento implements Serializable {
 	public void setComprobante(int comprobante) {
 		this.comprobante = comprobante;
 	}
-
-	public int getContratoID() {
-		return this.contratoID;
-	}
-
-	public void setContratoID(int contratoID) {
-		this.contratoID = contratoID;
-	}
+ 
 
  
 	public BigDecimal getCotizacion() {
@@ -189,6 +185,14 @@ public class Movimiento implements Serializable {
 
 	public String getCodigoString(){
 	  return DAO_Movimiento.getCodigoString(this.getCodigoMovimientoID());  
+	}
+
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
 	}
 	
 	

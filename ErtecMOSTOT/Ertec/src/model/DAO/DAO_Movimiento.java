@@ -192,7 +192,7 @@ public class DAO_Movimiento {
 			aux.setMovimientoID(m.getMovimientoID());			
 			aux.setComprobante(m.getComprobante());
 			aux.setCotizacion(m.getCotizacion());
-			aux.setContratoID(m.getContratoID());
+			aux.setContrato(m.getContrato());
 			aux.setNombreCliente(m.getNombreCliente());
 			aux.setNroMovimiento(m.getNroMovimiento());
 			aux.setReferencia(m.getReferencia());

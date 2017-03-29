@@ -12,20 +12,20 @@
    cellpadding="5" cellspacing="1">   
      
 		<p:outputLabel value="Articulo:" for="articulo" />  		         
-		<p:autoComplete id="articulo" value="#{mb_Movimiento.articuloOBJ}"
+		<p:autoComplete id="articulo" value="#{mb_Movimiento.nexoAdd.articulo}"
 			completeMethod="#{mb_Usuario.completarArticulo}"
 			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
 			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  		          
 		    
 		<h:outputLabel value="Cantidad" for="cantidad" />		 
-		<p:inputMask id="cantidad" label="cantidad" value="#{mb_Movimiento.cantidadArticulo}" maxlength="10" >
+		<p:inputMask id="cantidad" label="cantidad" value="#{mb_Movimiento.nexoAdd.cantidad}" maxlength="10" >
         	<p:keyFilter regEx="/[0-9_]/i" />
     	</p:inputMask>
 		
 		<h:outputLabel value="Costo" for="costo" rendered="#{mb_Movimiento.verCosto}"  />
-		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.costo}" rendered="#{mb_Movimiento.verCosto}" />   
+		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.nexoAdd.costo}" rendered="#{mb_Movimiento.verCosto}" />   
 	
-		<p:commandButton value="Agregar" oncomplete="PF('nuevoitem').hide();" process="@form" action ="#{mb_Movimiento.addNexo(paramTemporal)}"  update="@([id$=panelNexos]) message" />
+		<p:commandButton value="Agregar" oncomplete="PF('additem').hide();" process="@form" action ="#{mb_Movimiento.addNexo(paramTemporal)}"  update="@([id$=datatableitem]) message" />
 
 
 

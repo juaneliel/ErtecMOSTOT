@@ -58,8 +58,7 @@
 		 
 		 <p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="formordendetrabajo" />
 		 
-		  <p:ajax event="rowToggle"   update="datatable3" />
-		
+		  
 
 	 		   <p:column  headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','ordendetrabajo')}" exportable="false">						
 					<p:rowEditor >
@@ -208,76 +207,7 @@
 	  
 	  
 		  
-		  <p:rowExpansion id="datatable3">	  		
-	  
-	   
-<p:commandButton value="Ver Adicionales"  update=":datatableADI:datatable2ADI" 
-onclick="PF('verad').show();#{mb_OT.recargarListaAdicionales(ot.id)}"
-action="#{mb_OT.recargarListaAdicionales(ot.id)}"/> 
 
-	  
-<p:commandButton value="Ver Compras Externas" update=":datatableCE:datatable2CE" 
-onclick="PF('verce').show()" 
-action="#{mb_OT.recargarListaComprasExternas(ot.id)}"
-/>  
-
-
- 
-<p:commandButton value="Ver Mano de Obra" update=":datatableMO:datatable2MO" 
-onclick="PF('vermo').show();" 
-action="#{mb_OT.recargarListaManoObra(ot.id)}"/> 
-
- 	  
-<p:commandButton value="Ver Movimientos" update=":datatableMOV:datatable2MOV"
-onclick="PF('vermov').show()"   
-action="#{mb_OT.recargarListaMovimientos(ot.id)}"/> 
-
-<br/>
-
-
-<p:commandButton value="Agregar Adicional" 
-onclick="PF('addad').show();#{mb_OT.setNumeroID(ot.id)};#{mb_OT.setNumeroID(ot.id)};"
-action="#{mb_OT.setNumeroID(ot.id)}"/>  
-	
-
-
-<p:commandButton value="Agregar Compras Externas"
-onclick="PF('addce').show();" 
-actionListener="#{mb_OT.setearIDOT(ot.id)}"/>  
-    
-			
-			 
-<p:commandButton value="Agregar Mano Obra"  update="formAddMO"
-onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}" 
-	action="#{mb_ManoObra.setOrdenTrabajo(ot.id)}"/>  
-			
-
-
-<p:commandButton value="Agregar Movimiento" update="formAddMov"
-onclick="PF('addmov').show()" 
-actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">  
-</p:commandButton>
-
-
-<br/> 
-
-<p:column headerText="Pdf" style="width:40px" stylr="color:red">  
- 
-<p:commandButton  icon="ui-icon-print" id="imprimir"  onclick="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');" 
-action="#{mb_OT.urlImprimirOT(ot.id)}"  update="message"   />
- 
-</p:column>
-
-
-<p:column headerText="Pdf" style="width:40px" stylr="color:red">  
- 
-<p:commandButton  icon="ui-icon-print" id="imprimir2" onclick="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');" 
-action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
- 
-</p:column>
-
-   
-		  </p:rowExpansion>
 
 
  
@@ -331,8 +261,10 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 </p:dialog>	
 
 <p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatemovimiento.xhtml" id="listaMovimientos">	
-<ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>					
+<ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	
+<ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>			
+<ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
+<ui:param name="paramCodIni"   value = "4"/>			
 </ui:include>			
 </p:dialog>	
 
@@ -353,12 +285,7 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
 <ui:param name="verIDOT"   value = "true"/>
 </ui:include>			
 </p:dialog>		
-	
-<p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550"  dynamic="true">
-<ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	
-  <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			
-</ui:include>			
-</p:dialog>
+
 	
 
 
@@ -382,7 +309,7 @@ action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   />
     }       
 </script>
 
-<p:dialog id="addordendetrabajo" header="Agregar articulo"  widgetVar="addordendetrabajo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+<p:dialog id="addordendetrabajo" header="Agregar orden de trabajo"  widgetVar="addordendetrabajo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
  <h:form> 
 
 	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
@@ -497,8 +424,82 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 
 
+<!-- 		  <p:rowExpansion id="datatable3">	  		 -->
+	  
+	   
+<!-- <p:commandButton value="Ver Adicionales"  update=":datatableADI:datatable2ADI"  -->
+<!-- onclick="PF('verad').show();#{mb_OT.recargarListaAdicionales(ot.id)}" -->
+<!-- action="#{mb_OT.recargarListaAdicionales(ot.id)}"/>  -->
+
+	  
+<!-- <p:commandButton value="Ver Compras Externas" update=":datatableCE:datatable2CE"  -->
+<!-- onclick="PF('verce').show()"  -->
+<!-- action="#{mb_OT.recargarListaComprasExternas(ot.id)}" -->
+<!-- />   -->
+
+
+ 
+<!-- <p:commandButton value="Ver Mano de Obra" update=":datatableMO:datatable2MO"  -->
+<!-- onclick="PF('vermo').show();"  -->
+<!-- action="#{mb_OT.recargarListaManoObra(ot.id)}"/>  -->
+
+ 	  
+<!-- <p:commandButton value="Ver Movimientos" update=":datatableMOV:datatable2MOV" -->
+<!-- onclick="PF('vermov').show()"    -->
+<!-- action="#{mb_OT.recargarListaMovimientos(ot.id)}"/>  -->
+
+<!-- <br/> -->
+
+
+<!-- <p:commandButton value="Agregar Adicional"  -->
+<!-- onclick="PF('addad').show();#{mb_OT.setNumeroID(ot.id)};#{mb_OT.setNumeroID(ot.id)};" -->
+<!-- action="#{mb_OT.setNumeroID(ot.id)}"/>   -->
+	
+
+
+<!-- <p:commandButton value="Agregar Compras Externas" -->
+<!-- onclick="PF('addce').show();"  -->
+<!-- actionListener="#{mb_OT.setearIDOT(ot.id)}"/>   -->
+    
+			
+			 
+<!-- <p:commandButton value="Agregar Mano Obra"  update="formAddMO" -->
+<!-- onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}"  -->
+<!-- 	action="#{mb_ManoObra.setOrdenTrabajo(ot.id)}"/>   -->
+			
+
+
+<!-- <p:commandButton value="Agregar Movimiento" update="formAddMov" -->
+<!-- onclick="PF('addmov').show()"  -->
+<!-- actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">   -->
+<!-- </p:commandButton> -->
+
+
+<!-- <br/>  -->
+
+<!-- <p:column headerText="Pdf" style="width:40px" stylr="color:red">   -->
+ 
+<!-- <p:commandButton  icon="ui-icon-print" id="imprimir"  onclick="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');"  -->
+<!-- action="#{mb_OT.urlImprimirOT(ot.id)}"  update="message"   /> -->
+ 
+<!-- </p:column> -->
+
+
+<!-- <p:column headerText="Pdf" style="width:40px" stylr="color:red">   -->
+ 
+<!-- <p:commandButton  icon="ui-icon-print" id="imprimir2" onclick="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');"  -->
+<!-- action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   /> -->
+ 
+<!-- </p:column> -->
+
+   
+<!-- 		  </p:rowExpansion> -->
 
 
 
-
-
+	
+<!-- <p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550"  dynamic="true"> -->
+<!-- <ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	 -->
+<!--   <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			 -->
+<!-- </ui:include>			 -->
+<!-- </p:dialog> -->
