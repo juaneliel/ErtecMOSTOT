@@ -32,11 +32,11 @@ public class Movimiento implements Serializable {
 	@JoinColumn(name="MovimientoID", referencedColumnName="MovimientoID") 
 	private List<NexoMovimiento> nexos;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER,optional=true) 
 	@JoinColumn(name="clienteID" , insertable = false, updatable = false)
 	private Cliente cliente;
 		
-	@OneToOne(fetch=FetchType.LAZY,optional=true) 
+	@OneToOne(fetch=FetchType.EAGER,optional=true) 
 	@JoinColumn(name="contratoID", referencedColumnName="id", insertable = false, updatable = false)
 	private Contrato contrato;
 	

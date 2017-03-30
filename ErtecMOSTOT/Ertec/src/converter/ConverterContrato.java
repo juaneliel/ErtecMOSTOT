@@ -8,6 +8,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import mbean.mb_Cliente;
+import mbean.mb_Usuario;
 import model.Cliente;
 import model.Contrato;
 
@@ -19,8 +20,8 @@ public class ConverterContrato implements Converter {
     Contrato salida=null;
       if(value != null && value.trim().length() > 0) {
           try {
-              mb_Cliente service = (mb_Cliente) 
-                  fc.getExternalContext().getSessionMap().get("mb_Cliente"); 
+              mb_Usuario service = (mb_Usuario) 
+                  fc.getExternalContext().getSessionMap().get("mb_Usuario"); 
               System.out.println("converter cliente fc"+fc);
               System.out.println("converter cliente external"+fc.getExternalContext());
               System.out.println("converter cliente map"+fc.getExternalContext().getSessionMap());
@@ -28,7 +29,7 @@ public class ConverterContrato implements Converter {
               if(service==null){
                 return salida;
               }
-              ArrayList<Contrato> auxL=service.getListaContratos();  
+              ArrayList<Contrato> auxL=service.getListaContratosOBJ();  
               if(auxL==null){
               	return salida;
               } 
@@ -39,8 +40,8 @@ public class ConverterContrato implements Converter {
                       break;
                   }
               }
-              if(salida!=null){
-                System.out.println("recargar contratos del cliente en converter "+salida.getClienteID()+" "+salida.getDireccion());
+              if(salida!=null && salida.getCliente()!=null){
+               // System.out.println("recargar contratos del cliente en converter "+salida.getCliente().getClienteID()+" "+salida.getDireccion());
               }                
           } catch(NumberFormatException e) {                 
             e.printStackTrace();

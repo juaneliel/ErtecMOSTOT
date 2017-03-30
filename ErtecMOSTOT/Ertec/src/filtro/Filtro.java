@@ -42,21 +42,21 @@ public class Filtro implements Filter {
 		boolean esLogin=url.endsWith(paginaLogin.toLowerCase());
 		boolean logueado=user.estaLogueado();		
 		
-		System.out.println("URL "+url + " "+paginaLogin);
+		//System.out.println("URL "+url + " "+paginaLogin);
 		
 		
 		
 		if( !logueado && !esLogin && !esRecurso  ){
 			//user.setPaginaReingreso(url);
 			response.sendRedirect(paginaLogin);
-			System.out.println("<<<<<loguear en dofileter");
+			//System.out.println("<<<<<loguear en dofileter");
 		}
 		else{
 			//esta logueado se verifica si tiene acceso de ver la pagina
 			if(!tieneAcceso(url,user)){
 				response.sendRedirect(paginaSinAcceso); 
 			}			
-			System.out.println(">>>>>>no redirigir dofilter");
+			//System.out.println(">>>>>>no redirigir dofilter");
 			chain.doFilter(req, res);
 		}		
 	}

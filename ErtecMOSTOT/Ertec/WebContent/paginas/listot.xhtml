@@ -45,8 +45,7 @@
 		 <f:facet name="{agregar}">    
 		  <p:commandButton value="Agregar"  onclick="PF('addordendetrabajo').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
       
-		  <p:commandButton value="imp" ajax="false"  action="#{mb_OT.imprimirOT()}" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
-      </f:facet>      
+     </f:facet>      
        
 		 
 		 <f:facet name="{vercol}">   
@@ -217,18 +216,16 @@
 	
 	
 		<p:contextMenu for="datatableordendetrabajo">
-  	<p:menuitem value="Adicionales" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
-  	<p:menuitem value="Compras externas" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
-   	<p:menuitem value="Mano de Obra" actionListener="#{mb_OT.recargarManodeobraSelected}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
-   	<p:menuitem value="Movimientos"  actionListener="#{mb_OT.recargarMovimientoSelected}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
-  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
-   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
-	  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
-	     actionListener="#{mb_OT.delete(mb_OT.otSelected)}" icon="ui-icon-trash" >
-		<p:confirm   header="Borrar orden de trabajo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
-		</p:menuitem>	
-		
-		
+	  	<p:menuitem value="Adicionales" update="formadicional" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
+	  	<p:menuitem value="Compras externas" update="formcompraexterna" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
+	   	<p:menuitem value="Mano de Obra" update="formmanodeobra" actionListener="#{mb_OT.recargarManodeobraSelected}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
+	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_OT.recargarMovimientoSelected}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+	  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
+	   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
+		  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
+		     actionListener="#{mb_OT.delete(mb_OT.otSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar orden de trabajo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+			</p:menuitem>	
 		</p:contextMenu>
 	
 	
@@ -496,7 +493,8 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 <!-- 		  </p:rowExpansion> -->
 
 
-
+<!-- 		  <p:commandButton value="imp" ajax="false"  action="#{mb_OT.imprimirOT()}" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>       -->
+ 
 	
 <!-- <p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550"  dynamic="true"> -->
 <!-- <ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	 -->

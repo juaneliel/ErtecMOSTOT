@@ -5,30 +5,51 @@
 	xmlns:p="http://primefaces.org/ui">
  
  
-  <ui:composition>
-
-    <h:form id="formreclamo">
-  
-
- 
+<ui:composition>
+  <h:form id="formreclamo">
   
   
-		<p:dataTable var="reclamo" value="#{paramLista}"  id="datatable2"  emptyMessage="Sin Registros"
-			paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-			scrollable="true" scrollHeight="500"  scrollWidth="100%"   
-			editable="true" 
-			style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"
+  	<p:dataTable   var="reclamo" value="#{paramLista}" id="datatablereclamo" widgetVar="datatablereclamo"
 			rowStyleClass="#{(reclamo.urgente) =='SI' ? 'urgente' : ''}" 
 			selection="#{mb_Reclamo.reclamoSelected}" selectionMode="single" rowKey="#{reclamo.id}"
-			>
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
 		 
-		<f:facet name="header" styleClass="cabecera">
-			#{paramCabecera}
-			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-			<p:columnToggler datasource="datatable2" trigger="toggler" >
+		 		  <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatablereclamo" fileName="ot"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatablereclamo" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>
+		 
+		<f:facet name="{titulo}">
+			#{paramCabecera}		 		        
+		</f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addreclamo').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','reclamo')}"/>      
+      
+     </f:facet>      
+       
+		 
+		 <f:facet name="{vercol}">   
+		     <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+			<p:columnToggler datasource="datatablereclamo" trigger="toggler" >
 		  	<p:ajax event="toggle" listener="#{mb_Reclamo.onToggle}" />
 			</p:columnToggler>
-		</f:facet>
+		    </f:facet> 
+  
+   
 				 
 		<p:ajax event="rowEdit" listener="#{mb_Reclamo.editReclamo}" update="message reclamo" />	  
 	 
@@ -114,7 +135,7 @@
 		   	<f:facet name="output"><h:outputText value="#{reclamo.funcionario.nombre}" /></f:facet>
 		    <f:facet name="input">
 					<p:autoComplete id="tecnico" value="#{reclamo.funcionario}"
-					 	completeMethod="#{mb_Funcionario.completarFuncionario}"
+					 	completeMethod="#{mb_Usuario.completarFuncionario}"
 						var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					 	converter="ConverterFuncionario" forceSelection="false" 
 					  style="float:left !important;margin:0px 0px 3px 0px;"
@@ -261,13 +282,13 @@
 	
 	</p:dataTable>
 
-	<p:contextMenu for="datatable2">
+	<p:contextMenu for="datatablereclamo">
   	<p:menuitem value="Ver detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>
   </p:contextMenu>
 
 <p:dialog header="Detalle funcionario" widgetVar="dialogodetalles" modal="true" showEffect="fade" hideEffect="fade" >
         <p:outputPanel id="detalles" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty mb_Reclamo.reclamoSelected}" columnClasses="label,value">
+                <p:panelGrid  columns="2" rendered="#{mb_Reclamo.reclamoSelected!=null}" columnClasses="label,value">
                 
 
 
@@ -301,7 +322,7 @@
                <h:outputText value="#{mb_Reclamo.reclamoSelected.myr}" /> 
                               
                <h:outputText value="O.R.:" />
-               <h:outputText value="#{mb_Reclamo.ordenreparacion}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.ordenreparacion}" /> 
                               
                <h:outputText value="Observaciones:" />
                <h:outputText value="#{mb_Reclamo.reclamoSelected.observaciones}" /> 
@@ -344,6 +365,96 @@
 
 </h:form> 
 			
+ 			
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addordendetrabajo').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addordendetrabajo').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+<p:dialog id="addreclamo" header="Agregar reclamo"  widgetVar="addreclamo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+ 		<p:panelGrid id="panelreclamo" columns="2" border="1"  cellpadding="5" cellspacing="1">    
+		
+    
+     	<h:outputLabel  value="Cliente:" for="cliente"  />
+		 	<p:autoComplete  required="true"  id="cliente" value="#{mb_Reclamo.reclamoAdd.cliente}"  
+ 				completeMethod="#{mb_Usuario.completarCliente}" 
+				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ 				converter="ConverterCliente" forceSelection="true"
+ 				style="float:left !important;margin:0px 0px 3px 0px;width:90%"> 
+ 				<p:ajax event="itemSelect" listener="#{mb_Usuario.recargarListaContratos(mb_Reclamo.reclamoAdd.cliente.clienteID)}" update="contrato" />  				
+ 								
+ 				<f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                		<h:outputText value="ID:" />
+                    <h:outputText value="#{theme.clienteID}" />
+                
+                    <h:outputText value="Direccion:" />
+                    <h:outputText value="#{theme.dirCliente}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telCliente}" />
+                </h:panelGrid>
+            </f:facet>
+			</p:autoComplete>
+			
+			
+ 
+				
+			
+			<p:outputLabel value="Contrato:" for="contrato" /> 
+		<p:selectOneMenu id="contrato" value="#{mb_Reclamo.reclamoAdd.contrato}" style="width:70%"    
+		panelStyle="min-width:200px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+		>
+			<f:selectItems value="#{mb_Usuario.listaContratosOBJ}" var="contrato" title="dale" 			
+				itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					
+					<p:column>
+                <h:outputText value="#{t.tipo}#{t.contratoID}" />
+            </p:column>   
+					
+					 <p:column>
+                <h:outputText value="#{t.direccion}" />
+            </p:column>   
+            
+            <p:column>
+                <h:outputText value="#{t.equipo}" />
+            </p:column>            
+   	</p:selectOneMenu>
+			
+					    
+			<h:outputLabel   value="Fecha Reclamo:" for="fechaReclamadoin" /> 	    
+        <p:calendar id="fechaReclamadoin" value="#{mb_Reclamo.reclamoAdd.fechaReclamado}"  required="true"  pattern="dd-MM-yyyy HH:mm" mask="true"/>
+		 			
+			<h:outputLabel value="Urgente:" for="urgente" /> 
+ 			<p:selectOneMenu required="true" id="urgente" value="#{mb_Reclamo.reclamoAdd.urgente}" style="width:30">
+				<f:selectItem  itemLabel="SI" itemValue="SI" />
+				<f:selectItem   itemLabel="NO" itemValue="NO" />
+			</p:selectOneMenu>	
+			
+			<h:outputLabel    value="Contacto:" for="contacto" />
+ 			<p:inputText required="true" id="contacto" value="#{mb_Reclamo.reclamoAdd.contacto}"  />
+ 			
+ 			<h:outputLabel value="Reclamo:" for="reclamo" /> 			
+      <p:inputTextarea required="true" value="#{mb_Reclamo.reclamoAdd.reclamo}"  id="reclamo"  rows="5" cols="20" counter="display" maxlength="1000" counterTemplate="{0} characters remaining."  />
+     
+						
+			<h:commandButton value="Agregar" action="#{mb_Reclamo.add }"   />	 
+			<h:outputText id="display" />
+				  
+		   	
+		</p:panelGrid> 
+ 
+ </h:form>
+ </p:dialog> 			
+ 			
  			
 				
 	</ui:composition>

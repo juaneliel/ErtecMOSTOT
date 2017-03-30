@@ -173,7 +173,7 @@ public class mb_Cliente implements Serializable{
  
 	
 	public void previoAddDireccion(){
-		contratoAdd.setClienteID(conSelected.getClienteID());
+		contratoAdd.setCliente(conSelected.getCliente());
 		contratoAdd.setContratoID(conSelected.getContratoID());
 		contratoAdd.setTipo(conSelected.getTipo());	
 		contratoAdd.setFechaInicio(conSelected.getFechaInicio());	
@@ -202,7 +202,7 @@ public class mb_Cliente implements Serializable{
 	
 	public String addContrato(){
 		String salida= null;
-		contratoAdd.setClienteID(this.cliSelected.getClienteID());
+		contratoAdd.setCliente(this.cliSelected);
 		if (dao.addContrato (contratoAdd)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato "+contratoAdd.getTipo()+contratoAdd.getContratoID());

@@ -18,11 +18,11 @@
 <p:calendar id="maskFin" value="#{mb_OT.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
 </p:panelGrid>
 <p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_OT.filtrarPorFechasManoObraOT}"   
-update=":datatableMO:datatable2MO :message"/>
+update=":formmanodeobra:datatable2MO :message"/>
 </p:panelGrid>
  </h:form>	
  	
-<h:form id="datatableMO">
+<h:form id="formmanodeobra">
 
 			<p:dataTable var="mo" value="#{mb_OT.listaManoObra}" id="datatable2MO" widgetVar="datatable2MO"
 			selection="#{mb_OT.moSelected}" selectionMode="single" rowKey="#{mo.manoObraID}"
@@ -310,7 +310,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 			<p:inputNumber  id="totalHora" value="#{mb_OT.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="." />  
 						
 			<p:commandButton value="Agregar" actionListener="#{mb_OT.addManoObra}"  oncomplete="handleAddRequest(xhr, status, args)"
-			update="@([id$=datatable2MO]) message" />	
+			update="@([id$=formmanodeobra]) message" />	
  
 		</p:panelGrid>
  

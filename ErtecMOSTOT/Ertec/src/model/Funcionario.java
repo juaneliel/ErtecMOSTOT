@@ -23,7 +23,7 @@ public class Funcionario implements Serializable {
  
 	@Lob()
 	private byte[] foto;
- 
+  
 	
 	@OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name="fichaID", referencedColumnName="fichaID")

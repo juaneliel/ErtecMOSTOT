@@ -7,7 +7,7 @@
  
  	<ui:composition>
  	
-<h:form id="datatableCE"> 
+<h:form id="formcompraexterna"> 
  
  	<p:dataTable var="compraExterna" value="#{mb_OT.listaComprasExternas}" id="datatablecompraexterna" widgetVar="datatablecompraexterna"
 			selection="#{mb_OT.ceSelected}" selectionMode="single" rowKey="#{compraExterna.id}"
@@ -196,7 +196,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
  converter="ConverterProveedor" forceSelection="true"   />        
 	       
 	<p:commandButton value="Agregar" actionListener="#{mb_OT.addCompraExterna}"  oncomplete="handleAddRequest(xhr, status, args)"
-			update="@([id$=datatablecompraexterna]) message" />	
+			update="@([id$=formcompraexterna]) message" />	
  		    
 		   	
 			</h:panelGrid>

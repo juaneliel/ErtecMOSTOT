@@ -15,68 +15,30 @@ import model.Adicional;
 import model.Proveedores; 
 import model.DAO.DAO_Proveedor;
 
-
-
 @ManagedBean
 @SessionScoped
 public class mb_Proveedores {
 
-	private DAO_Proveedor dao=new DAO_Proveedor();
-	
+	private DAO_Proveedor dao=new DAO_Proveedor();	
 	private ArrayList<Proveedores> lista;
-	
-	private int proveedorID; 
-	private String direccion; 
-	private String email; 
-	private int fax; 
-	private String nombre; 
-	private String observacion; 
-	private BigDecimal ruc; 
-	private int telefono;
-	
-	
+	private Proveedores proSelected;
+	private Proveedores proveedorAdd = new Proveedores();	
 	
 	@PostConstruct	
 	public void init(){
 		this.recargarLista();
-	}
+	}	
 	
-	
-	
-	
-	
-	
-	
-	
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
 	public void recargarLista(){
 		this.lista= dao.getLista();		
 	}
 	
 	public String add(){
-	 	String salida="/paginas/proveedores.xhtml";
-		Proveedores p=new Proveedores();
-		p.setDireccion(direccion);
-		p.setEmail(email);
-		p.setFax(fax);
-		p.setNombre(nombre);
-		p.setObservacion(observacion);
-		p.setProveedorID(proveedorID);
-		p.setRuc(ruc);
-		p.setTelefono(telefono);		
-		
-		
+	 	String salida="/paginas/proveedores.xhtml";			
 		System.out.println("entro en addadicional");
-		if(dao.add(p)){
+		if(dao.add(proveedorAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego el proveedor");
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego el proveedor "+proveedorAdd.getNombre());
 			context.addMessage(null,mensaje);
 			this.recargarLista();
 		}
@@ -85,45 +47,38 @@ public class mb_Proveedores {
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar");
 			context.addMessage(null,mensaje);
 		}
-		return salida;
-		 
+		return salida;		 
 	}
-	public void delete(Proveedores p){
-		
+	
+	public void delete(Proveedores p){		
 		if (dao.delete(p) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el provedor  "+p.getProveedorID());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	    FacesContext.getCurrentInstance().addMessage(null, message);			
+	    lista.remove(p);
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se pudo eliminar ");
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	    FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        this.recargarLista();
+        //this.recargarLista();
         System.out.println("entro en delete adicional");		
 	}
 
 	 
 
-	public void editProveedor (RowEditEvent event) {
-		
+	public void editProveedor (RowEditEvent event) {		
 		Proveedores p= (Proveedores) event.getObject();
-		
-		
-    	if(dao.update(p)){    		
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el proveedor "+p.getProveedorID());
-            FacesContext.getCurrentInstance().addMessage(null, message); 
-    	}
-    	else{
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar");
-            FacesContext.getCurrentInstance().addMessage(null, message);           
-    	}  	
-        
-    }
-
-	 
-
-	 
+		if(dao.update(p)){    		
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el proveedor "+p.getProveedorID());
+      FacesContext.getCurrentInstance().addMessage(null, message); 
+  	}
+  	else{
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar");
+      FacesContext.getCurrentInstance().addMessage(null, message);           
+  	}      
+  }
+ 
 	public ArrayList<Proveedores> getLista() {
 		return lista;
 	}
@@ -132,61 +87,19 @@ public class mb_Proveedores {
 		this.lista = lista;
 	}
 
-	public int getProveedorID() {
-		return proveedorID;
+	public Proveedores getProSelected() {
+		return proSelected;
+	} 
+	public void setProSelected(Proveedores proSelected) {
+		this.proSelected = proSelected;
 	}
 
-	public void setProveedorID(int proveedorID) {
-		this.proveedorID = proveedorID;
+	public Proveedores getProveedorAdd() {
+		return proveedorAdd;
 	}
 
-	public String getDireccion() {
-		return direccion;
+	public void setProveedorAdd(Proveedores proveedorAdd) {
+		this.proveedorAdd = proveedorAdd;
 	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public int getFax() {
-		return fax;
-	}
-
-	public void setFax(int fax) {
-		this.fax = fax;
-	}
-
-	public String getObservacion() {
-		return observacion;
-	}
-
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
-	}
-
-	public BigDecimal getRuc() {
-		return ruc;
-	}
-
-	public void setRuc(BigDecimal ruc) {
-		this.ruc = ruc;
-	}
-
-	public int getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(int telefono) {
-		this.telefono = telefono;
-	}
-	
 	
 }

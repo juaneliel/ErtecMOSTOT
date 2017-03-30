@@ -17,9 +17,8 @@
  <f:ajax event="load" listener="#{mb_Funcionario.limpiarVariables}" />
 
  <h:form>
- 
-   <div id="panel1">         
-<h:panelGrid id="panel" columns="2" border="1"
+          
+<p:panelGrid id="panel" columns="2" border="1"
    cellpadding="5" cellspacing="1">    
    
     <h:outputLabel value="Nombre:" for="n" />
@@ -43,14 +42,14 @@
     <h:outputLabel value="Ruc:" for="ruc" />
     <h:inputText id="ruc" label="ruc" value="#{mb_Proveedores.ruc}"  /> 
   
-
-    <p:column colspan="2">
-		<h:commandButton value="Agregar" action="#{mb_Proveedores.add}"   />	  
-    </p:column>
-
-</h:panelGrid>
-   </div>    
  
+
+
+			<p:commandButton value="Agregar" actionListener="#{mb_Proveedores.add}"  oncomplete="handleAddProveedorRequest(xhr, status, args)"
+			update="@([id$=datatableproveedor]) message" />
+
+
+</p:panelGrid>  
  
  </h:form>
         

@@ -14,41 +14,54 @@
       
 <ui:define name="cuerpo"> 
  
-<h:form id="datatablePRO">
-
-
+<h:form id="formproveedor">
  
-<p:dataTable var="proveedor" value="#{mb_Proveedores.lista}" id="datatable2PRO"  emptyMessage="Sin Registros"
- paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
- draggableColumns="true" scrollable="true"  
- scrollWidth="100%"  editable="true"  tableStyle="color:red" 
- style="text-align:left;max-height:500px;overflow-y:scroll; 
-   font-size: 90% !important;color: red;font-weight: bold;"
-		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"    
-	
- >	
-
- <p:ajax event="rowEdit" listener="#{mb_Proveedores.editProveedor}" update="message" />
-
- 	<f:facet name="{Exporters}">
+ 	<p:dataTable var="proveedor" value="#{mb_Proveedores.lista}" id="datatableproveedor" widgetVar="datatableproveedor"
+			selection="#{mb_Proveedores.proSelected}" selectionMode="single" rowKey="#{proveedor.proveedorID}"
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
+		 >
+		 
+		 		  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2PRO" fileName="proveedores"   />
+	      <p:dataExporter type="xls" target="datatableproveedor" fileName="proveedor"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2PRO" fileName="proveedores"  />
+	      <p:dataExporter type="pdf" target="datatableproveedor" fileName="proveedor"   />
 	    </h:commandLink> 
 		</f:facet>
+		 
+		<f:facet name="{titulo}">
+		 Proveedor	 		        
+		</f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addproveedor').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','proveedor')}"/>      
+      
+     </f:facet>      
+       
+		 
+		 <f:facet name="{vercol}">   
+		         <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="datatableproveedor" trigger="toggler" />
 
+		    </f:facet> 
+		 
 
-	 	<f:facet name="header">
-        Proveedores 
-        <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-        <p:columnToggler datasource="datatable2PRO" trigger="toggler" />
-    </f:facet>   
-   
+ <p:ajax event="rowEdit" listener="#{mb_Proveedores.editProveedor}" update="message" />
+
+  
+    <p:column headerText="" style = "width:0px" exportable="false"  rendered="#{mb_Usuario.acceso('EDITAR','proveedor')}">				
+					<p:rowEditor   >
+					</p:rowEditor>					
+		 </p:column>
 
 	<p:column headerText="Id:" sortBy="#{proveedor.proveedorID}"  filterMatchMode="startsWith" filterBy="#{proveedor.proveedorID}">		                
 	    <h:outputText value="#{proveedor.proveedorID}"/>
@@ -113,15 +126,12 @@
  
   
     
-        <p:column headerText="Editar"  style = "width:50px" exportable="false">				
-					<p:rowEditor    rendered="#{mb_Usuario.acceso('EDITAR','proveedor')}">
-					</p:rowEditor>					
-		    </p:column>
+
 		    
 		     
-			<p:column headerText="Borrar"  style = "width:50px" rendered="#{mb_Usuario.acceso('EDITAR','proveedor')}" exportable="false">	
+			<p:column headerText="Bor"  style = "width:50px" rendered="#{mb_Usuario.acceso('BORRAR','proveedor')}" exportable="false">	
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_Proveedores.delete(proveedor)}" 
-			 update="datatable2PRO message">
+			 update="datatableproveedor message">
 			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 			 </p:commandButton>
 			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -134,8 +144,67 @@
  
 </p:dataTable>
 
+ 
 
 </h:form>
+
+
+<p:confirmDialog dynamic="true" header="Borrar Proveedor ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>
+
+<script type="text/javascript">
+    function handleAddProveedorRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addproveedor').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addproveedor').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }       
+</script>
+
+<p:dialog id="addproveedor" header="Agregar orden de trabajo"  widgetVar="addproveedor" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+ 
+ <p:panelGrid id="panel" columns="2" border="1"
+   cellpadding="5" cellspacing="1">    
+   
+    <h:outputLabel value="Nombre:" for="n" />
+    <h:inputText id="n" label="nombre" value="#{mb_Proveedores.proveedorAdd.nombre}"  /> 
+      
+      <h:outputLabel value="Direccion:" for="direccion" />
+    <h:inputText id="direccion" label="direccion" value="#{mb_Proveedores.proveedorAdd.direccion}"  /> 
+      
+      <h:outputLabel value="Email" for="email" />
+    <h:inputText id="email" label="email" value="#{mb_Proveedores.proveedorAdd.email}"  /> 
+    
+       <h:outputLabel value="Telefono:" for="telefono" />
+    <h:inputText id="telefono" label="telefono" value="#{mb_Proveedores.proveedorAdd.telefono}"  /> 
+  
+     <h:outputLabel value="Fax:" for="fax" />
+    <h:inputText id="fax" label="fax" value="#{mb_Proveedores.proveedorAdd.fax}"  /> 
+  
+   <h:outputLabel value="Observacion" for="observacion" />
+    <h:inputText id="observacion" label="observacion" value="#{mb_Proveedores.proveedorAdd.observacion}"  /> 
+   
+    <h:outputLabel value="Ruc:" for="ruc" />
+    <h:inputText id="ruc" label="ruc" value="#{mb_Proveedores.proveedorAdd.ruc}"  /> 
+  
+
+    <p:column colspan="2">
+		<h:commandButton value="Agregar" action="#{mb_Proveedores.add}"   />	  
+    </p:column>
+
+</p:panelGrid>  
+ 
+ </h:form>
+</p:dialog>
+
+
 
 
 </ui:define>

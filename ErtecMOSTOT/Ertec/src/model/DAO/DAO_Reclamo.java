@@ -128,9 +128,9 @@ public class DAO_Reclamo {
   
   public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
     
-    String consulta =  "SELECT count(r.clienteID), r.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador+r.energia+r.telefonos),"
+    String consulta =  "SELECT count(r.cliente.clienteID), r.cliente.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador+r.energia+r.telefonos),"
         + " c.equipo,c.tipo,c.contratoID,max( DATEDIFF(r.fechaVisita,r.fechaReclamado) ),sum(r.antel),sum(r.conmutador),sum(r.energia),sum(r.telefonos) "
-        + "FROM Reclamo r, Contrato c where r.contratoID = c.id ";
+        + "FROM Reclamo r, Contrato c where r.contrato.id = c.id ";
  
         
                  
@@ -168,7 +168,7 @@ public class DAO_Reclamo {
     }
     
     
-    consulta += " group by r.clienteID, r.nombreCliente,c.equipo,c.tipo,c.contratoID having count(*) > 0";
+    consulta += " group by r.cliente.clienteID, r.nombreCliente,c.equipo,c.tipo,c.contratoID having count(*) > 0";
     
     
     ArrayList<DAO_infoService> salida = new ArrayList<DAO_infoService>();    
@@ -177,10 +177,10 @@ public class DAO_Reclamo {
     try{
       EntityManager em=JpaUtil.getEntityManager();      
        
-      System.out.println(">>>consulta>"+ consulta);     
+      System.out.print(">>>consulta>"+ consulta);     
       Query q = em.createQuery(consulta);            
       List < Object[]>r = (List<Object[]>) q.getResultList();
-      
+      System.out.println("tamanio: "+r.size());
       for (Object[] results : r){ 
         DAO_infoService aux = new DAO_infoService();
         
@@ -279,20 +279,16 @@ public class DAO_Reclamo {
       em.getTransaction().begin();      
       if(o.getCliente()!=null){
         aux.setNombreCliente(o.getCliente().getNombre());
-        aux.setClienteID(o.getCliente().getClienteID()); 
+        aux.setCliente(o.getCliente()); 
       } 
-      if(o.getFuncionario()!=null){
-        aux.setFuncionarioID(o.getFuncionario().getFuncionarioID()); 
-      } 
-      else{
-        System.out.println("funcionario nulo en update reclamo");
-      }
-       
-      //revisar se debe de hacer con objetos
-      aux.setContratoID(o.getContratoID());
-      
-      
-      
+      aux.setFuncionario(o.getFuncionario());
+//      if(o.getFuncionario()!=null){
+//        aux.setFuncionarioID(o.getFuncionario().getFuncionarioID()); 
+//      } 
+//      else{
+//        System.out.println("funcionario nulo en update reclamo");
+//      }       
+      aux.setContrato(o.getContrato());
       aux.setAntel(o.getAntel());
       aux.setCodigo(o.getCodigo());
       aux.setConmutador(o.getConmutador());

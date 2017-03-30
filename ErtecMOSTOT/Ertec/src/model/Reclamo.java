@@ -22,25 +22,26 @@ public class Reclamo implements Serializable {
   private int id;
   
  
-  @OneToOne(fetch=FetchType.EAGER)
-  @JoinColumn(name="funcionarioID" , insertable = false, updatable = false)
+  @OneToOne(fetch=FetchType.EAGER,optional=true) 
+  @JoinColumn(name="funcionarioID")
   private Funcionario funcionario;
   
-  @OneToOne(fetch=FetchType.EAGER)
-  @JoinColumn(name="clienteID" , insertable = false, updatable = false)
+  @OneToOne(fetch=FetchType.EAGER,optional=true )
+  @JoinColumn(name="clienteID")
   private Cliente cliente;
+  
+  @OneToOne(fetch=FetchType.EAGER,optional=true)
+  @JoinColumn(name="contratoID")
+  private Contrato contrato;
 
 	private short antel;
-
-	private int clienteID;
-
+ 
 	private String codigo;
 
 	private short conmutador;
 
 	private String contacto;
-
-	private int contratoID;
+ 
 
 	private short energia;
 
@@ -54,7 +55,6 @@ public class Reclamo implements Serializable {
 	@Column(name="fecha_visita")
 	private Date fechaVisita;
 
-	private int funcionarioID;
 
 	@Column(name="hora_reclamado")
 	private Time horaReclamado;
@@ -96,15 +96,7 @@ public class Reclamo implements Serializable {
 	public void setAntel(short antel) {
 		this.antel = antel;
 	}
-
-	public int getClienteID() {
-		return this.clienteID;
-	}
-
-	public void setClienteID(int clienteID) {
-		this.clienteID = clienteID;
-	}
-
+ 
 	public String getCodigo() {
 		return this.codigo;
 	}
@@ -127,14 +119,6 @@ public class Reclamo implements Serializable {
 
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
-	}
-
-	public int getContratoID() {
-		return this.contratoID;
-	}
-
-	public void setContratoID(int contratoID) {
-		this.contratoID = contratoID;
 	}
 
 	public short getEnergia() {
@@ -169,13 +153,7 @@ public class Reclamo implements Serializable {
 		this.fechaVisita = fechaVisita;
 	}
 
-	public int getFuncionarioID() {
-		return this.funcionarioID;
-	}
 
-	public void setFuncionarioID(int funcionarioID) {
-		this.funcionarioID = funcionarioID;
-	}
 
 	public Time getHoraReclamado() {
 		return this.horaReclamado;
@@ -271,6 +249,14 @@ public class Reclamo implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
 	}
 
 }

@@ -12,58 +12,58 @@
 <ui:define name="cuerpo"> 
   
  
-	<h:form id="datatable">
-	
+ <h:form  > 	
+ 	<p:panelGrid        columns="3">  
+<p:panelGrid      columns="2"> 		
 		<p:outputLabel for="maskIni" value="Fecha inicial:" />
 <p:calendar id="maskIni" value="#{mb_Reclamo.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
- 
-
+</p:panelGrid>
+<p:panelGrid    columns="2"> 
 <p:outputLabel for="maskFin" value="  Fecha final:"   />
 <p:calendar id="maskFin" value="#{mb_Reclamo.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
- 
+</p:panelGrid>
 <p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_Reclamo.filtrarInformeVisitadosPorFechas}"   
-update="datatableservice :message"/>
-		
-			
-				<h:commandLink style="text-align:right">
-		<p:graphicImage  name="/images/excel.png" width="24"/>
-		<p:dataExporter type="xls" target="datatableservice" fileName="service"  />
-	</h:commandLink>
-	
-	<h:commandLink style="text-align:right">
-		<p:graphicImage name="/images/pdf.png" width="24"/>
-		<p:dataExporter type="pdf" target="datatableservice" fileName="service"  />
-	</h:commandLink>
- <br/><br/>		 
-	
-	<p:dataTable var="service" value="#{mb_Reclamo.filtrado}" id="datatableservice"
+update=":forminforme:datatableservice :message"/>
+</p:panelGrid>
+ </h:form>	
+ 
+ 
+ 
+	<h:form id="forminforme">
+ 
+		 
+		 	<p:dataTable var="service" value="#{mb_Reclamo.filtrado}" id="datatableservice" widgetVar="datatableservice"
+			selection="#{mb_Reclamo.infoServiceSelected}" selectionMode="single" rowKey="#{service.codigo}"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
-		 scrollable="true"    scrollWidth="100%"  scrollHeigth="500" 
-		 editable="true"  paginatorPosition="top"  
-		 styleClass="estiloDataTable"
-		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-         selection="#{mb_Reclamo.infoServiceSelected}" selectionMode="single" rowKey="#{service.codigo}"
-                
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	
 		 >
 		 
-		<f:facet name="{Exporters}">
+		 		  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatableservice" fileName="service" pageOnly="true" />
+	      <p:dataExporter type="xls" target="datatableservice" fileName="service"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatableservice" fileName="service" pageOnly="true"/>
+	      <p:dataExporter type="pdf" target="datatableservice" fileName="service"   />
 	    </h:commandLink> 
 		</f:facet>
-		
-
-		<f:facet name="header">
-				<h:outputText value="Indicadores de Servicios" style="text-align:center"/> 
-
-		</f:facet>
 		 
+						 	<f:facet name="{titulo}">
+		      Indicadores de Servicios 		        
+		    </f:facet>
+		   
+		 
+		 <f:facet name="{vercol}">   
+		      <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		       <p:columnToggler datasource="datatableservice" trigger="toggler" />
+		    </f:facet> 
+	   
 		 
  
    

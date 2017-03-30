@@ -7,10 +7,10 @@
  
  	<ui:composition>
  	
-<h:form id="datatableADI">
+<h:form id="formadicional">
   
  
-<p:dataTable var="adicional" value="#{mb_OT.listaAdicionales}" id="datatableadicional" widgetVar="datatableadicional"
+<p:dataTable var="adicional" value="#{mb_OT.listaAdicionales}" id="formadicionalcional" widgetVar="formadicionalcional"
 			selection="#{mb_OT.adiSelected}" selectionMode="single" rowKey="#{adicional.adicionalID}"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
@@ -28,12 +28,12 @@
      		 		  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatableadicional" fileName="ot"   />
+	      <p:dataExporter type="xls" target="formadicionalcional" fileName="ot"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatableadicional" fileName="ot"   />
+	      <p:dataExporter type="pdf" target="formadicionalcional" fileName="ot"   />
 	    </h:commandLink> 
 		</f:facet>		    
 		    
@@ -44,7 +44,7 @@
 		 
 		 <f:facet name="{vercol}">   
 		       <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-        <p:columnToggler datasource="datatableadicional" trigger="toggler" />
+        <p:columnToggler datasource="formadicionalcional" trigger="toggler" />
 		    </f:facet>
     
     <p:ajax event="rowEdit" listener="#{mb_OT.editAdicional}" update="message" />
@@ -76,7 +76,7 @@
 		     
 			<p:column headerText="Borrar"  style = "width:50px" rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" exportable="false">		
 			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{mb_OT.deleteAdicional(adicional)}" 
-			 update="datatableadicional message">
+			 update="formadicionalcional message">
 			     <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
 			 </p:commandButton>
 			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -114,7 +114,7 @@
 			    <p:outputLabel value="Especificacion:" for="especificacion" />
 			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.especificacionAdicional}" required="true" />			     
 			<p:commandButton value="Agregar" actionListener="#{mb_OT.addAdicional}"  oncomplete="handleAddRequest(xhr, status, args)"
-			update="@([id$=datatableadicional]) message" />				   	
+			update="@([id$=formadicionalcional]) message" />				   	
 			</h:panelGrid> 
 	 </h:form>	
 </p:dialog>	

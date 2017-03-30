@@ -246,7 +246,7 @@ public class DAO_Cliente {
 			Contrato aux = em.find(Contrato.class, o.getId() );	
 			em.getTransaction().begin();
 			
-			aux.setClienteID(o.getClienteID());
+			aux.setCliente(o.getCliente());
 			aux.setCorredorID(o.getCorredorID());
 			aux.setDireccion(o.getDireccion());
 			aux.setEquipo(o.getEquipo());

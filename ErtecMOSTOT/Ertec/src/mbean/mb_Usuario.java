@@ -35,6 +35,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import enumerados.EnumAccesoPagina;
 import model.Articulo;
 import model.Cliente;
+import model.Contrato;
 import model.Funcionario;
 import model.Proveedores;
 import model.Usuario;
@@ -125,15 +126,11 @@ public class mb_Usuario {
 	
 	private  List<Boolean> viewFuncionarios;
 	private ArrayList<Usuario> lista;
-
 	private ArrayList<Funcionario> listaFuncionariosOBJ;
-
 	private ArrayList<Articulo> listaArticulosOBJ;
-
 	private ArrayList<Cliente> listaClientesOBJ;
-
 	private ArrayList<Proveedores> listaProveedoresOBJ;
-
+	private ArrayList<Contrato> listaContratosOBJ;
 	 
   @PostConstruct  
   public void init(){
@@ -528,5 +525,16 @@ public class mb_Usuario {
   		contexto.responseComplete();	  		
   	}	  	
   }
-	
+
+	public ArrayList<Contrato> getListaContratosOBJ() {
+		return listaContratosOBJ;
+	}
+
+	public void setListaContratosOBJ(ArrayList<Contrato> listaContratosOBJ) {
+		this.listaContratosOBJ = listaContratosOBJ;
+	}
+	public void recargarListaContratos(int cliID){
+		System.out.println("recargarlista");
+		this.listaContratosOBJ=DAO_Cliente.getContratosCliente(cliID);		
+	}
 }

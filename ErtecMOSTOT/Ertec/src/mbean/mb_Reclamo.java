@@ -32,35 +32,12 @@ public class mb_Reclamo {
   private List<Boolean> list;
   private ArrayList<Reclamo> lista;
   private DAO_Reclamo dao=new DAO_Reclamo();
-  private int id;
-  private short antel=0;
-  private int clienteID=0;
-  private String codigo;
-  private short conmutador=0;
-  private String contacto;
-  private short energia=0;
-  private String estado;
-  private Date fechaReclamado;
-  private Date fechaVisita;
-  private Time horaReclamado;
-  private String myr;
-  private String myrEstado;
-  private String observaciones;
-  private String ordenreparacion;
-  private Object reclamo;
-  private short red=0;
-  private int funcionarioID;
-  private short telefonos=0;
-  private String urgente;
-  private Cliente clienteOBJ;
-  private Funcionario funcionarioOBJ;
-  private int contratoID;
-  
+
   private ArrayList<Reclamo> listaPendientes;
   private ArrayList<Reclamo> listaAnuladas;
   private ArrayList<Reclamo> listaVisitadas;
-  private ArrayList<DAO_infoService> filtrado;
-  private Contrato contratoOBJ;
+  private ArrayList<DAO_infoService> filtrado; 
+  private Reclamo reclamoAdd=new Reclamo();
   
   
   private ArrayList<Contrato> listaSinVisitar;
@@ -112,51 +89,31 @@ public class mb_Reclamo {
   
   public String add(){
     String salida=null;
-    Reclamo aux = new Reclamo();
     
-   
-    //aux.setCliente(clienteOBJ);
-    if(clienteOBJ!=null){
-      aux.setClienteID(clienteOBJ.getClienteID());
-      aux.setNombreCliente(clienteOBJ.getNombre());
+    if(reclamoAdd.getCliente()!=null){ 
+    	reclamoAdd.setNombreCliente(reclamoAdd.getCliente().getNombre());
     } 
-    aux.setFechaReclamado(this.getFechaReclamado());
-    aux.setUrgente(this.getUrgente()); 
-    aux.setContacto(this.getContacto());
-    aux.setReclamo(this.getReclamo().toString());    
-    if(this.contratoOBJ!=null){
-      aux.setContratoID(contratoOBJ.getId());
-      aux.setCodigo(contratoOBJ.getTipo()+contratoOBJ.getContratoID()); 
-    }
-     
-    aux.setAntel(this.getAntel());
-    aux.setConmutador(conmutador);
-    aux.setEnergia(getEnergia());
-    aux.setEstado("pendiente");
-    aux.setFechaVisita(this.getFechaVisita());
-    aux.setHoraReclamado(this.getHoraReclamado());
-    aux.setMyr(this.getMyr());
-    aux.setMyrEstado("pen");
-    aux.setObservaciones(this.getObservaciones());
-    aux.setOrdenreparacion(this.getOrdenreparacion());
-    aux.setRed(this.getRed());
-    //aux.setFuncionario(null);
-    aux.setTelefonos(getTelefonos());
+     System.out.println(">>>>reclamoaddcontrato "+reclamoAdd.getContrato());
+    if(reclamoAdd.getContrato()!=null){
+      reclamoAdd.setCodigo(reclamoAdd.getContrato().getTipo()+reclamoAdd.getContrato().getContratoID()); 
+    } 
+    reclamoAdd.setMyrEstado("pen");
+    reclamoAdd.setFuncionario(null);
+    reclamoAdd.setEstado("pendiente");
     
-    
-    
-    
-    if (dao.add (aux)){
+    if (dao.add (reclamoAdd)){
       salida= "/paginas/reclamos.xhtml?faces-redirect=true";
-      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "El reclamo se agrego exitosamente");
-          FacesContext.getCurrentInstance().addMessage(null, message);
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el reclamo "+reclamoAdd.getId());
+      FacesContext.getCurrentInstance().addMessage(null, message);
+      this.listaPendientes.add(reclamoAdd);
+      this.lista.add(reclamoAdd);
     }
     else{
-      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar reclamo");
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", " No se pudo agregar el reclamo");
           FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    System.out.println(">>AGREGAR"+aux.getId() );
-    recargar ();
+    System.out.println(">>AGREGAR"+reclamoAdd.getId() );
+    //recargar ();
     return salida;
   }
   
@@ -184,7 +141,7 @@ public class mb_Reclamo {
     
     Reclamo o= (Reclamo) event.getObject();
     
-    System.out.println("codigo de reclamo: "+o.getCodigo());
+    System.out.println("codigo de reclamo: "+o.getCodigo()+" - funcioario"+o.getFuncionario());
       if(dao.update(o)){       
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el reclamo ");
             FacesContext.getCurrentInstance().addMessage(null, message); 
@@ -230,193 +187,13 @@ public class mb_Reclamo {
     this.lista = lista;
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public short getAntel() {
-    return antel;
-  }
-
-  public void setAntel(short antel) {
-    this.antel = antel;
-  }
-
-  
-
- 
-  public int getClienteID() {
-    return clienteID;
-  }
-
-  public void setClienteID(int clienteID) {
-    this.clienteID = clienteID;
-  }
-
-  public String getCodigo() {
-    return codigo;
-  }
-
-  public void setCodigo(String codigo) {
-    this.codigo = codigo;
-  }
-
-  public short getConmutador() {
-    return conmutador;
-  }
-
-  public void setConmutador(short conmutador) {
-    this.conmutador = conmutador;
-  }
-
-  public String getContacto() {
-    return contacto;
-  }
-
-  public void setContacto(String contacto) {
-    this.contacto = contacto;
-  }
-
-  public short getEnergia() {
-    return energia;
-  }
-
-  public void setEnergia(short energia) {
-    this.energia = energia;
-  }
-
-  public String getEstado() {
-    return estado;
-  }
-
-  public void setEstado(String estado) {
-    this.estado = estado;
-  }
-
-  public Date getFechaReclamado() {
-    return fechaReclamado;
-  }
-
-  public void setFechaReclamado(Date fechaReclamado) {
-    this.fechaReclamado = fechaReclamado;
-  }
-
-  public Date getFechaVisita() {
-    return fechaVisita;
-  }
-
-  public void setFechaVisita(Date fechaVisita) {
-    this.fechaVisita = fechaVisita;
-  }
-
-  public Time getHoraReclamado() {
-    return horaReclamado;
-  }
-
-  public void setHoraReclamado(Time horaReclamado) {
-    this.horaReclamado = horaReclamado;
-  }
-
-  public String getMyr() {
-    return myr;
-  }
-
-  public void setMyr(String myr) {
-    this.myr = myr;
-  }
-
-  public String getMyrEstado() {
-    return myrEstado;
-  }
-
-  public void setMyrEstado(String myrEstado) {
-    this.myrEstado = myrEstado;
-  }
-
- 
-
-  public String getObservaciones() {
-    return observaciones;
-  }
-
-  public void setObservaciones(String observaciones) {
-    this.observaciones = observaciones;
-  }
 
   public void setList(List<Boolean> list) {
     this.list = list;
   }
 
-  public String getOrdenreparacion() {
-    return ordenreparacion;
-  }
-
-  public void setOrdenreparacion(String ordenreparacion) {
-    this.ordenreparacion = ordenreparacion;
-  }
-
-  public Object getReclamo() {
-    return reclamo;
-  }
-
-  public void setReclamo(Object reclamo) {
-    this.reclamo = reclamo;
-  }
-
-  public short getRed() {
-    return red;
-  }
-
-  public void setRed(short red) {
-    this.red = red;
-  }
-
 
  
-  public Funcionario getFuncionarioOBJ() {
-    return funcionarioOBJ;
-  }
-
-  public void setFuncionarioOBJ(Funcionario funcionarioOBJ) {
-    this.funcionarioOBJ = funcionarioOBJ;
-  }
-
-  public int getFuncionarioID() {
-    return funcionarioID;
-  }
-
-  public void setFuncionarioID(int funcionarioID) {
-    this.funcionarioID = funcionarioID;
-  }
-
-  public short getTelefonos() {
-    return telefonos;
-  }
-
-  public void setTelefonos(short telefonos) {
-    this.telefonos = telefonos;
-  }
-
-  public String getUrgente() {
-    return urgente;
-  }
-
-  public void setUrgente(String urgente) {
-    this.urgente = urgente;
-  }
-
-  public Cliente getClienteOBJ() {
-    return clienteOBJ;
-  }
-
-  public void setClienteOBJ(Cliente clienteOBJ) {
-    //this.listaContratos=DAO_Cliente.getContratosCliente(clienteOBJ.getClienteID());
-    this.clienteOBJ = clienteOBJ;
-  }
 
   public ArrayList<Reclamo> getListaPendientes() {
     return listaPendientes;
@@ -450,22 +227,8 @@ public class mb_Reclamo {
     this.filtrado = filtrado;
   }
 
-  public int getContratoID() {
-    return contratoID;
-  }
 
-  public void setContratoID(int contratoID) {
-    this.contratoID = contratoID;
-  }
-
-   public Contrato getContratoOBJ() {
-    return contratoOBJ;
-  }
-
-  public void setContratoOBJ(Contrato contratoOBJ) {
-    this.contratoOBJ = contratoOBJ;
-  }
-
+ 
   public ArrayList<Contrato> getListaSinVisitar() {
     return listaSinVisitar;
   }
@@ -480,6 +243,14 @@ public class mb_Reclamo {
 
 	public void setReclamoSelected(Reclamo reclamoSelected) {
 		this.reclamoSelected = reclamoSelected;
+	}
+
+	public Reclamo getReclamoAdd() {
+		return reclamoAdd;
+	}
+
+	public void setReclamoAdd(Reclamo reclamoAdd) {
+		this.reclamoAdd = reclamoAdd;
 	} 
   
 }

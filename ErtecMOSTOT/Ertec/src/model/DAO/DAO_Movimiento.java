@@ -355,7 +355,7 @@ public class DAO_Movimiento {
 	public static ArrayList <Movimiento> getMovimientosOT(long idOT){	
 		ArrayList <Movimiento> salida = new ArrayList <Movimiento>();
 		try{
-			//a partir del id de la ot se deben de buscar en la tabala de movimientos
+			//a partir del id de la ot se deben de buscar en la tabla de movimientos
 			//aquellos que sean "TipoReferencia" OT
 			//y que Referencia sea el id de la ot pasado
 			
@@ -363,8 +363,6 @@ public class DAO_Movimiento {
 			
 			//String consulta ="Select m From Movimiento m where (m.tipoReferencia = 'OR' OR m.tipoReferencia = 'OT') and m.referencia = "+idOT + " ORDER BY MovimientoID DESC";
 			String consulta ="Select m From Movimiento m where (m.nombreCliente <> NULL) and m.referencia = "+idOT + " ORDER BY MovimientoID DESC";
-			
-			
 			
 			System.out.println("Consulta movimiento "+consulta);
 			TypedQuery<Movimiento> consultaFuncionario= em.createQuery(consulta, Movimiento.class);
