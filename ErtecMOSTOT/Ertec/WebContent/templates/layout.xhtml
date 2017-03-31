@@ -10,8 +10,8 @@
 <title><ui:insert name="titulo">Ertec S.A </ui:insert></title>
 
 <h:outputStylesheet name="/css/estilo.css" />
-
-<link rel="shortcut icon" type="image/png" href="/resources/images/favicon.ico" />
+ 
+<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/favicon.ico"/>
 
 <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
 <p:dialog widgetVar="statusDialog" modal="false" draggable="true" closable="true" resizable="false" showHeader="false">
@@ -85,60 +85,14 @@
 
    		 
     <p:menubar>
-
-        <p:submenu label="Usuarios" icon="" rendered="#{mb_Usuario.acceso('VER','admin')}">
-            <p:menuitem value="Listar" url="/paginas/usuarios.xhtml" icon="" />
-            <p:menuitem value="Modificar clave, email" url="/paginas/manejouser.xhtml" icon="" />
-              <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
-
-        <p:submenu label="Articulos" icon="" rendered="#{mb_Usuario.acceso('VER','articulo')}"> 
-              <p:menuitem value="Listar" url="/paginas/articulos.xhtml" icon="" />
-              <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
-
-
-        <p:submenu label="Clientes" icon="" rendered="#{mb_Usuario.acceso('VER','cliente')}">
-            <p:menuitem value="Listar" url="/paginas/clientes.xhtml" icon="" />
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
-
-
-
-       <p:submenu label="Funcionarios" icon="" rendered="#{mb_Usuario.acceso('VER','funcionario')}">
-            <p:menuitem value="Listar" url="/paginas/funcionarios.xhtml" icon="" />
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
-
-       <p:submenu label="Mano De Obra" icon="" rendered="#{mb_Usuario.acceso('VER','manodeobra')}">
-            <p:menuitem value="Listar" action="#{mb_ManoObra.listarDesdeMenu}" icon="" />
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
-
-
-		<p:submenu label="Movimientos" icon="" rendered="#{mb_Usuario.acceso('VER','movimiento')}">
-            <p:menuitem value="Listar" url="/paginas/movimientos.xhtml" icon="" /> 
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>        
-        
-          <p:submenu label="Orden de trabajo" icon="" rendered="#{mb_Usuario.acceso('VER','ordendetrabajo')}">            
-            <p:menuitem value="Listar" url="/paginas/listot.xhtml" icon="" />
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
- 
-        <p:submenu label="Proveedores" icon="" rendered="#{mb_Usuario.acceso('VER','proveedor')}">
-            <p:menuitem value="Listar" url="/paginas/proveedores.xhtml" icon="" />
-            <p:separator />
-            <p:menuitem value="Ocultar" url="#" />
-        </p:submenu>
- 
+       <p:menuitem value="Usuarios" url="/paginas/usuarios.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','admin')}"/>
+       <p:menuitem value="Articulos" url="/paginas/articulos.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','articulo')}" />
+       <p:menuitem value="Clientes" url="/paginas/clientes.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','cliente')}" />
+       <p:menuitem value="Funcionarios" url="/paginas/funcionarios.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','funcionario')}" /> 
+       <p:menuitem value="Mano De Obra" url="/paginas/manodeobras.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','manodeobra')}" />          
+		   <p:menuitem value="Movimientos" url="/paginas/movimientos.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','movimiento')}" />
+       <p:menuitem value="Orden de trabajo" url="/paginas/listot.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','ordendetrabajo')}"/>  
+			 <p:menuitem value="Proveedores" url="/paginas/proveedores.xhtml" icon="" rendered="#{mb_Usuario.acceso('VER','proveedor')}"/>             
     		<p:submenu label="Reclamos" icon="" rendered="#{mb_Usuario.acceso('VER','reclamo')}">    
             <p:menuitem value="Historial" url="/paginas/reclamos.xhtml" icon="" />
             <p:menuitem value="Informes" url="/paginas/informeservice.xhtml" icon="" />

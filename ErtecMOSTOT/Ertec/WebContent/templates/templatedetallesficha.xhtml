@@ -1,101 +1,177 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<ui:composition template="/templates/layout.xhtml"
- xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
 	xmlns:p="http://primefaces.org/ui">
-      
  
-<ui:define name="cuerpo"> 
-	<h:form>			
+ 
+ 	<ui:composition>
+ 	
+<h:form id="formficha">
+ 
 
     <p:tabView>
         <p:tab id="personal" title="Datos personales">
             <p:panel >
                 <p:messages />
-                <h:panelGrid columns="2" columnClasses="label, value">
-                    <h:outputLabel value="Nombre: *" for="n" />
-								    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.nombre}" required="true" /> 
+                <h:panelGrid columns="2" columnClasses="label, value">                 
+                    
+                    <h:outputLabel value="Nombre *" for="n" />
+									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.funSelected.nombre}" required="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+									    
+									    <h:outputLabel value="Alias:" for="alias" /> 
+									    <p:inputText id="alias" value="#{mb_Funcionario.funSelected.alias}" disabled="#{!mb_Funcionario.habEdiFun}" />  
+									    
+									    <h:outputLabel value="Direccion:" for="direccion" /> 
+									    <p:inputText id="direccion" value="#{mb_Funcionario.funSelected.direccion}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+									    
+									    <h:outputLabel value="Telefono:" for="t" />    
+									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.funSelected.telefono}" disabled="#{!mb_Funcionario.habEdiFun}" />
+									    
+									    <h:outputLabel value="Email:" for="e" />
+									    <p:inputText id="e" label="email" value="#{mb_Funcionario.funSelected.email}" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+                   
+                   	  <h:outputLabel value="Cedula:" for="cedula" /> 	
+									    <p:inputText id="cedula" value="#{mb_Funcionario.funSelected.cedula}" disabled="#{!mb_Funcionario.habEdiFun}" />
+									    
+											<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
+								      <p:calendar id="vcedula" value="#{mb_Funcionario.funSelected.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/> 
+									    									    
+								 			<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
+									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.funSelected.libretaCat}" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+									    
+								 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
+								      <p:calendar id="vlibretain" value="#{mb_Funcionario.funSelected.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
 								      
-								    <h:outputLabel value="Email:" for="e" rendered="true" />
-								    <p:inputText id="e" label="email" disabled="#{!mb_Funcionario.habEdiFun}" value="d" rendered="true" />  							    
-								    
-								     
-								    <h:outputLabel value="Telefono" for="t" />    
-								    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.telefono}"  />     
-								    
-								    <h:outputLabel value="Activo:" for="activo" />    
-								    <p:selectOneMenu id="activo" value="#{mb_Funcionario.activo}" style="width:85%"    >
-											<f:selectItem  itemLabel="Si" itemValue="Si" />
-											<f:selectItem   itemLabel="No" itemValue="No" />
-										</p:selectOneMenu >	
-								    
-								    <h:outputLabel value="Alias:" for="alias" /> 
-								    <p:inputText id="alias" value="#{mb_Funcionario.alias}" />
-								    
-								    <h:outputLabel value="Area:" for="area" /> 
-								    <p:inputText id="area" value="#{mb_Funcionario.area}" />
-								    
-								    <h:outputLabel value="Categoria:" for="cat" />    
-								    <p:inputText id="cat" value="#{mb_Funcionario.cat}" />
-								    
-								    <h:outputLabel value="Direccion:" for="direccion" /> 
-								    <p:inputText id="direccion" value="#{mb_Funcionario.direccion}" />
-								    
-							 	    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
-							  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
-								
-								    <h:outputLabel value="Carne de Salud" for="cds" /> 			    	    
-							 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" /> 
-								    
-										<h:outputLabel value="Cedula:" for="cedula" /> 	
-								    <p:inputText id="cedula" value="#{mb_Funcionario.cedula}" style="width:100%"/>
-							           		  
-										<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
-							      <p:calendar id="vcedula" value="#{mb_Funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
-									 
-										<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
-								    <p:inputText id="CatLibreta" value="#{mb_Funcionario.libretaCat}" style="width:100%"/> 
-									 
-							 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
-							       <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
-							    
-							    
-							    <h:commandButton ajax="false" value="Editar" actionListener="#{mb_Funcionario.setHabEdiFun(true)}" update="message"/>
+								      <h:outputLabel value="V.C.Salud:" for="cds" /> 			    	    
+								 			<p:calendar id="cds" value="#{mb_Funcionario.funSelected.carneSalud}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />
+									           	
+									    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
+								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.funSelected.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/>    
+								      									    									    
+									    <h:outputLabel value="Area:" for="area" /> 
+									    <p:inputText id="area" value="#{mb_Funcionario.funSelected.area}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+									    								 	        		  
+										  <h:outputLabel value="Activo:" for="activo" />    
+									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.funSelected.activo}" style="width:85%"  disabled="#{!mb_Funcionario.habEdiFun}"  >
+												<f:selectItem  itemLabel="Si" itemValue="Si" />
+												<f:selectItem   itemLabel="No" itemValue="No" />
+											</p:selectOneMenu >	       
+											
+											<h:outputLabel value="Categoria:" for="cat" />    
+									    <p:inputText id="cat" value="#{mb_Funcionario.funSelected.cat}" disabled="#{!mb_Funcionario.habEdiFun}"/>										
+								    					      	
 							    
 							                    
                 </h:panelGrid>
             </p:panel>
         </p:tab>
-        <p:tab title="Godfather Part II">
+        <p:tab title="Datos privados">
+             <h:panelGrid columns="3" columnClasses="label, value">
+                	<h:panelGrid columns="2" columnClasses="label, value">
+                			<h:outputText value="Primer nombre" />
+			              	<p:inputText value="#{mb_Funcionario.funSelected.ficha.primerNombre}" disabled="#{!mb_Funcionario.habEdiFun}" />     
+			              	        
+			                <h:outputText value="Segundo nombre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.segundoNombre}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                
+	                    <h:outputText value="Primer apellido" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.primerApellido}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Segundo apellido" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.segundoApellido}" disabled="#{!mb_Funcionario.habEdiFun}"/>    
+			                
+			                <h:outputText value="Ciudadania" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.ciudadania}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                
+			                <h:outputText value="Nacimiento" />			                
+								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+	                    
+	                    <h:outputText value="Ingreso" />
+								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />  
+			                
+			                <h:outputText value="Cedula" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.cedula}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+                	</h:panelGrid>
+                	<h:panelGrid columns="2" columnClasses="label, value">
+	                    <h:outputText value="C. Civica" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.credencialCivica}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                
+			                <h:outputText value="Nombre padre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombrePadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Direccion padre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                	
+			                <h:outputText value="telefonoPadre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                	
+			                <h:outputText value="Nombre madre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreMadre}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                	
+			                <h:outputText value="Direccion madre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                		
+			                <h:outputText value="Telefono madre" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+                	</h:panelGrid>
+	                <h:panelGrid columns="2" columnClasses="label, value">	   
+			                <h:outputText value="Nombre conyuge" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+			                
+			                <h:outputText value="Direccion conyuge" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Telefono conyuge" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Fecha egreso" />
+								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/>
+								         
+			                <h:outputText value="Motivo egreso" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.motivoEgreso}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Nombre aviso urgencias:" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="Dir. avi. urgencia" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                
+			                <h:outputText value="tel. avi. urgencia" />
+			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			            </h:panelGrid>    
+	          	</h:panelGrid>
+
+        </p:tab>
+        <p:tab title="Educación">
             <h:panelGrid columns="2" cellpadding="10">
-                <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                <h:outputText value="Francis Ford Coppola's legendary..." />
+
             </h:panelGrid>
         </p:tab>
-        <p:tab title="Godfather Part III">
-            <h:panelGrid columns="2" cellpadding="10">
-                <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
-                <h:outputText value="After a break of more than 15 years..." />
+        <p:tab title="Actividades anteriores">
+            <h:panelGrid columns="2" cellpadding="10"> 
+            
             </h:panelGrid>
         </p:tab>
+        <p:tab title="Capacitación">
+            <h:panelGrid columns="2" cellpadding="10">
+
+            </h:panelGrid>
+        </p:tab>
+                
     </p:tabView>
-	
+    
+    
+   <p:commandButton ajax="true" value="Editar" actionListener="#{mb_Funcionario.setHabEdiFun(true)}" update="formficha"  rendered="#{!mb_Funcionario.habEdiFun}" /> 
+     <p:commandButton ajax="true" value="Cancelar" actionListener="#{mb_Funcionario.setHabEdiFun(false)}" update="formficha" rendered="#{mb_Funcionario.habEdiFun}"  /> 
+   <p:commandButton ajax="true" value="Guardar" actionListener="#{mb_Funcionario.updateFichaSelected}" update="formfuncionarios" oncomplete="PF('detalleficha').hide()" rendered="#{mb_Funcionario.habEdiFun}"  /> 
  
 	</h:form>
         
 
-
-
-
-</ui:define>
-</ui:composition>
-
-
+	</ui:composition>
+</html>
+			
 
 
 

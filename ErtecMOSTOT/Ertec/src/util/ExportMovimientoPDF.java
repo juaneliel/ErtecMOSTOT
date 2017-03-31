@@ -43,7 +43,7 @@ public class ExportMovimientoPDF {
 	
 	
 
-  public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
+  public static final String RESOURCE = "http://localhost:8080/ertec/resources/images/1964.jpg";
   public static final String RESULT = "/home/juan/Escritorio/movimiento.pdf";
   
   public static void main(String[] args) {

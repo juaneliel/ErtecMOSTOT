@@ -42,9 +42,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 
 public class ExportarFichaFuncionario {
-	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";	
+	public static final String RESOURCE = "http://localhost:8080/ertec/resources/images/1964.jpg";	
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
-	public static final String FOTO = "http://localhost:8080/Ertec/resources/fotos/foto.jpg";
+	public static final String FOTO = "http://localhost:8080/ertec/resources/fotos/foto.jpg";
 	
     	
   public static void ExportarPDF(int idFuncionario, ServletOutputStream sOS  )   {

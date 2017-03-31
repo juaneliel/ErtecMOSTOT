@@ -1,5 +1,6 @@
 package model.DAO;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,40 +70,36 @@ public class DAO_Funcionario {
 		return salida;
 	}
 	
-	
+	public boolean updateFichaSelected(Funcionario f){
+		EntityManager em=JpaUtil.getEntityManager();
+		boolean salida=false;
+		try{			
+			em.getTransaction().begin();
+			em.merge(f);
+      em.getTransaction().commit();
+			salida= true;
+		}catch (Exception e){
+			e.printStackTrace();			
+		}finally{ 
+			if(em.isOpen() ){
+			  em.close();
+		  }		
+		}
+		return salida;
+	}
 	
 	
 	public boolean update(Funcionario f){ 
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{	
-			Funcionario aux = em.find(Funcionario.class, f.getFuncionarioID());						
-			em.getTransaction().begin();			 
-	    aux.setNombre(f.getNombre());
-	    aux.setEmail(f.getEmail());
-	    aux.setTelefono(f.getTelefono());
-	    aux.setActivo(f.getActivo());
-	    aux.setAlias(f.getAlias());
-	    aux.setArea(f.getArea());
-	    aux.setCat(f.getCat());    
-	    aux.setDireccion(f.getDireccion()); 
-			aux.setNacimiento(f.getNacimiento());
-			aux.setCarneSalud(f.getCarneSalud());
-			aux.setCedula(f.getCedula());
-			aux.setVencimientoCedula(f.getVencimientoCedula());
-			aux.setLibretaCat(f.getLibretaCat());
-			aux.setVencimientoLibreta(f.getVencimientoLibreta());
-			aux.setFoto(f.getFoto());	 		
-
-
+			em.getTransaction().begin();
+			em.merge(f);
 			
-			
-			
-			aux.setEducaciones(f.getEducaciones());
-			aux.setActividadAnteriores(f.getActividadAnteriores());
-			aux.setCapacitaciones(f.getCapacitaciones());
-			
-			//em.flush();
+//			aux.setEducaciones(f.getEducaciones());
+//			aux.setActividadAnteriores(f.getActividadAnteriores());
+//			aux.setCapacitaciones(f.getCapacitaciones());
+//			
 			em.getTransaction().commit();
 			salida=true;
 		}
@@ -309,7 +306,7 @@ public class DAO_Funcionario {
 	  return salida;
 	}
 	
-	
+	//se devuelve el funcionario serealizado se puede luego hacer el merge directo
 	public Funcionario getFuncionario(int idFuncionario){
     EntityManager em=JpaUtil.getEntityManager();
     return em.find(Funcionario.class, idFuncionario);

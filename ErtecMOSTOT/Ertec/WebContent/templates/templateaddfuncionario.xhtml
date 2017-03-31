@@ -1,16 +1,13 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<ui:composition template="/templates/layout.xhtml"
- xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
 	xmlns:p="http://primefaces.org/ui">
-      
  
-<ui:define name="cuerpo"> 
+ 
+ 	<ui:composition>
+ 	
+ 	
 	<h:form enctype="multipart/form-data"> 
 	 
 	
@@ -21,55 +18,55 @@
                 <h:panelGrid columns="3" columnClasses="label, value">
                 	<h:panelGrid columns="2" columnClasses="label, value">
                 			<h:outputLabel value="Nombre *" for="n" />
-									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.nombre}" required="true" /> 
+									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.funcionarioAdd.nombre}" required="true" /> 
 									    
 									    <h:outputLabel value="Alias:" for="alias" /> 
-									    <p:inputText id="alias" value="#{mb_Funcionario.alias}" />  
+									    <p:inputText id="alias" value="#{mb_Funcionario.funcionarioAdd.alias}" />  
 									    
 									    <h:outputLabel value="Direccion:" for="direccion" /> 
-									    <p:inputText id="direccion" value="#{mb_Funcionario.direccion}" />
+									    <p:inputText id="direccion" value="#{mb_Funcionario.funcionarioAdd.direccion}" />
 									    
 									    <h:outputLabel value="Telefono:" for="t" />    
-									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.telefono}"  />
+									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.funcionarioAdd.telefono}"  />
 									    
 									    <h:outputLabel value="Email:" for="e" />
-									    <p:inputText id="e" label="email" value="#{mb_Funcionario.email}"  /> 
+									    <p:inputText id="e" label="email" value="#{mb_Funcionario.funcionarioAdd.email}"  /> 
 									  	 
                 	</h:panelGrid>        
                 	<h:panelGrid columns="2" columnClasses="label, value">
   									    
 											<h:outputLabel value="Cedula:" for="cedula" /> 	
-									    <p:inputText id="cedula" value="#{mb_Funcionario.cedula}"  />
+									    <p:inputText id="cedula" value="#{mb_Funcionario.funcionarioAdd.cedula}"  />
 									    
 											<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
-								      <p:calendar id="vcedula" value="#{mb_Funcionario.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
+								      <p:calendar id="vcedula" value="#{mb_Funcionario.funcionarioAdd.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" /> 
 									    									    
 								 			<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
-									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.libretaCat}"  /> 
+									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.funcionarioAdd.libretaCat}"  /> 
 									    
 								 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
-								      <p:calendar id="vlibretain" value="#{mb_Funcionario.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
+								      <p:calendar id="vlibretain" value="#{mb_Funcionario.funcionarioAdd.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" /> 
 								      
 								      <h:outputLabel value="V.C.Salud:" for="cds" /> 			    	    
-								 			<p:calendar id="cds" value="#{mb_Funcionario.carneSalud}" pattern="dd-MM-yyyy" mask="true" />
+								 			<p:calendar id="cds" value="#{mb_Funcionario.funcionarioAdd.carneSalud}" pattern="dd-MM-yyyy" mask="true" />
 									           			
                 	</h:panelGrid>               
 	                <h:panelGrid columns="2" columnClasses="label, value">									     
 
 											<h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
-								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />    
+								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.funcionarioAdd.nacimiento}" pattern="dd-MM-yyyy" mask="true" />    
 								      									    									    
 									    <h:outputLabel value="Area:" for="area" /> 
-									    <p:inputText id="area" value="#{mb_Funcionario.area}" />	
+									    <p:inputText id="area" value="#{mb_Funcionario.funcionarioAdd.area}" />	
 									    								 	        		  
 										  <h:outputLabel value="Activo:" for="activo" />    
-									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.activo}" style="width:85%"    >
+									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.funcionarioAdd.activo}" style="width:85%"    >
 												<f:selectItem  itemLabel="Si" itemValue="Si" />
 												<f:selectItem   itemLabel="No" itemValue="No" />
 											</p:selectOneMenu >	       
 											
 											<h:outputLabel value="Categoria:" for="cat" />    
-									    <p:inputText id="cat" value="#{mb_Funcionario.cat}" />										
+									    <p:inputText id="cat" value="#{mb_Funcionario.funcionarioAdd.cat}" />										
 								    							                    
 	                </h:panelGrid>
 	                
@@ -96,55 +93,55 @@
                 <h:panelGrid columns="3" columnClasses="label, value">
                 	<h:panelGrid columns="2" columnClasses="label, value">
                 			<h:outputText value="Primer nombre" />
-			              	<p:inputText value="#{mb_Funcionario.ficha.primerNombre}" />             
+			              	<p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.primerNombre}" />             
 			                <h:outputText value="Segundo nombre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.segundoNombre}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.segundoNombre}" />
 	                    <h:outputText value="Primer apellido" />
-			                <p:inputText value="#{mb_Funcionario.ficha.primerApellido}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.primerApellido}" />
 			                <h:outputText value="Segundo apellido" />
-			                <p:inputText value="#{mb_Funcionario.ficha.segundoApellido}" />    
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.segundoApellido}" />    
 			                <h:outputText value="Ciudadania" />
-			                <p:inputText value="#{mb_Funcionario.ficha.ciudadania}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.ciudadania}" />
 			                <h:outputText value="Nacimiento" />			                
-								      <p:calendar value="#{mb_Funcionario.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" /> 
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" /> 
 	                    <h:outputText value="Ingreso" />
-								      <p:calendar value="#{mb_Funcionario.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" />  
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" />  
 			                <h:outputText value="Cedula" />
-			                <p:inputText value="#{mb_Funcionario.ficha.cedula}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.cedula}" />
                 	</h:panelGrid>
                 	<h:panelGrid columns="2" columnClasses="label, value">
 	                    <h:outputText value="C. Civica" />
-			                <p:inputText value="#{mb_Funcionario.ficha.credencialCivica}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.credencialCivica}" />
 			                <h:outputText value="Nombre padre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.nombrePadre}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombrePadre}" />
 			                <h:outputText value="Direccion padre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.direccionPadre}" />	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionPadre}" />	
 			                <h:outputText value="telefonoPadre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.telefonoPadre}" />	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoPadre}" />	
 			                <h:outputText value="Nombre madre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.nombreMadre}" />	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreMadre}" />	
 			                <h:outputText value="Direccion madre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.direccionMadre}" />		
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionMadre}" />		
 			                <h:outputText value="Telefono madre" />
-			                <p:inputText value="#{mb_Funcionario.ficha.telefonoMadre}" />	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoMadre}" />	
                 	</h:panelGrid>
 	                <h:panelGrid columns="2" columnClasses="label, value">	   
 			                <h:outputText value="Nombre conyuge" />
-			                <p:inputText value="#{mb_Funcionario.ficha.nombreConyuge}" />	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreConyuge}" />	
 			                <h:outputText value="Direccion conyuge" />
-			                <p:inputText value="#{mb_Funcionario.ficha.direccionConyuge}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionConyuge}" />
 			                <h:outputText value="Telefono conyuge" />
-			                <p:inputText value="#{mb_Funcionario.ficha.telefonoConyuge}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoConyuge}" />
 			                <h:outputText value="Fecha egreso" />
-								      <p:calendar value="#{mb_Funcionario.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" />   
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" />   
 			                <h:outputText value="Motivo egreso" />
-			                <p:inputText value="#{mb_Funcionario.ficha.motivoEgreso}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.motivoEgreso}" />
 			                <h:outputText value="Nombre aviso urgencias:" />
-			                <p:inputText value="#{mb_Funcionario.ficha.nombreAvisarUrgencia}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreAvisarUrgencia}" />
 			                <h:outputText value="Dir. avi. urgencia" />
-			                <p:inputText value="#{mb_Funcionario.ficha.direccionAvisarUrgencia}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionAvisarUrgencia}" />
 			                <h:outputText value="tel. avi. urgencia" />
-			                <p:inputText value="#{mb_Funcionario.ficha.telefonoAvisarUrgencia}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoAvisarUrgencia}" />
 			            </h:panelGrid>    
 	          	</h:panelGrid>
             </p:panel>
@@ -295,11 +292,11 @@
                 <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
                     <h:panelGrid columns="2" columnClasses="label, value">
                         <h:outputText value="Firstname: " />
-                        <h:outputText value="#{mb_Funcionario.nombre}" styleClass="outputLabel"/>
+                        <h:outputText value="#{mb_Funcionario.funcionarioAdd.nombre}" styleClass="outputLabel"/>
                     </h:panelGrid> 
                     <h:panelGrid columns="2" columnClasses="label, value">
                         <h:outputText value="Street: " />
-                        <h:outputText value="#{mb_Funcionario.email}" styleClass="outputLabel"/>
+                        <h:outputText value="#{mb_Funcionario.funcionarioAdd.email}" styleClass="outputLabel"/>
                     </h:panelGrid> 
                 </h:panelGrid> 
                 <p:commandButton value="Guardar" action="#{mb_Funcionario.add}" update="message" process="@this"/>
@@ -314,12 +311,9 @@
         
 
 
-
-
-</ui:define>
-</ui:composition>
-
-
+	</ui:composition>
+</html>
+			
 
 
 

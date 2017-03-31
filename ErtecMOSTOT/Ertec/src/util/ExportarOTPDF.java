@@ -37,7 +37,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 public class ExportarOTPDF {
 	
-	public static final String RESOURCE = "http://localhost:8080/Ertec/resources/images/1964.jpg";
+	public static final String RESOURCE = "http://localhost:8080/ertec/resources/images/1964.jpg";
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
 	
     	

@@ -8,16 +8,7 @@
  	<ui:composition>
   
 
-		    <p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.puedeBorrar}">	
-			 <p:commandButton icon="ui-icon-trash" id="trash"  actionListener="#{paramListener}" 
-			 update="#{paramDatatable}" >
-        <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
-    </p:commandButton>
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    </p:confirmDialog>
-			</p:column>
+
 			
 	
 	</ui:composition>
