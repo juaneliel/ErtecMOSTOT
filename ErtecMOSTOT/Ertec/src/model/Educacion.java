@@ -10,6 +10,7 @@ public class Educacion implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EDU_SEQ") 
 	private int educacionID;
+	
 	private String instituto;
 	private String anios;
 	private String titulo;

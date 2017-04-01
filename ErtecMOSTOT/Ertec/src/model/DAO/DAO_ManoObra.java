@@ -205,44 +205,19 @@ public class DAO_ManoObra {
 	
 	
 	public boolean update(ManoObra o){ 
-		boolean salida=false;
-		
 		EntityManager em=JpaUtil.getEntityManager();
-		try{	
-			ManoObra aux = em.find(ManoObra.class, o.getManoObraID());			
-			
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			
-			//seteos
-			if(o.getCliente()!=null){ 
-			  aux.setClienteNombre(o.getCliente().getNombre());
-			}		
-
-			aux.setCodigo(o.getCodigo());
-			aux.setFecha(o.getFecha());
-			if (o.getFuncionario()!=null){ 
-		     aux.setFuncionario(o.getFuncionario());
-			} 
-
-			aux.setManoObraID(o.getManoObraID());
-			aux.setMyr(o.getManoObraID());
-			aux.setNContrato(o.getManoObraID());
-			aux.setOrdenTrabajo(o.getOrdenTrabajo());
-			aux.setTContrato(o.getTContrato());
-			aux.setTipo(o.getTipo());
-			aux.setTipoHora(o.getTipoHora());
-			aux.setTipoMano(o.getTipoMano());
-			aux.setTotalHora(o.getTotalHora());
-			em.getTransaction().commit();
+			em.merge(o);
+      em.getTransaction().commit();
 			salida= true;
-			System.out.println(">>>>update MO DAO");
-		}
-		catch (Exception e){
-			e.printStackTrace();	
+		}catch (Exception e){
+			e.printStackTrace();			
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+			  em.close();
+		  }		
 		}
 		return salida;
 	}	

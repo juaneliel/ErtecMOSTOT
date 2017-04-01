@@ -9,15 +9,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext; 
+import javax.faces.context.FacesContext;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
 import model.Cliente;
 import model.CodigosMO;
 import model.Funcionario;
 import model.ManoObra;
 import model.DAO.DAO_Funcionario;
-import model.DAO.DAO_ManoObra; 
+import model.DAO.DAO_ManoObra;
+import model.DAO.DAO_Movimiento; 
 
 @ManagedBean (name="mb_ManoObra")
 @ViewScoped
@@ -46,9 +48,7 @@ public class mb_ManoObra {
 	private int otIDBuscar;
 	private String tipoHoraBuscar;
 	private String tipoManoBuscar;
-	
-	private ArrayList <Funcionario> listaFuncionarios;
-	
+	 	
 	private DAO_ManoObra dao=new DAO_ManoObra();
 	private DAO_Funcionario daoF=new DAO_Funcionario();
 	private ArrayList<ManoObra> lista ;
@@ -68,53 +68,50 @@ public class mb_ManoObra {
 	@PostConstruct
 	public void init(){	  
 	  System.out.println("MBmo init");
-		this.listaCodMO=dao.getListaCodMO();
-		this.listaFuncionarios=daoF.getListaFuncionarios();
-		this.recargarLista();
+		this.listaCodMO=dao.getListaCodMO(); 
+		this.lista = dao.getLista ();
 		this.codigosMOOBJ=dao.getCodigosMO(301); 
 	}
 	
-	public  String listarDesdeMenu() {
-		String salida= "/paginas/manodeobras.xhtml?faces-redirect=true"; 
-		return salida;
-	} 
 
-	public String add(){
-		
-		System.out.println("MBmo add"); 
-		String salida= null;
-    	
-    	ManoObra o = new ManoObra();
-    	o.setCliente(clienteOBJ); 
-    	o.setClienteNombre(clienteOBJ.getNombre());
-		o.setCodigo(this.getCodigosMOOBJ().getCodigo());
-		o.setFecha(fecha);
-		o.setFuncionario(funcionarioOBJ); 
-		o.setMyr(myr);
-		o.setNContrato(NContrato);
-		o.setOrdenTrabajo(ordenTrabajo);
-		o.setManoObraID(manoObraID);
-		o.setTContrato(TContrato);
-		o.setTipo(this.getCodigosMOOBJ().getTipo());
-		o.setTipoHora(tipoHora);
-		o.setTipoMano(tipoMano);
-		o.setTotalHora(totalHora);
+//se usa tanto para movimiento como para ot
+//si el valor pasado es 0 esto implica que se usa en movimiento
+	public void recargarManodeobraSelected(int otid){
+		System.out.println("recargarManodeobraSelected"+otid);
+		this.manodeobraAdd.setOrdenTrabajo(otid);
+		this.lista = dao.getManoObraOT(otid);
+	}
+	
 
-		if(DAO_ManoObra.add(o)){
+	 public void add(){
+		if(dao.add(manodeobraAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la mano de obra "+o.getManoObraID());
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la mano de obra a la OT");
 			context.addMessage(null,mensaje);
-			this.recargarLista();
-			salida= "/paginas/manodeobras.xhtml?faces-redirect=true";
+			this.lista.add(manodeobraAdd);
+			//this.recargarListaManoObra(numeroID);
+			manodeobraAdd=new ManoObra();
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar");
+			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar la mano de obra");
 			context.addMessage(null,mensaje);
 		}
-		
-		return salida;
-	}
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 	public void clickEdit(ManoObra o){
@@ -151,10 +148,15 @@ public class mb_ManoObra {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino MO del funcionario "+ o.getFuncionario().getFuncionarioID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 	        System.out.println("MBmo delete");
-	        this.recargarLista();
+	        this.lista.remove(o);
+	        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+	            .findComponent("formmanodeobra:datatablemanodeobra");
+	        if (dataTable != null) {
+	        	dataTable.reset();
+	        }  
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Borrado", "Error no se pudo borrar "+ o.getFuncionario().getFuncionarioID()  );
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo borrar la mano de obra" );
 	    FacesContext.getCurrentInstance().addMessage(null, message);
 		} 		
 	}	
@@ -172,13 +174,7 @@ public class mb_ManoObra {
 	public ArrayList<ManoObra> getLista(){	
 		return this.lista;
 	}
-	
-	public void recargarLista(){
-		this.listaFuncionarios=daoF.getListaFuncionarios();
-		this.lista = dao.getLista ();
-		System.out.println(">>>MBmo recargarlista");
-	} 
-	
+		
 	public void filtrarPorFechas(){
 		this.lista=dao.getFiltradaPorFechas(fechaIni,fechaFin); 
 	}
@@ -328,13 +324,7 @@ public class mb_ManoObra {
 		this.tipoManoBuscar = tipoManoBuscar;
 	}
 
-	public ArrayList<Funcionario> getListaFuncionarios() {
-		return listaFuncionarios;
-	}
-
-	public void setListaFuncionarios(ArrayList<Funcionario> listaFuncionarios) {
-		this.listaFuncionarios = listaFuncionarios;
-	}
+	 
 
 	public void setLista(ArrayList<ManoObra> lista) {
 		this.lista = lista;
@@ -502,7 +492,42 @@ public class mb_ManoObra {
 
 
 
-
+//public String addBACK(){
+//	
+//	System.out.println("MBmo add"); 
+//	String salida= null;
+//  	
+//  	ManoObra o = new ManoObra();
+//  	o.setCliente(clienteOBJ); 
+//  	o.setClienteNombre(clienteOBJ.getNombre());
+//	o.setCodigo(this.getCodigosMOOBJ().getCodigo());
+//	o.setFecha(fecha);
+//	o.setFuncionario(funcionarioOBJ); 
+//	o.setMyr(myr);
+//	o.setNContrato(NContrato);
+//	o.setOrdenTrabajo(ordenTrabajo);
+//	o.setManoObraID(manoObraID);
+//	o.setTContrato(TContrato);
+//	o.setTipo(this.getCodigosMOOBJ().getTipo());
+//	o.setTipoHora(tipoHora);
+//	o.setTipoMano(tipoMano);
+//	o.setTotalHora(totalHora);
+//
+//	if(DAO_ManoObra.add(o)){
+//		FacesContext context = FacesContext.getCurrentInstance();
+//		FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la mano de obra "+o.getManoObraID());
+//		context.addMessage(null,mensaje);
+//		this.recargarLista();
+//		salida= "/paginas/manodeobras.xhtml?faces-redirect=true";
+//	}
+//	else{
+//		FacesContext context = FacesContext.getCurrentInstance();
+//		FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar");
+//		context.addMessage(null,mensaje);
+//	}
+//	
+//	return salida;
+//}
 
 
 

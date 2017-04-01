@@ -13,9 +13,9 @@
   	
   <h:form id="formfuncionarios" enctype="multipart/form-data">
   	
-		<p:dataTable var="funcionario" value="#{mb_Funcionario.lista}" id="datatable2" emptyMessage="Sin Registros"
+		<p:dataTable var="funcionario" value="#{mb_Funcionario.lista}" id="datatablefuncionario" widgetVar="datatablefuncionario" emptyMessage="Sin Registros"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 		 
-		 editable="true" stickyHeader="true"  currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"  currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
 		 style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"		
 		 selection="#{mb_Funcionario.funSelected}" selectionMode="single" rowKey="#{funcionario.funcionarioID}"
 		 paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {agregar} {vercol}"
@@ -28,13 +28,13 @@
 		 
 		 <f:facet name="{vercol}">   
 		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right" icon="ui-icon-calculator" />
-		        <p:columnToggler datasource="datatable2" trigger="toggler" >
+		        <p:columnToggler datasource="datatablefuncionario" trigger="toggler" >
 		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
 		        </p:columnToggler> 
 		    </f:facet> 
 		 
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  onclick="PF('addfuncionario').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
+		  <p:commandButton value="Agregar" actionListener="#{mb_Funcionario.initAddFun}" oncomplete="PF('addfuncionario').show();"  style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
       
      </f:facet> 
 		 
@@ -45,11 +45,11 @@
 	 	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2" fileName="articulos"   />
+	      <p:dataExporter type="xls" target="datatablefuncionario" fileName="articulos"   />
 	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2" fileName="articulos"  />
+	      <p:dataExporter type="pdf" target="datatablefuncionario" fileName="articulos"  />
 	    </h:commandLink> 
 		</f:facet>
 	 
@@ -196,52 +196,81 @@
 		 				</f:facet>
 					</p:cellEditor>
 				</p:column>	    
-		 
-		 
-	 
-		 
-
-		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','funcionario')}" exportable="false">			
-			<p:commandLink actionListener="#{mb_Funcionario.delete(funcionario)}"    	
-   	update="formfuncionarios message" >
-        <p:confirm header="Confirmacion" message="Borrar a #{funcionario.nombre}?" icon="ui-icon-alert" />
-  <span class="ui-icon ui-icon-trash"></span>
-   	</p:commandLink>    
-    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-        <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="processWidget.clearFilters();" />
-        <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    </p:confirmDialog>
-			</p:column>
-		 
-		 
-		 
-		 
- 
 		    	   
 		      
 		</p:dataTable>
 		
-			<p:contextMenu for="datatable2" id="contextmenu" beforeShow="return true;" widgetVar="contextmenu"  >
-   	<p:menuitem id="dale" update="dialficha" value="Exportar Ficha"  icon="ui-icon-search" oncomplete="PF('dialficha').show()"  />   	
-  	<p:menuitem value="Detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>
-		<p:menuitem value="Subir Archivo" update="subirarchivo" icon="ui-icon-search" oncomplete="PF('subirarchivo').show()"/>
-		<p:menuitem value="Detalle ficha" update="detalleficha" icon="ui-icon-search" actionListener="#{mb_Funcionario.setHabEdiFun(false)}" oncomplete="PF('detalleficha').show()" rendered="#{mb_Usuario.acceso('VER','fichapersonal')}"/>		
-		</p:contextMenu>
+		<p:contextMenu for="datatablefuncionario" id="contextmenu" beforeShow="return true;" widgetVar="contextmenu"  >
+   		<p:menuitem value="Detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>		
+			<p:menuitem value="Detalle ficha" update="detalleficha" icon="ui-icon-search" actionListener="#{mb_Funcionario.initDetalleFicha}" oncomplete="PF('detalleficha').show()" />		
+			<p:menuitem value="Exportar Ficha" id="dale" update="dialficha" icon="ui-icon-search" oncomplete="PF('dialficha').show()"  />   	
+  		<p:menuitem value="Subir Archivo" update="subirarchivo" icon="ui-icon-search" oncomplete="PF('subirarchivo').show()"/>
+  		<p:menuitem  value="Borrar" update="formfuncionarios message"  
+		     actionListener="#{mb_Funcionario.delete(mb_Funcionario.funSelected)}" icon="ui-icon-trash" 
+		     rendered="#{mb_Usuario.acceso('BORRAR','fichapersonal') or ( mb_Usuario.acceso('BORRAR','funcionario') and (mb_Funcionario.funSelected.ficha.primerNombre=='') )}"
+		     >
+				<p:confirm   header="Borrar funcionario" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+			</p:menuitem>	
+	 </p:contextMenu>
 
 
-
-<script type="text/javascript"> 
-    function exportarPDF() {
-    	window.open('#{mb_Funcionario.urlImpresion}','','width=500,height=500');
-    }
-</script>
 
 
 
 
   	</h:form>
 
+
+<script type="text/javascript"> 
+    function exportarPDF() {
+    	window.open('#{mb_Funcionario.urlImpresion}','','width=500,height=500');
+    }
+    function handleAddEducacionRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addeducacion').jq.effect("shake", {times:5}, 100);
+        }
+        else { 
+        	PF('addeducacion').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }      
+    function handleAddActividadRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addactividad').jq.effect("shake", {times:5}, 100);
+        }
+        else { 
+        	PF('addactividad').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }    
+    function handleAddCapacitacionRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addcapacitacion').jq.effect("shake", {times:5}, 100);
+        }
+        else { 
+        	PF('addcapacitacion').hide(); 
+           // PF('datatablearticulos').addRow();
+        }
+    }   
+    function handleUpdateFichaRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('detalleficha').jq.effect("shake", {times:5}, 100);
+        }
+        else { 
+        	PF('detalleficha').hide();  
+        }
+    } 
+    
+</script>
+
+
+<p:confirmDialog dynamic="true" header="Borrar Funcionario ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>
+ 
+ 
  
 <p:dialog id="dialficha"  widgetVar="dialficha" showEffect="explode" hideEffect="fade"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
     <iframe frameborder="0" align="left"
@@ -259,6 +288,7 @@
 
 
 <p:dialog id="addfuncionario" header="Agregar funcionario"  widgetVar="addfuncionario" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  width="90%" >
+  
 <ui:include src="/templates/templateaddfuncionario.xhtml" id="addfuncionario">			
 </ui:include>			
 </p:dialog> 
@@ -340,6 +370,92 @@
     </p:dialog>
 
 
+
+
+
+
+
+
+
+
+
+       
+       
+ <p:dialog id="addeducacion"  appendTo="@(body)"  widgetVar="addeducacion" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"    >
+  <h:form>     
+  <h:panelGrid columns="2" id="ingresoeducacion" columnClasses="label, value">
+ 		<p:outputLabel value="Institucion:" for="instituto" label="Instituto" />		                	
+    <p:inputText id="instituto" label="Instituto" value="#{mb_Funcionario.educacion.instituto}"  required="true"/>
+    <p:outputLabel value="Anos:" for="anios"/>
+    <p:inputText label="Anios" id="anios" value="#{mb_Funcionario.educacion.anios}"  required="true"/>	
+    <p:outputLabel value="Titulo:" />
+    <p:inputText value="#{mb_Funcionario.educacion.titulo}" />	
+    <p:outputLabel value="Imagen:" />
+    <p:inputText value="#{mb_Funcionario.educacion.pathArchivo}" />	         
+    	                                       
+    <p:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarEducacion}" 
+    update="@([id$=datatableeducacion]) ingresoeducacion message"
+    oncomplete="handleAddEducacionRequest(xhr, status, args)" /> 
+    
+	</h:panelGrid>		
+</h:form> 
+</p:dialog>
+
+
+
+ <p:dialog id="addactividad"  appendTo="@(body)"  widgetVar="addactividad" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"    >
+  <h:form> 
+ <h:panelGrid id="ingresoempleo" columns="2" columnClasses="label, value">
+ 	<p:outputLabel value="Desde" for="desde"/>		                	
+	<p:calendar id="desde" value="#{mb_Funcionario.actividadAnterior.desde}" pattern="dd-MM-yyyy" mask="true" required="true"/>    
+ 	<p:outputLabel value="Hasta" for="hasta" />		         
+	<p:calendar id="hasta" value="#{mb_Funcionario.actividadAnterior.hasta}" pattern="dd-MM-yyyy" mask="true" required="true"/>     
+ 	<p:outputLabel value="Firma" for="firma" />		                	
+  <p:inputText id="firma" value="#{mb_Funcionario.actividadAnterior.firma}" required="true"/>  
+ 	<p:outputLabel value="Puesto" />		                	
+  <p:inputText value="#{mb_Funcionario.actividadAnterior.puesto}" />
+ 	<p:outputLabel value="Causa ret." />		                	
+  <p:inputText value="#{mb_Funcionario.actividadAnterior.causaRetiro}" />	                                       
+ 	<p:outputLabel value="Sueldo" />		                	
+  <p:inputText value="#{mb_Funcionario.actividadAnterior.sueldo}" />	
+ 	<p:outputLabel value="Detalle" />		                	
+  <p:inputText value="#{mb_Funcionario.actividadAnterior.detalle}" />	
+ 	<p:outputLabel value="Otros" />		                	
+  <p:inputText value="#{mb_Funcionario.actividadAnterior.otros}" />
+  <p:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarActividadAnterior}" 
+  	update="ingresoempleo @([id$=datatableactividad])" 
+  	oncomplete="handleAddActividadRequest(xhr, status, args)" />
+          
+ </h:panelGrid>		
+</h:form> 
+</p:dialog>
+
+ <p:dialog id="addcapacitacion"  appendTo="@(body)"  widgetVar="addcapacitacion" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"    >
+  <h:form> 
+  <h:panelGrid id="ingresocapacitacion" columns="2" columnClasses="label, value">
+	<p:outputLabel value="Fecha:" for="fcap"/>		
+	<p:calendar id="fcap" value="#{mb_Funcionario.capacitacion.fecha}" pattern="dd-MM-yyyy" mask="true" required="true"/>    
+	<p:outputLabel value="Actividad:" for="capact" />		                	
+  <p:inputText id="capact" value="#{mb_Funcionario.capacitacion.actividad}" required="true"/>                     
+  <p:outputLabel value="Capacitación:" />		                	
+  <p:inputText value="#{mb_Funcionario.capacitacion.capacitacion}" />
+  <p:outputLabel value="Observaciones:" />		                	
+  <p:inputText value="#{mb_Funcionario.capacitacion.observaciones}" />
+  <p:outputLabel value="Path Archivo:" />		                	
+  <p:inputText value="#{mb_Funcionario.capacitacion.pathArchivo}" />  	                    
+                                                                                
+  <p:commandButton value="Agregar" actionListener="#{mb_Funcionario.agregarCapacitacion}"
+    update="ingresocapacitacion @([id$=datatablecapacitacion])" 
+    oncomplete="handleAddCapacitacionRequest(xhr, status, args)" />
+</h:panelGrid>
+</h:form>
+</p:dialog>
+ 
+
+
+
+
+
 </ui:define>
 </ui:composition>
 
@@ -361,5 +477,5 @@
 		
 		
  
-<!--     <p:ajax event="contextMenu" process="datatable2"   update="@([id$=contextmenu])" onclick="PF('contextmenu').show();" /> -->
+<!--     <p:ajax event="contextMenu" process="datatablefuncionario"   update="@([id$=contextmenu])" onclick="PF('contextmenu').show();" /> -->
  		

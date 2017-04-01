@@ -218,13 +218,13 @@
 		<p:contextMenu for="datatableordendetrabajo">
 	  	<p:menuitem value="Adicionales" update="formadicional" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
 	  	<p:menuitem value="Compras externas" update="formcompraexterna" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
-	   	<p:menuitem value="Mano de Obra" update="formmanodeobra" actionListener="#{mb_OT.recargarManodeobraSelected}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
+	   	<p:menuitem value="Mano de Obra" update="formmanodeobra" actionListener="#{mb_ManoObra.recargarManodeobraSelected(mb_OT.otSelected.id)}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
 	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_OT.recargarMovimientoSelected}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
 	  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
 	   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
 		  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
 		     actionListener="#{mb_OT.delete(mb_OT.otSelected)}" icon="ui-icon-trash" >
-			<p:confirm   header="Borrar orden de trabajo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+				<p:confirm   header="Borrar orden de trabajo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
 			</p:menuitem>	
 		</p:contextMenu>
 	
@@ -253,7 +253,9 @@
 </p:dialog>
 
 <p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">					
+<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">	
+<ui:param name="paramLista"   value = "#{mb_OT.listaManoObra}"/>		
+<ui:param name="paramIdOT"   value = "#{mb_OT.otSelected.id}"/>			
 </ui:include>			
 </p:dialog>	
 
@@ -359,27 +361,23 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 	
 	
 	
-<p:dialog header="Ot en PDF" widgetVar="verpdfot" id="verpdfot"  modal="true"  dynamic="true"  width="90%"  height="550"
-    closable="true" closeOnEscape="true" draggable="true"
-    onHide="jQuery('#someId1').hide();" onShow="jQuery('#someId1').show();">
-    <h:form prependId="false">
-    <h:outputFormat escape="false">
-    <iframe src="#{mb_OT.urlImprimirOT(mb_OT.otSelected.id)}"
-    name="someName" id="someId1"   width="100%"  height="900"   />
-    </h:outputFormat>
-    </h:form> 
-</p:dialog>		
-	
-<p:dialog header="Movimiento en PDF" widgetVar="verpdfmov" id="verpdfmov"  modal="true" dynamic="true"   width="90%" height="550"
-    closable="true" closeOnEscape="true" draggable="true"
-    onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();">
-    <h:form prependId="false">
-    <h:outputFormat escape="false">
-    <iframe src="#{mb_OT.urlImprimirMov(mb_OT.otSelected.id)}" name="someName" id="someId"   width="100%"  height="900"  />
-    </h:outputFormat>
-    </h:form> 
-</p:dialog>	
-	
+
+
+
+<p:dialog id="verpdfot" header="Ot en PDF"  widgetVar="verpdfot" showEffect="size" hideEffect="puff"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
+    <iframe frameborder="0" align="left"
+         src="#{mb_OT.urlImprimirOT(mb_OT.otSelected.id)}"
+         name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
+     </iframe>
+</p:dialog>
+
+
+<p:dialog header="Movimiento en PDF" id="verpdfmov"  widgetVar="verpdfmov" showEffect="slide" hideEffect="drop"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
+    <iframe frameborder="0" align="left"
+         src="#{mb_OT.urlImprimirMov(mb_OT.otSelected.id)}"
+         name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
+     </iframe>
+</p:dialog>
 	
 	  
 

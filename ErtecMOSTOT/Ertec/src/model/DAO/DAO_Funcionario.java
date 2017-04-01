@@ -9,6 +9,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager; 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import model.FichaPersonal;
 import model.Funcionario;
@@ -312,7 +313,25 @@ public class DAO_Funcionario {
     return em.find(Funcionario.class, idFuncionario);
 	}
 	
-	
+	 
+	public Funcionario getFichaCompleta(int idFuncionario){
+		Funcionario f=null;
+		EntityManager em=JpaUtil.getEntityManager();
+		try {
+			f=em.find(Funcionario.class, idFuncionario);
+			f.getActividadAnteriores().size();
+			f.getCapacitaciones().size();
+			f.getEducaciones().size();
+			
+		}catch (Exception e){
+	    e.printStackTrace();
+	  }finally{ 
+	        if(em.isOpen() ){
+	        em.close();
+	      }   
+	  }
+		return f;
+	}
 }
 
 

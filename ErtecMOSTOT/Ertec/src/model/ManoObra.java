@@ -20,33 +20,23 @@ public class ManoObra implements Serializable {
 
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="FuncionarioID" , insertable = false, updatable = false)
+	@JoinColumn(name="FuncionarioID")
 	private Funcionario funcionario;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ClienteID" , insertable = false, updatable = false)
+	@JoinColumn(name="ClienteID")
 	private Cliente cliente;
-	
-	
-	@Column(name="ClienteID")
-	private int clienteID;
-	
+	 	
 	@Column(name="Cliente")
 	private String clienteNombre;
 	
-	
-	
-	
-
 	@Column(name="Codigo")
 	private int codigo;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="Fecha")
 	private Date fecha;
-
-	@Column(name="FuncionarioID")
-	private int funcionarioID;
+ 
 
 	@Column(name="MYR")
 	private int myr;
@@ -81,16 +71,6 @@ public class ManoObra implements Serializable {
 		this.manoObraID = manoObraID;
 	}
 
-	 
-
-	public int getClienteID() {
-		return clienteID;
-	}
-
-	public void setClienteID(int clienteID) {
-		this.clienteID = clienteID;
-	}
-
 	public String getClienteNombre() {
 		return clienteNombre;
 	}
@@ -118,15 +98,7 @@ public class ManoObra implements Serializable {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	}
-
-	public int getFuncionarioID() {
-		return this.funcionarioID;
-	}
-
-	public void setFuncionarioID(int funcionarioID) {
-		this.funcionarioID = funcionarioID;
-	}
+	} 
 
 	public int getMyr() {
 		return this.myr;

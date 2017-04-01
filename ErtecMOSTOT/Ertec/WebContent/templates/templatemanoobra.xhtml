@@ -11,21 +11,21 @@
  	<p:panelGrid        columns="3">  
 <p:panelGrid      columns="2"> 		
 <p:outputLabel for="maskIni" value="Fecha inicial:" />
-<p:calendar id="maskIni" value="#{mb_OT.fechaIni}"   pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+<p:calendar id="maskIni" value="#{mb_ManoObra.fechaIni}"   pattern="dd-MM-yyyy" mask="true"  effect="fold" />
 </p:panelGrid>
 <p:panelGrid    columns="2"> 
 <p:outputLabel for="maskFin" value="  Fecha final:"   />
-<p:calendar id="maskFin" value="#{mb_OT.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
+<p:calendar id="maskFin" value="#{mb_ManoObra.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
 </p:panelGrid>
-<p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_OT.filtrarPorFechasManoObraOT}"   
-update=":formmanodeobra:datatable2MO :message"/>
+<p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_ManoObra.filtrarPorFechasManoObraOT}"   
+update=":formmanodeobra:datatablemanodeobra :message"/>
 </p:panelGrid>
  </h:form>	
  	
 <h:form id="formmanodeobra">
 
-			<p:dataTable var="mo" value="#{mb_OT.listaManoObra}" id="datatable2MO" widgetVar="datatable2MO"
-			selection="#{mb_OT.moSelected}" selectionMode="single" rowKey="#{mo.manoObraID}"
+			<p:dataTable var="mo" value="#{mb_ManoObra.lista}" id="datatablemanodeobra" widgetVar="datatablemanodeobra"
+			selection="#{mb_ManoObra.moSelected}" selectionMode="single" rowKey="#{mo.manoObraID}"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
 		 editable="true"   emptyMessage="Sin Registros"
@@ -34,18 +34,15 @@ update=":formmanodeobra:datatable2MO :message"/>
     rowsPerPageTemplate="10,50,100"	
 		 >
 
-
-
- 
     
     	  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatable2MO" fileName="ot"   />
+	      <p:dataExporter type="xls" target="datatablemanodeobra" fileName="ot"   />
 	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatable2MO" fileName="ot"   />
+	      <p:dataExporter type="pdf" target="datatablemanodeobra" fileName="ot"   />
 	    </h:commandLink> 
 		</f:facet>
 		 
@@ -54,25 +51,14 @@ update=":formmanodeobra:datatable2MO :message"/>
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  oncomplete="PF('addmanodeobra').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+		  <p:commandButton value="Agregar"  oncomplete="PF('addmanodeobra').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','manodeobra')}"/>      
      </f:facet>      
        
 		 
 		 <f:facet name="{vercol}">
         <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-        <p:columnToggler datasource="datatable2MO" trigger="toggler" />
+        <p:columnToggler datasource="datatablemanodeobra" trigger="toggler" />
 		 </f:facet> 
-		 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     <p:ajax event="rowEdit" listener="#{mb_ManoObra.onRowEdit}" update="message" />
@@ -220,9 +206,8 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 		     
 		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','manodeobra')}">	
-			<p:commandLink actionListener="#{mb_ManoObra.delete(mo)}" 
-   	
-   	update="datatable2MO message" >
+			<p:commandLink actionListener="#{mb_ManoObra.delete(mo)}"   	
+   	update="datatablemanodeobra message" >
         <p:confirm header="Confirmacion" message="Borrar Mano de Obra de #{mo.funcionario.nombre}?" icon="ui-icon-alert" />
   <span class="ui-icon ui-icon-trash"></span>
    	</p:commandLink>    
@@ -244,7 +229,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 </h:form>
 
 <script type="text/javascript">
-    function handleAddRequest(xhr, status, args) { 
+    function handleAddMORequest(xhr, status, args) { 
         if(args.validationFailed ) {
             PF('addmanodeobra').jq.effect("shake", {times:5}, 100);
         }
@@ -264,7 +249,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 		 	
 			<p:outputLabel title="Ingrese parte del nombre o id del funcionario" value="Funcionario :" for="fid" />  
-			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_OT.manodeobraAdd.funcionario}"
+			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_ManoObra.manodeobraAdd.funcionario}"
 					 completeMethod="#{mb_Usuario.completarFuncionario}"
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					 converter="ConverterFuncionario" forceSelection="true" 
@@ -274,25 +259,25 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 
 			<p:outputLabel value="Cliente" for="cliente" />
-<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_OT.manodeobraAdd.cliente}"
+<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_ManoObra.manodeobraAdd.cliente}"
  completeMethod="#{mb_Usuario.completarCliente}" 
 var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
  converter="ConverterCliente" forceSelection="true" style="float:right !important;margin:0px 0px 3px 0px;"/> 
 		
 			
 			<p:outputLabel  value="Fecha:" for="fechamo"/>
-        	<p:calendar id="fechamo" value="#{mb_OT.manodeobraAdd.fecha}" effect="fold" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+        	<p:calendar id="fechamo" value="#{mb_ManoObra.manodeobraAdd.fecha}" effect="fold" required="true" style="float:right !important;margin:0px 0px 3px 0px;"/>	
 
-			<p:outputLabel value="MyR:" for="myr"  rendered="#{!verIDOT}" />   
-			<p:inputText id="myr" label="myr" value="#{mb_OT.manodeobraAdd.myr}" rendered="#{!verIDOT}" 
+			<p:outputLabel value="MyR:" for="myr"  rendered="#{paramIdOT==0}" />   
+			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.manodeobraAdd.myr}" rendered="#{paramIdOT==0}"
 			  style="float:right !important;margin:0px 0px 3px 0px;"/>	       	
 			
-			<p:outputLabel value="Id OT:" for="ordenTrabajo" rendered="#{verIDOT}" /> 
-			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo"  rendered="#{verIDOT}" value="#{mb_OT.manodeobraAdd.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
+			<p:outputLabel value="Id OT:" for="ordenTrabajo" rendered="#{paramIdOT!=0}" /> 
+			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo"  rendered="#{paramIdOT!=0}" value="#{mb_ManoObra.manodeobraAdd.ordenTrabajo}" style="float:right !important;margin:0px 0px 3px 0px;"/>	
 			
 			
 			<p:outputLabel value="Tipo de Hora:" for="tipoHora" /> 
-			<p:selectOneMenu value="#{mb_OT.manodeobraAdd.tipoHora}" style="width:80%" id="tipoHora" required="true" >					
+			<p:selectOneMenu value="#{mb_ManoObra.manodeobraAdd.tipoHora}" style="width:80%" id="tipoHora" required="true" >					
                 <f:selectItem itemLabel="Comun" itemValue="COMUN" />
                 <f:selectItem itemLabel="Extra. comun" itemValue="EXT-C" /> 
                 <f:selectItem itemLabel="Extra. excepcional" itemValue="EXT-E" />                       
@@ -300,16 +285,16 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
   
  
 			<p:outputLabel value="Tipo de Mano:" for="tipoMano" />   			  
-			<p:selectOneMenu value="#{mb_OT.manodeobraAdd.tipoMano}" style="width:80%" id="tipoMano" required="true" >					
+			<p:selectOneMenu value="#{mb_ManoObra.manodeobraAdd.tipoMano}" style="width:80%" id="tipoMano" required="true" >					
                    <f:selectItem itemLabel="Trabajadas" itemValue="T" />
                    <f:selectItem itemLabel="Perdidas" itemValue="P" />                       
             </p:selectOneMenu>
                 
 
 			<p:outputLabel value="Total de horas:" for="totalHora" /> 
-			<p:inputNumber  id="totalHora" value="#{mb_OT.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="." />  
+			<p:inputNumber  id="totalHora" value="#{mb_ManoObra.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="" />  
 						
-			<p:commandButton value="Agregar" actionListener="#{mb_OT.addManoObra}"  oncomplete="handleAddRequest(xhr, status, args)"
+			<p:commandButton value="Agregar" actionListener="#{mb_ManoObra.add}"  oncomplete="handleAddMORequest(xhr, status, args)"
 			update="@([id$=formmanodeobra]) message" />	
  
 		</p:panelGrid>

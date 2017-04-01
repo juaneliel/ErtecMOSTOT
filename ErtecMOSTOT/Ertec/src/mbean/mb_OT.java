@@ -17,6 +17,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
@@ -191,11 +192,7 @@ public class mb_OT {
 		this.compraexternaAdd.setOtid(numeroID);
 		this.listaComprasExternas=dao.getComprasExternas(numeroID);
 	}
-	public void recargarManodeobraSelected(){
-		this.numeroID=otSelected.getId();
-		this.manodeobraAdd.setOrdenTrabajo(numeroID);
-		this.listaManoObra = dao.getListaManoObraOT(this.otSelected.getId());
-	}
+
 	
 	public void recargarMovimientoSelected(){
 		this.numeroID=otSelected.getId();
@@ -288,14 +285,20 @@ public class mb_OT {
 	public void delete(Ot f){ 
 		if (dao.delete(f) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino la OT "+f.getId());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+      FacesContext.getCurrentInstance().addMessage(null, message);	
+      this.lista.remove(f);
+      DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+          .findComponent("formordendetrabajo:datatableordendetrabajo");
+      if (dataTable != null) {
+      	dataTable.reset();
+      }   
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino la OT "+f.getId());
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        recargar ();
+        
 	}
  
  
@@ -545,25 +548,7 @@ public class mb_OT {
 	        return results;
 	    }
 	
-	//se le pasa un movimiento el movimiento se agrega mediante el daoOT que llama al otro daoMOV
-	public void addManoObra(){
-		manodeobraAdd.setOrdenTrabajo(this.otSelected.getId());
-		manodeobraAdd.setClienteID(manodeobraAdd.getCliente().getClienteID());
-		manodeobraAdd.setFuncionarioID(manodeobraAdd.getFuncionario().getFuncionarioID());
-		if(dao.addManoObraOT(manodeobraAdd)){
-			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la mano de obra a la OT");
-			context.addMessage(null,mensaje);
-			this.listaManoObra.add(manodeobraAdd);
-			//this.recargarListaManoObra(numeroID);
-			manodeobraAdd=new ManoObra();
-		}
-		else{
-			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","No se pudo agregar la mano de obra");
-			context.addMessage(null,mensaje);
-		}
-	}	
+	
 	
 	public void limpiarCampos(){
 		setFactura(null);

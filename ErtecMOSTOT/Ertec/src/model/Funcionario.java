@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.FichaPersonal;
@@ -25,21 +26,21 @@ public class Funcionario implements Serializable {
 	private byte[] foto;
   
 	
-	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL, optional = true)
+	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL, optional = false)
 	@JoinColumn(name="fichaID")
-	private FichaPersonal ficha;
+	private FichaPersonal ficha=new FichaPersonal();
 	
 	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
-	private List<ActividadAnterior> actividadAnteriores;
+	private List<ActividadAnterior> actividadAnteriores= new ArrayList<ActividadAnterior>();
 	
 	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
-	private List<Capacitacion> capacitaciones;
+	private List<Capacitacion> capacitaciones=new ArrayList<Capacitacion>();
 	
 	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
-	private List<Educacion> educaciones;
+	private List<Educacion> educaciones=new ArrayList<Educacion>();
    
 	public List<ActividadAnterior> getActividadAnteriores() {
 		return actividadAnteriores;

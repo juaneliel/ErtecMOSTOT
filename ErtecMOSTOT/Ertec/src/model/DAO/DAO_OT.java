@@ -250,10 +250,7 @@ public class DAO_OT {
 		ArrayList<NexoMovimiento> nexos= new ArrayList<NexoMovimiento>();//arreglar esto
 		return DAO_Movimiento.add(m,nexos);
 	}
-	public boolean addManoObraOT(ManoObra mo){
-		return DAO_ManoObra.add(mo);
-	}
-	
+
 	public boolean addAdicionalOT(Adicional a){ 
 		boolean salida=false;
 		EntityManager em=JpaUtil.getEntityManager();		

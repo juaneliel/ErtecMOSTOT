@@ -16,155 +16,301 @@
                 <p:messages />
                 <h:panelGrid columns="2" columnClasses="label, value">                 
                     
-                    <h:outputLabel value="Nombre *" for="n" />
-									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.funSelected.nombre}" required="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+                    <h:panelGrid columns="3" columnClasses="label, value">
+                	<h:panelGrid columns="2" columnClasses="label, value">
+                			<p:outputLabel value="Nombre" for="n" />
+									    <p:inputText id="n" label="nombre" value="#{mb_Funcionario.funcionarioAdd.nombre}" required="true" disabled="#{!mb_Funcionario.habEdiFun}" />  
 									    
-									    <h:outputLabel value="Alias:" for="alias" /> 
-									    <p:inputText id="alias" value="#{mb_Funcionario.funSelected.alias}" disabled="#{!mb_Funcionario.habEdiFun}" />  
+									    <p:outputLabel value="Alias:" for="alias" /> 
+									    <p:inputText id="alias" value="#{mb_Funcionario.funcionarioAdd.alias}" disabled="#{!mb_Funcionario.habEdiFun}" />    
 									    
-									    <h:outputLabel value="Direccion:" for="direccion" /> 
-									    <p:inputText id="direccion" value="#{mb_Funcionario.funSelected.direccion}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+									    <p:outputLabel value="Direccion:" for="direccion" /> 
+									    <p:inputText id="direccion" value="#{mb_Funcionario.funcionarioAdd.direccion}" disabled="#{!mb_Funcionario.habEdiFun}" />  
 									    
-									    <h:outputLabel value="Telefono:" for="t" />    
-									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.funSelected.telefono}" disabled="#{!mb_Funcionario.habEdiFun}" />
+									    <p:outputLabel value="Telefono:" for="t" />    
+									    <p:inputText id="t" label="telefono" value="#{mb_Funcionario.funcionarioAdd.telefono}" disabled="#{!mb_Funcionario.habEdiFun}" />  
 									    
-									    <h:outputLabel value="Email:" for="e" />
-									    <p:inputText id="e" label="email" value="#{mb_Funcionario.funSelected.email}" disabled="#{!mb_Funcionario.habEdiFun}" /> 
-                   
-                   	  <h:outputLabel value="Cedula:" for="cedula" /> 	
-									    <p:inputText id="cedula" value="#{mb_Funcionario.funSelected.cedula}" disabled="#{!mb_Funcionario.habEdiFun}" />
+									    <p:outputLabel value="Email:" for="e" />
+									    <p:inputText id="e" label="email" value="#{mb_Funcionario.funcionarioAdd.email}" disabled="#{!mb_Funcionario.habEdiFun}" />  
+									  	 
+                	</h:panelGrid>        
+                	<h:panelGrid columns="2" columnClasses="label, value">
+  									    
+											<p:outputLabel value="Cedula:" for="cedula" /> 	
+									    <p:inputText id="cedula" value="#{mb_Funcionario.funcionarioAdd.cedula}"  disabled="#{!mb_Funcionario.habEdiFun}" />  
 									    
-											<h:outputLabel value="V. Cedula:" for="vcedula" /> 	  
-								      <p:calendar id="vcedula" value="#{mb_Funcionario.funSelected.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/> 
+											<p:outputLabel value="V. Cedula:" for="vcedula" /> 	  
+								      <p:calendar id="vcedula" value="#{mb_Funcionario.funcionarioAdd.vencimientoCedula}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />   
 									    									    
-								 			<h:outputLabel value="Cat Libreta:" for="CatLibreta" />  
-									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.funSelected.libretaCat}" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+								 			<p:outputLabel value="Cat Libreta:" for="CatLibreta" />  
+									    <p:inputText id="CatLibreta" value="#{mb_Funcionario.funcionarioAdd.libretaCat}"  disabled="#{!mb_Funcionario.habEdiFun}" />   
 									    
-								 			<h:outputLabel value="V. Libreta:" for="vlibretain" />  
-								      <p:calendar id="vlibretain" value="#{mb_Funcionario.funSelected.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+								 			<p:outputLabel value="V. Libreta:" for="vlibretain" />  
+								      <p:calendar id="vlibretain" value="#{mb_Funcionario.funcionarioAdd.vencimientoLibreta}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />  
 								      
-								      <h:outputLabel value="V.C.Salud:" for="cds" /> 			    	    
-								 			<p:calendar id="cds" value="#{mb_Funcionario.funSelected.carneSalud}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />
-									           	
-									    <h:outputLabel value="Nacimiento:" for="nacimiento" /> 		
-								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.funSelected.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/>    
+								      <p:outputLabel value="V.C.Salud:" for="cds" /> 			    	    
+								 			<p:calendar id="cds" value="#{mb_Funcionario.funcionarioAdd.carneSalud}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />    
+									           			
+                	</h:panelGrid>               
+	                <h:panelGrid columns="2" columnClasses="label, value">									     
+
+											<p:outputLabel value="Nacimiento:" for="nacimiento" /> 		
+								  		<p:calendar id="nacimiento" value="#{mb_Funcionario.funcionarioAdd.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />   
 								      									    									    
-									    <h:outputLabel value="Area:" for="area" /> 
-									    <p:inputText id="area" value="#{mb_Funcionario.funSelected.area}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+									    <p:outputLabel value="Area:" for="area" /> 
+									    <p:inputText id="area" value="#{mb_Funcionario.funcionarioAdd.area}" disabled="#{!mb_Funcionario.habEdiFun}" />  
 									    								 	        		  
-										  <h:outputLabel value="Activo:" for="activo" />    
-									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.funSelected.activo}" style="width:85%"  disabled="#{!mb_Funcionario.habEdiFun}"  >
+										  <p:outputLabel value="Activo:" for="activo" />    
+									    <p:selectOneMenu id="activo" value="#{mb_Funcionario.funcionarioAdd.activo}" style="width:85%"   disabled="#{!mb_Funcionario.habEdiFun}" >  
 												<f:selectItem  itemLabel="Si" itemValue="Si" />
 												<f:selectItem   itemLabel="No" itemValue="No" />
 											</p:selectOneMenu >	       
 											
-											<h:outputLabel value="Categoria:" for="cat" />    
-									    <p:inputText id="cat" value="#{mb_Funcionario.funSelected.cat}" disabled="#{!mb_Funcionario.habEdiFun}"/>										
-								    					      	
+											<p:outputLabel value="Categoria:" for="cat" />    
+									    <p:inputText id="cat" value="#{mb_Funcionario.funcionarioAdd.cat}" disabled="#{!mb_Funcionario.habEdiFun}" />  								
+								    							                    
+	                </h:panelGrid>
+	                
+	                 <p:outputLabel for="image" value="Seleccione imagen" />
+                <p:fileUpload id="image" value="#{mb_Funcionario.file}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+                
+                  <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="false" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
+             multiple="false"  ajax="false" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
+ 
+                
+                
+                <f:facet name="footer">
+                    <h:commandButton value="Submit" ajax="false" 
+                                     actionListener="#{mb_Funcionario.upload()}"/></f:facet>
+         	                
+	          	</h:panelGrid>
+	          	   <h:graphicImage value="#{mb_Funcionario.foto}" width="50" height="50"></h:graphicImage>
+                      					      	
 							    
 							                    
                 </h:panelGrid>
             </p:panel>
         </p:tab>
-        <p:tab title="Datos privados">
+        <p:tab title="Datos privados" rendered="#{mb_Usuario.acceso('VER','fichapersonal')}" >
              <h:panelGrid columns="3" columnClasses="label, value">
                 	<h:panelGrid columns="2" columnClasses="label, value">
-                			<h:outputText value="Primer nombre" />
-			              	<p:inputText value="#{mb_Funcionario.funSelected.ficha.primerNombre}" disabled="#{!mb_Funcionario.habEdiFun}" />     
+                			<h:outputText value="Primer nombre" for="prinom" />
+			              	<p:inputText id="prinom" label="Primer nombre" value="#{mb_Funcionario.funcionarioAdd.ficha.primerNombre}" disabled="#{!mb_Funcionario.habEdiFun}" required="true" />     
 			              	        
 			                <h:outputText value="Segundo nombre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.segundoNombre}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.segundoNombre}" disabled="#{!mb_Funcionario.habEdiFun}" />
 			                
-	                    <h:outputText value="Primer apellido" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.primerApellido}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+	                    <h:outputText value="Primer apellido" for="priape"/>
+			                <p:inputText id="priape" label="Primer apellido" value="#{mb_Funcionario.funcionarioAdd.ficha.primerApellido}" disabled="#{!mb_Funcionario.habEdiFun}" required="true" />
 			                
 			                <h:outputText value="Segundo apellido" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.segundoApellido}" disabled="#{!mb_Funcionario.habEdiFun}"/>    
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.segundoApellido}" disabled="#{!mb_Funcionario.habEdiFun}"/>    
 			                
 			                <h:outputText value="Ciudadania" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.ciudadania}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.ciudadania}" disabled="#{!mb_Funcionario.habEdiFun}" />
 			                
 			                <h:outputText value="Nacimiento" />			                
-								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" /> 
 	                    
 	                    <h:outputText value="Ingreso" />
-								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />  
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.ingreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}" />  
 			                
 			                <h:outputText value="Cedula" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.cedula}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.cedula}" disabled="#{!mb_Funcionario.habEdiFun}"/>
                 	</h:panelGrid>
                 	<h:panelGrid columns="2" columnClasses="label, value">
 	                    <h:outputText value="C. Civica" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.credencialCivica}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.credencialCivica}" disabled="#{!mb_Funcionario.habEdiFun}" />
 			                
 			                <h:outputText value="Nombre padre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombrePadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombrePadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="Direccion padre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                	
 			                <h:outputText value="telefonoPadre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoPadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                	
 			                <h:outputText value="Nombre madre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreMadre}" disabled="#{!mb_Funcionario.habEdiFun}" />
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreMadre}" disabled="#{!mb_Funcionario.habEdiFun}" />
 			                	
 			                <h:outputText value="Direccion madre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                		
 			                <h:outputText value="Telefono madre" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoMadre}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
                 	</h:panelGrid>
 	                <h:panelGrid columns="2" columnClasses="label, value">	   
 			                <h:outputText value="Nombre conyuge" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>	
 			                
 			                <h:outputText value="Direccion conyuge" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="Telefono conyuge" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoConyuge}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="Fecha egreso" />
-								      <p:calendar value="#{mb_Funcionario.funSelected.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/>
+								      <p:calendar value="#{mb_Funcionario.funcionarioAdd.ficha.fechaEgreso}" pattern="dd-MM-yyyy" mask="true" disabled="#{!mb_Funcionario.habEdiFun}"/>
 								         
 			                <h:outputText value="Motivo egreso" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.motivoEgreso}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.motivoEgreso}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="Nombre aviso urgencias:" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.nombreAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.nombreAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="Dir. avi. urgencia" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.direccionAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.direccionAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			                
 			                <h:outputText value="tel. avi. urgencia" />
-			                <p:inputText value="#{mb_Funcionario.funSelected.ficha.telefonoAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
+			                <p:inputText value="#{mb_Funcionario.funcionarioAdd.ficha.telefonoAvisarUrgencia}" disabled="#{!mb_Funcionario.habEdiFun}"/>
 			            </h:panelGrid>    
 	          	</h:panelGrid>
 
         </p:tab>
-        <p:tab title="Educación">
-            <h:panelGrid columns="2" cellpadding="10">
-
-            </h:panelGrid>
+        <p:tab title="Educación" rendered="#{mb_Usuario.acceso('VER','fichapersonal')}" >
+							
+							<p:dataTable value="#{mb_Funcionario.funcionarioAdd.educaciones}" var="e"  emptyMessage="Sin Registros" id="datatableeducacion"	
+								    		 
+		 paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 		 
+		 editable="true" currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 paginatorTemplate="{agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {vercol}"
+    rowsPerPageTemplate="10,50,100">					
+								    		
+			<f:facet name="{titulo}">
+		        Educación		 		        
+		    </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right;font-size:12px" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatableeducacion" trigger="toggler" />
+		    </f:facet> 
+		 
+		 <f:facet name="{agregar}">    
+		  <p:commandButton style="float:left;font-size:12px" value="Agregar"  onclick="PF('addeducacion').show()"   rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
+     </f:facet> 								    					
+									    		<p:column headerText="Instituto"  visible="true" sortBy="#{e.instituto}"  filterMatchMode="contains" filterBy="#{e.instituto}">		                
+		  										<p:outputLabel value="#{e.instituto}" />
+									    		</p:column>
+									    		<p:column headerText="Anos"  visible="true" sortBy="#{e.anios}"  filterMatchMode="contains" filterBy="#{e.anios}">		                
+		  										<p:outputLabel value="#{e.anios}" />
+									    		</p:column>
+									    		<p:column headerText="Titulo"  visible="true" sortBy="#{e.titulo}"  filterMatchMode="contains" filterBy="#{e.titulo}">		                
+		  										<p:outputLabel value="#{e.titulo}" />
+		  										</p:column>
+		  										<p:column headerText="Imagen"  visible="true" sortBy="#{e.pathArchivo}"  filterMatchMode="contains" filterBy="#{e.pathArchivo}">		                
+		  										<p:outputLabel value="#{e.pathArchivo}" />	
+		  										</p:column>		
+		  										<p:column headerText="" style="width:10px">		     
+		                      <p:commandLink actionListener="#{mb_Funcionario.borrarEducacion(e)}" update="datatableeducacion message" >
+		                       <span class="ui-icon ui-icon-trash"></span>
+   												</p:commandLink>  		                     
+		                      </p:column>	
+		  										
+		  																	    		
+								    		</p:dataTable> 
+							
+							
+													
+						  	 
         </p:tab>
-        <p:tab title="Actividades anteriores">
-            <h:panelGrid columns="2" cellpadding="10"> 
-            
-            </h:panelGrid>
+        <p:tab title="Actividades anteriores" rendered="#{mb_Usuario.acceso('VER','fichapersonal')}" >						
+									    	 	<p:dataTable id="datatableactividad" value="#{mb_Funcionario.funcionarioAdd.actividadAnteriores}" var="aa"  emptyMessage="Sin Registros"									
+									    		
+ paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 		 
+		 editable="true" currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 paginatorTemplate="{agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {vercol}"
+    rowsPerPageTemplate="10,50,100">					
+								    		
+			<f:facet name="{titulo}">
+		        Actividad Anterior		 		        
+		    </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right;font-size:12px" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatableactividad" trigger="toggler" />
+		    </f:facet> 
+		 
+		 <f:facet name="{agregar}">    
+		  <p:commandButton style="float:left;font-size:12px" value="Agregar"  onclick="PF('addactividad').show()"   rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
+     </f:facet> 	    		
+									    		<p:column headerText="Desde"  visible="true" sortBy="#{aa.desde}"  filterMatchMode="contains" filterBy="#{aa.desde}">		                
+		  										<p:outputLabel value="#{aa.desde}" />
+									    		</p:column>
+									    		<p:column headerText="Hasta"  visible="true" sortBy="#{aa.hasta}"  filterMatchMode="contains" filterBy="#{aa.hasta}">		                
+		  										<p:outputLabel value="#{aa.hasta}" />
+									    		</p:column>									    		
+									    		<p:column headerText="Firma"  visible="true" sortBy="#{aa.firma}"  filterMatchMode="contains" filterBy="#{aa.firma}">		                
+		  										<p:outputLabel value="#{aa.firma}" />
+									    		</p:column>		
+									    		<p:column headerText="Puesto"  visible="true" sortBy="#{aa.puesto}"  filterMatchMode="contains" filterBy="#{aa.puesto}">		                
+		  										<p:outputLabel value="#{aa.puesto}" />
+									    		</p:column>									    		
+									    		<p:column headerText="Cau. Ret."  visible="true" sortBy="#{aa.causaRetiro}"  filterMatchMode="contains" filterBy="#{aa.causaRetiro}">		                
+		  										<p:outputLabel value="#{aa.causaRetiro}" />
+									    		</p:column>	
+									    	   <p:column headerText="Sueldo"  visible="true" sortBy="#{aa.sueldo}"  filterMatchMode="contains" filterBy="#{aa.sueldo}">		                
+		  										<p:outputLabel value="#{aa.sueldo}" />
+									    		</p:column>									    		
+									    		<p:column headerText="Detalle"  visible="true" sortBy="#{aa.detalle}"  filterMatchMode="contains" filterBy="#{aa.detalle}">		                
+		  										<p:outputLabel value="#{aa.detalle}" />
+									    		</p:column>		
+										    	<p:column headerText="Otros"  visible="true" sortBy="#{aa.otros}"  filterMatchMode="contains" filterBy="#{aa.otros}">		                
+		  										<p:outputLabel value="#{aa.otros}" />
+									    		</p:column>										    		
+									    		<p:column headerText="" style="width:10px">		     
+		                      <p:commandLink actionListener="#{mb_Funcionario.borrarActividad(aa)}" update="datatableactividad message" >
+		                       <span class="ui-icon ui-icon-trash"></span>
+   												</p:commandLink>  		                     
+		                      </p:column>										    		
+								    		</p:dataTable>   
         </p:tab>
-        <p:tab title="Capacitación">
-            <h:panelGrid columns="2" cellpadding="10">
-
-            </h:panelGrid>
+        <p:tab title="Capacitación" rendered="#{mb_Usuario.acceso('VER','fichapersonal')}" >
+            	<p:dataTable id="datatablecapacitacion" value="#{mb_Funcionario.funcionarioAdd.capacitaciones}" var="cap"  emptyMessage="Sin Registros"	
+paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 		 
+		 editable="true" currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 paginatorTemplate="{agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {vercol}"
+    rowsPerPageTemplate="10,50,100">					
+								    		
+			<f:facet name="{titulo}">
+		        Capacitación	 		        
+		    </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right;font-size:12px" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatablecapacitacion" trigger="toggler" />
+		    </f:facet> 
+		 
+		 <f:facet name="{agregar}">    
+		  <p:commandButton style="float:left;font-size:12px" value="Agregar"  onclick="PF('addcapacitacion').show()"   rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
+     </f:facet> 								    		
+								    										
+									    		<p:column headerText="Fecha"  visible="true" sortBy="#{cap.fecha}"  filterMatchMode="contains" filterBy="#{cap.fecha}">		                
+		  										<p:outputLabel value="#{cap.fecha}" />
+									    		</p:column>
+									    		<p:column headerText="Actividad"  visible="true" sortBy="#{cap.actividad}"  filterMatchMode="contains" filterBy="#{cap.actividad}">		                
+		  										<p:outputLabel value="#{cap.actividad}" />
+									    		</p:column>
+									    		<p:column headerText="Capacitacion"  visible="true" sortBy="#{cap.capacitacion}"  filterMatchMode="contains" filterBy="#{cap.capacitacion}">		                
+		  										<p:outputLabel value="#{cap.capacitacion}" />
+									    		</p:column>
+									    		<p:column headerText="Observaciones"  visible="true" sortBy="#{cap.observaciones}"  filterMatchMode="contains" filterBy="#{cap.observaciones}">		                
+		  										<p:outputLabel value="#{cap.observaciones}" />
+									    		</p:column>
+									    		<p:column headerText="" style="width:10px">		     
+		                      <p:commandLink actionListener="#{mb_Funcionario.borrarCapacitacion(cap)}" update="datatablecapacitacion message" >
+		                       <span class="ui-icon ui-icon-trash"></span>
+   												</p:commandLink>  		                     
+		                      </p:column>	
+                 			</p:dataTable> 
         </p:tab>
                 
     </p:tabView>
     
     
-   <p:commandButton ajax="true" value="Editar" actionListener="#{mb_Funcionario.setHabEdiFun(true)}" update="formficha"  rendered="#{!mb_Funcionario.habEdiFun}" /> 
-     <p:commandButton ajax="true" value="Cancelar" actionListener="#{mb_Funcionario.setHabEdiFun(false)}" update="formficha" rendered="#{mb_Funcionario.habEdiFun}"  /> 
-   <p:commandButton ajax="true" value="Guardar" actionListener="#{mb_Funcionario.updateFichaSelected}" update="formfuncionarios" oncomplete="PF('detalleficha').hide()" rendered="#{mb_Funcionario.habEdiFun}"  /> 
+   <p:commandButton ajax="true" value="Editar" actionListener="#{mb_Funcionario.setHabEdiFun(true)}" update="formficha"  rendered="#{mb_Usuario.acceso('EDITAR','fichapersonal') and !mb_Funcionario.habEdiFun }" />
+     <p:commandButton ajax="true" value="Cancelar" actionListener="#{mb_Funcionario.setHabEdiFun(false)}" update="formficha message" rendered="#{mb_Funcionario.habEdiFun}"  /> 
+   <p:commandButton ajax="true" value="Guardar" actionListener="#{mb_Funcionario.updateFichaSelected}" update="@([id$=datatablefuncionario]) formficha message" oncomplete="handleUpdateFichaRequest(xhr, status, args)" rendered="#{mb_Funcionario.habEdiFun}"  /> 
  
 	</h:form>
         

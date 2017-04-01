@@ -10,6 +10,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.wizard.Wizard;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
@@ -45,16 +48,13 @@ import model.DAO.DAO_Funcionario;
 public class mb_Funcionario {
 
 	private DAO_Funcionario dao=new DAO_Funcionario();
-	private ArrayList <Funcionario> lista;
-	private ArrayList <Educacion> listaEducacion=new ArrayList<Educacion>();
-	private ArrayList <Capacitacion> listaCapacitacion=new ArrayList<Capacitacion>();
-	private ArrayList <ActividadAnterior> listaActividadAnterior=new ArrayList<ActividadAnterior>();
+	private ArrayList <Funcionario> lista; 
 	private ArrayList<Funcionario> funcionariosHallados=new ArrayList<Funcionario>();
 	private String urlImpresion;
 	private Funcionario funcionarioOBJ;
 	private ArrayList<Funcionario> listaFuncionariosOBJ=new ArrayList<Funcionario>(); 
   private String nombreArchivo="foto.jpg";
-	private Funcionario funSelected;
+	private Funcionario funSelected=new Funcionario();	
 	private Funcionario funcionarioAdd=new Funcionario();	
 	private FileUploadEvent eventUpload;
 	private Educacion educacion=new Educacion();
@@ -69,6 +69,7 @@ public class mb_Funcionario {
 	public void init(){
 		this.recargarLista ();
 		//revisarVencimiento();
+		//funcionarioAdd.setFicha(new FichaPersonal());
 	}
 	
 	public void preRender() {
@@ -148,18 +149,30 @@ public class mb_Funcionario {
   //*************Ficha personal*************//
   
   public void agregarEducacion(){
-  	this.listaEducacion.add(educacion);
-  	this.educacion=new Educacion();  	
+  	this.funcionarioAdd.getEducaciones().add(educacion);
+  	this.educacion=new Educacion();
+  }
+  
+  public void borrarEducacion(Educacion edu){
+  	this.funcionarioAdd.getEducaciones().remove(edu);
   }
   
   public void agregarActividadAnterior(){  	
-  	this.listaActividadAnterior.add(actividadAnterior);
+  	this.funcionarioAdd.getActividadAnteriores().add(actividadAnterior);
   	actividadAnterior=new ActividadAnterior();
   }
   
+  public void borrarActividad(ActividadAnterior aa){
+  	this.funcionarioAdd.getActividadAnteriores().remove(aa);
+  }
+  
   public void agregarCapacitacion(){
-  	this.listaCapacitacion.add(this.capacitacion);
+  	this.funcionarioAdd.getCapacitaciones().add(this.capacitacion);
   	capacitacion=new Capacitacion();
+  }
+  
+  public void borrarCapacitacion(Capacitacion cap){
+  	this.funcionarioAdd.getCapacitaciones().remove(cap);
   }
      
   public void save() {        
@@ -197,12 +210,17 @@ public class mb_Funcionario {
 	
 	public String add(){
 		String salida=null;		
-    funcionarioAdd.setCapacitaciones(listaCapacitacion);
-    funcionarioAdd.setActividadAnteriores(listaActividadAnterior);
-    funcionarioAdd.setEducaciones(listaEducacion);
+//    funcionarioAdd.setCapacitaciones(listaCapacitacion);
+//    funcionarioAdd.setActividadAnteriores(listaActividadAnterior);
+//    funcionarioAdd.setEducaciones(listaEducacion);
     if (dao.add(funcionarioAdd)){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego "+funcionarioAdd.getNombre());
 	    FacesContext.getCurrentInstance().addMessage(null, message);
+	    lista.add(funcionarioAdd); 
+	    funcionarioAdd=new Funcionario();
+	    //ver si se puede borrar
+	    RequestContext context = RequestContext.getCurrentInstance();
+	    context.reset("formaddfuncionario");	    
 			salida= "/paginas/funcionarios.xhtml?faces-redirect=true";
 		}
 		else{
@@ -210,7 +228,7 @@ public class mb_Funcionario {
 	    FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR"+funcionarioAdd.getFuncionarioID());
-		recargarLista ();
+		//recargarLista ();
 		return salida;
 	}
 	 
@@ -224,8 +242,14 @@ public class mb_Funcionario {
      }
 	} 
 	 
+	//el usuario selected se usa para cargar en funcionarioAdd los datos de
+	//la ficha completa
 	public void updateFichaSelected (){
-		dao.updateFichaSelected(this.funSelected);
+		dao.updateFichaSelected(this.funcionarioAdd);
+		int ind=lista.indexOf(funSelected);
+		lista.remove(funSelected);
+		lista.add(ind,funcionarioAdd);
+		this.funcionarioAdd=new Funcionario();		
 	}
 	  
 	 
@@ -246,14 +270,20 @@ public class mb_Funcionario {
 	public void delete(Funcionario f){ 
 		if (dao.delete(f) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el funcionario "+f.getNombre());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	    FacesContext.getCurrentInstance().addMessage(null, message);	
+	    this.lista.remove(f);
+	    DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+          .findComponent("formfuncionarios:datatablefuncionario");
+      if (dataTable != null) {
+      	dataTable.reset();
+      }
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el funcionario "+f.getNombre());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino el funcionario "+f.getNombre()+" porque esta en uso en otras relaciones");
 	        FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
 		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-    this.lista.remove(f);
+    
 	}
 
 	//funciones extra
@@ -262,6 +292,21 @@ public class mb_Funcionario {
 		this.lista=dao.getListaFuncionarios();
 	}
 
+	public void initDetalleFicha (){
+		this.habEdiFun=false;
+		System.out.println("initDetalleFicha: "+funSelected.getFuncionarioID());
+		this.funcionarioAdd=dao.getFichaCompleta(funSelected.getFuncionarioID());
+		
+	}
+	
+	public void initAddFun(){
+		System.out.println("entro en initaddfun");
+		this.funcionarioAdd=new Funcionario();
+		Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("formaddfuncionario:wiz");
+    wizard.setStep("personal");
+    RequestContext.getCurrentInstance().update("formaddfuncionario:wiz");
+    System.out.println("initaddfun "+wizard+ " "+funcionarioAdd.getNombre());
+	}
 	//Getter y setter
 	
 	public ArrayList<Funcionario> getFuncionariosHallados() { 
@@ -351,29 +396,7 @@ public class mb_Funcionario {
 		this.nombreArchivo = nombreArchivo;
 	}
 
-	public ArrayList<Educacion> getListaEducacion() {
-		return listaEducacion;
-	}
 
-	public void setListaEducacion(ArrayList<Educacion> listaEducacion) {
-		this.listaEducacion = listaEducacion;
-	}
-
-	public ArrayList<Capacitacion> getListaCapacitacion() {
-		return listaCapacitacion;
-	}
-
-	public void setListaCapacitacion(ArrayList<Capacitacion> listaCapacitacion) {
-		this.listaCapacitacion = listaCapacitacion;
-	}
-
-	public ArrayList<ActividadAnterior> getListaActividadAnterior() {
-		return listaActividadAnterior;
-	}
-
-	public void setListaActividadAnterior(ArrayList<ActividadAnterior> listaActividadAnterior) {
-		this.listaActividadAnterior = listaActividadAnterior;
-	}
 
 	public FileUploadEvent getEventUpload() {
 		return eventUpload;
