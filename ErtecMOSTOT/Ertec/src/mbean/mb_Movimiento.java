@@ -147,6 +147,7 @@ public class mb_Movimiento {
 	  this.mapaArrendamiento.clear();
 	  this.listaArrendamientos =  dao.getArrendado ( clienteID);
 	}
+	
 	public String add(){		
 		String salida=null;  
 		if(movimientoAdd.getCliente() !=null){

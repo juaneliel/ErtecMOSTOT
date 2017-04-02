@@ -41,7 +41,13 @@
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  onclick="PF('additem').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
+		  <p:commandButton value="Agregar"  onclick="PF('additem').show()" style="float:left" 
+		   rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID!=5)}"/>      
+    <p:commandButton value="Agregar"  onclick="PF('additemdev').show()" style="float:left" update="formdev"
+         actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Movimiento.movSelected.cliente.clienteID)}"
+        rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID==5)}"/>      
+    
+    
      </f:facet>      
 		 
 		  <f:facet name="{vercol}">   
@@ -96,12 +102,18 @@
  	 
 
  
-<p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="false" id="additem"  appendTo="@(body)" showEffect="explode" dynamic="true" width="80%">
+<p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="true" id="additem"  appendTo="@(body)" showEffect="explode" dynamic="true" >
 <ui:include src="/templates/templateaddnexo.xhtml" id="listanexos">	 
 <ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
 </ui:include>
 </p:dialog>	   
  	 
+<p:dialog header="Agregar item" widgetVar="additemdev"  modal="true" resizable="true" id="additemdev"  appendTo="@(body)" showEffect="explode" dynamic="true" >
+ <ui:include src="/templates/templateadddev.xhtml" id="listadev">	 
+<ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
+</ui:include>
+</p:dialog>	 
+
  	 
  	 
 	</ui:composition>

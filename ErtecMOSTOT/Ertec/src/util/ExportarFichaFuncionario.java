@@ -3,6 +3,7 @@ package util;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,8 +78,6 @@ public class ExportarFichaFuncionario {
   	
   	DAO_Funcionario dao= new DAO_Funcionario();
   	Funcionario f = dao.getFuncionario(idFuncionario);
-  	
-  	
   	//Funcionario f = this.getFunPrueba();
   	
   	if (f==null){
@@ -93,7 +92,7 @@ public class ExportarFichaFuncionario {
     String area=f.getArea();
     String cat=f.getCat();
     String direccion=f.getDireccion(); 
-    Date nacimiento=f.getNacimiento();
+    Date nacimiento=f.getFicha().getNacimiento();
     Date carneSalud=f.getCarneSalud();
 		String cedula=f.getCedula();
 		Date vencimientoCedula=f.getVencimientoCedula();
@@ -200,13 +199,7 @@ public class ExportarFichaFuncionario {
        cell =new PdfPCell(new Paragraph("Ciudadania: " +ciudadania , new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );    
-       if(nacimiento!=null){
-      	 tabla1.addCell( new PdfPCell(new Paragraph( "F. Nacimiento: "+nacimiento, new Font(FontFamily.HELVETICA, 10))));
-       }
-       else{
-      	 tabla1.addCell( new PdfPCell(new Paragraph( "F. Nacimiento:", new Font(FontFamily.HELVETICA, 10))));
-       }
-       
+       tabla1.addCell( new PdfPCell(new Paragraph( "F. Nacimiento: "+fechaString(nacimiento), new Font(FontFamily.HELVETICA, 10))));              
        cell =new PdfPCell(new Paragraph("Cedula: "+ cedula , new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );   
@@ -226,6 +219,13 @@ public class ExportarFichaFuncionario {
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );   
        tabla1.addCell( new PdfPCell(new Paragraph("Telefono: " + telefono, new Font(FontFamily.HELVETICA, 10))));
+     
+       cell =new PdfPCell(new Paragraph("Fecha Egreso: "+ fechaString(ficha.getFechaEgreso()) , new Font(FontFamily.HELVETICA, 10)));
+       cell.setMinimumHeight(20);         
+       tabla1.addCell( cell );   
+       tabla1.addCell( new PdfPCell(new Paragraph("Motivo Egreso: " + ficha.getMotivoEgreso(), new Font(FontFamily.HELVETICA, 10))));
+     
+       
        tabla1.setWidthPercentage(100);
        tabla1.setSpacingBefore(0f);
        tabla1.setSpacingAfter(0f);
@@ -307,21 +307,12 @@ public class ExportarFichaFuncionario {
        auxEspacios=40;
        for (ActividadAnterior aa : actividades){ 
       	 auxEspacios+=20;
-      	 if(aa.getDesde()!=null){
-      		 cell = new PdfPCell(new Paragraph(aa.getDesde().toString() , new Font(FontFamily.HELVETICA, 10)));
-      	 }
-      	 else{
-      		 cell = new PdfPCell(new Paragraph("" , new Font(FontFamily.HELVETICA, 10)));           
-      	 }
+      	 cell = new PdfPCell(new Paragraph(fechaString (aa.getDesde()) , new Font(FontFamily.HELVETICA, 10)));
+      	 
       	 cell.setMinimumHeight(20);
          tabla3.addCell(cell); 
-         if(aa.getHasta()!=null){
-        	 cell = new PdfPCell(new Paragraph(aa.getHasta().toString(), new Font(FontFamily.HELVETICA, 10)));
-         }
-         else{
-        	 cell = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10)));
-         }
-      	 cell.setMinimumHeight(20);
+         cell = new PdfPCell(new Paragraph(fechaString(aa.getHasta()), new Font(FontFamily.HELVETICA, 10)));
+         cell.setMinimumHeight(20);
          tabla3.addCell(cell); 
       	 cell = new PdfPCell(new Paragraph( aa.getFirma(), new Font(FontFamily.HELVETICA, 10)));
       	 cell.setMinimumHeight(20);
@@ -369,12 +360,7 @@ public class ExportarFichaFuncionario {
        auxEspacios=40;
        for (Capacitacion c : capacitaciones){ 
       	 auxEspacios+=40;
-      	 if(c.getFecha()!=null){
-      		 cell = new PdfPCell(new Paragraph(c.getFecha().toString() , new Font(FontFamily.HELVETICA, 10)));
-      	 }
-      	 else{
-      		 cell = new PdfPCell(new Paragraph("" , new Font(FontFamily.HELVETICA, 10)));           
-      	 }
+      	 cell = new PdfPCell(new Paragraph(fechaString(c.getFecha()) , new Font(FontFamily.HELVETICA, 10)));
       	 cell.setMinimumHeight(20);
          tabla4.addCell(cell); 
          cell = new PdfPCell(new Paragraph(c.getActividad(), new Font(FontFamily.HELVETICA, 10)));         
@@ -591,5 +577,11 @@ public class ExportarFichaFuncionario {
   	
   }
 
+  private String fechaString(Date fecha){
+  	if(fecha ==null){
+  		return "";
+  	}
+  	return new SimpleDateFormat("dd-MM-yyyy").format(fecha);
+  }
     
 }

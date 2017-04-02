@@ -69,11 +69,8 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 					</p:rowEditor>									
 		    </p:column>
 		 
-		 		<p:column headerText="Id" sortBy="#{mo.manoObraID}"  filterMatchMode="contains" filterBy="#{mo.manoObraID}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.manoObraID}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="mid" value="#{mo.manoObraID}" style="width:100%"/></f:facet>
-			</p:cellEditor>
+		 		<p:column headerText="Id" sortBy="#{mo.manoObraID}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.manoObraID}">		                
+		    <p:outputLabel value="#{mo.manoObraID}" /> 
 		</p:column>
 		 
 		 
@@ -82,7 +79,7 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 		         <f:facet name="output"><h:outputText value="#{mo.cliente.nombre}" /></f:facet>
 		         <f:facet name="input">
 		         <p:autoComplete  id="cliente" value="#{mo.cliente}"
- completeMethod="#{mb_Usuario.completarCliente}" 
+ completeMethod="#{mb_Usuario.completarCliente}" disabled="#{mo.ordenTrabajo!=0}"
 var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
  converter="ConverterCliente" forceSelection="true" /> 
 		         
@@ -97,12 +94,11 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.funcionario.nombre}" /></f:facet>
 		         <f:facet name="input">
-					<p:autoComplete id="funcionario" value="#{mo.funcionario}"
-					 completeMethod="#{mb_Usuario.completarFuncionario}"
+					<p:autoComplete id="funcionario" value="#{mo.funcionario}" required="true"
+					 completeMethod="#{mb_Usuario.completarFuncionario}" 
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
-					 converter="ConverterFuncionario" forceSelection="true" 
-					  style="float:left !important;margin:0px 0px 3px 0px;"
-					  queryDelay="1000" 
+					 converter="ConverterFuncionario" forceSelection="true" 					  
+					  queryDelay="1000" label="Funcionario"
 					  /> 
 				  </f:facet>
 			</p:cellEditor>
@@ -110,7 +106,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		
 		    
 		
-		<p:column headerText="N Contrato:" sortBy="#{mo.NContrato}"  filterMatchMode="contains" filterBy="#{mo.NContrato}">		                
+		<p:column headerText="N Contrato:" sortBy="#{mo.NContrato}" style = "width:40px"  filterMatchMode="contains" filterBy="#{mo.NContrato}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.NContrato}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="NContrato" value="#{mo.NContrato}" style="width:100%"/></f:facet>
@@ -118,7 +114,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
 
     
-    		<p:column headerText="Codigo:" sortBy="#{mo.codigo}"  filterMatchMode="contains" filterBy="#{mo.codigo}">		                
+    		<p:column headerText="Codigo:" sortBy="#{mo.codigo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.codigo}">		                
 		   <p:cellEditor>
          <f:facet name="output"><h:outputText value="#{mo.codigo}" /></f:facet>
          <f:facet name="input">
@@ -142,7 +138,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
 	       		   
  
-		<p:column headerText="MYR" sortBy="#{mo.myr}"  filterMatchMode="contains" filterBy="#{mo.myr}">		                
+		<p:column headerText="MYR" sortBy="#{mo.myr}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.myr}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.myr}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="MYR" value="#{mo.myr}" style="width:100%"/></f:facet>
@@ -150,10 +146,10 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
 
 	 
-       			<p:column headerText="O.T.:" sortBy="#{mo.ordenTrabajo}"  filterMatchMode="contains" filterBy="#{mo.ordenTrabajo}">		                
+    <p:column headerText="O.T.:" sortBy="#{mo.ordenTrabajo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.ordenTrabajo}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.ordenTrabajo}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="ot" value="#{mo.ordenTrabajo}" style="width:100%"/></f:facet>
+		         <f:facet name="input"><p:inputText id="ot" value="#{mo.ordenTrabajo}" disabled="#{mo.ordenTrabajo!=0}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
        	
@@ -161,14 +157,14 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
     
      
-     		<p:column headerText="T. Contrato" sortBy="#{mo.TContrato}"  filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
+     		<p:column headerText="T. Contrato" sortBy="#{mo.TContrato}" rendered="false" filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.TContrato}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="tcon" value="#{mo.TContrato}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
-    		<p:column headerText="Tipo:" sortBy="#{mo.tipo}"  filterMatchMode="contains" filterBy="#{mo.tipo}">		                
+    		<p:column headerText="Tipo:" sortBy="#{mo.tipo}" style = "width:40px" rendered="false"  filterMatchMode="contains" filterBy="#{mo.tipo}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.tipo}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="tipo" value="#{mo.tipo}" style="width:100%"/></f:facet>
@@ -205,7 +201,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
     
      
-    		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}"  filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
+    		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><h:outputText value="#{mo.totalHora}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="total" value="#{mo.totalHora}" style="width:100%"/></f:facet>
@@ -260,10 +256,10 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 		 	
 			<p:outputLabel title="Ingrese parte del nombre o id del funcionario" value="Funcionario :" for="fid" />  
-			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" value="#{mb_ManoObra.manodeobraAdd.funcionario}"
-					 completeMethod="#{mb_Usuario.completarFuncionario}"
+			<p:autoComplete title="Ingrese parte del nombre o id del funcionario" id="fid" required="true" value="#{mb_ManoObra.manodeobraAdd.funcionario}"
+					 completeMethod="#{mb_Usuario.completarFuncionario}" label="Funcionario"
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
-					 converter="ConverterFuncionario" forceSelection="true" required="true"/> 
+					 converter="ConverterFuncionario" forceSelection="true" /> 
 			 
 		  
 

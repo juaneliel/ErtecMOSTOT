@@ -256,7 +256,7 @@
 <p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400"  dynamic="true">
 <ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	 
 <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
-<ui:param name="paramCodIni"   value = "4"/>		
+<ui:param name="paramCodIni"   value = "#{4}"/>		
 <ui:param name="paramCliente"   value ="#{mb_OT.otSelected.cliente}"/>			
 </ui:include>			
 </p:dialog>	

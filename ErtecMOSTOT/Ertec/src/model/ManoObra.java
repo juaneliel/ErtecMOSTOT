@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.sun.istack.internal.Nullable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,7 +26,7 @@ public class ManoObra implements Serializable {
 	@JoinColumn(name="FuncionarioID")
 	private Funcionario funcionario;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER,optional=true) 
 	@JoinColumn(name="ClienteID")
 	private Cliente cliente;
 	 	

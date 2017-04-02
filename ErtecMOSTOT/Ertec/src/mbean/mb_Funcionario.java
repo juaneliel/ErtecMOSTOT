@@ -85,8 +85,10 @@ public class mb_Funcionario {
       FacesContext.getCurrentInstance().addMessage(null, msg);
       // Do what you want with the file     
       eventUpload=event;
-//      this.funSelected.setFoto(eventUpload.getFile().getContents());
-//      dao.update(funSelected);
+      if(funSelected!=null){
+      	this.funSelected.setFoto(eventUpload.getFile().getContents());
+      	dao.update(funSelected);
+      }
       
       try {
       	//nombreArchivo event.getFile().getFileName()

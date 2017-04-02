@@ -97,9 +97,9 @@ public class Funcionario implements Serializable {
   @Column(name="CarneSalud")
   private Date carneSalud;
   
-  @Temporal(TemporalType.DATE)
-  @Column(name="Nacimiento")
-  private Date nacimiento;
+//  @Temporal(TemporalType.DATE)
+//  @Column(name="Nacimiento")
+//  private Date nacimiento;
   
   public int getFuncionarioID() {
     return this.funcionarioID;
@@ -205,13 +205,13 @@ public class Funcionario implements Serializable {
     this.carneSalud = carneSalud;
   }
 
-  public Date getNacimiento() {
-    return nacimiento;
-  }
-
-  public void setNacimiento(Date nacimiento) {
-    this.nacimiento = nacimiento;
-  }
+//  public Date getNacimiento() {
+//    return nacimiento;
+//  }
+//
+//  public void setNacimiento(Date nacimiento) {
+//    this.nacimiento = nacimiento;
+//  }
 
   public String getCedula() {
     return cedula;

@@ -45,11 +45,11 @@
 	 	<f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatablefuncionario" fileName="articulos"   />
+	      <p:dataExporter type="xls" target="datatablefuncionario" fileName="funcionarios"   />
 	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatablefuncionario" fileName="articulos"  />
+	      <p:dataExporter type="pdf" target="datatablefuncionario" preProcessor="#{mb_Usuario.preProcessPDF}" fileName="funcionarios"  />
 	    </h:commandLink> 
 		</f:facet>
 	 
@@ -128,19 +128,7 @@
 	               <f:facet name="input"><p:inputText id="direccion" value="#{funcionario.direccion}" style="width:100%"/></f:facet>
            		</p:cellEditor>
 		    </p:column> 
-		    	    
-		    	    
-	       		   
-				<p:column headerText="Nacimiento:"  visible="#{mb_Usuario.viewFuncionarios[9]}" style="min-width:100px;"  sortBy="#{funcionario.nacimiento}"  filterMatchMode="contains" filterBy="#{funcionario.nacimiento}">		                
-				   <p:cellEditor>
-				         <f:facet name="output">
-				         	<p:calendar mindate="#{funcionario.nacimiento}" maxdate="#{funcionario.nacimiento}" id="nacimiento" value="#{funcionario.nacimiento}"
-				          pattern="dd-MM-yyyy" mask="true" />
-						</f:facet>
-				         <f:facet name="input"> <p:calendar id="nacimientoin" value="#{funcionario.nacimiento}" pattern="dd-MM-yyyy" mask="true" />
-		 				</f:facet>
-					</p:cellEditor>
-				</p:column>	    
+		    	       
 				    	    
 				<p:column headerText="C.Salud"  visible="#{mb_Usuario.viewFuncionarios[10]}" style="min-width:100px;"  sortBy="#{funcionario.carneSalud}"  filterMatchMode="contains" filterBy="#{funcionario.carneSalud}">		                
 				   <p:cellEditor>
@@ -200,11 +188,10 @@
 		      
 		</p:dataTable>
 		
-		<p:contextMenu for="datatablefuncionario" id="contextmenu" beforeShow="return true;" widgetVar="contextmenu"  >
-   		<p:menuitem value="Detalles" update="detalles" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>		
+		<p:contextMenu for="datatablefuncionario" id="contextmenu" beforeShow="return true;" widgetVar="contextmenu"  > 	
 			<p:menuitem value="Detalle ficha" update="detalleficha" icon="ui-icon-search" actionListener="#{mb_Funcionario.initDetalleFicha}" oncomplete="PF('detalleficha').show()" />		
 			<p:menuitem value="Exportar Ficha" id="dale" update="dialficha" icon="ui-icon-search" oncomplete="PF('dialficha').show()"  />   	
-  		<p:menuitem value="Subir Archivo" update="subirarchivo" icon="ui-icon-search" oncomplete="PF('subirarchivo').show()"/>
+  		<p:menuitem value="Subir Foto" update="subirarchivo" icon="ui-icon-search" oncomplete="PF('subirarchivo').show()"/>
   		<p:menuitem  value="Borrar" update="formfuncionarios message"  
 		     actionListener="#{mb_Funcionario.delete(mb_Funcionario.funSelected)}" icon="ui-icon-trash" 
 		     rendered="#{mb_Usuario.acceso('BORRAR','fichapersonal') or ( mb_Usuario.acceso('BORRAR','funcionario') and (mb_Funcionario.funSelected.ficha.primerNombre=='') )}"
@@ -287,17 +274,18 @@
 </p:dialog> 
 
 
-<p:dialog id="subirarchivo"  widgetVar="subirarchivo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  width="600" height="300"  >
+<p:dialog id="subirarchivo"  widgetVar="subirarchivo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"  >
  <h:form>
            <h:outputLabel for="txtIdName" value="Nombre archivo:" />
-            <p:inputText id="txtIdName" required="true" value="#{mb_Funcionario.nombreArchivo}"   label="Name" />
+            <p:inputText id="txtIdName" required="true" value="#{mb_Funcionario.nombreArchivo}" disabled="true"  label="Name" />
  
             <br/>
-            <h:outputLabel for="fileIdPhoto" value="sube archivo:" /> 
-            <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="false" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
-             multiple="false" ajax="false" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
+            <h:outputLabel for="fileIdPhoto" value="Sube archivo:" /> 
+            <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="true" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
+             multiple="false" ajax="false" oncomplete="PF('subirarchivo').hide()" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
  
-    <p:commandButton value="Submit" ajax="true" action="#{mb_Funcionario.getNombreArchivo}"/>   
+    
+
  
  </h:form> 
 
@@ -339,7 +327,7 @@
                 <h:outputText value="#{mb_Funcionario.funSelected.direccion}" />
 
                 <h:outputText value="Nacimiento:" />
-                <h:outputText value="#{mb_Funcionario.funSelected.nacimiento}" />
+                <h:outputText value="#{mb_Funcionario.funSelected.ficha.nacimiento}" />
                 
                 <h:outputText value="C.Salud" />
                 <h:outputText value="#{mb_Funcionario.funSelected.carneSalud}" /> 
@@ -472,3 +460,14 @@
  
 <!--     <p:ajax event="contextMenu" process="datatablefuncionario"   update="@([id$=contextmenu])" onclick="PF('contextmenu').show();" /> -->
  		
+ 		
+<!-- 				<p:column headerText="Nacimiento:"  visible="#{mb_Usuario.viewFuncionarios[9]}" style="min-width:100px;"  sortBy="#{funcionario.ficha.nacimiento}"  filterMatchMode="contains" filterBy="#{funcionario.ficha.nacimiento}">		                 -->
+<!-- 				   <p:cellEditor> -->
+<!-- 				         <f:facet name="output"> -->
+<!-- 				         	<p:calendar mindate="#{funcionario.ficha.nacimiento}" maxdate="#{funcionario.ficha.nacimiento}" id="nacimiento" value="#{funcionario.ficha.nacimiento}" -->
+<!-- 				          pattern="dd-MM-yyyy" mask="true" /> -->
+<!-- 						</f:facet> -->
+<!-- 				         <f:facet name="input"> <p:calendar id="nacimientoin" value="#{funcionario.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" /> -->
+<!-- 		 				</f:facet> -->
+<!-- 					</p:cellEditor> -->
+<!-- 				</p:column>	 -->

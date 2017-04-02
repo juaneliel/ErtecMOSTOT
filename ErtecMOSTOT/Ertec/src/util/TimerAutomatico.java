@@ -10,7 +10,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
+import javax.faces.context.FacesContext;
 
+import mbean.mb_Usuario;
 import model.Funcionario;
 import model.DAO.DAO_Funcionario;
 
@@ -28,20 +30,28 @@ public class TimerAutomatico {
   
   
   private void buscarCumpleaños(){
-    ArrayList<Funcionario> lfcumplen=DAO_Funcionario.getFuncionariosCumple(true);
+  	//para los que cumplen hoy se les manda un saludo
+    ArrayList<Funcionario> lfcumplen=DAO_Funcionario.getFuncionariosCumple(true,true);
     System.out.println("tamaño de cumpleañeros "+lfcumplen.size());
-    if(lfcumplen.size()>0){      
-      ArrayList<Funcionario> lfavisar=DAO_Funcionario.getFuncionariosCumple(false);
-      System.out.println("tamaño de avisados "+lfavisar.size());
-      for(Funcionario f : lfcumplen){     
+    if(lfcumplen.size()>0){ 
+    	for(Funcionario f : lfcumplen){     
         if(f.getEmail()!=null&&f.getEmail().contains("@")){
           String deseo="Feliz cumpleaños "+f.getNombre() +" te deseamos tus amigos del trabajo, que la pases muy lindo en tu dia, alegria :D"+"\n\n ERTEC S.A.";
           Mail.sendEmail(f.getEmail(), "Feliz cumple",deseo);
         }
+      }
+    }
+  	//para los que cumplen mañana se busca los que cumplen y se les avisa al resto 	
+    lfcumplen=DAO_Funcionario.getFuncionariosCumple(true,false);
+    System.out.println("tamaño de cumpleañeros mañan"+lfcumplen.size());
+    if(lfcumplen.size()>0){      
+      ArrayList<Funcionario> lfavisar=DAO_Funcionario.getFuncionariosCumple(false,false);
+      System.out.println("tamaño de avisados "+lfavisar.size());
+      for(Funcionario f : lfcumplen){  
         for (Funcionario r : lfavisar ){          
           if(r.getEmail()!=null&&r.getEmail().contains("@")){
-            String aviso="Hoy es el cumpleaños de "+f.getNombre() +", recuerda enviarle saludos :D"+"\n\n ERTEC S.A.";
-           // Mail.sendEmail(r.getEmail(), "Cumpleaños",aviso);
+            String aviso="Mañana es el cumpleaños de "+f.getNombre() +", recuerda enviarle saludos :D"+"\n\n ERTEC S.A.";
+            Mail.sendEmail(r.getEmail(), "Cumpleaños",aviso);
           }
         }
       }
@@ -57,13 +67,18 @@ public class TimerAutomatico {
         mensaje+="Nombre: "+f.getNombre()+" , Vencimiento: "+fechavencimiento+"\n";      
         if(f.getEmail()!=null&&f.getEmail().contains("@")){
           String aviso="Su Carné de salud se esta por vencer o ya vencio el dia: "+fechavencimiento+"\n\n ERTEC S.A.";
-          Mail.sendEmail(f.getEmail(), "Carne Vencido",aviso);
+          Mail.sendEmail(f.getEmail(), "Carné Vencido",aviso);
         }
       }
       mensaje+="\n ERTEC S.A.";
-      Mail.sendEmail("elieljuegos@gmail.com", "Listado de Carne Vencidos",mensaje);
-      Mail.sendEmail("gperez@ertec.com.uy", "Listado de Carne Vencidos",mensaje);
-      Mail.sendEmail("cbazzi@ertec.com.uy", "Listado de Carne Vencidos",mensaje);
+      Mail.sendEmail("elieljuegos@gmail.com", "Listado de Carné Vencidos",mensaje);
+      //cambiar para que los mail se le envieen a los que puedan ver ficha personal
+//      mb_Usuario service = (mb_Usuario) 
+//      		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+//      //lista de usuarios etc
+      
+      Mail.sendEmail("gperez@ertec.com.uy", "Listado de Carné Vencidos",mensaje);
+      Mail.sendEmail("cbazzi@ertec.com.uy", "Listado de Carné Vencidos",mensaje);
     }    
   }
 }

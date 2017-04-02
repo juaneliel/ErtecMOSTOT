@@ -222,17 +222,22 @@ public class DAO_Funcionario {
     return salida;	  
 	}
 	
-	public static ArrayList<Funcionario> getFuncionariosCumple(boolean buscarCumpleañeros){
+	//buscarCumpleañeros si es true son los que cumplen años
+	//si es false son a los que se les debe avisar de los cumples
+	public static ArrayList<Funcionario> getFuncionariosCumple(boolean buscarCumpleañeros,boolean hoy){
     ArrayList<Funcionario> salida = new ArrayList<Funcionario>();
-    
+    //a los que no cumplen se les avisa un dia antes
     Calendar calendar = Calendar.getInstance();
+    if(!hoy){
+    	calendar.add(Calendar.DAY_OF_MONTH, 1);
+    }
     int mes = calendar.get(Calendar.MONTH)+1;
     int dia = calendar.get(Calendar.DAY_OF_MONTH); 
     
-    String condicion=  "MONTH(nacimiento) <> "+ mes +" OR DAY(nacimiento) <> " + dia;
+    String condicion=  "MONTH(ficha.nacimiento) <> "+ mes +" OR DAY(ficha.nacimiento) <> " + dia;
     if(buscarCumpleañeros){
-      condicion=  "MONTH(nacimiento) = "+ mes +" AND DAY(nacimiento) = " + dia;
-    }
+      condicion=  "MONTH(fun.ficha.nacimiento) = "+ mes +" AND DAY(ficha.nacimiento) = " + dia;
+    } 
     
     String consulta="SELECT fun FROM Funcionario fun Where "+ condicion +" and fun.activo = 'Si' " + " and "+ filtrarInexistentes;
 

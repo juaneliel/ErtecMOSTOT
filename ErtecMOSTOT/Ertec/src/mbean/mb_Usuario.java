@@ -1,6 +1,26 @@
 package mbean;
 
 
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +47,8 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
+//import com.itextpdf.text.Document;
+//import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -113,13 +133,7 @@ public class mb_Usuario {
 		context.addCallbackParam("loggedIn", false);
 		this.usuarioLogueado.setNombre(null);
 		return "/login.xhtml?faces-redirect=true";
-	}
-	
-	
-	
-	
-	
-	
+	} 
 	
 	
 	private DAO_Usuario dao=new DAO_Usuario();
@@ -225,7 +239,18 @@ public class mb_Usuario {
   public void recargarLista(){
   	this.lista=dao.getLista();
   }
+  
+  public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+  	 Document pdf = (Document) document;
+     pdf.setPageSize(PageSize.A4);
+    
+     pdf.open();
+     pdf.addTitle("Funcionario");
+}
  
+  
+  
+  
   public String updateClave(){
   	if(dao.updateClave(this.usuarioLogueado, claveVieja, claveNueva,email)){
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -495,36 +520,36 @@ public class mb_Usuario {
 		this.listaProveedoresOBJ = listaProveedoresOBJ;
 	}
 
-	public void imprimir(){
-  	Document documento = new Document(PageSize.A4);
-  	ByteArrayOutputStream baos= new ByteArrayOutputStream();
-  	try{
-  		PdfWriter.getInstance(documento, baos);
-  		documento.open();
-  		documento.add( new Paragraph("Hola") );
-  	}
-  	catch(Exception e){
-  		e.printStackTrace();	  		
-  	}
-  	documento.close();
-  	FacesContext contexto = FacesContext.getCurrentInstance();
-  	Object response = contexto.getExternalContext().getResponse();
-  	if(response instanceof HttpServletResponse){
-  		HttpServletResponse hsr = (HttpServletResponse) response;
-  		hsr.setContentType("application/pdf");
-  		hsr.setHeader("Content-disposition","attachment; filename=listaot.pdf");
-  		hsr.setContentLength(baos.size());
-  		try {
-				ServletOutputStream out = hsr.getOutputStream();
-				baos.writeTo(out);
-				out.flush();					
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-  		contexto.responseComplete();	  		
-  	}	  	
-  }
+//	public void imprimir(){
+//  	Document documento = new Document(PageSize.A4);
+//  	ByteArrayOutputStream baos= new ByteArrayOutputStream();
+//  	try{
+//  		PdfWriter.getInstance(documento, baos);
+//  		documento.open();
+//  		documento.add( new Paragraph("Hola") );
+//  	}
+//  	catch(Exception e){
+//  		e.printStackTrace();	  		
+//  	}
+//  	documento.close();
+//  	FacesContext contexto = FacesContext.getCurrentInstance();
+//  	Object response = contexto.getExternalContext().getResponse();
+//  	if(response instanceof HttpServletResponse){
+//  		HttpServletResponse hsr = (HttpServletResponse) response;
+//  		hsr.setContentType("application/pdf");
+//  		hsr.setHeader("Content-disposition","attachment; filename=listaot.pdf");
+//  		hsr.setContentLength(baos.size());
+//  		try {
+//				ServletOutputStream out = hsr.getOutputStream();
+//				baos.writeTo(out);
+//				out.flush();					
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//  		contexto.responseComplete();	  		
+//  	}	  	
+//  }
 
 	public ArrayList<Contrato> getListaContratosOBJ() {
 		return listaContratosOBJ;
