@@ -13,32 +13,32 @@ public class FichaPersonal implements Serializable {
 	@Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FP_SEQ") 
 	private int fichaID;	
-	private String primerNombre;
-	private String segundoNombre;
-	private String primerApellido;
-	private String segundoApellido;
-	private String ciudadania;	
+	private String primerNombre="";
+	private String segundoNombre="";
+	private String primerApellido="";
+	private String segundoApellido="";
+	private String ciudadania="";	
 	@Temporal(TemporalType.DATE) 
 	private Date nacimiento;
 	@Temporal(TemporalType.DATE) 
 	private Date ingreso;	
-	private String cedula;
-	private String credencialCivica;
-	private String nombrePadre;
-	private String nombreMadre;
-	private String nombreConyuge;
-	private String direccionMadre;
-	private String direccionPadre;
-	private String direccionConyuge;
-	private String telefonoMadre;
-	private String telefonoPadre;
-	private String telefonoConyuge;
+	private String cedula="";
+	private String credencialCivica="";
+	private String nombrePadre="";
+	private String nombreMadre="";
+	private String nombreConyuge="";
+	private String direccionMadre="";
+	private String direccionPadre="";
+	private String direccionConyuge="";
+	private String telefonoMadre="";
+	private String telefonoPadre="";
+	private String telefonoConyuge="";
 	@Temporal(TemporalType.DATE) 
 	private Date fechaEgreso;	 
-	private String motivoEgreso;
-	private String nombreAvisarUrgencia;
-	private String direccionAvisarUrgencia;
-	private String telefonoAvisarUrgencia;
+	private String motivoEgreso="";
+	private String nombreAvisarUrgencia="";
+	private String direccionAvisarUrgencia="";
+	private String telefonoAvisarUrgencia="";
 	private String pathCedula1;
 	private String pathCedula2;
 	private String pathCredencial1;

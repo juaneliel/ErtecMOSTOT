@@ -132,7 +132,12 @@
 		</div>	
 	</footer>	   	
    		
-	  
+	
+<p:confirmDialog dynamic="true" header="Seguro que deseas borrar ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
+   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
+   </p:commandButton>
+   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+</p:confirmDialog>  
 
 
 </h:body>

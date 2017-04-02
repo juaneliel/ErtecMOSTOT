@@ -219,7 +219,7 @@
 	  	<p:menuitem value="Adicionales" update="formadicional" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
 	  	<p:menuitem value="Compras externas" update="formcompraexterna" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
 	   	<p:menuitem value="Mano de Obra" update="formmanodeobra" actionListener="#{mb_ManoObra.recargarManodeobraSelected(mb_OT.otSelected.id)}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
-	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_OT.recargarMovimientoSelected}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_Movimiento.recargarMovimientoSelected(mb_OT.otSelected.id)}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
 	  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
 	   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
 		  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
@@ -235,11 +235,6 @@
 
  
 
-<p:confirmDialog dynamic="true" header="Borrar Orden de trabajo ?" global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDialog" id="confirmDialog" >
-   <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  > 
-   </p:commandButton>
-   <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-</p:confirmDialog>
 
 
 <p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
@@ -253,17 +248,16 @@
 </p:dialog>
 
 <p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">	
-<ui:param name="paramLista"   value = "#{mb_OT.listaManoObra}"/>		
+<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">	 
 <ui:param name="paramIdOT"   value = "#{mb_OT.otSelected.id}"/>			
 </ui:include>			
 </p:dialog>	
 
 <p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	
-<ui:param name="paramLista"   value = "#{mb_OT.listaMovimientos}"/>			
+<ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	 
 <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
-<ui:param name="paramCodIni"   value = "4"/>			
+<ui:param name="paramCodIni"   value = "4"/>		
+<ui:param name="paramCliente"   value ="#{mb_OT.otSelected.cliente}"/>			
 </ui:include>			
 </p:dialog>	
 

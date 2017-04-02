@@ -33,17 +33,14 @@ public class Movimiento implements Serializable {
 	private List<NexoMovimiento> nexos;
 	
 	@OneToOne(fetch=FetchType.EAGER,optional=true) 
-	@JoinColumn(name="clienteID" , insertable = false, updatable = false)
+	@JoinColumn(name="ClienteID" )
 	private Cliente cliente;
 		
 	@OneToOne(fetch=FetchType.EAGER,optional=true) 
-	@JoinColumn(name="contratoID", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="ContratoID")
 	private Contrato contrato;
 	
 	
-	@Column(name="ClienteID")
-	private int clienteID;
-
 	@Column(name="CodigoMovimientoID")
 	private int codigoMovimientoID;
 
@@ -83,14 +80,6 @@ public class Movimiento implements Serializable {
 
 	public void setMovimientoID(int movimientoID) {
 		this.movimientoID = movimientoID;
-	}
-
-	public int getClienteID() {
-		return this.clienteID;
-	}
-
-	public void setClienteID(int clienteID) {
-		this.clienteID = clienteID;
 	}
 
 	public int getCodigoMovimientoID() {
@@ -186,6 +175,7 @@ public class Movimiento implements Serializable {
 	public String getCodigoString(){
 	  return DAO_Movimiento.getCodigoString(this.getCodigoMovimientoID());  
 	}
+	 
 
 	public Contrato getContrato() {
 		return contrato;

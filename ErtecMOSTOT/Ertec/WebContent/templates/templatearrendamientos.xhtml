@@ -15,7 +15,7 @@
 
 
 
-	<p:dataTable var="arrendamiento" value="#{mb_Movimiento.listaArrendamientos}" id="datatablearrendamiento" 
+	<p:dataTable var="arrendamiento" value="#{mb_Movimiento.listaArrendamientos}" id="datatablearrendamiento" widgetVar="datatablearrendamiento"
 	paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
 	draggableColumns="true" scrollable="true"  
 	scrollWidth="100%"  editable="true"  
@@ -37,7 +37,7 @@
 		
 				 		 
 		<p:column headerText="Art.id" sortBy="#{arrendamiento.articuloID}"  style="text-align:center;width:80px;" filterStyle="width: 80px;" filterMatchMode="startswith" filterBy="#{arrendamiento.articuloID}">		                
-			<h:outputText value="#{arrendamiento.articuloID}" /> 			 
+			<h:outputText value="#{arrendamiento.articulo.articuloID}" /> 			 
 		</p:column>
 		
 		<p:column headerText="Desc.art" sortBy="#{arrendamiento.articulo.descripcion}"  filterMatchMode="startswith" filterBy="#{arrendamiento.articulo.descripcion}">		                

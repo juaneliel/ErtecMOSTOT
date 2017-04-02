@@ -40,17 +40,14 @@ public class DAO_Movimiento {
 			
 			for(NexoMovimiento nexo : nexos){
 				nexo.setMovimientoID(movimiento.getMovimientoID());
-				Articulo a = em.find(Articulo.class, nexo.getArticuloID());
+				Articulo a = nexo.getArticulo();
 				//compra en plaza, aumenta stock y modifica los valores del articulo
 				acomodarNexo(movimiento,nexo,a);
 				em.persist(nexo);
-				
-
 				//salida por arrendamiento
 				if(movimiento.getCodigoMovimientoID()==25){
 					Arrendamiento arrendamiento=new Arrendamiento();
 					arrendamiento.setArticulo(a);
-					arrendamiento.setArticuloID(a.getArticuloID());
 					arrendamiento.setCantidad(nexo.getCantidad().intValue());
 					arrendamiento.setMovimientoID(movimiento.getMovimientoID()); 
 					arrendamiento.setSaldo(nexo.getCantidad().intValue());
@@ -136,7 +133,7 @@ public class DAO_Movimiento {
 	  try{       
       EntityManager em=JpaUtil.getEntityManager();      
       String consulta ="SELECT a FROM Movimiento m, Arrendamiento a "+
-                       " WHERE a.movimientoID = m.movimientoID and m.clienteID= "+ idCliente +
+                       " WHERE a.movimientoID = m.movimientoID and m.cliente.clienteID= "+ idCliente +
                        " ORDER BY id DESC ";
       System.out.println("Consulta arrendados "+consulta);
       TypedQuery<Arrendamiento> consultaFuncionario= em.createQuery(consulta, Arrendamiento.class);
@@ -163,10 +160,7 @@ public class DAO_Movimiento {
       em.getTransaction().begin();             
       aux.setCantidad(o.getCantidad());
       aux.setCosto(o.getCosto());
-      aux.setFecha(o.getFecha());
-      if(o.getArticulo()!=null){
-        aux.setArticuloID(o.getArticulo().getArticuloID());
-      }           
+      aux.setFecha(o.getFecha()); 
       em.getTransaction().commit();
       salida=true;
     }
@@ -201,7 +195,7 @@ public class DAO_Movimiento {
 			aux.setFecha(m.getFecha());
 			aux.setCodigoMovimientoID(m.getCodigoMovimientoID());
 			if(m.getCliente()!=null){
-			  aux.setClienteID(m.getCliente().getClienteID());
+		//	  aux.setClienteID(m.getCliente().getClienteID());
 			  aux.setNombreCliente(m.getCliente().getNombre());
 			}			
 			em.getTransaction().commit();
@@ -262,14 +256,21 @@ public class DAO_Movimiento {
 		boolean salida=false; 
 		try{			
 			Movimiento m = em.find(Movimiento.class, nexo.getMovimientoID());
-			Articulo a= em.find(Articulo.class, nexo.getArticuloID());      
+			Articulo a= nexo.getArticulo();      
 			acomodarNexo(m,nexo,a);
 			em.getTransaction().begin();
 			em.persist(nexo);
-			 
-			if (a!=null){
-			  em.persist(a);
-			}			
+			
+		//salida por arrendamiento
+			if(m.getCodigoMovimientoID()==25){
+				Arrendamiento arrendamiento=new Arrendamiento();
+				arrendamiento.setArticulo(a);
+				arrendamiento.setCantidad(nexo.getCantidad().intValue());
+				arrendamiento.setMovimientoID(m.getMovimientoID()); 
+				arrendamiento.setSaldo(nexo.getCantidad().intValue());
+				em.persist(arrendamiento);
+			}
+			
 			
 			em.getTransaction().commit(); 
 			salida = true;
@@ -296,7 +297,7 @@ public class DAO_Movimiento {
 				
 					//si son de los 3 tipos hay que realizar una cuenta
 					if(m!=null && ( m.getCodigoMovimientoID()==1||m.getCodigoMovimientoID()==2||m.getCodigoMovimientoID()==3 )){
-			      a = em.find(Articulo.class, nexo.getArticuloID());      
+			      a = nexo.getArticulo();      
 			      
 			      BigDecimal cdCopia=a.getCostoDolares();
 			      BigDecimal cpCopia=a.getCostoPesos();
@@ -603,12 +604,12 @@ public class DAO_Movimiento {
         //em.flush();
         //crear nuevo nexo con idmov
         NexoMovimiento nexo= new NexoMovimiento();
-        nexo.setArticuloID(arr.getArticuloID());
+        nexo.setArticulo(arr.getArticulo());
         nexo.setCantidad(BigDecimal.valueOf(devolucion));
         nexo.setCosto(arr.getCosto());
         nexo.setMovimientoID(movID); 
         
-        Articulo a = em.find(Articulo.class, nexo.getArticuloID());
+        Articulo a = nexo.getArticulo();
         a.setStock(a.getStock().add(nexo.getCantidad()));
         
         em.persist(nexo);

@@ -7,7 +7,7 @@
  
 <ui:composition>
   <h:form id="formmovimiento">
-    <p:dataTable var="movimiento" value="#{paramLista}" id="datatablemovimiento" widgetVar="datatablemovimiento"
+    <p:dataTable var="movimiento" value="#{mb_Movimiento.lista}" id="datatablemovimiento" widgetVar="datatablemovimiento"
 		 selection="#{mb_Movimiento.movSelected}" selectionMode="single" rowKey="#{movimiento.movimientoID}"
 		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
 		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
@@ -33,7 +33,7 @@
 		</f:facet>
 		    
 		<f:facet name="{agregar}">    
-			<p:commandButton value="Agregar" actionListener="#{mb_Movimiento.setCodIni(paramCodIni)}" oncomplete="PF('addmovimiento').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
+			<p:commandButton value="Agregar" update="addmovimiento" actionListener="#{mb_Movimiento.initAddMov(paramCodIni,paramCliente)}" oncomplete="PF('addmovimiento').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}"/>      
 		</f:facet>
 		 
 		<f:facet name="{vercol}">   
@@ -43,7 +43,7 @@
 		    
     <p:ajax event="rowEdit" listener="#{mb_Movimiento.onRowEdit}" update="message" />
 		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaNexos(movimiento.movimientoID)}" update="datatableNexos" />
-		<f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" />
+		
 		
 		<p:column headerText=""  style="width:0px" exportable="false" rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}">						
 			<p:rowEditor     >
@@ -84,7 +84,7 @@
      	</p:cellEditor>
 		</p:column>
 		    
-		<p:column headerText="Tipo ot" sortBy="#{movimiento.tipoOT}"  filterMatchMode="contains" filterBy="#{movimiento.tipoOT}">		                
+		<p:column headerText="Tipo ot" sortBy="#{movimiento.tipoOT}"  filterMatchMode="contains" filterBy="#{movimiento.tipoOT}" rendered="false">		                
 			<p:cellEditor>
 	    	<f:facet name="output"><h:outputText value="#{movimiento.tipoOT}" /></f:facet>
 	      <f:facet name="input"><p:inputText id="tipoOT" value="#{movimiento.tipoOT}" style="width:100%"/></f:facet>
@@ -111,7 +111,7 @@
 	      <f:facet name="input">
 	    		<p:selectOneMenu value="#{movimiento.tipoReferencia}" style="width:100%">
       			<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
-        			itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+        			itemLabel="#{ref.descripcion}" itemValue="#{ref.descripcion}" />
         	</p:selectOneMenu>
        	</f:facet>
       </p:cellEditor>
@@ -126,16 +126,7 @@
 
 		   
 		     
-		<p:column headerText="Borrar"  style = "width:50px"  rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" exportable="false">			
-			<p:commandButton icon="ui-icon-trash" id="trashMOV"  actionListener="#{mb_Movimiento.delete(movimiento)}" 
-				update="message formmovimiento" >
-		  <p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
-		 	</p:commandButton>
-		 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-		    <p:commandButton value="Borrar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-		    <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-		 	</p:confirmDialog>
-		</p:column>
+	
 			    	  
 		<p:rowExpansion>		  
 			<p:commandButton value="Ver Items"  update=":datatableNexos" 
@@ -145,10 +136,25 @@
 			<p:commandButton value="Agregar Item" 
 				onclick="PF('addnexo').show();" ajax="false"
 				action="#{mb_Movimiento.movimientoAdd.setMovimientoID(movimiento.movimientoID)}"/>		
-		</p:rowExpansion> 	      
+		</p:rowExpansion> 
+		
+			      
 	</p:dataTable>
+	
+		<p:contextMenu for="datatablemovimiento">
+	  	<p:menuitem value="Items" update="formitem" actionListener="#{mb_Movimiento.recargarNexoSelected}"  icon="ui-icon-search" oncomplete="PF('veritem').show()"/>
+   	  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','movimiento')}" value="Borrar" update="formmovimiento message"  
+		     actionListener="#{mb_Movimiento.delete(mb_Movimiento.movSelected)}" icon="ui-icon-trash" >
+				<p:confirm   header="Borrar movimiento" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+			</p:menuitem>	
+		</p:contextMenu>
+	
+	
+	
+	
 </h:form>
 		
+					
 					
 <p:dialog header="Ver items" widgetVar="vernexos"  appendTo="@(body)" modal="true" width="90%" height="600">
 	<ui:include src="/templates/templatenexos.xhtml" id="vernexos">	
@@ -177,7 +183,7 @@
 					<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.movimientoAdd.tipoReferencia}"  required="true">
 						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(  mb_Movimiento.movimientoAdd.codigoMovimientoID   )}" />
 						<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
-							itemLabel="#{ref.descripcion}" itemValue="#{ref.codigoMovimientoID}" />
+							itemLabel="#{ref.descripcion}" itemValue="#{ref.descripcion}" />
 		   	  </p:selectOneMenu>
 		   	
 					<p:outputLabel value="Referencia:" for="referencia"  visible="#{mb_Movimiento.verReferencia}"/> 
@@ -230,23 +236,22 @@
 						<f:validateDoubleRange minimum="0.01" />
 					</p:inputText>		 
 		
-			    <h:commandButton value="Guardar" actionListener="#{mb_Movimiento.add}"  />			
+			    <p:commandButton value="Guardar" actionListener="#{mb_Movimiento.add}" update="formmovimiento message" oncomplete="PF('addmovimiento').hide()" />			
 		    </p:panelGrid>	 
   		</h:form>
 		</h:panelGrid>
  
-		<h:panelGrid>
-			<ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos">	
-			<ui:param name="paramTemporal"   value = "true"/>					
-			</ui:include>	
-		</h:panelGrid>
+		 
 		
 	</p:panelGrid>
 </p:dialog>
 
-		
-				
-				
+	<p:dialog header="Ver Item" id="veritem"  appendTo="@(body)" widgetVar="veritem" showEffect="slide" hideEffect="drop"  modal="true" dynamic="true" width="90%">
+ 		<ui:include src="/templates/templateadditemlist.xhtml" id="listaMovimientos3">	
+			<ui:param name="paramTemporal"   value = "true"/>					
+			</ui:include>	
+</p:dialog>	
+ 			
 				
 				
 				
@@ -282,3 +287,4 @@
 <!-- </p:dialog>					 -->
 
 
+<!-- <f:event type="preRenderView" listener="#{mb_Movimiento.recargarLista}" /> -->

@@ -24,8 +24,8 @@ public class Contrato implements Serializable {
 
 	
 	//hay error en los datos de contratos
-	@OneToOne(fetch=FetchType.LAZY,optional=true) 
-  @JoinColumn(name="ClienteID" ,referencedColumnName="ClienteID", insertable = false, updatable = false)
+	@OneToOne(fetch=FetchType.EAGER,optional=true) 
+  @JoinColumn(name="ClienteID")
   private Cliente cliente;
 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLI_SEQ")  

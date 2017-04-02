@@ -82,7 +82,10 @@ public class mb_ManoObra {
 		this.lista = dao.getManoObraOT(otid);
 	}
 	
-
+	public void filtrarPorFechasManoObraOT(int otid){		
+		this.lista=DAO_ManoObra.getFiltradaPorFechasYOT(fechaIni, fechaFin, otid);
+	}
+	
 	 public void add(){
 		if(dao.add(manodeobraAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();

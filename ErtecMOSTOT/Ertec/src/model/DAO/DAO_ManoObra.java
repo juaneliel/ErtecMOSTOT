@@ -147,7 +147,13 @@ public class DAO_ManoObra {
 	
 	public static ArrayList<ManoObra> getFiltradaPorFechasYOT(Date fechaIni, Date fechaFin, int idOT){
 		ArrayList<ManoObra> salida=new ArrayList<ManoObra>();
-		String consulta="Select mo from ManoObra mo  where ordenTrabajo = " +  idOT;
+		String consulta="Select mo from ManoObra mo ";
+		if(idOT!=0){
+			consulta+=" where ordenTrabajo = " +  idOT;			
+		} 
+		else{
+			consulta+=" where ordenTrabajo <> " +  idOT;	
+		}
 		
 		
 		  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -157,6 +163,7 @@ public class DAO_ManoObra {
 		 if(fechaIni!=null){
 			 fi = formatter.format(fechaIni);
 			 if(fechaFin!=null){
+				 ff = formatter.format(fechaFin);
 				 consulta+=" AND fecha BETWEEN '" +	fi + "' AND '" + ff + "'";					
 			 }
 			 else{
@@ -165,6 +172,7 @@ public class DAO_ManoObra {
 		 }
 		 else{
 			 if(fechaFin!=null){
+				 ff = formatter.format(fechaFin);
 				 consulta+=" AND fecha <= '" +	ff + "'";	
 			 }
 		 }

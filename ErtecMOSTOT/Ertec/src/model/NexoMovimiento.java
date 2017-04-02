@@ -25,16 +25,10 @@ public class NexoMovimiento implements Serializable {
 	@Column(name="NexoMovimientoID")
 	private int nexoMovimientoID;
 	 
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ArticuloID" , insertable = false, updatable = false)
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ArticuloID" )
 	private Articulo articulo;
 	
-	
-
-
-	@Column(name="ArticuloID")
-	private int articuloID;
-
 	@Column(name="Cantidad")
 	private BigDecimal cantidad=BigDecimal.ZERO;
 
@@ -57,14 +51,6 @@ public class NexoMovimiento implements Serializable {
 
 	public void setNexoMovimientoID(int nexoMovimientoID) {
 		this.nexoMovimientoID = nexoMovimientoID;
-	}
-
-	public int getArticuloID() {
-		return this.articuloID;
-	}
-
-	public void setArticuloID(int articuloID) {
-		this.articuloID = articuloID;
 	}
 
 	public BigDecimal getCantidad() {

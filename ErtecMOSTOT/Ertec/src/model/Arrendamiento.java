@@ -20,11 +20,9 @@ public class Arrendamiento implements Serializable {
 	private int id;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="articuloID" , insertable = false, updatable = false)
+	@JoinColumn(name="ArticuloID")
   private Articulo articulo;
 
-	@Column(name="ArticuloID")
-	private int articuloID;
 
 	@Column(name="Cantidad")
 	private int cantidad;
@@ -52,15 +50,7 @@ public class Arrendamiento implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public int getArticuloID() {
-		return this.articuloID;
-	}
-
-	public void setArticuloID(int articuloID) {
-		this.articuloID = articuloID;
-	}
-
+	
 	public int getCantidad() {
 		return this.cantidad;
 	}

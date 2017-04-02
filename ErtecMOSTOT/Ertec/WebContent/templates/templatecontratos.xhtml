@@ -223,8 +223,8 @@
 	
 	<p:contextMenu for="datatablecontratos">
   	<p:menuitem value="Ver arrendamientos" rendered="true"  
-    	onclick="PF('verarrendamientos').show();"   
-     	action="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}"/> 
+    	oncomplete="PF('verarrendamientos').show();" upload="formarrendamiento:datatablearrendamiento"
+     	actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Cliente.conSelected.cliente.clienteID)}"/> 
 		<p:menuitem	value="Agregar Direccion"  rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}"  
 			oncomplete="PF('adddireccion').show();" update="formadddireccion"
 			actionListener="#{mb_Cliente.previoAddDireccion}"/>			

@@ -124,7 +124,7 @@ public class PruebaHTML {
        
         buf.append("\t</ul>\n");
         buf.append("\tYear: <i>");
-        buf.append(movie.getClienteID());
+       // buf.append(movie.getClienteID());
         buf.append(" minutes</i><br />\n");
         buf.append("\tDuration: <i>");
         buf.append(movie.getTipoReferencia());

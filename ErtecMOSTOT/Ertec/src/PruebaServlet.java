@@ -80,17 +80,20 @@ public class PruebaServlet extends HttpServlet {
     
     if(user.estaLogueado()&& Integer.parseInt(id)>0){
       if (tipo.equals("ot")){
-		  	ExportarOTPDF.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+		  	ExportarOTPDF eop=new ExportarOTPDF();
+		  	eop.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
 		  	System.out.println("user export pdf OT "+user.getNombre());
 		  }
 		  else{
-		    if (tipo.equals("mov")){ 			    	
-	    		ExportMovimientoPDF.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+		    if (tipo.equals("mov")){ 			 
+		    	ExportMovimientoPDF emp=new ExportMovimientoPDF();
+	    		emp.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
 	      	System.out.println("user export pdf mov "+user.getNombre());
 		    }
 		    else{
-			    if (tipo.equals("fun")){ 			    	
-		    		ExportarFichaFuncionario.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+			    if (tipo.equals("fun")){ 		
+			    	ExportarFichaFuncionario eff=new ExportarFichaFuncionario();
+		    		eff.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
 		      	System.out.println("user export pdf fun "+user.getNombre());
 			    }
 			  }   	

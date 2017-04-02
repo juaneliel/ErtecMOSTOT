@@ -257,7 +257,7 @@ public class ExportMovimientoPDF {
             
             BigDecimal costo=n.getCosto();
             if(mov.getCodigoMovimientoID()==4){
-            	costo = BigDecimal.ZERO.subtract(DAO_Articulo.findArticulo(n.getArticuloID()).getCostoPesos());
+            	costo = BigDecimal.ZERO.subtract(n.getArticulo().getCostoPesos());
             }
             
             cell =new PdfPCell(new Paragraph(""+costo, new Font(FontFamily.HELVETICA, 10)));

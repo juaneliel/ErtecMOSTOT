@@ -152,9 +152,7 @@ public class mb_OT {
 	}
 	
 	
-	public void filtrarPorFechasManoObraOT(){		
-		this.listaManoObra=DAO_ManoObra.getFiltradaPorFechasYOT(fechaIni, fechaFin, this.otSelected.getId());
-	}
+
 	
 	
 	//modificar al hacer onetomany
@@ -194,11 +192,7 @@ public class mb_OT {
 	}
 
 	
-	public void recargarMovimientoSelected(){
-		this.numeroID=otSelected.getId();
-		this.movimientoAdd.setReferencia(numeroID);
-		this.listaMovimientos=dao.getListaMovimientosOT(this.otSelected.getId());
-	}
+
 	
 	
 //	

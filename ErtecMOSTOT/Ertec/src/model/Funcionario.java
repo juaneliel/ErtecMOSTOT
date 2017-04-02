@@ -68,26 +68,26 @@ public class Funcionario implements Serializable {
  
   
   @Column(name="Cedula")
-  private String cedula;  
+  private String cedula="";  
   @Temporal(TemporalType.DATE)
   @Column(name="VencimientoCedula")
   private Date vencimientoCedula;
   @Column(name="LibretaCat")
-  private String libretaCat;   
+  private String libretaCat="";   
   @Temporal(TemporalType.DATE)
   @Column(name="VencimientoLibreta")
   private Date vencimientoLibreta;
   private String activo;
-  private String alias;
-  private String area;
-  private String cat;
-  private String direccion;
-  private String email;
-  private int idEnService;
-  private double lat;
-  private double lng;
-  private String nombre;
-  private String telefono;
+  private String alias="";
+  private String area="";
+  private String cat="";
+  private String direccion="";
+  private String email="";
+  private int idEnService=0;
+  private double lat=0;
+  private double lng=0;
+  private String nombre="";
+  private String telefono="";
   
   public Funcionario() {
   	

@@ -78,15 +78,15 @@ public class mb_Funcionario {
     }
 	}
 	
-	private String destination="/resources/fotos/";
+	private String destination="/archivosFichaPersonal/";
 	
   public void upload(FileUploadEvent event) {  
       FacesMessage msg = new FacesMessage("Exito ", event.getFile().getFileName() + " se subio el archivo.");  
       FacesContext.getCurrentInstance().addMessage(null, msg);
       // Do what you want with the file     
       eventUpload=event;
-      this.funSelected.setFoto(eventUpload.getFile().getContents());
-      dao.update(funSelected);
+//      this.funSelected.setFoto(eventUpload.getFile().getContents());
+//      dao.update(funSelected);
       
       try {
       	//nombreArchivo event.getFile().getFileName()
@@ -131,7 +131,24 @@ public class mb_Funcionario {
        .getExternalContext().getContext();
   		String path= ctx.getRealPath("/");    
       // write the inputStream to a FileOutputStream
-      OutputStream out = new FileOutputStream(new File(path + destination + fileName));    
+  		System.out.println("pathcopy "+path);
+      //OutputStream out = new FileOutputStream(new File(path + destination + fileName));   
+      
+  		int index=-1;
+  		for (int i=0;i<3;i++){
+  			index = path.indexOf("/",index+1); 
+  		}   
+       
+      String pathbase=path.substring(0, index);
+      String pathcompleto=pathbase+destination+fileName;
+      System.out.println("pathcompleto"+pathcompleto);
+  		
+  		
+  		
+  		OutputStream out = new FileOutputStream(new File(pathcompleto));   
+      
+      
+      
       int read = 0;
       byte[] bytes = new byte[1024];    
       while ((read = in.read(bytes)) != -1) {
