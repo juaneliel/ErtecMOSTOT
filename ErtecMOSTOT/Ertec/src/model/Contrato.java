@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name="Contratos")
-@NamedQuery(name="Contrato.findAll", query="SELECT c FROM Contrato c")
+@NamedQuery(name="Contrato.findAll", query="SELECT c FROM Contrato c ORDER BY c.contratoID DESC")
 
 @SequenceGenerator(name = "CON_SEQ", sequenceName = "Contrato_SEQ", initialValue = 1100, allocationSize = 1)
 

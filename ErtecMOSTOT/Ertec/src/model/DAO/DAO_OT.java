@@ -244,12 +244,11 @@ public class DAO_OT {
 		}		
 	}
 	
-	
-	
-	public boolean addMovimientoOT(Movimiento m){
-		ArrayList<NexoMovimiento> nexos= new ArrayList<NexoMovimiento>();//arreglar esto
-		return DAO_Movimiento.add(m,nexos);
-	}
+ 
+//	public boolean addMovimientoOT(Movimiento m){
+//		ArrayList<NexoMovimiento> nexos= new ArrayList<NexoMovimiento>();//arreglar esto
+//		return DAO_Movimiento.add(m,nexos);
+//	}
 
 	public boolean addAdicionalOT(Adicional a){ 
 		boolean salida=false;

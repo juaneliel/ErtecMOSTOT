@@ -20,7 +20,7 @@
 		 editable="true"   emptyMessage="Sin Registros"
 		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
-    rowsPerPageTemplate="50"	
+    rowsPerPageTemplate="50"	sortBy="#{articulo.articuloID}" sortOrder="descending"
 		 >
 
 	<f:facet name="{Exporters}">
@@ -54,8 +54,7 @@
 		
 		
 		 
-		<p:ajax event="rowEdit" listener="#{mb_Articulo.onRowEdit}" update="message" />	 
-		<f:event type="preRenderView" listener="#{mb_Articulo.recargarLista}" />
+		<p:ajax event="rowEdit" listener="#{mb_Articulo.onRowEdit}" update="message" />	  
 		
 		
 		<p:column headerText=""  style = "width:0px" exportable="false" rendered="#{mb_Usuario.acceso('EDITAR','articulo')}">		
@@ -207,7 +206,7 @@
         }
         else {
             PF('addarticulos').hide(); 
-            PF('datatablearticulos').addRow();
+            //PF('datatablearticulos').addRow();
         }
     }    
 </script>

@@ -7,11 +7,7 @@
  
 <ui:composition>
  	
- <h:form id="formitem">
-    
-
-		
-	 
+ <h:form id="formitem">	 
 		
 		   <p:dataTable var="nexo" value="#{mb_Movimiento.listaNexos}" id="datatableitem" widgetVar="datatableitem" 
 			selection="#{mb_Movimiento.nexSelected}" selectionMode="single" rowKey="#{nexo.nexoMovimientoID}"
@@ -20,19 +16,19 @@
 		 editable="true"   emptyMessage="Sin Registros" paginatorPosition="top"
 		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
-    rowsPerPageTemplate="10,50,100"	
+    rowsPerPageTemplate="10,50,100"	sortBy="#{nexo.nexoMovimientoID}" sortOrder="descending"
 		 >
 		 
 		 
 		 <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatableitem" fileName="ot"   />
+	      <p:dataExporter type="xls" target="datatableitem" fileName="items"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatableitem" fileName="ot"   />
+	      <p:dataExporter type="pdf" target="datatableitem" fileName="items"   />
 	    </h:commandLink> 
 		</f:facet>
 		 
@@ -41,13 +37,12 @@
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  onclick="PF('additem').show()" style="float:left" 
-		   rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID!=5)}"/>      
-    <p:commandButton value="Agregar"  onclick="PF('additemdev').show()" style="float:left" update="formdev"
+		  <p:commandButton value="Agregar"  oncomplete="PF('additem').show()" style="float:left" actionListener="#{mb_Movimiento.initAddNexo}"
+		   rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID!=5)}"
+		   update="foraddnexo"/>      
+    <p:commandButton value="Devolución"  oncomplete="PF('additemdev').show()" style="float:left" update="formdev"
          actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Movimiento.movSelected.cliente.clienteID)}"
-        rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID==5)}"/>      
-    
-    
+        rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID==5)}"/>    
      </f:facet>      
 		 
 		  <f:facet name="{vercol}">   
@@ -102,13 +97,15 @@
  	 
 
  
-<p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="true" id="additem"  appendTo="@(body)" showEffect="explode" dynamic="true" >
+<p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="true" id="additem" 
+   appendTo="@(body)" showEffect="explode" dynamic="true" >
 <ui:include src="/templates/templateaddnexo.xhtml" id="listanexos">	 
 <ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
 </ui:include>
 </p:dialog>	   
  	 
-<p:dialog header="Agregar item" widgetVar="additemdev"  modal="true" resizable="true" id="additemdev"  appendTo="@(body)" showEffect="explode" dynamic="true" >
+<p:dialog header="Devolver item" widgetVar="additemdev"  modal="true" resizable="true" id="additemdev"  
+   appendTo="@(body)" showEffect="explode" dynamic="true" width="85%">
  <ui:include src="/templates/templateadddev.xhtml" id="listadev">	 
 <ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
 </ui:include>

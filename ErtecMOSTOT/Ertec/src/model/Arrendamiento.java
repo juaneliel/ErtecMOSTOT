@@ -28,7 +28,7 @@ public class Arrendamiento implements Serializable {
 	private int cantidad;
 
 	@Column(name="Costo")
-	private BigDecimal costo;
+	private BigDecimal costo=BigDecimal.ZERO;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="Fecha")
@@ -41,6 +41,7 @@ public class Arrendamiento implements Serializable {
 	private int saldo;
 
 	public Arrendamiento() {
+		
 	}
 
 	public int getId() {

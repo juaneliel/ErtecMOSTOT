@@ -19,7 +19,7 @@
 		 style="text-align:left; font-size: 90% !important;color: red;font-weight: bold;"		
 		 selection="#{mb_Funcionario.funSelected}" selectionMode="single" rowKey="#{funcionario.funcionarioID}"
 		 paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {agregar} {vercol}"
-    rowsPerPageTemplate="10,50,100"		 
+    rowsPerPageTemplate="10,50,100"	sortBy="#{funcionario.funcionarioID}" sortOrder="descending"
 		 >
 		 
 		 	<f:facet name="{titulo}">

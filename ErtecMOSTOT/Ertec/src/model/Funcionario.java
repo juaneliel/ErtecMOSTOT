@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="Funcionarios")
-@NamedQuery(name="Funcionario.findAll", query="SELECT f FROM Funcionario f")
+@NamedQuery(name="Funcionario.findAll", query="SELECT f FROM Funcionario f  ORDER BY f.funcionarioID DESC")
 
 @SequenceGenerator(name = "FUN_SEQ", sequenceName = "FUNCIONARIO_SEQ", initialValue = 101, allocationSize = 1)
 

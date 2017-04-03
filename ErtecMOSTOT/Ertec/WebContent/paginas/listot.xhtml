@@ -23,7 +23,7 @@
 		 editable="true"   emptyMessage="Sin Registros"
 		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
-    rowsPerPageTemplate="10,50,100"	
+    rowsPerPageTemplate="10,50,100"		sortBy="#{ot.id}" sortOrder="descending"
 		 >
 		 
 		 		  <f:facet name="{Exporters}">
@@ -253,7 +253,7 @@
 </ui:include>			
 </p:dialog>	
 
-<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="90%" height="400"  dynamic="true">
+<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="95%"  dynamic="true">
 <ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	 
 <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
 <ui:param name="paramCodIni"   value = "#{4}"/>		

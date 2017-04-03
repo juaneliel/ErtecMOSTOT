@@ -38,10 +38,7 @@ public class NexoMovimiento implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="Fecha")
 	private Date fecha;
-
-	@Column(name="MovimientoID")
-	private int movimientoID;
-
+ 
 	public NexoMovimiento() {
 	}
 
@@ -75,14 +72,6 @@ public class NexoMovimiento implements Serializable {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	}
-
-	public int getMovimientoID() {
-		return this.movimientoID;
-	}
-
-	public void setMovimientoID(int movimientoID) {
-		this.movimientoID = movimientoID;
 	}
 
 	public Articulo getArticulo() {

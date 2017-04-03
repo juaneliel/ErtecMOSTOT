@@ -45,7 +45,7 @@ public class mb_Articulo {
 
 	@PostConstruct
 	public void init (){
-		recargarLista();
+		lista=dao.getLista ();
 	}
 	
 	public String add(){
@@ -57,6 +57,11 @@ public class mb_Articulo {
       FacesContext.getCurrentInstance().addMessage(null, message);
       //recargarLista ();
       this.lista.add(articuloAdd);
+      DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+          .findComponent("formarticulos:datatablearticulos");
+      if (dataTable != null) {
+      	dataTable.reset();
+      }
       articuloAdd=new Articulo();
 		}
 		else{
@@ -117,10 +122,7 @@ public class mb_Articulo {
     }
 
 
-	
-	public void recargarLista(){
-		lista=dao.getLista ();
-	}
+ 
 	
 		
 	 

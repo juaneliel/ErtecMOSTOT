@@ -41,7 +41,7 @@ public class ExportarOTPDF {
 	//public static final String RESULT = "/home/juan/Escritorio/hola.pdf";
 	
     	
-  public static void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
+  public void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
   
   	//String RESULT = "/home/juan/Escritorio/OT.pdf";
   	

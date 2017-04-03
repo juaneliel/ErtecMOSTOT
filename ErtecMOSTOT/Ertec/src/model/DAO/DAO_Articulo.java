@@ -174,34 +174,21 @@ public class DAO_Articulo {
 	}
 	
 	public boolean update (Articulo a){ 
-		boolean salida=false;
 		EntityManager em=JpaUtil.getEntityManager();
-		try{
-			Articulo aux = em.find(Articulo.class, a.getArticuloID());	
-			em.getTransaction().begin();			
-			aux.setArticuloID(a.getArticuloID());
-			aux.setCalidad(a.getCalidad());
-			aux.setCostoDolares(a.getCostoDolares());
-			aux.setCostoPesos(a.getCostoPesos());
-			aux.setDescripcion(a.getDescripcion());
-			aux.setMedida(a.getMedida());
-			aux.setObservacion(a.getObservacion());
-			aux.setPrecioVenta(a.getPrecioVenta());
-			aux.setStock(a.getStock());
-			aux.setStockMinimo(a.getStockMinimo());
-			aux.setUltimoCostoDolares(a.getUltimoCostoDolares());
-			aux.setUltimoCostoPesos(a.getUltimoCostoPesos());			
-			em.getTransaction().commit();
-			salida=true;
-		}
-		catch (Exception e){
+		boolean salida=false;
+		try{			
+			em.getTransaction().begin();
+			em.merge(a);
+      em.getTransaction().commit();
+			salida= true;
+		}catch (Exception e){
 			e.printStackTrace();			
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+			  em.close();
+		  }		
 		}
-		return salida;	
+		return salida;
 	}	
 	
 	public static ArrayList<DAO_infoMovDeArticulos> filtrarInfoMovArticulo (int articuloID,Date fechaIni, Date fechaFin){

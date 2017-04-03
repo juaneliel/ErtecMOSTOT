@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name="Articulos")
-@NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a")
+@NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a ORDER BY a.articuloID DESC")
 public class Articulo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

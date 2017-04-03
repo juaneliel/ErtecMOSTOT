@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@NamedQuery(name="Proveedores.findAll", query="SELECT p FROM Proveedores p")
+@NamedQuery(name="Proveedores.findAll", query="SELECT p FROM Proveedores p ORDER BY p.proveedorID DESC")
 
 @SequenceGenerator(name = "PRO_SEQ", sequenceName = "PROVEEDOR_SEQ", initialValue = 97, allocationSize = 1)
 

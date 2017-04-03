@@ -12,18 +12,44 @@
 	 
 
 	<p:dataTable var="arrendamiento" value="#{mb_Movimiento.listaArrendamientos}" id="datatablearrendamiento" widgetVar="datatablearrendamiento"
-	paginator="true" rows ="50" paginatorPosition="top" resizableColumns="true" liveResize="true" 
-	draggableColumns="true" scrollable="true"  
-	scrollWidth="100%"  editable="true"  
-	style="text-align:left; font-size: 90% !important;color: red;"
-	>	 
+	paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros" paginatorPosition="top"
+		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="10,50,100"	sortBy="#{arrendamiento.id}" sortOrder="descending"
+		 >
  
-		<f:facet name="header">
-			Arrendamientos
-			<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+ 	 
+		 <f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatableitem" fileName="ot"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatableitem" fileName="ot"   />
+	    </h:commandLink> 
+		</f:facet>
+		 
+			<f:facet name="{titulo}">
+		       Arrendamientos	 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">  
+		 <p:commandButton value="Devolver" actionListener="#{mb_Movimiento.devolver}" 
+		   oncomplete="PF('additemdev').hide()" style="float:left"  update="formitem:datatableitem"  rendered="#{mb_Usuario.acceso('AGREGAR','movimiento')}" />
+     </f:facet>      
+		 
+		  <f:facet name="{vercol}">   
+		      	<p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
  			<p:columnToggler datasource="datatablearrendamiento" trigger="toggler" />
-    </f:facet>
+		    </f:facet> 
+		 
+  
      
+			
 		
 
 
@@ -48,8 +74,8 @@
 			<h:outputText value="#{arrendamiento.costo}" /> 			 
 		</p:column> 
 
- 		<p:column headerText="Mov ID" sortBy="#{arrendamiento.costo}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.costo}">		                
-			<h:outputText value="#{arrendamiento.costo}" /> 			 
+ 		<p:column headerText="Mov ID" sortBy="#{arrendamiento.movimientoID}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.movimientoID}">		                
+			<h:outputText value="#{arrendamiento.movimientoID}" /> 			 
 		</p:column> 
 
 		<p:column headerText="Saldo" sortBy="#{arrendamiento.saldo}" style="text-align:center;width:50px;" filterStyle="width: 40px;" filterMatchMode="startswith" filterBy="#{arrendamiento.saldo}">		                
@@ -57,7 +83,7 @@
 		</p:column> 
       
    	<p:column headerText="Fecha" sortBy="#{arrendamiento.fecha}" style="text-align:center;width:200px;" filterMatchMode="startswith" filterBy="#{arrendamiento.fecha}">		                
-			<p:calendar mindate="#{arrendamiento.fecha}" maxdate="#{arrendamiento.fecha}" id="contratoFin" value="#{arrendamiento.fecha}"
+			<p:calendar mindate="#{arrendamiento.fecha}" maxdate="#{arrendamiento.fecha}" id="fecha" value="#{arrendamiento.fecha}"
 				pattern="dd-MM-yyyy" mask="true" /> 		
 		</p:column>  
 		

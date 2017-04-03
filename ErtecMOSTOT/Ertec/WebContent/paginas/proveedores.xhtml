@@ -23,7 +23,7 @@
 		 editable="true"   emptyMessage="Sin Registros"
 		 style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
-    rowsPerPageTemplate="10,50,100"	
+    rowsPerPageTemplate="10,50,100"	sortBy="#{proveedor.proveedorID}" sortOrder="descending"
 		 >
 		 
 		 		  <f:facet name="{Exporters}">

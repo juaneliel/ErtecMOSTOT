@@ -258,17 +258,17 @@ public class mb_OT {
 		ot.setProceso(proceso);
 		ot.setTipoID(tipoID);
 		ot.setTrabajo(trabajo);
-		ot.setVerifAdm(verifAdm);
-		
-		
-		
+		ot.setVerifAdm(verifAdm);		
 		if (dao.add (ot)){
 			salida= "/paginas/listot.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "La Ot se agrego exitosamente");
-	        FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la ot "+ot.getId());
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+	    lista.add(ot);
+	    this.otSelected=ot;
+	    
 		}
 		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar OT");
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al agregar OT");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		System.out.println(">>AGREGAR"+ot.getId() );
@@ -301,13 +301,7 @@ public class mb_OT {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
+
 	public String addAdicional (){
 		String salida=null;
 		Adicional a=new Adicional();
@@ -321,6 +315,7 @@ public class mb_OT {
 			context.addMessage(null,mensaje);
 			//this.recargarListaAdicionales(numeroID);
 			this.listaAdicionales.add(a);
+			this.adiSelected=a;
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();

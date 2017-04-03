@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +51,7 @@ public class mb_Movimiento {
 	private int otID;
 	
 	private ArrayList<Movimiento> lista;
-	private ArrayList<NexoMovimiento> listaNexos;
+	private List<NexoMovimiento> listaNexos;
 	private ArrayList<Arrendamiento> listaArrendamientos;
 	private ArrayList<NexoMovimiento> listaTemporalNexos;
 	private Movimiento movSelected;
@@ -85,17 +86,76 @@ public class mb_Movimiento {
 		verContrato=false;
 	}
 	
+	
+	public String add(){		
+		String salida=null;  
+		if(movimientoAdd.getCliente() !=null){
+			movimientoAdd.setNombreCliente(movimientoAdd.getCliente().getNombre());
+    } 
+		
+		if (DAO_Movimiento.add (movimientoAdd)){
+			salida= "/paginas/movimientos.xhtml?faces-redirect=true";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el movimiento "+movimientoAdd.getMovimientoID());
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+	    this.lista.add(movimientoAdd);
+	    this.movSelected=movimientoAdd;
+	    movimientoAdd=new Movimiento();
+		}
+		else{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el movimiento");
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		System.out.println(">>AGREGAR"+movimientoAdd.getMovimientoID());
+		return salida; 
+		
+	}
+	
+	
 	 
-	
-	
+	//seccion devolver
+	public void recargarListaArrendamientos (int clienteID){ 
+	  //this.movimientoAdd.setClienteID(clienteID);
+		this.spinnerDevolucion=0;
+	  this.mapaArrendamiento.clear();
+	  this.listaArrendamientos =  dao.getArrendado ( clienteID);
+	}
 	
 	public void actualizarDevolver(int idArr){
 	  mapaArrendamiento.put(idArr,this.spinnerDevolucion);
-	  
+	  //en caso de que se ponga a 0 se lo saca del mapa ya que no se devolvera
+	  //ningun elemento
 	  if(this.spinnerDevolucion == 0){
 	   mapaArrendamiento.remove(idArr);	 
 	  } 
 	  System.out.println("mapa:"+mapaArrendamiento);
+	}
+	
+	public String devolver(){ 
+	  System.out.println("mapa:"+mapaArrendamiento);	  
+	  //se usa movSelected tipo X y se le pone como otID el valor otid del mb      
+//    movSelected.setComprobante(0);
+//    movSelected.setCotizacion(BigDecimal.ZERO);
+//    movSelected.setContrato(null);
+//    if(movimientoAdd.getCliente() !=null){
+//      aux.setNombreCliente(movimientoAdd.getCliente().getNombre());
+//    }
+//    aux.setReferencia(this.otID);
+//    aux.setTipoOT("D");
+//    aux.setTipoReferencia("OT");  
+//    aux.setFecha(new Date());  
+//    aux.setCodigoMovimientoID(5);
+	  this.listaNexos.addAll(dao.devolver(mapaArrendamiento, movSelected.getMovimientoID()));	  
+	  //se debe vaciar la lista
+    this.mapaArrendamiento.clear();
+    
+    return  "/paginas/movimientos.xhtml?faces-redirect=true";
+	}
+	
+	
+	//otra seccio
+	
+	public void initAddNexo(){
+		this.actualizarCotizacionYContrato(movSelected.getCodigoMovimientoID());
 	}
 	
 	public void ajustesAddMovimentoOT(Cliente cliente, int referencia){
@@ -114,62 +174,10 @@ public class mb_Movimiento {
 	}
 	
 	
-	public String devolver(int clienteID){ 
-	  System.out.println("mapa:"+mapaArrendamiento);
-	  
-	  //se crea un movimiento de tipo X y se le pone como otID el valor otid del mb  
-    
-    Movimiento aux=new Movimiento();      
-    aux.setComprobante(0);
-    aux.setCotizacion(BigDecimal.ZERO);
-    aux.setContrato(null);
-    if(movimientoAdd.getCliente() !=null){
-      aux.setNombreCliente(movimientoAdd.getCliente().getNombre());
-    }
-    aux.setReferencia(this.otID);
-    aux.setTipoOT("D");
-    aux.setTipoReferencia("OT");  
-    aux.setFecha(new Date());  
-    aux.setCodigoMovimientoID(5);
-    //aux.setClienteID(clienteID); 
 
-	  //
-    dao.devolver(mapaArrendamiento, aux);
-	  
-	  //se debe vaciar la lista
-    this.mapaArrendamiento.clear();
-    
-    return  "/paginas/movimientos.xhtml?faces-redirect=true";
-	}
 	
-	public void recargarListaArrendamientos (int clienteID){ 
-	  //this.movimientoAdd.setClienteID(clienteID);
-	  this.mapaArrendamiento.clear();
-	  this.listaArrendamientos =  dao.getArrendado ( clienteID);
-	}
+
 	
-	public String add(){		
-		String salida=null;  
-		if(movimientoAdd.getCliente() !=null){
-			movimientoAdd.setNombreCliente(movimientoAdd.getCliente().getNombre());
-			//movimientoAdd.setClienteID(movimientoAdd.getCliente().getClienteID()); 
-    } 
-		
-		if (DAO_Movimiento.add (movimientoAdd, this.listaNexos)){
-			salida= "/paginas/movimientos.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el movimiento "+movimientoAdd.getMovimientoID());
-	        FacesContext.getCurrentInstance().addMessage(null, message);
-	    this.lista.add(movimientoAdd);
-		}
-		else{
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el movimiento");
-	        FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-		System.out.println(">>AGREGAR"+movimientoAdd.getMovimientoID());
-		//recargarLista ();
-		return salida; 
-		
-	}
 	
 	
 	
@@ -279,20 +287,21 @@ public class mb_Movimiento {
   }
 
   public String addNexo(boolean temporal){
-  	 if(temporal){ 
-  		nexoAdd.setMovimientoID(0);		
-  		this.listaNexos.add(nexoAdd);
-  		nexoAdd=new NexoMovimiento();
-  		return null;
-  	}  	
-		String salida=null;
-		nexoAdd.setMovimientoID(this.movSelected.getMovimientoID());			
+//  	 if(temporal){ 
+//  		nexoAdd.setMovimientoID(0);		
+//  		this.listaNexos.add(nexoAdd);
+//  		nexoAdd=new NexoMovimiento();
+//  		return null;
+//  	}  	
+		String salida=null;			
 		System.out.println("entro en addnexo");
-		if(dao.addNexo(nexoAdd)){
+		if(dao.addNexo(movSelected.getMovimientoID(), nexoAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego el Item al movimiento");
 			context.addMessage(null,mensaje);
 			listaNexos.add(nexoAdd);
+			this.nexSelected=nexoAdd;
+			nexoAdd=new NexoMovimiento();
 			//this.recargarListaAdicionales(numeroID);
 		}
 		else{
@@ -333,7 +342,7 @@ public class mb_Movimiento {
 			this.listaNexos.remove(nexo);			
 			return;
 		}		
-		if (dao.deleteNexo(nexo) ){
+		if (dao.deleteNexo(movSelected.getMovimientoID(),nexo) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el Item");
 	    FacesContext.getCurrentInstance().addMessage(null, message);	
 	    this.listaNexos.remove(nexo);
@@ -367,13 +376,7 @@ public class mb_Movimiento {
 		this.lista = lista;
 	}
 
-	public ArrayList<NexoMovimiento> getListaNexos() {
-		return listaNexos;
-	}
 
-	public void setListaNexos(ArrayList<NexoMovimiento> listaNexo) {
-		this.listaNexos = listaNexo;
-	}
 
 //	public ArrayList<Codigo> getListaCodigos() {
 //		return listaCodigos;
@@ -384,6 +387,16 @@ public class mb_Movimiento {
 //	}
 
 
+
+
+	public List<NexoMovimiento> getListaNexos() {
+		return listaNexos;
+	}
+
+
+	public void setListaNexos(List<NexoMovimiento> listaNexos) {
+		this.listaNexos = listaNexos;
+	}
 
 
 	public ArrayList<Referencia> getListaReferencias() {
@@ -555,3 +568,37 @@ public class mb_Movimiento {
 
 	
 }
+
+
+
+
+
+
+
+
+
+//
+//
+//public String add(){		
+//	String salida=null;  
+//	if(movimientoAdd.getCliente() !=null){
+//		movimientoAdd.setNombreCliente(movimientoAdd.getCliente().getNombre());
+//		//movimientoAdd.setClienteID(movimientoAdd.getCliente().getClienteID()); 
+//  } 
+//	
+//	if (DAO_Movimiento.add (movimientoAdd, this.listaNexos)){
+//		salida= "/paginas/movimientos.xhtml?faces-redirect=true";
+//		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el movimiento "+movimientoAdd.getMovimientoID());
+//        FacesContext.getCurrentInstance().addMessage(null, message);
+//    this.lista.add(movimientoAdd);
+//    this.movSelected=movimientoAdd;
+//	}
+//	else{
+//		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo agregar el movimiento");
+//        FacesContext.getCurrentInstance().addMessage(null, message);
+//	}
+//	System.out.println(">>AGREGAR"+movimientoAdd.getMovimientoID());
+//	//recargarLista ();
+//	return salida; 
+//	
+//}

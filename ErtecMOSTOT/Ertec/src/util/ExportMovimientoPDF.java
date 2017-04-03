@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -34,11 +35,9 @@ import model.NexoMovimiento;
 
 
 public class ExportMovimientoPDF {
-  
-  
-  
-	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-	String realPath=(String) servletContext.getServletPath(); 
+
+//	HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//	String realPath=(String) servletContext.getServletPath(); 
 	//System.out.println("contexto addnexo: ");
 	
 	
@@ -47,12 +46,12 @@ public class ExportMovimientoPDF {
   public static final String RESULT = "/home/juan/Escritorio/movimiento.pdf";
   
   public static void main(String[] args) {
-    ExportMovimientoPDF.ExportarPDF(0,null);
+    (new ExportMovimientoPDF()).ExportarPDF(0,null);
   }    
   
   
   
-  public static void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
+  public void ExportarPDF(int idOT, ServletOutputStream sOS  )   {
   
     //String RESULT = "/home/juan/Escritorio/OT.pdf";
     
@@ -240,7 +239,7 @@ public class ExportMovimientoPDF {
            
           
           
-          ArrayList<NexoMovimiento> nexos= daoMov.getNexos(mov.getMovimientoID()); //(ArrayList<NexoMovimiento>) mov.getNexos();
+          List<NexoMovimiento> nexos= daoMov.getNexos(mov.getMovimientoID()); //(ArrayList<NexoMovimiento>) mov.getNexos();
           costoMovimiento=BigDecimal.ZERO;
           for (NexoMovimiento n :nexos){
             cell =new PdfPCell(new Paragraph(Integer.toString(n.getArticulo().getArticuloID()), new Font(FontFamily.HELVETICA, 10)));
