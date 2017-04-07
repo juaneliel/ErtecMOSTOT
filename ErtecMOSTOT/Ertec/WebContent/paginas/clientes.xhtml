@@ -77,7 +77,7 @@
 		<p:column headerText="Direccion" sortBy="#{cliente.dirCliente}"  filterMatchMode="contains" filterBy="#{cliente.dirCliente}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{cliente.dirCliente}" /></f:facet>
-		 		<f:facet name="input"><p:inputText id="direccion" value="#{cliente.dirCliente}" style="width:100%"/></f:facet>
+		 		<f:facet name="input"><p:inputTextarea id="direccion" value="#{cliente.dirCliente}" rows="2" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
 		     

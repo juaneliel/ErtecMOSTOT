@@ -38,25 +38,17 @@ public class DAO_Cliente {
 
 	
 	public boolean update(Cliente c){ 
-		EntityManager em=JpaUtil.getEntityManager();
-		boolean salida = false;
-		try{	
-			Cliente aux = em.find(Cliente.class, c.getClienteID() );	
+		EntityManager em=JpaUtil.getEntityManager(); 
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			aux.setClienteID( c.getClienteID());
-			aux.setCredito(c.getCredito());
-			aux.setDirCliente(c.getDirCliente());
-			aux.setLocCliente(c.getLocCliente());
-			aux.setNombre(c.getNombre());
-			aux.setRucCliente(c.getRucCliente());
-			aux.setTelCliente(c.getTelCliente());
-			aux.setCuentaCorriente(c.getCuentaCorriente());
-			em.getTransaction().commit();
-			salida=true;
+			em.persist(c);
+			em.getTransaction().commit(); 
+			salida = true;
 		}
 		catch (Exception e){
-			e.printStackTrace();			
-		}finally{ 
+			e.printStackTrace();
+		 }finally{ 
 	    	  if(em.isOpen() ){
 				  em.close();
 			  }		
@@ -151,8 +143,8 @@ public class DAO_Cliente {
 			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID + "and retirado='NO'" +
 					"ORDER BY contratoID DESC";
 			System.out.println("Consulta getContratosCliente"+consulta);
-			TypedQuery<Contrato> consultaFuncionario= em.createQuery(consulta, Contrato.class);
-			ArrayList<Contrato> auxLista = (ArrayList<Contrato>) consultaFuncionario.getResultList(); 
+			TypedQuery<Contrato> query= em.createQuery(consulta, Contrato.class);
+			ArrayList<Contrato> auxLista = (ArrayList<Contrato>) query.getResultList(); 
 			System.out.println(">>>>" + auxLista); 
 			salida= auxLista;  
 		}
@@ -240,30 +232,17 @@ public class DAO_Cliente {
 	}
 	
 	public boolean updateContrato(Contrato o){ 
-		EntityManager em=JpaUtil.getEntityManager();
-		boolean salida = false;
-		try{	
-			Contrato aux = em.find(Contrato.class, o.getId() );	
+		EntityManager em=JpaUtil.getEntityManager(); 
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			
-			aux.setCliente(o.getCliente());
-			aux.setCorredorID(o.getCorredorID());
-			aux.setDireccion(o.getDireccion());
-			aux.setEquipo(o.getEquipo());
-			aux.setFechaFin(o.getFechaFin());
-			aux.setFechaInicio(o.getFechaInicio());
-			aux.setLocalidad(o.getLocalidad());
-			aux.setRetirado(o.getRetirado());
-			aux.setTipo(o.getTipo());
-			aux.setZona(o.getZona());			
-			aux.setTopeMesesVisita(o.getTopeMesesVisita());
-			
-			em.getTransaction().commit();
-			salida=true;
+			em.persist(o);
+			em.getTransaction().commit(); 
+			salida = true;
 		}
 		catch (Exception e){
-			e.printStackTrace();			
-		}finally{ 
+			e.printStackTrace();
+		 }finally{ 
 	    	  if(em.isOpen() ){
 				  em.close();
 			  }		

@@ -32,7 +32,7 @@ public class ComprasExternasOT implements Serializable {
 //	private Articulo articulo;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ProveedorID" , insertable = false, updatable = false)
+	@JoinColumn(name="ProveedorID")
 	private Proveedores proveedor;
 	
 	
@@ -47,14 +47,8 @@ public class ComprasExternasOT implements Serializable {
 	@Column(name="Moneda")
 	private String moneda;
 
-	@Column(name="OTID")
-	private int otid;
-
 	@Column(name="Precio_Unitario")
 	private BigDecimal precio_Unitario;
-
-	@Column(name="ProveedorID")
-	private int proveedorID;
 
 	public ComprasExternasOT() {
 	}
@@ -92,14 +86,6 @@ public class ComprasExternasOT implements Serializable {
 		this.moneda = moneda;
 	}
 
-	public int getOtid() {
-		return this.otid;
-	}
-
-	public void setOtid(int otid) {
-		this.otid = otid;
-	}
-
 	public BigDecimal getPrecio_Unitario() {
 		return this.precio_Unitario;
 	}
@@ -108,54 +94,28 @@ public class ComprasExternasOT implements Serializable {
 		this.precio_Unitario = precio_Unitario;
 	}
 
-	public int getProveedorID() {
-		return this.proveedorID;
-	}
-
-	public void setProveedorID(int proveedorID) {
-		this.proveedorID = proveedorID;
-	}
-
-
 	public int getId() {
 		return id;
 	}
 
 
 	public void setId(int id) {
-		id = id;
+		this.id = id;
 	}
-
-
-//	public Articulo getArticulo() {
-//		return articulo;
-//	}
-
-
-//	public void setArticulo(Articulo articulo) {
-//		this.articulo = articulo;
-//	}
-
 
 	public Proveedores getProveedor() {
 		return proveedor;
 	}
 
-
 	public void setProveedor(Proveedores proveedor) {
 		this.proveedor = proveedor;
 	}
-
 
 	public String getNombreArticulo() {
 		return nombreArticulo;
 	}
 
-
 	public void setNombreArticulo(String nombreArticulo) {
 		this.nombreArticulo = nombreArticulo;
 	}
-	
-	
-
 }

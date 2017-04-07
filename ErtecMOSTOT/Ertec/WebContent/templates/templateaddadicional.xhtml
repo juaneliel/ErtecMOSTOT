@@ -12,7 +12,7 @@
 			    
 			   			    
 			    <p:outputLabel value="Especificacion:" for="especificacion" />
-			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.especificacionAdicional}"  />
+			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.adicionalAdd.especificacion}"  />
 			    			    
 			    <p:commandButton oncomplete="PF('addad').hide();" process="@form"  value="Agregar" action="#{mb_OT.addAdicional}"  update="message"/>	
 				<p:commandButton value="Cancelar" action="/Ertec/paginas/listot.xhtml"   />	  

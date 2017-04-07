@@ -20,8 +20,6 @@ public class Contrato implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CON_SEQ")
   @Column(name="Id")
   private int id;
-
-
 	
 	//hay error en los datos de contratos
 	@OneToOne(fetch=FetchType.EAGER,optional=true) 

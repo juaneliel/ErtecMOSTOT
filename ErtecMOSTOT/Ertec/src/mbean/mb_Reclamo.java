@@ -38,7 +38,7 @@ public class mb_Reclamo {
   private ArrayList<Reclamo> listaVisitadas;
   private ArrayList<DAO_infoService> filtrado; 
   private Reclamo reclamoAdd=new Reclamo();
-  
+  private boolean habEdiRec;
   
   private ArrayList<Contrato> listaSinVisitar;
   
@@ -69,7 +69,19 @@ public class mb_Reclamo {
     this.recargar();
     list = Arrays.asList(true, true, true, true, true,true, true, true, true, true, true,
         true, false, false, false, false, true, false, false);
+    
   } 
+  
+  public void initDetalleReclamo(){
+  	habEdiRec=false;    
+  }
+  
+  public void initAddReclamo(){
+  	this.reclamoAdd.setFechaReclamado(new Date());
+  	mb_Usuario service = (mb_Usuario) 
+    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+  	this.reclamoAdd.setContacto(service.getUsuarioLogueado().getNombre());
+  }
   
   public void recargar() {
     this.filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
@@ -78,6 +90,10 @@ public class mb_Reclamo {
     this.listaSinVisitar=dao.filtrarSinVisitar(this.fechaIni, this.fechaFin,true);
     System.out.println("mb tamaño reclamos "+lista.size());
   } 
+  
+  public void updateReclamoSelected(){
+  	dao.update(this.reclamoSelected);
+  }
   
   public void filtrarInformeVisitadosPorFechas(){
     filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
@@ -251,6 +267,13 @@ public class mb_Reclamo {
 
 	public void setReclamoAdd(Reclamo reclamoAdd) {
 		this.reclamoAdd = reclamoAdd;
-	} 
-  
+	}
+
+	public boolean isHabEdiRec() {
+		return habEdiRec;
+	}
+
+	public void setHabEdiRec(boolean habEdiRec) {
+		this.habEdiRec = habEdiRec;
+	}
 }

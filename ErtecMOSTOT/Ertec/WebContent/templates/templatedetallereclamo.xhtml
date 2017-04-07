@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+ 	<ui:composition>
+<h:form id="formdetallereclamo" widgetVar="formdetallereclamo" > 
+          <p:panelGrid id="paneldetallereclamo" widgetVar="paneldetallereclamo"  columns="2" rendered="#{mb_Reclamo.reclamoSelected!=null}" columnClasses="label,value">
+
+               <h:outputText value="Id:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.id}" /> 
+               
+              
+               <h:outputText value="Cliente:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.nombreCliente}" /> 
+               
+               <h:outputText value="Codigo:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.codigo}" /> 
+               
+               <h:outputText value="Reclamo:" for="reclamo"/>
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.reclamo}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:inputTextarea rendered="#{mb_Reclamo.habEdiRec}" required="true" value="#{mb_Reclamo.reclamoSelected.reclamo}"  id="reclamo"  rows="1" cols="50"   maxlength="1000" counterTemplate="{0} characters remaining."  />
+     
+               
+               
+               <h:outputText value="F.Reclamado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaReclamado}" rendered="#{!mb_Reclamo.habEdiRec}" /> 
+               <p:calendar rendered="#{mb_Reclamo.habEdiRec}" id="fechaReclamado" value="#{mb_Reclamo.reclamoSelected.fechaReclamado}"  required="true"  pattern="dd-MM-yyyy HH:mm" mask="true"/>
+		 		
+              
+               <h:outputText value="Estado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.estado}" /> 
+               
+               <h:outputText value="F.Visita:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaVisita}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:calendar rendered="#{mb_Reclamo.habEdiRec}" id="fechavisita" value="#{mb_Reclamo.reclamoSelected.fechaVisita}" pattern="dd-MM-yyyy HH:mm" mask="true"/>
+		 		
+		 		
+               
+               <h:outputText value="Tecnico:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.funcionario.nombre}" /> 
+               
+               <h:outputText value="MYR:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.myr}" /> 
+                              
+               <h:outputText value="O.R.:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.ordenreparacion}" /> 
+                              
+               <h:outputText value="Observaciones:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.observaciones}" rendered="#{!mb_Reclamo.habEdiRec}" /> 
+               <p:inputTextarea rendered="#{mb_Reclamo.habEdiRec}" value="#{mb_Reclamo.reclamoSelected.observaciones}"  id="observacion"  rows="1" cols="50"   maxlength="1000" counterTemplate="{0} characters remaining."  />
+     
+                              
+               <h:outputText value="Urgente:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.urgente}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:selectOneMenu id="urgente" value="#{mb_Reclamo.reclamoSelected.urgente}" style="width:85%" rendered="#{mb_Reclamo.habEdiRec}">
+								 <f:selectItem  itemLabel="SI" itemValue="SI" />
+								 <f:selectItem   itemLabel="NO" itemValue="NO" />
+							 </p:selectOneMenu>
+                              
+               <h:outputText value="MYR estado:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.myrEstado}" /> 
+                              
+               <h:outputText value="H.Red" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.red}" /> 
+                              
+               <h:outputText value="H.Telefono:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.telefonos}" /> 
+                              
+               <h:outputText value="H.Energia:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.energia}" /> 
+                                             
+               <h:outputText value="H.Conmutador:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.conmutador}" /> 
+                                             
+               <h:outputText value="H.Antel:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.antel}" /> 
+
+               <h:outputText value="Contacto:" />
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.contacto}" />              
+               
+               
+           </p:panelGrid>
+              <p:commandButton ajax="true" value="Editar" actionListener="#{mb_Reclamo.setHabEdiRec(true)}" update="formdetallereclamo"  rendered="#{mb_Usuario.acceso('EDITAR','reclamo') and !mb_Reclamo.habEdiRec }" />
+     <p:commandButton ajax="true" value="Cancelar" actionListener="#{mb_Reclamo.setHabEdiRec(false)}" update="formdetallereclamo message" rendered="#{mb_Reclamo.habEdiRec}"  /> 
+   <p:commandButton ajax="true" value="Guardar" actionListener="#{mb_Reclamo.updateReclamoSelected}" 
+   update="@([id$=datatablereclamo]) message" 
+   oncomplete="handleUpdateReclamoRequest(xhr, status, args)"
+      rendered="#{mb_Reclamo.habEdiRec}"  /> 
+  
+  </h:form>  
+  
+
+  
+ </ui:composition>
+ </html>      
+       

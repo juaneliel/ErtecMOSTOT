@@ -52,26 +52,29 @@ public class ExportarOTPDF {
   	if(ot==null){
   		return;
   	}
-  	String cliente = ot.getClienteNombre();
-    String direccion = "Sin datos";
-    String telCliente =  "Sin datos";
-    int ccte=0;
-    int c=0;
-    int arr=ot.getArrendamiento();
-    int mant=ot.getMantenimiento();
+  	String cliente = ot.getCliente().getNombre();
+    String direccion = ot.getCliente().getDirCliente();
+    String telCliente =   ot.getCliente().getTelCliente();
+    int ccte=ot.getCliente().getCuentaCorriente();
+    int c=ot.getC();
+
+    int arr=0;
+    int mant=0;
+    if(ot.getContrato()!=null){
+    	if(ot.getContrato().getTipo().equals("A")){
+    		arr=ot.getContrato().getContratoID();
+    	}
+    	if(ot.getContrato().getTipo().equals("M")){
+    		mant=ot.getContrato().getContratoID();
+    	}
+    	System.out.println("contrato en exportar"+ot.getContrato().getContratoID());
+    }
+    else{
+    	System.out.println("no deberia dar nulo");
+    }
     
-  	if(ot.getNroCliente()!=0){
-  	  cliente = ot.getCliente().getNombre();
-  	  direccion = ot.getCliente().getDirCliente();
-      telCliente =  ot.getCliente().getTelCliente();
-//      if(ot.getCliente()!=null && ot.getCliente().getCuentacorriente()!=null ){
-//        ccte=ot.getCliente().getCuentacorriente().getCuentaID();  
-//      }  
-       ccte=ot.getCliente().getCuentaCorriente(); 
-      
-      
-  	}
-    int numeroCliente=ot.getNroCliente();    
+        
+    int numeroCliente=ot.getCliente().getClienteID();    
     String lugarDeObra= ot.getDireccionObra();
     String telObra = ot.getTelObra(); 
     int verifadm=ot.getVerifAdm();
@@ -132,12 +135,13 @@ public class ExportarOTPDF {
        canvas.endText();
        canvas.restoreState();
        
-
+       PdfPCell cell;
+       PdfPCell aclaracionFirma ;
        
        // Creacion de tabla 1         
        PdfPTable tabla1 = new PdfPTable(2);    
        tabla1.setTotalWidth(350);  
-       PdfPCell cell =new PdfPCell(new Paragraph("CLIENTE: "+cliente, new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("CLIENTE: "+cliente, new Font(FontFamily.HELVETICA, 10)));
        cell.setMinimumHeight(20);
        
        tabla1.addCell( cell );
@@ -254,7 +258,7 @@ public class ExportarOTPDF {
            tabla6.addCell( new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 8)))); 
        }
        tabla6.addCell( new PdfPCell(new Paragraph( "ACLARACION DE FIRMA", new Font(FontFamily.HELVETICA,7)))); 
-       PdfPCell aclaracionFirma = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 7)));
+       aclaracionFirma = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 7)));
        aclaracionFirma.setColspan(4);  
        tabla6.addCell( aclaracionFirma );  
        tabla6.setWidths( new int[]{3,5,1,1,1 } );
@@ -334,27 +338,27 @@ public class ExportarOTPDF {
      detalleFActuras = new PdfPCell(new Paragraph("SUB - TOTAL", new Font(FontFamily.HELVETICA, 10))); 
      tabla8.addCell( detalleFActuras );      
      
-     detalleFActuras = new PdfPCell(new Paragraph("1", new Font(FontFamily.HELVETICA, 10))); 
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10))); 
      tabla8.addCell( detalleFActuras ); 
      
-     detalleFActuras = new PdfPCell(new Paragraph("2", new Font(FontFamily.HELVETICA, 10))); 
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10))); 
      tabla8.addCell( detalleFActuras ); 
       
      
      
-     detalleFActuras = new PdfPCell(new Paragraph("3", new Font(FontFamily.HELVETICA, 10)));
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10)));
      detalleFActuras.setColspan(5);       
      tabla8.addCell( detalleFActuras ); 
      
-     detalleFActuras = new PdfPCell(new Paragraph("4", new Font(FontFamily.HELVETICA, 10)));
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10)));
      tabla8.addCell( detalleFActuras ); 
      
      
      detalleFActuras = new PdfPCell(new Paragraph("IVA", new Font(FontFamily.HELVETICA, 10)));  
      tabla8.addCell( detalleFActuras ); 
-     detalleFActuras = new PdfPCell(new Paragraph("5", new Font(FontFamily.HELVETICA, 10))); 
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10))); 
      tabla8.addCell( detalleFActuras ); 
-     detalleFActuras = new PdfPCell(new Paragraph("6", new Font(FontFamily.HELVETICA, 10)));  
+     detalleFActuras = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10)));  
      tabla8.addCell( detalleFActuras ); 
     
       
@@ -376,20 +380,20 @@ public class ExportarOTPDF {
     tabla8.addCell( detalleFActuras ); 
     
     
-    tabla8.addCell( new PdfPCell(new Paragraph("7" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("8" , new Font(FontFamily.HELVETICA, 10))));
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10))));
     
     
-    tabla8.addCell( new PdfPCell(new Paragraph("9" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("10" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("11" , new Font(FontFamily.HELVETICA, 10))));     
-    tabla8.addCell( new PdfPCell(new Paragraph("12" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("13" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("14" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("15" , new Font(FontFamily.HELVETICA, 10))));     
-    tabla8.addCell( new PdfPCell(new Paragraph("16" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("17" , new Font(FontFamily.HELVETICA, 10)))); 
-    tabla8.addCell( new PdfPCell(new Paragraph("18" , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10))));     
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10))));     
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
     
     
     

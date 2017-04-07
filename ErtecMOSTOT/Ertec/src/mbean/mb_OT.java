@@ -55,28 +55,14 @@ import model.DAO.DAO_OT;
 public class mb_OT {
 
 	private DAO_OT dao=new DAO_OT(); 
- 	private int numeroID=50; 
-	private int areaID; 
+ 	//private int numeroID=50; 
 	private int arrendamiento; 
-	private int c; 
-	private int c_Corriente; 
-	private String cliente; 
-	private BigDecimal factura=BigDecimal.ZERO; 
-	private Date fechaFacturada; 
+	private String cliente;   
 	private Date fechaInicio; 
 	private Date fechaTerminada; 
 	private int mantenimiento; 
-	private int nro_Cliente; 
-	private int oC; 
-	private int pedido; 
-	private BigDecimal presupuesto=BigDecimal.ZERO; 
-	private String proceso; 
-	private int r; 
-	private int tipoID; 
-	private String trabajo;	
-	private String direccionObra;
-	private int verifAdm;
-	private String telObra;
+	private int nro_Cliente;  
+	private int tipoID;   
 	private String nombreArticulo;
 	private int CExternaID; 
 	private int articuloID; 
@@ -86,7 +72,6 @@ public class mb_OT {
 	private BigDecimal precio_Unitario=BigDecimal.ZERO; 
 	private int proveedorID;	
 	private int adicionalOTID;
-	private String especificacionAdicional;
 	private int adicionalID;	
  	private Articulo articuloOBJ;
 //	private ArrayList<Articulo> listaArticulosOBJ=new ArrayList<Articulo>(); 
@@ -98,8 +83,7 @@ public class mb_OT {
 	private Proveedores proveedorOBJ;
 	private ArrayList<Proveedores> listaProveedoresOBJ; 	
 	private ArrayList<TipoOT>  listaTiposOT;	
-	private Funcionario funcionarioOBJ;
-	private Cliente clienteOBJ;	
+	private Funcionario funcionarioOBJ; 
 	private String urlImpresion;
 	private ArrayList<Ot> lista=new ArrayList<Ot>();
 	private ArrayList<Movimiento> listaMovimientos=new ArrayList<Movimiento>();
@@ -112,48 +96,16 @@ public class mb_OT {
 	private Adicional adicionalAdd=new Adicional();
 	private Date fechaIni;
 	private Date fechaFin;
+	private Ot otAdd=new Ot();
 	
+	 	
 	
-	public Cliente getClienteOBJ() {
-		return clienteOBJ;
-	}
 
-	public void setClienteOBJ(Cliente clienteOBJ) {
-		this.clienteOBJ = clienteOBJ;
-	}
-	
-	
-	public String urlImprimirOT(int otID){
-		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-  	String realPath=(String) servletContext.getServletPath(); 
-  	System.out.println("contexto addnexo: "+realPath+" "+servletContext+" "+servletContext.getContextPath()+" "+servletContext.getRequestURI());
-		
-		
-		//ExportarOTPDF.ExportarPDF(ot, "");
-	  this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
-	  return urlImpresion;
-	}
-	
-	public String urlImprimirMov(int otID){
-		//ExportarOTPDF.ExportarPDF(ot, "");
-		 this.urlImpresion=  "/ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
-		 System.out.println("url impresion mov "+this.urlImpresion);
-		 return urlImpresion;
-	}
-	
 	@PostConstruct	
 	public void init(){
-		this.recargar();
+		this.lista=dao.getLista();		
 		this.listaTiposOT=dao.getTiposOT();
 	}
-	
-	private void recargar(){
-		this.lista=dao.getLista();		
-	}
-	
-	
-
-	
 	
 	//modificar al hacer onetomany
 	public void recargarListaMovimientos(int idOT){
@@ -167,10 +119,7 @@ public class mb_OT {
 //	        options.put("modal", true);
 		
    }
-	
-	
-	
-	
+		
 	
 	//modificar al hacer onetomany
 	public void recargarListaManoObra(int idOT){
@@ -180,28 +129,14 @@ public class mb_OT {
 	}
 	
 	public void recargarAdiocionalSelected(){
-		this.numeroID=otSelected.getId();
-		this.adicionalAdd.setOtid(numeroID);
 		this.listaAdicionales = dao.getAdicionales(this.otSelected.getId());
 	}
 	
 	public void recargarCESelected(){
-		this.numeroID=otSelected.getId();
-		this.compraexternaAdd.setOtid(numeroID);
-		this.listaComprasExternas=dao.getComprasExternas(numeroID);
+		int otid=otSelected.getId();
+		this.listaComprasExternas=dao.getComprasExternas(otid);
 	}
 
-	
-
-	
-	
-//	
-//	public void recargarListaAdicionales(int idOT){
-//		System.out.println("<<< oiitd "+idOT);
-//		this.listaAdicionales = dao.getAdicionales(idOT);
-//		System.out.println("<<< lista adicionales size= "+this.listaAdicionales.size());
-//	}
-	
 	public void recargarListaComprasExternas(int idOT){
 		System.out.println("<<< oiitd "+idOT);
 		this.listaComprasExternas  = dao.getComprasExternas(idOT);
@@ -217,62 +152,38 @@ public class mb_OT {
 
 	
 	public void onRowEdit(RowEditEvent event) {
-		
-//		Funcionario f= (Funcionario) event.getObject();
-//		
-//		
-//    	if(dao.update(f)){    		
-//    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el funcionario "+f.getNombre());
-//            FacesContext.getCurrentInstance().addMessage(null, message); 
-//            recargarListaFuncionarios();
-//    	}
-//    	else{
-//    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar");
-//            FacesContext.getCurrentInstance().addMessage(null, message);           
-//    	}  	
-        
-    }
-	
+		Ot ot= (Ot) event.getObject();	
+  	if(dao.update(ot)){    		
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo la ot "+ot.getId());
+          FacesContext.getCurrentInstance().addMessage(null, message); 
+          //recargarLista();
+  	}
+  	else{
+  		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar la ot");
+          FacesContext.getCurrentInstance().addMessage(null, message);           
+  	}  	
+      System.out.println("entro en ot update"); 
+  }
 	
 	public String add(){
 		String salida=null;
-		Ot ot = new Ot();
-		
-		ot.setC(this.c);
-		
-		if(clienteOBJ!=null){
-			ot.setClienteNombre(this.clienteOBJ.getNombre());
-			ot.setNroCliente(clienteOBJ.getClienteID());
+		if(otAdd.getCliente()!=null){
+			otAdd.setClienteNombre(otAdd.getCliente().getNombre());
 		}
-		
-		ot.setDireccionObra(this.direccionObra);
-		ot.setTelObra(telObra);
-		ot.setFactura(factura);
-		ot.setFechaFacturada(fechaFacturada);
-		ot.setFechaInicio(fechaInicio);
-		ot.setFechaTerminada(fechaTerminada);
-		ot.setMantenimiento(mantenimiento);
-		ot.setOC(oC);
-		ot.setPedido(pedido);
-		ot.setPresupuesto(presupuesto);
-		ot.setProceso(proceso);
-		ot.setTipoID(tipoID);
-		ot.setTrabajo(trabajo);
-		ot.setVerifAdm(verifAdm);		
-		if (dao.add (ot)){
+	
+		if (dao.add (otAdd)){
 			salida= "/paginas/listot.xhtml?faces-redirect=true";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la ot "+ot.getId());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la ot "+otAdd.getId());
 	    FacesContext.getCurrentInstance().addMessage(null, message);
-	    lista.add(ot);
-	    this.otSelected=ot;
-	    
+	    lista.add(otAdd);
+	    this.otSelected=otAdd;
+	    otAdd =new Ot();
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al agregar OT");
-	        FacesContext.getCurrentInstance().addMessage(null, message);
+	    FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		System.out.println(">>AGREGAR"+ot.getId() );
-		recargar ();
+		System.out.println(">>AGREGAR"+otAdd.getId() );
 		return salida;
 	}
 	
@@ -280,7 +191,7 @@ public class mb_OT {
 		if (dao.delete(f) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino la OT "+f.getId());
       FacesContext.getCurrentInstance().addMessage(null, message);	
-      this.lista.remove(f);
+      this.lista.remove(f);      
       DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
           .findComponent("formordendetrabajo:datatableordendetrabajo");
       if (dataTable != null) {
@@ -289,33 +200,22 @@ public class mb_OT {
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error no se elimino la OT "+f.getId());
-	        FacesContext.getCurrentInstance().addMessage(null, message);			
+	    FacesContext.getCurrentInstance().addMessage(null, message);			
 		}
-		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
-        
 	}
- 
- 
-	
-	
-	
-	
-	
 
 	public String addAdicional (){
 		String salida=null;
-		Adicional a=new Adicional();
-		a.setEspecificacion(especificacionAdicional);
-		a.setOtid(otSelected.getId());
 		
 		System.out.println("entro en addadicional");
-		if(dao.addAdicionalOT(a)){
+		if(dao.addAdicionalOT(otSelected.getId() ,adicionalAdd)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego el adicional a la OT");
 			context.addMessage(null,mensaje);
 			//this.recargarListaAdicionales(numeroID);
-			this.listaAdicionales.add(a);
-			this.adiSelected=a;
+			this.listaAdicionales.add(adicionalAdd);
+			this.adiSelected=adicionalAdd;
+			adicionalAdd=new Adicional();
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -342,28 +242,9 @@ public class mb_OT {
         
     }
 	
-	public void editCompraExterna (RowEditEvent event) {
-		
-		ComprasExternasOT ce= (ComprasExternasOT) event.getObject();
-		
-		
-    	if(dao.updateCompraExterna(ce)){    		
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo la compra externa "+ ce.getId()  );
-            FacesContext.getCurrentInstance().addMessage(null, message); 
-            //this.recargarListaComprasExternas(numeroID);
-    	}
-    	else{
-    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar la compra externa");
-            FacesContext.getCurrentInstance().addMessage(null, message);           
-    	}  	
-        
-    }
-	
-	
-	
 	public void deleteAdicional(Adicional adi){
 		
-		if (dao.deleteAdicional(adi) ){
+		if (dao.deleteAdicional(movSelected.getMovimientoID(),adi) ){
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el adicional  "+adi.getAdicionalID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);	
 	    this.listaAdicionales.remove(adi);
@@ -398,60 +279,7 @@ public class mb_OT {
 	//private int idOTCargar=5794;
 	
 	
-	public void cargarOT(){
-		System.out.println(dao.getOT( numeroID ));
-		Ot ot = dao.getOT( numeroID);
-		if (ot==null){
-			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error la ot no existe","La OT no existe en el sistema");
-			context.addMessage(null,mensaje);
-			
-			limpiarCampos();
-			//setFactura("Error la ot no existe");
-			return;
-		}
-		
-		
-		//setCliente(ot.getCliente());
-		setFactura(ot.getFactura());
-		setFechaFacturada(ot.getFechaFacturada()); 
-		if (this.fechaFacturada.equals("1900-01-01")){
-			setFechaFacturada(null);
-		}
-		setFactura(ot.getFactura());
-		setFechaInicio(ot.getFechaInicio());
-		if (fechaInicio.equals("1900-01-01 00:00:00.0")){
-			setFechaInicio(null);
-		}
-		setFechaTerminada(ot.getFechaTerminada() );
-		if (this.fechaTerminada.equals("1900-01-01 00:00:00.0")){
-			setFechaTerminada(null);
-		}
-		setNumeroID(ot.getId());
-		setProceso(ot.getProceso());
-		if(proceso.equals("E")){
-			setProceso("Ejecucion");
-		}
-		setTrabajo(ot.getTrabajo());
-		
-		
-		DAO_Movimiento dm= new DAO_Movimiento();	 
-		
-		
-	}
-		
-
 	
-	 
-	
-	
-	public String getEspecificacionAdicional() {
-		return especificacionAdicional;
-	}
-
-	public void setEspecificacionAdicional(String especificacionAdicional) {
-		this.especificacionAdicional = especificacionAdicional;
-	}
 
 	public String addCompraExterna(){
 		System.out.println("entro en compra");
@@ -460,16 +288,15 @@ public class mb_OT {
 		ceot.setCantidad(cantidad);
 		//ceot.setId(CExternaID);
 		ceot.setFecha(fecha);
-		ceot.setMoneda(moneda);
-		ceot.setOtid(otSelected.getId());
+		ceot.setMoneda(moneda); 
 		ceot.setPrecio_Unitario(precio_Unitario);
 	  if(proveedorOBJ!=null){
-			ceot.setProveedorID(proveedorOBJ.getProveedorID());	
+			ceot.setProveedor(proveedorOBJ);	
 		}
 		if(articuloOBJ!=null){
 			ceot.setArticuloID(articuloOBJ.getArticuloID());
 		}		
-		if(dao.addCompraExternaOT(ceot)){
+		if(dao.addCompraExternaOT(otSelected.getId(),ceot)){
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado","Se agrego la compra externa a la OT");
 			context.addMessage(null,mensaje);
@@ -484,6 +311,24 @@ public class mb_OT {
 		return null;
 	} 
 
+
+	public void editCompraExterna (RowEditEvent event) {
+		
+		ComprasExternasOT ce= (ComprasExternasOT) event.getObject();
+		
+		
+    	if(dao.updateCompraExterna(ce)){    		
+    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo la compra externa "+ ce.getId()  );
+            FacesContext.getCurrentInstance().addMessage(null, message); 
+            //this.recargarListaComprasExternas(numeroID);
+    	}
+    	else{
+    		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar la compra externa");
+            FacesContext.getCurrentInstance().addMessage(null, message);           
+    	}  	
+        
+    }
+		
 	public void deleteCompraExterna(ComprasExternasOT ce){
 		
 		if (dao.deleteCompraExterna(ce) ){
@@ -502,8 +347,8 @@ public class mb_OT {
 	}
 	
 	
-	public void openAgregarCompraExterna(int otID){
-		this.numeroID=otID;
+	public void openAgregarCompraExternaa(int otID){
+		//this.numeroID=otID;
 		 Map<String,Object> options = new HashMap<String, Object>();
 		 options.put("modal", true); 
 	        options.put("contentWidth", "100%");
@@ -528,38 +373,13 @@ public class mb_OT {
 	
 
 	
-	 public List<String> completeText(String query) {
-	        List<String> results = new ArrayList<String>();
-	        for(int i = 0; i < 10; i++) {
-	            results.add(query + i);
-	        }
-	         
-	        return results;
-	    }
 	
+
 	
-	
-	public void limpiarCampos(){
-		setFactura(null);
-		setCliente(null);  
-		setFechaFacturada(null);   
-		setFactura(null);  
-		setFechaInicio(null);  
-		setFechaTerminada(null);   
-		setProceso("");  
-		setTrabajo("");  
-	}
-	
-    public ArrayList<TipoOT> getTiposOT(){
+		
+  public ArrayList<TipoOT> getTiposOT(){
     	return dao.getTiposOT();
     }
-	
-	
-	public String detailOT(Ot ot){
-		this.numeroID = ot.getId();
-		cargarOT();
-		return "/paginas/detailot.xhtml?faces-redirect=true";
-	}
 	
 
 	public DAO_OT getDto_Ot() {
@@ -571,22 +391,6 @@ public class mb_OT {
 	}
 
 
-
-	public int getNumeroID() {
-		System.out.println("getnumeroidot:"+numeroID);
-		return numeroID;
-	}
-
-	public void setNumeroID(int nID) {
-		this.numeroID = nID;
-		System.out.println("NUMEroid " + numeroID);
-		
-	}
-	
-	public void setearIDOT(int nID) {
-		this.numeroID = nID;
-		System.out.println("seteo NUMEroid " + numeroID);
-	}
 	
 
 	public String getCliente() {
@@ -596,25 +400,8 @@ public class mb_OT {
 	public void setCliente(String cliente) {
 		this.cliente = cliente;
 	}
-
 	
-
-	public String getProceso() {
-		return proceso;
-	}
-
-	public void setProceso(String proceso) {
-		this.proceso = proceso;
-	}
-
-	public String getTrabajo() {
-		return trabajo;
-	}
-
-	public void setTrabajo(String trabajo) {
-		this.trabajo = trabajo;
-	}
-
+	
 	public ArrayList<Movimiento> getListaMovimientos() {
 		return listaMovimientos;
 	}
@@ -624,13 +411,6 @@ public class mb_OT {
 	}
 
  
-	public int getAreaID() {
-		return areaID;
-	}
-
-	public void setAreaID(int areaID) {
-		this.areaID = areaID;
-	}
 
 	public int getArrendamiento() {
 		return arrendamiento;
@@ -640,37 +420,7 @@ public class mb_OT {
 		this.arrendamiento = arrendamiento;
 	}
 
-	public int getC() {
-		return c;
-	}
 
-	public void setC(int c) {
-		this.c = c;
-	}
-
-	public int getC_Corriente() {
-		return c_Corriente;
-	}
-
-	public void setC_Corriente(int c_Corriente) {
-		this.c_Corriente = c_Corriente;
-	}
-
-	public BigDecimal getFactura() {
-		return factura;
-	}
-
-	public void setFactura(BigDecimal factura) {
-		this.factura = factura;
-	}
-
-	public Date getFechaFacturada() {
-		return fechaFacturada;
-	}
-
-	public void setFechaFacturada(Date fechaFacturada) {
-		this.fechaFacturada = fechaFacturada;
-	}
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -703,38 +453,7 @@ public class mb_OT {
 	public void setNro_Cliente(int nro_Cliente) {
 		this.nro_Cliente = nro_Cliente;
 	}
-
-	public int getoC() {
-		return oC;
-	}
-
-	public void setoC(int oC) {
-		this.oC = oC;
-	}
-
-	public int getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(int pedido) {
-		this.pedido = pedido;
-	}
-
-	public BigDecimal getPresupuesto() {
-		return presupuesto;
-	}
-
-	public void setPresupuesto(BigDecimal presupuesto) {
-		this.presupuesto = presupuesto;
-	}
-
-	public int getR() {
-		return r;
-	}
-
-	public void setR(int r) {
-		this.r = r;
-	}
+	
 
 	public int getTipoID() {
 		return tipoID;
@@ -858,6 +577,7 @@ public class mb_OT {
 //		this.listaArticulosOBJ = listaArticulosOBJ;
 //	}
 
+
 	public Proveedores getProveedorOBJ() {
 		return proveedorOBJ;
 	}
@@ -883,6 +603,7 @@ public class mb_OT {
 	}
 
 
+
 	public int getAdicionalOTID() {
 		return adicionalOTID;
 	}
@@ -899,30 +620,6 @@ public class mb_OT {
 
 	public void setAdicionalID(int adicionalID) {
 		this.adicionalID = adicionalID;
-	}
-
-	public String getDireccionObra() {
-		return direccionObra;
-	}
-
-	public void setDireccionObra(String direccionObra) {
-		this.direccionObra = direccionObra;
-	}
-
-	public int getVerifAdm() {
-		return verifAdm;
-	}
-
-	public void setVerifAdm(int verifAdm) {
-		this.verifAdm = verifAdm;
-	}
-
-	public String getTelObra() {
-		return telObra;
-	}
-
-	public void setTelObra(String telObra) {
-		this.telObra = telObra;
 	}
 
 	public ArrayList<TipoOT> getListaTiposOT() {
@@ -957,7 +654,10 @@ public class mb_OT {
 		this.urlImpresion = urlImpresion;
 	}
 
-
+  public void initDetalleCliente(Ot ot){
+  	System.out.println("initdetallecliente mbot");
+  	this.otSelected=ot;
+  }
 
 //	public ArrayList<DTO_MRA> listaMRA (){
 //		//hallar los Movimientos
@@ -1224,9 +924,42 @@ public class mb_OT {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+
+	public Ot getOtAdd() {
+		return otAdd;
+	}
+
+	public void setOtAdd(Ot otAdd) {
+		this.otAdd = otAdd;
+	}
 	
 	
-
-
+	public String urlImprimirOT(int otID){
+		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+  	String realPath=(String) servletContext.getServletPath(); 
+  	System.out.println("contexto addnexo: "+realPath+" "+servletContext+" "+servletContext.getContextPath()+" "+servletContext.getRequestURI());
+		
+		
+		//ExportarOTPDF.ExportarPDF(ot, "");
+	  this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
+	  return urlImpresion;
+	}
+	
+	public String urlImprimirMov(int otID){
+		//ExportarOTPDF.ExportarPDF(ot, "");
+		 this.urlImpresion=  "/ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
+		 System.out.println("url impresion mov "+this.urlImpresion);
+		 return urlImpresion;
+	}
 	
 }
+
+
+//public List<String> completeText(String query) {
+//List<String> results = new ArrayList<String>();
+//for(int i = 0; i < 10; i++) {
+//  results.add(query + i);
+//}
+//
+//return results;
+//}

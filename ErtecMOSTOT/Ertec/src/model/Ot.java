@@ -18,12 +18,7 @@ import java.util.List;
 	//@NamedQuery(name="Ot.getMovimientos", query="SELECT m FROM Movimiento m, Ot ot WHERE m.movimientoID= Ot.referencia and Ot.tipoOT <> NULL  ORDER BY m.movimientoID DESC") 
 }) 
 
-
-
-
-
 @SequenceGenerator(name = "OT_SEQ", sequenceName = "OT_SEQ", initialValue = 969697, allocationSize = 1)
-
 
 public class Ot implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -43,18 +38,21 @@ public class Ot implements Serializable {
 //		this.movimientos = movimientos;
 //	}
 
-	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="OTID", referencedColumnName="Id" , insertable = false, updatable = false)//columna adicional, columna ot
-	private List<Adicional> adicionales;
-	
-	@OneToMany (fetch=FetchType.LAZY)
-	@JoinColumn(name="OTID", referencedColumnName="Id" , insertable = false, updatable = false)
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="OTID", referencedColumnName="Id")//columna adicional, columna ot
+	private List<Adicional> adicionales;	
+
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="OTID", referencedColumnName="Id")
 	private List<ComprasExternasOT> comprasExternas;
 	
 	@OneToOne(fetch=FetchType.EAGER )
-	@JoinColumn(name="NroCliente", referencedColumnName="ClienteID" , insertable = false, updatable = false)
+	@JoinColumn(name="NroCliente")
 	private Cliente cliente;
 	
+	@OneToOne(fetch=FetchType.EAGER,optional=true )
+	@JoinColumn(name="ContratoID")
+	private Contrato contrato;
 	
 	@Column(name="Cliente")
 	private String clienteNombre;
@@ -62,21 +60,17 @@ public class Ot implements Serializable {
 	@Column(name="AreaID")
 	private int areaID;
 
-	@Column(name="Arrendamiento")
-	private int arrendamiento;
-
 	@Column(name="C")
 	private int c;
 
 	@Column(name="C_Corriente")
 	private int c_Corriente;
- 
 
 	@Column(name="DireccionObra")
 	private String direccionObra;
 
 	@Column(name="Factura")
-	private BigDecimal factura;
+	private BigDecimal factura=BigDecimal.ZERO;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FechaFacturada")
@@ -89,13 +83,7 @@ public class Ot implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FechaTerminada")
 	private Date fechaTerminada;
-
-	@Column(name="Mantenimiento")
-	private int mantenimiento;
-
-	@Column(name="NroCliente")
-	private int nroCliente;
-
+  
 	@Column(name="O_C")
 	private int oC;
 
@@ -103,7 +91,7 @@ public class Ot implements Serializable {
 	private int pedido;
 
 	@Column(name="Presupuesto")
-	private BigDecimal presupuesto;
+	private BigDecimal presupuesto=BigDecimal.ZERO;
 
 	@Column(name="Proceso")
 	private String proceso;
@@ -142,14 +130,6 @@ public class Ot implements Serializable {
 		this.areaID = areaID;
 	}
 
-	public int getArrendamiento() {
-		return this.arrendamiento;
-	}
-
-	public void setArrendamiento(int arrendamiento) {
-		this.arrendamiento = arrendamiento;
-	}
-
 	public int getC() {
 		return this.c;
 	}
@@ -164,9 +144,7 @@ public class Ot implements Serializable {
 
 	public void setC_Corriente(int c_Corriente) {
 		this.c_Corriente = c_Corriente;
-	}
-
-	 
+	} 
 
 	public List<Adicional> getAdicionales() {
 		return adicionales;
@@ -240,22 +218,6 @@ public class Ot implements Serializable {
 
 	public void setFechaTerminada(Date fechaTerminada) {
 		this.fechaTerminada = fechaTerminada;
-	}
-
-	public int getMantenimiento() {
-		return this.mantenimiento;
-	}
-
-	public void setMantenimiento(int mantenimiento) {
-		this.mantenimiento = mantenimiento;
-	}
-
-	public int getNroCliente() {
-		return this.nroCliente;
-	}
-
-	public void setNroCliente(int nroCliente) {
-		this.nroCliente = nroCliente;
 	}
 
 	public int getOC() {
@@ -336,6 +298,14 @@ public class Ot implements Serializable {
 
 	public void setVerifAdm(int verifAdm) {
 		this.verifAdm = verifAdm;
+	}
+
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
 	}
 
 }

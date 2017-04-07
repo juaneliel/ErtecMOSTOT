@@ -43,7 +43,7 @@
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  onclick="PF('addordendetrabajo').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
+		  <p:commandButton value="Agregar" update="addordendetrabajo"  oncomplete="PF('addordendetrabajo').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>      
       
      </f:facet>      
        
@@ -52,12 +52,11 @@
 		      <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
 		       <p:columnToggler datasource="datatableordendetrabajo" trigger="toggler" />
 		    </f:facet> 
-		 
-		        
-		 
-		 <p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="formordendetrabajo" />
+		  
 		 
 		  
+		<p:ajax event="rowEdit" listener="#{mb_OT.onRowEdit}" update="message datatableordendetrabajo" />	  
+	 
 
 	 		   <p:column  headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','ordendetrabajo')}" exportable="false">						
 					<p:rowEditor >
@@ -72,12 +71,15 @@
 		    </p:column>
 		 
 
-		<p:column   headerText="Cliente" sortBy="#{ot.clienteNombre}"  filterMatchMode="contains" filterBy="#{ot.clienteNombre}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{ot.clienteNombre}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="cliente" value="#{ot.clienteNombre}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
+		<p:column   headerText="Cliente" sortBy="#{ot.cliente.nombre}"  filterMatchMode="contains" filterBy="#{ot.cliente.nombre}">		                
+		       
+		         <p:commandLink id="vercliente" update="panelvercliente formordendetrabajo"
+	                    actionListener="#{mb_OT.initDetalleCliente(ot)}" process="@this"
+	                    oncomplete="PF('vercli').show()" >
+        							<h:outputText value="#{ot.cliente.nombre}" style="font-size:10px"/>   
+    						     </p:commandLink>	 
 	</p:column>	  
+
 
 
 
@@ -88,13 +90,6 @@
         <p:graphicImage name="/demo/images/logo-trans.png" />
     </p:tooltip>
 
-
-		<p:column   headerText="Lugar" sortBy="#{ot.direccionObra}"  filterMatchMode="contains" filterBy="#{ot.direccionObra}">		                
-		        <p:cellEditor>
-	               <f:facet name="output"><h:outputText value="#{ot.direccionObra}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="lugar" value="#{ot.direccionObra}" style="width:100%"/></f:facet>
-           		</p:cellEditor>
-	</p:column>	 
 	
 			<p:column   headerText="Tel" sortBy="#{ot.telObra}"  filterMatchMode="contains" filterBy="#{ot.telObra}">		                
 		        <p:cellEditor>
@@ -103,11 +98,18 @@
            		</p:cellEditor>
 	</p:column>
 
+
+		<p:column   headerText="Lugar" sortBy="#{ot.direccionObra}"  filterMatchMode="contains" filterBy="#{ot.direccionObra}">		                
+		        <p:cellEditor>
+	               <f:facet name="output"><h:outputText value="#{ot.direccionObra}" /></f:facet>
+	               <f:facet name="input"><p:inputTextarea id="lugar" value="#{ot.direccionObra}" rows="3" style="width:100%"/></f:facet>
+           		</p:cellEditor>
+	</p:column>	 
 		    		 
 			<p:column headerText="Trabajo:" sortBy="#{ot.trabajo}"  filterMatchMode="contains" filterBy="#{ot.trabajo}">		                
 		        <p:cellEditor>
 	               <f:facet name="output"><h:outputText value="#{ot.trabajo}" /></f:facet>
-	               <f:facet name="input"><p:inputText id="trabajo" value="#{ot.trabajo}" style="width:100%"/></f:facet>
+	               <f:facet name="input"><p:inputTextarea id="trabajo" value="#{ot.trabajo}" rows="3" style="width:100%"/></f:facet> 
            		</p:cellEditor>
 		    </p:column>
 
@@ -219,7 +221,7 @@
 	  	<p:menuitem value="Adicionales" update="formadicional" actionListener="#{mb_OT.recargarAdiocionalSelected}"  icon="ui-icon-search" oncomplete="PF('verad').show()"/>
 	  	<p:menuitem value="Compras externas" update="formcompraexterna" actionListener="#{mb_OT.recargarCESelected}"  icon="ui-icon-search" oncomplete="PF('verce').show()"/>
 	   	<p:menuitem value="Mano de Obra" update="formmanodeobra" actionListener="#{mb_ManoObra.recargarManodeobraSelected(mb_OT.otSelected.id)}"  icon="ui-icon-search" oncomplete="PF('vermo').show()"/>
-	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_Movimiento.recargarMovimientoSelected(mb_OT.otSelected.id)}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
+	   	<p:menuitem value="Movimientos" update="formmovimiento" actionListener="#{mb_Movimiento.recargarMovimientoSelected(mb_OT.otSelected)}"   icon="ui-icon-search" oncomplete="PF('vermov').show()"/>
 	  	<p:menuitem value="Imprimir Ot"  update="verpdfot" icon="ui-icon-print"  oncomplete="PF('verpdfot').show()"/>
 	   	<p:menuitem value="Imprimir Movimientos" update="verpdfmov" icon="ui-icon-print"  oncomplete="PF('verpdfmov').show()"/>
 		  <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','ordendetrabajo')}" value="Borrar" update="formordendetrabajo message"  
@@ -234,7 +236,11 @@
   </h:form>
 
  
-
+<p:dialog header="Detalle cliente" widgetVar="vercli"  modal="true"  id="vercli"  dynamic="true">
+<ui:include src="/templates/templatecliente.xhtml" id="listaAdicionales">	  
+<ui:param name="paramcliente"   value = "#{mb_OT.otSelected.cliente}"/>		
+</ui:include>
+</p:dialog>	 
 
 
 <p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
@@ -291,13 +297,13 @@
 		
 
 <script type="text/javascript">
-    function handleAddRequest(xhr, status, args) { 
+    function handleAddOtRequest(xhr, status, args) { 
         if(args.validationFailed ) {
             PF('addordendetrabajo').jq.effect("shake", {times:5}, 100);
         }
         else {
             PF('addordendetrabajo').hide(); 
-           // PF('datatablearticulos').addRow();
+            //PF('datatablearticulos').filter();
         }
     }       
 </script>
@@ -308,44 +314,79 @@
 	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
 			 
  
-<p:outputLabel value="Cliente" for="cliente" />
-<p:autoComplete  id="cliente" value="#{mb_OT.clienteOBJ}"
- completeMethod="#{mb_Usuario.completarCliente}" required="true"
-var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- converter="ConverterCliente" forceSelection="true" /> 
 
-
+	<h:outputLabel  value="Cliente:*" for="cliente"  />
+		 	<p:autoComplete  required="true" label="Cliente" id="cliente" value="#{mb_OT.otAdd.cliente}"  
+ 				completeMethod="#{mb_Usuario.completarCliente}" 
+				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+ 				converter="ConverterCliente" forceSelection="true"> 
+ 				<p:ajax event="itemSelect" listener="#{mb_Usuario.recargarListaContratos(mb_OT.otAdd.cliente.clienteID)}" update="contrato" />  				
+ 								
+ 				<f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                		<h:outputText value="ID:" />
+                    <h:outputText value="#{theme.clienteID}" />
+                
+                    <h:outputText value="Direccion:" />
+                    <h:outputText value="#{theme.dirCliente}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telCliente}" />
+                </h:panelGrid>
+            </f:facet>
+			</p:autoComplete>				
+			
+		<p:outputLabel value="Contrato:" for="contrato" /> 
+		<p:selectOneMenu id="contrato" value="#{mb_OT.otAdd.contrato}" style="width:70%"    
+		panelStyle="min-width:200px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
+		>
+			<f:selectItems value="#{mb_Usuario.listaContratosOBJ}" var="contrato" title="dale" 			
+				itemLabel="#{contrato.tipo}#{contrato.contratoID} #{contrato.direccion}" itemValue="#{contrato}" />					
+					<p:column>
+                <h:outputText value="#{t.tipo}#{t.contratoID}" />
+            </p:column>   
+					
+					 <p:column>
+                <h:outputText value="#{t.direccion}" />
+            </p:column>   
+            
+            <p:column>
+                <h:outputText value="#{t.equipo}" />
+            </p:column>            
+   	</p:selectOneMenu>
  
 			<p:outputLabel  value="Lugar de la Obra:" for="lugar"/>
-        	<p:inputText id="lugar" value="#{mb_OT.direccionObra}" required="true" />	
+        	<p:inputText id="lugar" value="#{mb_OT.otAdd.direccionObra}" required="true" />	
  
  
  			<p:outputLabel value="Telefono:" for="telObra" />  
-				<p:inputText id="telObra" label="lugar" value="#{mb_OT.telObra}"  />  
+				<p:inputText id="telObra" label="lugar" value="#{mb_OT.otAdd.telObra}"  />  
  
-			     <p:outputLabel value="Trabajo:" for="trabajo" />
-			       <p:inputText id="trabajo" label="trabajo" value="#{mb_OT.trabajo}" />	       	
+			     <p:outputLabel value="Trabajo:" for="trabajo" />    	
+ <p:inputTextarea required="true" value="#{mb_OT.otAdd.trabajo}"  id="trabajo"  rows="5" cols="20"  maxlength="1000" counterTemplate="{0} characters remaining."  />
+     
+ 
  
 
    <p:outputLabel value="Presupuesto:" for="pre" />   
-		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.presupuesto}" />	       	
+		       		 <p:inputText id="pre" label="oc" value="#{mb_OT.otAdd.presupuesto}" />	       	
 		   
 	 				<p:outputLabel value="Pedido:" for="ped" /> 
-					<p:inputText id="ped" label="ped" value="#{mb_OT.pedido}"/>	       	
+					<p:inputText id="ped" label="ped" value="#{mb_OT.otAdd.pedido}"/>	       	
 	 		 
 					<p:outputLabel value="O. C.:" for="oc" />
-			       <p:inputText id="oc" label="ccte" value="#{mb_OT.oC}" />	       	
+			       <p:inputText id="oc" label="ccte" value="#{mb_OT.otAdd.oC}" />	       	
 			 
 	 				<p:outputLabel value="C:" for="c" />
-	 				<p:inputText id="c" label="c" value="#{mb_OT.c}"  /> 
+	 				<p:inputText id="c" label="c" value="#{mb_OT.otAdd.c}"  /> 
 	 		 
 	 				<p:outputLabel value="R:" for="r" />
-					<p:inputText id="r" label="r" value="#{mb_OT.r}" />	       	 
+					<p:inputText id="r" label="r" value="#{mb_OT.otAdd.r}" />	       	 
  
    
 	
 				
-			<p:commandButton value="Agregar" actionListener="#{mb_OT.add}"  oncomplete="handleAddRequest(xhr, status, args)"
+			<p:commandButton value="Agregar" actionListener="#{mb_OT.add}"  oncomplete="handleAddOtRequest(xhr, status, args)"
 			update="@([id$=datatableordendetrabajo]) message" />	
 
 		   	

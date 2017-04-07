@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition>   
+ 
+  
+    <p:panelGrid  columns="2"  id="panelvercliente">
+                
+      <h:outputText value="Id:" />
+      <h:outputText value="#{paramcliente.clienteID}" /> 
+       
+      <h:outputText value="Nombre:" />
+      <h:outputText value="#{paramcliente.nombre}" />   
+              
+		  <h:outputText value="Direccion:" />
+      <h:outputText value="#{paramcliente.dirCliente}" /> 
+       
+      <h:outputText value="Localidad:" />
+      <h:outputText value="#{paramcliente.locCliente}" />   
+              
+		  <h:outputText value="Telefono:" />
+      <h:outputText value="#{paramcliente.telCliente}" />   
+        
+  		<h:outputText value="RUC:" />
+      <h:outputText value="#{paramcliente.rucCliente}" />   
+      
+	  	<h:outputText value="Credito:" />
+      <h:outputText value="#{paramcliente.credito}" />   
+      	   
+		  <h:outputText value="Cta corriente:" />
+      <h:outputText value="#{paramcliente.cuentaCorriente}" /> 
+      
+	</p:panelGrid> 
+		    
+		  	 
+</ui:composition>
+</html>

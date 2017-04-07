@@ -39,40 +39,22 @@ public class DAO_ComprasExternasOT {
 		return null;
 	}
 	
-	public boolean update (ComprasExternasOT a){ 
-		boolean salida=false;
+	public boolean update (ComprasExternasOT ce){ 
 		EntityManager em=JpaUtil.getEntityManager();
-		try{
-			
-			
-			ComprasExternasOT aux = em.find(ComprasExternasOT.class, a.getId());			
-			
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			
-//			if(a.getArticulo()!=null){
-//			  aux.setArticuloID(a.getArticulo().getArticuloID());
-//			}			
-			aux.setCantidad(a.getCantidad());
-			aux.setId(a.getId());
-			aux.setFecha(a.getFecha());
-			aux.setMoneda(a.getMoneda());
-			aux.setOtid(a.getOtid());
-			aux.setPrecio_Unitario(a.getPrecio_Unitario());
-			if(a.getProveedor()!=null){
-			  aux.setProveedorID(a.getProveedor().getProveedorID()); 
-			} 		 
-			//em.flush();
-			em.getTransaction().commit();
-			salida=true;
-		}
-		catch (Exception e){
+			em.merge(ce);
+      em.getTransaction().commit();
+			salida= true;
+		}catch (Exception e){
 			e.printStackTrace();			
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+			  em.close();
+		  }		
 		}
-		return salida;	
+		return salida;		
 	}	
 	
 	public void deleteComprasExternasOT(ComprasExternasOT m){ 

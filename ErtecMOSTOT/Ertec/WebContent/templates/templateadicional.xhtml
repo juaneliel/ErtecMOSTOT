@@ -112,7 +112,7 @@
 	 <h:form>          
 			<h:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
 			    <p:outputLabel value="Especificacion:" for="especificacion" />
-			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.especificacionAdicional}" required="true" />			     
+			     <p:inputTextarea rows="6" cols="33"  id="especificacion" label="especificacion" value="#{mb_OT.adicionalAdd.especificacion}" required="true" />			     
 			<p:commandButton value="Agregar" actionListener="#{mb_OT.addAdicional}"  oncomplete="handleAddRequest(xhr, status, args)"
 			update="@([id$=formadicionalcional]) message" />				   	
 			</h:panelGrid> 

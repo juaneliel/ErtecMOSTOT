@@ -64,30 +64,23 @@ public class DAO_Adicional {
 	}
 	
 	
-	public void updateAdicional(Adicional a){ 
-		EntityManager em=JpaUtil.getEntityManager();
-		try{	
-			Adicional aux = em.find(Adicional.class,a.getAdicionalID() );			
-			
+	public boolean updateAdicional(Adicional a){ 
+		EntityManager em=JpaUtil.getEntityManager(); 
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			aux.setEspecificacion(a.getEspecificacion());
-			
-			
-			//aux.setAdicionalID(a.getAdicionalID());			
-			//aux.setOtid(a.getOtid());
-			
-			
-			em.flush();
-			em.getTransaction().commit();
-			em.close();
+			em.persist(a);
+			em.getTransaction().commit(); 
+			salida = true;
 		}
 		catch (Exception e){
-			e.printStackTrace();	
-	    }finally{ 
-			  if(em.isOpen()){
+			e.printStackTrace();
+		 }finally{ 
+	    	  if(em.isOpen() ){
 				  em.close();
 			  }		
-		}		
+		}
+		return salida;
 	}	
 }
 

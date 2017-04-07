@@ -168,37 +168,39 @@
 	  <h:panelGrid   style="width:300px"  >
 			<h:form >
 				<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2" style="float:left">   
-				 
-					<p:outputLabel value="Fecha:" for="fecha" /> 
-					<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.movimientoAdd.fecha}" required="true" />	
+								
 										
 					<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
 					<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.movimientoAdd.codigoMovimientoID}" required="true">
-						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.movimientoAdd.codigoMovimientoID )}" update="tipoReferencia foraddnexo referencia cotizacion" />
+						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.movimientoAdd.codigoMovimientoID )}" update="tipoReferencia foraddnexo referencia cotizacion contrato cliente" />
 						<f:selectItems value="#{paramListaCodMov}" var="cm" 
 							itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
 					</p:selectOneMenu>
 			
 					<p:outputLabel value="Tipo Referencia:" for="tipoReferencia" /> 
 					<p:selectOneMenu id="tipoReferencia"  value="#{mb_Movimiento.movimientoAdd.tipoReferencia}"  required="true">
-						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(  mb_Movimiento.movimientoAdd.codigoMovimientoID   )}" />
+						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato(mb_Movimiento.movimientoAdd.codigoMovimientoID)}" />
 						<f:selectItems value="#{mb_Movimiento.listaReferencias}" var="ref" 
 							itemLabel="#{ref.descripcion}" itemValue="#{ref.descripcion}" />
 		   	  </p:selectOneMenu>
 		   	
-					<p:outputLabel value="Referencia:" for="referencia"  visible="#{mb_Movimiento.verReferencia}"/> 
-					<p:inputMask converterMessage="Ingrese un valor de referencia" disabled="#{!mb_Movimiento.editarReferencia}" min="1" id="referencia" label="referencia" value="#{mb_Movimiento.movimientoAdd.referencia}" required="true" maxlength="10" >
-		      	<p:keyFilter regEx="/[0-9_]/i" />
-		      	<f:validateDoubleRange minimum="1" />  
+					<p:outputLabel value="Referencia:" for="referencia"  rendered="#{mb_Movimiento.verReferencia}"/> 
+					<p:outputLabel value="#{mb_Movimiento.movimientoAdd.referencia}" rendered="#{!mb_Movimiento.editarReferencia}"/> 
+					<p:inputMask converterMessage="Ingrese un valor de referencia" rendered="#{mb_Movimiento.editarReferencia}" min="1"
+					   id="referencia" label="referencia" value="#{mb_Movimiento.movimientoAdd.referencia}" required="true" maxlength="10" >
+		      	 <p:keyFilter regEx="/[0-9_]/i" />
+		      	 <f:validateDoubleRange minimum="1" />  
 		  		</p:inputMask>
 		 		
 		 			<h:outputLabel  value="Cliente:" for="cliente" rendered="#{mb_Movimiento.verCliente}" />
-				 	<p:autoComplete  rendered="#{mb_Movimiento.verCliente}" id="cliente" value="#{mb_Movimiento.movimientoAdd.cliente}" required="true"   disabled="#{!mb_Movimiento.editarCliente}"
+		 			<h:outputLabel  value="#{mb_Movimiento.movimientoAdd.cliente.nombre}" rendered="#{mb_Movimiento.verCliente and !mb_Movimiento.editarCliente}" />
+				 	<p:autoComplete  rendered="#{mb_Movimiento.verCliente} and #{mb_Movimiento.editarCliente}" id="cliente" value="#{mb_Movimiento.movimientoAdd.cliente}" 
+				 	  required="true"  
 		 				completeMethod="#{mb_Usuario.completarCliente}" 
 						var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		 				converter="ConverterCliente" forceSelection="true"
-		 				 > 
-		 				<p:ajax event="itemSelect" listener="#{mb_Cliente.recargarListaContratos(mb_Movimiento.movimientoAdd.cliente.clienteID)}" update="contrato" />  				
+		 				 > 		 				 
+		 				<p:ajax event="itemSelect" listener="#{mb_Usuario.recargarListaContratos(mb_OT.otSelected.cliente.clienteID)}" update="contrato" />  				
 						<f:facet name="itemtip">
 	          	<h:panelGrid columns="2" cellpadding="3">  
 	           		<h:outputText value="ID:" />
@@ -216,7 +218,7 @@
 					<p:outputLabel value="Contrato:" for="contrato"  rendered="#{mb_Movimiento.verContrato}"/> 
 					<p:selectOneMenu rendered="#{mb_Movimiento.verContrato}" id="contrato" value="#{mb_Movimiento.movimientoAdd.contrato}"  panelStyle="width:180px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
 				 		disabled="#{!mb_Movimiento.editarContrato}">
-						<f:selectItems value="#{mb_Cliente.listaContratos}" var="contrato" title="dale" 			
+						<f:selectItems value="#{mb_Usuario.listaContratosOBJ}" var="contrato" title="dale" 			
 							itemLabel="#{contrato.tipo}#{contrato.contratoID}-#{contrato.direccion}" itemValue="#{contrato}" />					
 						<p:column>
 			      	<h:outputText value="#{t.tipo}#{t.contratoID}" />
@@ -231,10 +233,13 @@
 			      </p:column>            
 		   		</p:selectOneMenu>
 		   						 
-					<p:outputLabel value="Cotizacion:" for="cotizacion" /> 
-					<p:inputText disabled="#{!mb_Movimiento.verCotizacion}"  required="true" id="cotizacion" label="cotizacion" value="#{mb_Movimiento.movimientoAdd.cotizacion}">	
+					<p:outputLabel value="Cotizacion:" for="cotizacion" rendered="#{mb_Movimiento.verCotizacion}"/> 					
+					<p:inputText rendered="#{mb_Movimiento.verCotizacion} and #{mb_Movimiento.editarCotizacion}"  required="true" id="cotizacion" label="cotizacion" value="#{mb_Movimiento.movimientoAdd.cotizacion}">	
 						<f:validateDoubleRange minimum="0.01" />
-					</p:inputText>		 
+					</p:inputText>	
+					
+						<p:outputLabel value="Fecha:" for="fecha" /> 
+					<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.movimientoAdd.fecha}" required="true" />		 
 		
 			    <p:commandButton value="Guardar" actionListener="#{mb_Movimiento.add}" update="formmovimiento message" oncomplete="PF('addmovimiento').hide()" />			
 		    </p:panelGrid>	 

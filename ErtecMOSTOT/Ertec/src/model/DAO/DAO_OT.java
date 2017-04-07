@@ -24,45 +24,17 @@ public class DAO_OT {
 	
 	
 	public boolean update(Ot ot){
-		EntityManager em=JpaUtil.getEntityManager();
-		boolean salida = false;
-		try{	
-			Ot aux = em.find(Ot.class, ot.getId()  );			
-			
+		EntityManager em=JpaUtil.getEntityManager(); 
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			
-			aux.setAreaID(ot.getAreaID());
-			aux.setArrendamiento(ot.getArrendamiento());
-			aux.setAdicionales(ot.getAdicionales());
-			aux.setC(ot.getC());
-			aux.setC_Corriente(ot.getC_Corriente());
-			if(ot.getCliente()!=null){
-			  aux.setNroCliente(ot.getCliente().getClienteID());
-			  aux.setClienteNombre(ot.getCliente().getNombre());
-			}			
-			aux.setComprasExternas(ot.getComprasExternas());
-			aux.setFactura(ot.getFactura());
-			aux.setFechaFacturada(ot.getFechaFacturada());
-			aux.setFechaInicio(ot.getFechaInicio());
-			aux.setFechaTerminada(ot.getFechaTerminada());
-			aux.setMantenimiento(ot.getMantenimiento());
-			aux.setId(ot.getId());
-			aux.setOC(ot.getOC());
-			aux.setPedido(ot.getPedido());
-			aux.setPresupuesto(ot.getPresupuesto());
-			aux.setProceso(ot.getProceso());
-			aux.setR(ot.getR());
-			aux.setTipoID(ot.getTipoID());
-			aux.setTrabajo(ot.getTrabajo());
-			
-
-			//em.flush();
-			em.getTransaction().commit();
-			salida=true;
+			em.merge(ot);
+			em.getTransaction().commit(); 
+			salida = true;
 		}
 		catch (Exception e){
-			e.printStackTrace();			
-		}finally{ 
+			e.printStackTrace();
+		 }finally{ 
 	    	  if(em.isOpen() ){
 				  em.close();
 			  }		
@@ -250,12 +222,11 @@ public class DAO_OT {
 //		return DAO_Movimiento.add(m,nexos);
 //	}
 
-	public boolean addAdicionalOT(Adicional a){ 
+	public boolean addAdicionalOT(int otid,Adicional a){ 
 		boolean salida=false;
 		EntityManager em=JpaUtil.getEntityManager();		
 		try{ 
-			Ot ot = em.find(Ot.class,a.getOtid()); 
-			
+			Ot ot = em.find(Ot.class,otid); 			
 			em.getTransaction().begin();			
 			em.persist(a);
 			ot.getAdicionales().add(a);
@@ -272,24 +243,14 @@ public class DAO_OT {
 		return salida;
 	}
 	
-	public boolean addCompraExternaOT(ComprasExternasOT ce){
+	public boolean addCompraExternaOT(int otid,ComprasExternasOT ce){
 		boolean salida= false;
-
 		EntityManager em=JpaUtil.getEntityManager();		
 		try{
-//			Ot ot= em.find(Ot.class,ce.getOtid()); 
-//			em.getTransaction().begin();
-//			ot.getComprasExternas().add(ce);		
-//			em.flush();
-//			em.getTransaction().commit();
-//			em.close();
+   		Ot ot= em.find(Ot.class,otid); 
 			System.out.println("addcompra>>");
-		//	Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
-			Proveedores proveedor = em.find(Proveedores.class, ce.getProveedorID());
-			em.getTransaction().begin();
-			ce.setProveedor(proveedor);
-			//ce.setArticulo(articulo);
-			em.persist(ce);
+			em.getTransaction().begin(); 
+			ot.getComprasExternas().add(ce);
 			em.getTransaction().commit();
 			salida= true; 
 		}
@@ -399,8 +360,7 @@ public class DAO_OT {
 			em.getTransaction().begin();
 			
 			aux.setAdicionalID(adi.getAdicionalID());
-			aux.setEspecificacion(adi.getEspecificacion());
-			aux.setOtid(adi.getOtid());
+			aux.setEspecificacion(adi.getEspecificacion()); 
 						
 			
 			//em.flush();
@@ -419,51 +379,29 @@ public class DAO_OT {
 	
 	public boolean updateCompraExterna (ComprasExternasOT ce){
 		EntityManager em=JpaUtil.getEntityManager();
-		boolean salida = false;
-		try{	
-			ComprasExternasOT aux = em.find(ComprasExternasOT.class,ce.getId()  );			
-
-			//Articulo articulo = em.find(Articulo.class, ce.getArticuloID());
-			//Proveedores proveedor = em.find(Proveedores.class, ce.getProveedorID());		
-			Proveedores proveedor =ce.getProveedor();
-			
-
+		boolean salida=false;
+		try{			
 			em.getTransaction().begin();
-			
-		//	aux.setArticulo(articulo);
-			aux.setNombreArticulo(ce.getNombreArticulo());
-			//aux.setArticuloID(articulo.getArticuloID());
-			aux.setCantidad(ce.getCantidad());
-			aux.setId(ce.getId());
-			aux.setFecha(ce.getFecha());
-			aux.setMoneda(ce.getMoneda());
-			aux.setOtid(ce.getOtid());
-			aux.setPrecio_Unitario(ce.getPrecio_Unitario());
-			if(proveedor!=null){
-				aux.setProveedor(proveedor);
-				aux.setProveedorID(proveedor.getProveedorID());		
-			}
-			//em.flush();
-			em.getTransaction().commit();
-			salida=true;
-		}
-		catch (Exception e){
+			em.merge(ce);
+      em.getTransaction().commit();
+			salida= true;
+		}catch (Exception e){
 			e.printStackTrace();			
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+			  em.close();
+		  }		
 		}
 		return salida;
 	}
 	
 	
-	public boolean deleteAdicional(Adicional adi){
+	public boolean deleteAdicional(int otid,Adicional adi){
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{		
 			em.getTransaction().begin();	
-			Ot ot= em.find(Ot.class,adi.getOtid());
+			Ot ot= em.find(Ot.class,otid);
 			ot.getAdicionales().remove(adi);				
 			em.remove(em.contains(adi) ? adi : em.merge(adi));
 			//em.flush();
@@ -484,11 +422,8 @@ public class DAO_OT {
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{		
-			em.getTransaction().begin();	
-			Ot ot= em.find(Ot.class,ce.getOtid());
-			ot.getAdicionales().remove(ce);				
+			em.getTransaction().begin();				
 			em.remove(em.contains(ce) ? ce : em.merge(ce));
-			//em.flush();
 			em.getTransaction().commit();
 			salida = true;
 		}

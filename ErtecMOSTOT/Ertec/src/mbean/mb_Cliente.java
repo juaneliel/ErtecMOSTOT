@@ -39,8 +39,6 @@ public class mb_Cliente implements Serializable{
 	private String rucCliente; 
 	private String telCliente;
 	private ArrayList <Contrato> listaContratos =new ArrayList <Contrato>(); 
-	 
-	
 	private Cliente clienteAdd=new Cliente();
 	private Cliente cliSelected;
 	private Contrato conSelected;

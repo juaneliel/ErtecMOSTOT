@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -77,23 +78,24 @@ public class PruebaServlet extends HttpServlet {
     //Image image = Image.getInstance(path+imagePath);
     System.out.println("path "+path+" "+id);
     
-    
+    ServletOutputStream sOS=response.getOutputStream();
+    System.out.println("pruebaservlet is ready"+sOS.toString());
     if(user.estaLogueado()&& Integer.parseInt(id)>0){
       if (tipo.equals("ot")){
 		  	ExportarOTPDF eop=new ExportarOTPDF();
-		  	eop.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+		  	eop.ExportarPDF(Integer.parseInt(id),sOS); 
 		  	System.out.println("user export pdf OT "+user.getNombre());
 		  }
 		  else{
 		    if (tipo.equals("mov")){ 			 
 		    	ExportMovimientoPDF emp=new ExportMovimientoPDF();
-	    		emp.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+	    		emp.ExportarPDF(Integer.parseInt(id),sOS); 
 	      	System.out.println("user export pdf mov "+user.getNombre());
 		    }
 		    else{
 			    if (tipo.equals("fun")){ 		
 			    	ExportarFichaFuncionario eff=new ExportarFichaFuncionario();
-		    		eff.ExportarPDF(Integer.parseInt(id),response.getOutputStream()); 
+		    		eff.ExportarPDF(Integer.parseInt(id),sOS); 
 		      	System.out.println("user export pdf fun "+user.getNombre());
 			    }
 			  }   	

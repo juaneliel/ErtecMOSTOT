@@ -4,30 +4,22 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.faces.bean.ViewScoped;
-
 import org.primefaces.event.RowEditEvent;
-
-import model.Adicional;
 import model.Arrendamiento;
-import model.Articulo;
 import model.Cliente;
 import model.Cod_Movimiento;
-import model.Contrato;
 import model.Movimiento;
 import model.NexoMovimiento;
+import model.Ot;
 import model.Referencia;
 import model.DAO.DAO_Movimiento; 
 
@@ -43,11 +35,11 @@ public class mb_Movimiento {
 	private boolean verCliente;
 	private boolean verCosto;
 	private boolean verContrato;
-	private boolean EditarCotizacion;
-	private boolean EditarReferencia;
-	private boolean EditarCliente;
-	private boolean EditarCosto;
-	private boolean EditarContrato;
+	private boolean editarCotizacion;
+	private boolean editarReferencia;
+	private boolean editarCliente;
+	private boolean editarCosto;
+	private boolean editarContrato;
 	private int otID;
 	
 	private ArrayList<Movimiento> lista;
@@ -79,11 +71,17 @@ public class mb_Movimiento {
 	  this.listaNexos=new ArrayList<NexoMovimiento>();
 		this.listaReferencias=dao.getListaReferencias();
 		this.lista=dao.getLista();	
-		this.verReferencia=false;
-		this.verCotizacion=false;
-		this.verCosto=false;
+		verReferencia=false;
+		verCotizacion=false;
+		verCosto=false;
 		verCliente=false;
 		verContrato=false;
+		editarContrato=false;
+		editarReferencia=false;
+		editarCosto=false;
+		editarCotizacion=false;
+		editarCliente=false;
+		
 	}
 	
 	
@@ -181,9 +179,11 @@ public class mb_Movimiento {
 	
 	
 	
-	public void recargarMovimientoSelected(int idot){
-		this.movimientoAdd.setReferencia(idot);
-		this.lista=dao.getMovimientosOT(idot);
+	public void recargarMovimientoSelected(Ot ot){
+		this.movimientoAdd.setReferencia(ot.getId());
+		this.movimientoAdd.setCliente(ot.getCliente());
+		this.movimientoAdd.setContrato(ot.getContrato());
+		this.lista=dao.getMovimientosOT(ot.getId());
 	}
 	
 	public void recargarNexoSelected(){
@@ -261,12 +261,16 @@ public class mb_Movimiento {
 		this.verCliente=cm.getVerCliente()==1;
 		this.verContrato=cm.getVerContrato()==1;
 		System.out.println("<<<vercliente "+isVerCliente());
-		this.EditarCosto=cm.getEditarCosto()==1;
-		this.EditarCotizacion=cm.getEditarCotizacion()==1;
-		this.EditarReferencia=cm.getEditarReferencia()==1; 
-		this.EditarCliente=cm.getEditarCliente()==1;
-		this.EditarContrato=cm.getEditarContrato()==1;		
-		System.out.println("codigo en actualizar mov "+cod); 	 
+		this.editarCosto=cm.getEditarCosto()==1;
+		this.editarCotizacion=cm.getEditarCotizacion()==1;
+		this.editarReferencia=cm.getEditarReferencia()==1; 
+		this.editarCliente=cm.getEditarCliente()==1;
+		this.editarContrato=cm.getEditarContrato()==1;		
+		System.out.println("codigo en actualizar mov "+cod); 
+   	mb_Usuario mbu = (mb_Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+   	if(movimientoAdd.getCliente()!=null){		
+   		mbu.recargarListaContratos(movimientoAdd.getCliente().getClienteID());
+   	}
 	}
 
 	
@@ -492,45 +496,7 @@ public class mb_Movimiento {
 		this.verContrato = verContrato;
 	}
 
-	public boolean isEditarCotizacion() {
-		return EditarCotizacion;
-	}
-
-	public void setEditarCotizacion(boolean editarCotizacion) {
-		EditarCotizacion = editarCotizacion;
-	}
-
-	public boolean isEditarReferencia() {
-		return EditarReferencia;
-	}
-
-	public void setEditarReferencia(boolean editarReferencia) {
-		EditarReferencia = editarReferencia;
-	}
-
-	public boolean isEditarCliente() {
-		return EditarCliente;
-	}
-
-	public void setEditarCliente(boolean editarCliente) {
-		EditarCliente = editarCliente;
-	}
-
-	public boolean isEditarCosto() {
-		return EditarCosto;
-	}
-
-	public void setEditarCosto(boolean editarCosto) {
-		EditarCosto = editarCosto;
-	}
-
-	public boolean isEditarContrato() {
-		return EditarContrato;
-	}
-
-	public void setEditarContrato(boolean editarContrato) {
-		EditarContrato = editarContrato;
-	}
+	
 
 	public Movimiento getMovSelected() {
 		return movSelected;
@@ -562,6 +528,56 @@ public class mb_Movimiento {
 
 	public void setNexSelected(NexoMovimiento nexSelected) {
 		this.nexSelected = nexSelected;
+	}
+
+
+	public boolean isEditarCotizacion() {
+		return editarCotizacion;
+	}
+
+
+	public void setEditarCotizacion(boolean editarCotizacion) {
+		this.editarCotizacion = editarCotizacion;
+	}
+
+
+	public boolean isEditarReferencia() {
+		return editarReferencia;
+	}
+
+
+	public void setEditarReferencia(boolean editarReferencia) {
+		this.editarReferencia = editarReferencia;
+	}
+
+
+	public boolean isEditarCliente() {
+		return editarCliente;
+	}
+
+
+	public void setEditarCliente(boolean editarCliente) {
+		this.editarCliente = editarCliente;
+	}
+
+
+	public boolean isEditarCosto() {
+		return editarCosto;
+	}
+
+
+	public void setEditarCosto(boolean editarCosto) {
+		this.editarCosto = editarCosto;
+	}
+
+
+	public boolean isEditarContrato() {
+		return editarContrato;
+	}
+
+
+	public void setEditarContrato(boolean editarContrato) {
+		this.editarContrato = editarContrato;
 	}
 
  

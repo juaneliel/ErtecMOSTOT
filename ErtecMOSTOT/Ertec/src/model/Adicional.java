@@ -25,10 +25,7 @@ public class Adicional implements Serializable {
 
 	@Column(name="Especificacion")
 	private String especificacion;
-
-	@Column(name="OTID")
-	private int otid;
-
+ 
 	public Adicional() {
 	}
 
@@ -46,14 +43,6 @@ public class Adicional implements Serializable {
 
 	public void setEspecificacion(String especificacion) {
 		this.especificacion = especificacion;
-	}
-
-	public int getOtid() {
-		return this.otid;
-	}
-
-	public void setOtid(int otid) {
-		this.otid = otid;
-	}
+	} 
 
 }
