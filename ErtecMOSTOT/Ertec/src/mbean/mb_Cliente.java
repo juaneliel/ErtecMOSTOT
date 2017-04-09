@@ -47,12 +47,10 @@ public class mb_Cliente implements Serializable{
 	
 	
 	public void editContrato(RowEditEvent event){
-		Contrato con= (Contrato) event.getObject();
-		
+		Contrato con= (Contrato) event.getObject();		
     	if(dao.updateContrato(con)){    		
     		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo el contrato");
             FacesContext.getCurrentInstance().addMessage(null, message); 
-            //recargarLista();
     	}
     	else{
     		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar el contrato");
@@ -170,19 +168,11 @@ public class mb_Cliente implements Serializable{
 	
  
 	
-	public void previoAddDireccion(){
-		contratoAdd.setCliente(conSelected.getCliente());
-		contratoAdd.setContratoID(conSelected.getContratoID());
-		contratoAdd.setTipo(conSelected.getTipo());	
-		contratoAdd.setFechaInicio(conSelected.getFechaInicio());	
-		contratoAdd.setFechaFin(conSelected.getFechaFin());	 
-		contratoAdd.setTopeMesesVisita(conSelected.getTopeMesesVisita());
-	}
 
 	public String addDireccionContrato(){
 		String salida= null;
 		
-		if (dao.addDireccion(contratoAdd)){
+		if (dao.addDireccion(cliSelected.getClienteID(),contratoAdd)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la direccion al contrato "+contratoAdd.getTipo()+contratoAdd.getContratoID());
 	        FacesContext.getCurrentInstance().addMessage(null, message);
@@ -200,13 +190,12 @@ public class mb_Cliente implements Serializable{
 	
 	public String addContrato(){
 		String salida= null;
-		contratoAdd.setCliente(this.cliSelected);
-		if (dao.addContrato (contratoAdd)){
+		if (dao.addContrato (cliSelected.getClienteID(),contratoAdd)){
 			//salida= "/paginas/clientes.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el contrato "+contratoAdd.getTipo()+contratoAdd.getContratoID());
-	        FacesContext.getCurrentInstance().addMessage(null, message);
-	    		this.listaContratos.add(contratoAdd);
-	    		contratoAdd=new Contrato();
+	    FacesContext.getCurrentInstance().addMessage(null, message);
+	    this.listaContratos.add(contratoAdd);
+	    contratoAdd=new Contrato();
 		}
 		else{
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Agregado", "Error al agregar el contrato");
@@ -335,7 +324,15 @@ public class mb_Cliente implements Serializable{
 		this.contratoAdd = contratoAdd;
 	}
 	
- 
+	//se fijan algunos valores iguales al contrato original
+	public void previoAddDireccion(){
+		contratoAdd.setContratoID(conSelected.getContratoID());
+		contratoAdd.setTipo(conSelected.getTipo());	
+		contratoAdd.setFechaInicio(conSelected.getFechaInicio());	
+		contratoAdd.setFechaFin(conSelected.getFechaFin());	 
+		contratoAdd.setTopeMesesVisita(conSelected.getTopeMesesVisita());
+	}
+
 	
 	
 	

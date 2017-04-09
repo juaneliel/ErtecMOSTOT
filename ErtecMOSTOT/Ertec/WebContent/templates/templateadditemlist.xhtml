@@ -40,8 +40,9 @@
 		  <p:commandButton value="Agregar"  oncomplete="PF('additem').show()" style="float:left" actionListener="#{mb_Movimiento.initAddNexo}"
 		   rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID!=5)}"
 		   update="foraddnexo"/>      
+		   
     <p:commandButton value="Devolución"  oncomplete="PF('additemdev').show()" style="float:left" update="formdev"
-         actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Movimiento.movSelected.cliente.clienteID)}"
+         actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Movimiento.movSelected.contrato)}"
         rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID==5)}"/>    
      </f:facet>      
 		 

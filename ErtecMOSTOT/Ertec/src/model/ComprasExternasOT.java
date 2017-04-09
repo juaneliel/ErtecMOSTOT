@@ -32,7 +32,7 @@ public class ComprasExternasOT implements Serializable {
 //	private Articulo articulo;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ProveedorID")
+	@JoinColumn(name="ProveedorID", insertable = false, updatable = false)
 	private Proveedores proveedor;
 	
 	

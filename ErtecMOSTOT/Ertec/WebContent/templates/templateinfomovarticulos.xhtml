@@ -13,7 +13,7 @@
 <p:panelGrid        columns="3">  
 <p:panelGrid      columns="2"> 		
 <p:outputLabel for="maskIni" value="Fecha inicial:" />
-<p:calendar id="maskIni" value="#{mb_Articulo.fechaIni}" required="true" pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+<p:calendar id="maskIni" value="#{mb_Articulo.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
 </p:panelGrid>
 <p:panelGrid    columns="2"> 
 <p:outputLabel for="maskFin" value="  Fecha final:"   />
@@ -30,8 +30,8 @@ update="dtinfomovart :message"/>
 				scrollable="true"   scrollWidth="100%"   
 				paginatorTemplate=" {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
     		rowsPerPageTemplate="10,50,100"
-				editable="true" 
-				style="text-align:center"
+				editable="true"  currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		     sortBy="#{articulo.articuloID}" sortOrder="descending"
 				>			 
 				<f:facet name="{titulo}">
 			  	Movimientos de Articulo				 
@@ -40,11 +40,11 @@ update="dtinfomovart :message"/>
 			  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="dtinfomovart" fileName="service"   />
+	      <p:dataExporter type="xls" target="dtinfomovart" fileName="movimientos_articulo"   />
 	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="dtinfomovart" fileName="service"  />
+	      <p:dataExporter type="pdf" target="dtinfomovart" fileName="movimientos_articulo"  />
 	    </h:commandLink> 
 		</f:facet>
 			  

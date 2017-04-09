@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,6 +56,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import enumerados.EnumAccesoPagina;
 import model.Articulo;
 import model.Cliente;
+import model.Cod_Movimiento;
 import model.Contrato;
 import model.Funcionario;
 import model.Proveedores;
@@ -91,6 +93,18 @@ public class mb_Usuario {
 	private String claveVieja;
 	private String claveNueva;
 	private Usuario auxUser=new Usuario();
+	private DAO_Usuario dao=new DAO_Usuario();	
+	private List<Boolean> viewFuncionarios;
+	private ArrayList<Usuario> lista;
+	private ArrayList<Funcionario> listaFuncionariosOBJ;
+	private ArrayList<Articulo> listaArticulosOBJ;
+	private ArrayList<Cliente> listaClientesOBJ;
+	private ArrayList<Proveedores> listaProveedoresOBJ;
+	private ArrayList<Contrato> listaContratosOBJ;
+	private Map<Integer,Cod_Movimiento> mapaCodMov = new HashMap<Integer, Cod_Movimiento>(); 
+	
+
+	 
 	
 /***************Seccion  logueado********************/
 	
@@ -136,23 +150,36 @@ public class mb_Usuario {
 	} 
 	
 	
-	private DAO_Usuario dao=new DAO_Usuario();
-	
-	private  List<Boolean> viewFuncionarios;
-	private ArrayList<Usuario> lista;
-	private ArrayList<Funcionario> listaFuncionariosOBJ;
-	private ArrayList<Articulo> listaArticulosOBJ;
-	private ArrayList<Cliente> listaClientesOBJ;
-	private ArrayList<Proveedores> listaProveedoresOBJ;
-	private ArrayList<Contrato> listaContratosOBJ;
+
 	 
   @PostConstruct  
   public void init(){
     initViewFuncionarios();
     recargarLista();
     FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("es"));
+    cargarCodMov();    
   }
 	
+  private void cargarCodMov(){
+  	EntityManager em=JpaUtil.getEntityManager();
+  	String consulta = "SELECT c FROM Cod_Movimiento c ";
+  	TypedQuery<Cod_Movimiento> query= em.createQuery(consulta, Cod_Movimiento.class); 
+  	try{
+			ArrayList<Cod_Movimiento> auxlist= (ArrayList<Cod_Movimiento>) query.getResultList();
+			for(Cod_Movimiento c : auxlist){
+				mapaCodMov.put(c.getCodMov_ID(), c);
+			}
+			
+		}
+		catch (Exception e){
+			e.printStackTrace();			
+		}finally{ 
+	    	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}
+  }
+  
   public void onIdle() {
     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, 
                                     "Sin actividad.", "Deberas loguearte nuevamente"));
@@ -562,4 +589,13 @@ public class mb_Usuario {
 		System.out.println("recargarlista");
 		this.listaContratosOBJ=DAO_Cliente.getContratosCliente(cliID);		
 	}
+
+	public Map<Integer, Cod_Movimiento> getMapaCodMov() {
+		return mapaCodMov;
+	}
+
+	public void setMapaCodMov(Map<Integer, Cod_Movimiento> mapaCodMov) {
+		this.mapaCodMov = mapaCodMov;
+	}
+	
 }

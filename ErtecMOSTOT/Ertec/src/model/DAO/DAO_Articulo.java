@@ -5,12 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import mbean.mb_Usuario;
 import model.Articulo;
+import model.Cod_Movimiento;
 import model.Funcionario;
 import model.Movimiento;
 import model.Articulo;
@@ -45,7 +49,6 @@ public class DAO_Articulo {
 		try{			
 			em.getTransaction().begin();
 			em.remove(em.contains(f) ? f : em.merge(f));
-			//em.flush();
 			em.getTransaction().commit();
 			salida = true;
 		}
@@ -94,7 +97,7 @@ public class DAO_Articulo {
 			
 		} catch (NumberFormatException nfe){
 			consulta="SELECT art FROM Articulo art Where descripcion like   '%"+
-					buscar+"%' ";
+			buscar+"%' ";
 		}
 		
 
@@ -114,13 +117,6 @@ public class DAO_Articulo {
 		}		
 		return salida;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	public ArrayList<Articulo> findArticulo(Articulo a){
 		String consulta="SELECT art FROM Articulo art Where ";
@@ -199,39 +195,44 @@ public class DAO_Articulo {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     String fi = "";
     String ff="";
-    if(fechaIni!=null){
-      fi = formatter.format(fechaIni); 
-    }
-    else{
-    	
-    }
-    
-    if (fechaFin!=null){
-      ff = formatter.format(fechaFin); 
-    }
-    else{
-      ff = formatter.format(new Date()); 
-    }
+  
+		String consulta="Select m.movimientoID,m.codigoMovimientoID , m.referencia,n.cantidad,n.costo,m.nombreCliente,m.fecha"
+				+ " from NexoMovimiento n, Movimientos m where n.movimientoID =m.movimientoID and n.articuloID=" +articuloID;
+		
+		if (fechaIni!=null){
+	  	fi = formatter.format(fechaIni);
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+=" and m.fecha BETWEEN '" + fi + "' AND '" + ff + "'" ;
+	  	}
+	  	else{
+	  		consulta+=" and m.fecha >= '"+ fi+"'" ;
+	  	}
+	  }
+	  else{
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+=" and m.fecha <= '"+ ff+"'" ;
+	  	}
+	  }
 		  
-		  
-		  
-		  
-		  
-		String consulta="Select n.movimientoID,m.codigoMovimientoID , m.referencia,n.cantidad,n.costo,m.nombreCliente,m.fecha"
-				+ " from NexoMovimiento n, Movimiento m where n.articuloID=" +articuloID+ " and m.movimientoID = n.movimientoID and m.fecha BETWEEN '" +
-				fi + "' AND '" + ff + "'" ;
+
 			
 		EntityManager em=JpaUtil.getEntityManager();
 		
 	   try{	       
 	      System.out.println(">>>consulta>"+ consulta);     
-	      Query q = em.createQuery(consulta);            
+	      Query q = em.createNativeQuery(consulta);            
 	      List < Object[]>r = (List<Object[]>) q.getResultList();
-	      
+	    	mb_Usuario service = (mb_Usuario) 
+	          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+	    	Map<Integer,Cod_Movimiento> mapa=service.getMapaCodMov();  
 	      for (Object[] results : r){ 
 	      	DAO_infoMovDeArticulos aux = new DAO_infoMovDeArticulos();
 	        aux.setMovimientoID(Long.parseLong(results[0].toString()));
-	      	aux.setCodigoMovimientoID(Integer.parseInt(results[1].toString()));
+        
+	      	aux.setCodigoMovimientoID(mapa.get(Integer.parseInt(results[1].toString())).getDescripcion());
+	      	
 	      	aux.setReferencia(Integer.parseInt(results[2].toString()));
 	      	aux.setCantidad( new BigDecimal(results[3].toString()));
 	      	if(results[4]!=null){

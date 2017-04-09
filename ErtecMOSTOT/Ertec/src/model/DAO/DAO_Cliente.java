@@ -42,7 +42,7 @@ public class DAO_Cliente {
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
-			em.persist(c);
+			em.merge(c);
 			em.getTransaction().commit(); 
 			salida = true;
 		}
@@ -61,8 +61,7 @@ public class DAO_Cliente {
 		boolean salida = false;
 		try{			
 			em.getTransaction().begin();
-			em.remove(em.contains(f) ? f : em.merge(f));
-			//em.flush();
+			em.remove(em.contains(f) ? f : em.merge(f)); 
 			em.getTransaction().commit();
 			salida = true;
 		}
@@ -77,16 +76,11 @@ public class DAO_Cliente {
 	}
 	
 	
-	public ArrayList<Cliente> getLista(){
-		
-		
+	public ArrayList<Cliente> getLista(){		
 		String consulta="";
-		ArrayList<Cliente> salida= new ArrayList<Cliente>();
-				
+		ArrayList<Cliente> salida= new ArrayList<Cliente>();				
 		//se verifica si es numerico se busca por el id sino se busca por nombre
-		 consulta="SELECT cli FROM Cliente cli Where nombre <> 'Inexistente' ORDER BY clienteID DESC"; 
-				
-
+		consulta="SELECT cli FROM Cliente cli Where nombre <> 'Inexistente' ORDER BY clienteID DESC"; 
 		System.out.println("Consulta: "+consulta);
 		EntityManager em=JpaUtil.getEntityManager();
 		TypedQuery<Cliente> query= em.createQuery(consulta, Cliente.class);
@@ -97,27 +91,23 @@ public class DAO_Cliente {
 		catch (Exception e){
 			e.printStackTrace();
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+				em.close();
+			}		
 		}		
 		return salida;
 	}
 	
 	public static ArrayList<Cliente> completarCliente(String buscar){
 		String consulta="";
-		ArrayList<Cliente> salida= new ArrayList<Cliente>();
-				
+		ArrayList<Cliente> salida= new ArrayList<Cliente>();				
 		//se verifica si es numerico se busca por el id sino se busca por nombre
 		try {
 			int idCliente = Integer.parseInt(buscar);
-			consulta="SELECT cli FROM Cliente cli Where nombre <> 'Inexistente' and clienteID like '"+idCliente+"%'";
-			
+			consulta="SELECT cli FROM Cliente cli Where nombre <> 'Inexistente' and clienteID like '"+idCliente+"%'";			
 		} catch (NumberFormatException nfe){
 			consulta="SELECT cli FROM Cliente cli Where nombre <> 'Inexistente' and nombre like '%"+buscar+"%'";
 		}
-				
-
 		System.out.println("Consulta: "+consulta);
 		EntityManager em=JpaUtil.getEntityManager();
 		TypedQuery<Cliente> query= em.createQuery(consulta, Cliente.class);
@@ -151,14 +141,14 @@ public class DAO_Cliente {
 		catch (Exception e){
 			e.printStackTrace();
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+    	if(em.isOpen() ){
+			  em.close();
+		  }		
 		}			
 		return salida;
 	}
 			
-	public boolean addContrato(Contrato c){
+	public boolean addContrato(int idcli,Contrato c){
 		System.out.println("addContrato "+c.getContratoID());
   	EntityManager em=JpaUtil.getEntityManager(); 
   	DatosGlobale dg = em.find(DatosGlobale.class, 1);//se obtiene los valores de la primer entidad hay que mejorar esta forma de hacerlo  	 
@@ -177,7 +167,8 @@ public class DAO_Cliente {
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
-			em.persist(c);
+			Cliente cliente = em.find(Cliente.class, idcli);
+			cliente.getContratos().add(c);
 			em.getTransaction().commit(); 
 			salida = true;
 		}
@@ -191,13 +182,14 @@ public class DAO_Cliente {
 		return salida;
 	}
 	
-	public boolean addDireccion(Contrato c){
+	public boolean addDireccion(int cliId,Contrato c){
 		System.out.println("adddireccion "+c.getContratoID());
   	EntityManager em=JpaUtil.getEntityManager();  		
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
-			em.persist(c);
+			Cliente cliente = em.find(Cliente.class, cliId);
+			cliente.getContratos().add(c);
 			em.getTransaction().commit(); 
 			salida = true;
 		}
@@ -217,7 +209,6 @@ public class DAO_Cliente {
 		try{			
 			em.getTransaction().begin();
 			em.remove(em.contains(o) ? o : em.merge(o));
-			//em.flush();
 			em.getTransaction().commit();
 			salida = true;
 		}
@@ -236,7 +227,7 @@ public class DAO_Cliente {
 		boolean salida=false;
 		try{			
 			em.getTransaction().begin();
-			em.persist(o);
+			em.merge(o);
 			em.getTransaction().commit(); 
 			salida = true;
 		}
@@ -249,6 +240,4 @@ public class DAO_Cliente {
 		}
 		return salida;
 	}	
-	
-	
 }

@@ -16,7 +16,7 @@
 		editable="true"  paginatorPosition="top"  emptyMessage="Sin Registros"
 		style="text-align:left;	font-size: 90% !important;color: red;font-weight: bold;" 
 		paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
-    rowsPerPageTemplate="10,50,100"		
+    rowsPerPageTemplate="10,50,100"	sortBy="#{contrato.contratoID}" sortOrder="descending" 
 	>	 
 	
 	
@@ -148,8 +148,8 @@
 				</f:facet>
 		 		<f:facet name="input">
 					<p:selectOneMenu id="retirado" value="#{contrato.retirado}" style="width:85%">
-					 	<f:selectItem  itemLabel="SI" itemValue="SI" />
-						<f:selectItem   itemLabel="NO" itemValue="NO" />
+					  <f:selectItem   itemLabel="NO" itemValue="NO" />
+					 	<f:selectItem  itemLabel="SI" itemValue="SI" />						
 					</p:selectOneMenu>
 				</f:facet>
 			</p:cellEditor>
@@ -217,29 +217,22 @@
 	 
 
 		 
-		   
-		   
+		   		   
 	</p:dataTable>   
 	
 	<p:contextMenu for="datatablecontratos">
   	<p:menuitem value="Ver arrendamientos" rendered="true"  
     	oncomplete="PF('verarrendamientos').show();" upload="formarrendamiento:datatablearrendamiento"
-     	actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Cliente.conSelected.cliente.clienteID)}"/> 
+     	actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Cliente.conSelected)}"/> 
 		<p:menuitem	value="Agregar Direccion"  rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}"  
 			oncomplete="PF('adddireccion').show();" update="formadddireccion"
 			actionListener="#{mb_Cliente.previoAddDireccion}"/>			
 		<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','cliente')}" value=" Borrar" update="formcontratos message"  actionListener="#{mb_Cliente.deleteContrato(mb_Cliente.conSelected)}" icon="ui-icon-trash" >
 			<p:confirm   header="Borrar contrato" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
 		</p:menuitem>		
-	</p:contextMenu> 
-	
-	
+	</p:contextMenu> 	
 	
 </h:form>
-
-
-
-		
 					
 <script type="text/javascript">
     function handleAddConRequest(xhr, status, args) {
@@ -287,8 +280,8 @@
 				 		 
 		 <p:outputLabel value="Retirado:" for="retirado" />    
   		<p:selectOneMenu id="retirado" value="#{mb_Cliente.contratoAdd.retirado}" style="width:85%">
-	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />
-	        <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+  		  <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
+	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />	       
 		</p:selectOneMenu>	
   
   
@@ -326,7 +319,7 @@
 </p:dialog>	
 
 
-<p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" height="600" dynamic="true">
+<p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" dynamic="true">
 <ui:include src="/templates/templatearrendamientos.xhtml" id="verarrendamientos">	
 <ui:param name="#{paramListaArrendamientos}"   value = "#{mb_Movimiento.listaArrendamientos}"/>					
 </ui:include>	

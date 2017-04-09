@@ -21,15 +21,13 @@ public class Contrato implements Serializable {
   @Column(name="Id")
   private int id;
 	
-	//hay error en los datos de contratos
-	@OneToOne(fetch=FetchType.EAGER,optional=true) 
-  @JoinColumn(name="ClienteID")
-  private Cliente cliente;
-
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLI_SEQ")  
 	@Column(name="ContratoID")
 	private int contratoID;
-
+  
+  @OneToOne
+  private Movimiento movimiento;
+  
 	@Column(name="CorredorID")
 	private int corredorID;
 
@@ -232,12 +230,11 @@ public class Contrato implements Serializable {
 		this.zona = zona;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 }
+
+
+
+//hay error en los datos de contratos por eso puede haber contratos sin clientes
+//@OneToOne(fetch=FetchType.EAGER,optional=true) 
+//@JoinColumn(name="ClienteID")
+//private Cliente cliente;

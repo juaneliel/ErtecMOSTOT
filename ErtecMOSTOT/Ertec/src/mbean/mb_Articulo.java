@@ -76,10 +76,10 @@ public class mb_Articulo {
 		 filtrado=dao.filtrarInfoMovArticulo(articuloID,fechaIni,fechaFin);
 	}
 	
-	public void limpiarFiltrado(){
-		this.articuloID=this.artSelected.getArticuloID();
-		System.out.println("limpiarFiltrado "+articuloID);
-		this.filtrado=new ArrayList<DAO_infoMovDeArticulos>();		
+	public void initMovArt(){
+		int artId=this.artSelected.getArticuloID();
+		System.out.println("limpiarFiltrado "+artId);
+		this.filtrado=dao.filtrarInfoMovArticulo(artId,null,null);
 	}
 	
 	public void delete(Articulo a){ 

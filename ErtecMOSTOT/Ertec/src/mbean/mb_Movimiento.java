@@ -17,6 +17,7 @@ import org.primefaces.event.RowEditEvent;
 import model.Arrendamiento;
 import model.Cliente;
 import model.Cod_Movimiento;
+import model.Contrato;
 import model.Movimiento;
 import model.NexoMovimiento;
 import model.Ot;
@@ -65,7 +66,6 @@ public class mb_Movimiento {
 	@PostConstruct
 	public void init(){
 		//this.listaCodigos=dao.getListaCodigos();
-		movimientoAdd.setFecha(new Date());
 	  this.listaCodMovimientosComun=dao.getListaCodMovimientosComun();
 	  this.listaCodMovimientosEnOt=dao.getListaCodMovimientosEnOT();
 	  this.listaNexos=new ArrayList<NexoMovimiento>();
@@ -89,8 +89,7 @@ public class mb_Movimiento {
 		String salida=null;  
 		if(movimientoAdd.getCliente() !=null){
 			movimientoAdd.setNombreCliente(movimientoAdd.getCliente().getNombre());
-    } 
-		
+    }  
 		if (DAO_Movimiento.add (movimientoAdd)){
 			salida= "/paginas/movimientos.xhtml?faces-redirect=true";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el movimiento "+movimientoAdd.getMovimientoID());
@@ -111,11 +110,14 @@ public class mb_Movimiento {
 	
 	 
 	//seccion devolver
-	public void recargarListaArrendamientos (int clienteID){ 
-	  //this.movimientoAdd.setClienteID(clienteID);
-		this.spinnerDevolucion=0;
-	  this.mapaArrendamiento.clear();
-	  this.listaArrendamientos =  dao.getArrendado ( clienteID);
+	
+	//ojo contratoID no del contrato A123 sino del su id entidad
+	public void recargarListaArrendamientos (Contrato con){  
+		if (con!=null){
+			this.spinnerDevolucion=0;
+		  this.mapaArrendamiento.clear();
+		  this.listaArrendamientos =  dao.getArrendados (con.getId());
+		}
 	}
 	
 	public void actualizarDevolver(int idArr){
@@ -153,6 +155,7 @@ public class mb_Movimiento {
 	//otra seccio
 	
 	public void initAddNexo(){
+    movimientoAdd.setFecha(new Date());
 		this.actualizarCotizacionYContrato(movSelected.getCodigoMovimientoID());
 	}
 	
@@ -253,24 +256,25 @@ public class mb_Movimiento {
 	
 	//usado para ingreso de movimiento si se habilitan los campos de cotizacion o de contrato
 	public void actualizarCotizacionYContrato(int cod){
-		Cod_Movimiento cm=dao.getCodMovimiento(cod);
+		mb_Usuario mbu = (mb_Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+		Cod_Movimiento cm=mbu.getMapaCodMov().get(cod);
 		this.listaReferencias=dao.getListaCMPorTipoRef(cod);
 		this.verCosto=cm.getVerCosto()==1;
 		this.verCotizacion=cm.getVerCotizacion()==1;
 		this.verReferencia=cm.getVerReferencia()==1;
 		this.verCliente=cm.getVerCliente()==1;
 		this.verContrato=cm.getVerContrato()==1;
-		System.out.println("<<<vercliente "+isVerCliente());
 		this.editarCosto=cm.getEditarCosto()==1;
+		System.out.println("<<<editarcosto "+editarCosto);		
 		this.editarCotizacion=cm.getEditarCotizacion()==1;
 		this.editarReferencia=cm.getEditarReferencia()==1; 
 		this.editarCliente=cm.getEditarCliente()==1;
 		this.editarContrato=cm.getEditarContrato()==1;		
 		System.out.println("codigo en actualizar mov "+cod); 
-   	mb_Usuario mbu = (mb_Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
-   	if(movimientoAdd.getCliente()!=null){		
+    if(movimientoAdd.getCliente()!=null){		
    		mbu.recargarListaContratos(movimientoAdd.getCliente().getClienteID());
    	}
+    movimientoAdd.setCotizacion(BigDecimal.ZERO);
 	}
 
 	
@@ -559,12 +563,10 @@ public class mb_Movimiento {
 	public void setEditarCliente(boolean editarCliente) {
 		this.editarCliente = editarCliente;
 	}
-
-
+	
 	public boolean isEditarCosto() {
 		return editarCosto;
 	}
-
 
 	public void setEditarCosto(boolean editarCosto) {
 		this.editarCosto = editarCosto;

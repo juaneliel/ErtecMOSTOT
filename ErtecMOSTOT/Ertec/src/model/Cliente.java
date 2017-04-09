@@ -29,7 +29,7 @@ public class Cliente implements Serializable {
 //	@JoinColumn(name="ClienteID" , insertable = false, updatable = false)
 //	private CuentasCorriente cuentacorriente;
 	
-	@OneToMany (fetch=FetchType.LAZY)
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="ClienteID", referencedColumnName="ClienteID")
 	private List<Contrato> contratos;
 

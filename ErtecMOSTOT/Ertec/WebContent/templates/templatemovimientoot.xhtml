@@ -161,6 +161,20 @@
 		<ui:param name="paramLista"   value = "#{mb_Movimiento.listaNexos}"/>					
 	</ui:include>	
 </p:dialog>				
+
+
+<script type="text/javascript">
+    function handleAddMovimientoRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addmovimiento').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addmovimiento').hide(); 
+            //PF('datatablearticulos').addRow();
+        }
+    }    
+</script>
+				
 				
 <p:dialog id="addmovimiento" header="Agregar movimiento"  appendTo="@(body)"   widgetVar="addmovimiento" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
 	<p:panelGrid id="panel0"  border="2" cellpadding="5" cellspacing="1" columns="2" >
@@ -172,7 +186,8 @@
 										
 					<p:outputLabel value="Tipo Movimiento:" for="codigoMovimientoID" /> 			 
 					<p:selectOneMenu id="codigoMovimientoID"  value="#{mb_Movimiento.movimientoAdd.codigoMovimientoID}" required="true">
-						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.movimientoAdd.codigoMovimientoID )}" update="tipoReferencia foraddnexo referencia cotizacion contrato cliente" />
+						<p:ajax listener="#{mb_Movimiento.actualizarCotizacionYContrato( mb_Movimiento.movimientoAdd.codigoMovimientoID )}"
+						   update="@parent" />
 						<f:selectItems value="#{paramListaCodMov}" var="cm" 
 							itemLabel="#{cm.descripcion}" itemValue="#{cm.codMov_ID}" />
 					</p:selectOneMenu>
@@ -185,8 +200,8 @@
 		   	  </p:selectOneMenu>
 		   	
 					<p:outputLabel value="Referencia:" for="referencia"  rendered="#{mb_Movimiento.verReferencia}"/> 
-					<p:outputLabel value="#{mb_Movimiento.movimientoAdd.referencia}" rendered="#{!mb_Movimiento.editarReferencia}"/> 
-					<p:inputMask converterMessage="Ingrese un valor de referencia" rendered="#{mb_Movimiento.editarReferencia}" min="1"
+					<p:outputLabel value="#{mb_Movimiento.movimientoAdd.referencia}" rendered="#{mb_Movimiento.verReferencia and !mb_Movimiento.editarReferencia}"/> 
+					<p:inputMask converterMessage="Ingrese un valor de referencia" rendered="#{mb_Movimiento.verReferencia and mb_Movimiento.editarReferencia}" min="1"
 					   id="referencia" label="referencia" value="#{mb_Movimiento.movimientoAdd.referencia}" required="true" maxlength="10" >
 		      	 <p:keyFilter regEx="/[0-9_]/i" />
 		      	 <f:validateDoubleRange minimum="1" />  
@@ -233,15 +248,19 @@
 			      </p:column>            
 		   		</p:selectOneMenu>
 		   						 
-					<p:outputLabel value="Cotizacion:" for="cotizacion" rendered="#{mb_Movimiento.verCotizacion}"/> 					
-					<p:inputText rendered="#{mb_Movimiento.verCotizacion} and #{mb_Movimiento.editarCotizacion}"  required="true" id="cotizacion" label="cotizacion" value="#{mb_Movimiento.movimientoAdd.cotizacion}">	
-						<f:validateDoubleRange minimum="0.01" />
-					</p:inputText>	
+					 					 
+					<p:outputLabel value="Cotizacion:" rendered="#{mb_Movimiento.verCotizacion}" for="cotizacion"/> 
+    			<p:inputText rendered="#{mb_Movimiento.verCotizacion}" disabled="#{!mb_Movimiento.editarCotizacion}" required="true" id="cotizacion" label="cotizacion" 
+					     value="#{mb_Movimiento.movimientoAdd.cotizacion}">	
+					</p:inputText>	 
+				  
 					
 						<p:outputLabel value="Fecha:" for="fecha" /> 
 					<p:calendar id="fecha" label="fecha" value="#{mb_Movimiento.movimientoAdd.fecha}" required="true" />		 
-		
-			    <p:commandButton value="Guardar" actionListener="#{mb_Movimiento.add}" update="formmovimiento message" oncomplete="PF('addmovimiento').hide()" />			
+		 
+			<p:commandButton value="Guardar" actionListener="#{mb_Movimiento.add}"  oncomplete="handleAddMovimientoRequest(xhr, status, args)"
+			update="formmovimiento:datatablemovimiento message" />	 
+		   
 		    </p:panelGrid>	 
   		</h:form>
 		</h:panelGrid>

@@ -16,8 +16,8 @@ import javax.persistence.TypedQuery;
 import model.Adicional;
 import model.Arrendamiento;
 import model.Articulo;
-import model.Cod_Movimiento; 
-
+import model.Cod_Movimiento;
+import model.Contrato;
 import model.Funcionario;
 import model.ManoObra;
 import model.Movimiento;
@@ -65,6 +65,7 @@ public class DAO_Movimiento {
 		EntityManager em=JpaUtil.getEntityManager(); 
 		boolean salida=false;
 		try{			
+			Contrato con=movimiento.getContrato();
 			em.getTransaction().begin();
 			em.persist(movimiento);			
 			em.getTransaction().commit(); 
@@ -134,14 +135,15 @@ public class DAO_Movimiento {
 		return em.find(Cod_Movimiento.class,cod).getDescripcion();		
 	}
 	
-	public ArrayList<Arrendamiento> getArrendado (int idCliente){
+	//es el contrato  por su id entidad
+	public ArrayList<Arrendamiento> getArrendados (int cId){
 	  ArrayList<Arrendamiento> salida = new ArrayList<Arrendamiento>();
 	    
 	  try{       
       EntityManager em=JpaUtil.getEntityManager();      
       String consulta ="SELECT a FROM Movimiento m, Arrendamiento a "+
-                       " WHERE a.movimientoID = m.movimientoID and m.cliente.clienteID= "+ idCliente +
-                       " ORDER BY id DESC ";
+                       " WHERE a.movimientoID = m.movimientoID and m.contrato.id= "+ cId +
+                       " ORDER BY a.id DESC ";
       System.out.println("Consulta arrendados "+consulta);
       TypedQuery<Arrendamiento> consultaFuncionario= em.createQuery(consulta, Arrendamiento.class);
       ArrayList<Arrendamiento> auxLista = (ArrayList<Arrendamiento>) consultaFuncionario.getResultList();
@@ -454,18 +456,7 @@ public class DAO_Movimiento {
   public ArrayList<Cod_Movimiento> getListaCodMovimientosComun(){
     return  getListaCodMovimientos(false);
   }
-	
-	
-	
-	
-	
-	
-	
-	public Cod_Movimiento getCodMovimiento(int cod){
-		EntityManager em=JpaUtil.getEntityManager();
-		return em.find(Cod_Movimiento.class, cod);
-	}
-	
+		
 	public static String getCodigoString(int cod){
 	  try{     
       EntityManager em=JpaUtil.getEntityManager();      

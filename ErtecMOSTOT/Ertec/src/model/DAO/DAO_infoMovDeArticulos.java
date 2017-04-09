@@ -10,7 +10,7 @@ import javax.persistence.TemporalType;
 public class DAO_infoMovDeArticulos {
 
 	private long movimientoID;
-	private int codigoMovimientoID;
+	private String codigoMovimientoID;
 	private int referencia;
 	private BigDecimal cantidad; 
 	private BigDecimal costo;  
@@ -23,10 +23,11 @@ public class DAO_infoMovDeArticulos {
 	public void setMovimientoID(long movimientoID) {
 		this.movimientoID = movimientoID;
 	}
-	public int getCodigoMovimientoID() {
+	
+	public String getCodigoMovimientoID() {
 		return codigoMovimientoID;
 	}
-	public void setCodigoMovimientoID(int codigoMovimientoID) {
+	public void setCodigoMovimientoID(String codigoMovimientoID) {
 		this.codigoMovimientoID = codigoMovimientoID;
 	}
 	public int getReferencia() {

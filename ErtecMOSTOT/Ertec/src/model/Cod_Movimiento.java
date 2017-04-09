@@ -94,8 +94,9 @@ public class Cod_Movimiento implements Serializable {
 		this.editarContrato = editarContrato;
 	}
 
+
 	public int getEditarCosto() {
-		return this.editarCosto;
+		return editarCosto;
 	}
 
 	public void setEditarCosto(int editarCosto) {

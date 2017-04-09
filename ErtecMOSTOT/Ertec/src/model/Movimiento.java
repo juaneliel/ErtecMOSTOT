@@ -26,18 +26,14 @@ public class Movimiento implements Serializable {
 	@Column(name="MovimientoID")
 	private int movimientoID;
 
- 
-
 	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="MovimientoID", referencedColumnName="MovimientoID") 
-	private List<NexoMovimiento> nexos;
+	private List<NexoMovimiento> nexos=new ArrayList<NexoMovimiento>();
 	
-	@OneToOne(fetch=FetchType.EAGER,optional=true) 
-	@JoinColumn(name="ClienteID" )
+	@ManyToOne(fetch=FetchType.EAGER,optional=true) 
 	private Cliente cliente;
 		
-	@OneToOne(fetch=FetchType.EAGER,optional=true) 
-	@JoinColumn(name="ContratoID")
+	@ManyToOne(fetch=FetchType.EAGER,optional=true)  
 	private Contrato contrato;
 	
 	
@@ -46,8 +42,6 @@ public class Movimiento implements Serializable {
 
 	@Column(name="Comprobante")
 	private int comprobante;
-
- 
 
 	@Column(name="Cotizacion")
 	private BigDecimal cotizacion;

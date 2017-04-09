@@ -39,10 +39,7 @@ public class ConverterContrato implements Converter {
                       salida = o;
                       break;
                   }
-              }
-              if(salida!=null && salida.getCliente()!=null){
-               // System.out.println("recargar contratos del cliente en converter "+salida.getCliente().getClienteID()+" "+salida.getDireccion());
-              }                
+              }          
           } catch(NumberFormatException e) {                 
             e.printStackTrace();
           }
