@@ -102,19 +102,12 @@ public class mb_ManoObra {
 		}
 	}	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	 public void initAddMO(Cliente cli, int ref){
+		 if(cli!=null){
+			 this.manodeobraAdd.setCliente(cli);
+			 this.manodeobraAdd.setOrdenTrabajo(ref);
+		 }
+	 }
 
 	
 	public void clickEdit(ManoObra o){

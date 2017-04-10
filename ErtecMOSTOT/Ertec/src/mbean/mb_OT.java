@@ -934,20 +934,20 @@ public class mb_OT {
 	}
 	
 	
-	public String urlImprimirOT(int otID){
-		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-  	String realPath=(String) servletContext.getServletPath(); 
-  	System.out.println("contexto addnexo: "+realPath+" "+servletContext+" "+servletContext.getContextPath()+" "+servletContext.getRequestURI());
-		
+	public String urlImprimirOT(){
+//		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//  	String realPath=(String) servletContext.getServletPath(); 
+//  	System.out.println("contexto addnexo: "+realPath+" "+servletContext+" "+servletContext.getContextPath()+" "+servletContext.getRequestURI());
 		
 		//ExportarOTPDF.ExportarPDF(ot, "");
-	  this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otID+"&tipo=ot";
+		this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otSelected.getId()+"&tipo=ot";
+		System.out.println("url impresion ot "+this.urlImpresion);
 	  return urlImpresion;
 	}
 	
-	public String urlImprimirMov(int otID){
+	public String urlImprimirMov(){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-		 this.urlImpresion=  "/ertec/exportarpdf?faces-redirect=true"+"&id="+otID+"&tipo=mov";
+		 this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+otSelected.getId()+"&tipo=mov";
 		 System.out.println("url impresion mov "+this.urlImpresion);
 		 return urlImpresion;
 	}

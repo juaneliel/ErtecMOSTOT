@@ -8,30 +8,49 @@
 <ui:composition>
 
 <h:form id="foraddnexo">         
-	<h:panelGrid id="panel" columns="2" border="1"
-   cellpadding="5" cellspacing="1">   
+	<h:panelGrid id="panel" columns="2" border="1" cellpadding="5" cellspacing="1">   
      
 		<p:outputLabel value="Articulo:" for="articulo" />  		         
 		<p:autoComplete id="articulo" value="#{mb_Movimiento.nexoAdd.articulo}"
 			completeMethod="#{mb_Usuario.completarArticulo}"
-			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}"
-			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;"/>  		          
+			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}" required="true"
+			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;">  		          
+		  <p:ajax event="itemSelect" listener="#{mb_Movimiento.actualizarCostoArticulo()}" update="costo" />  				
+		</p:autoComplete>			  
 		    
-		<h:outputLabel value="Cantidad" for="cantidad" />		 
+		    
+		    
+		<h:outputLabel value="Cantidad:" for="cantidad" />		 
 		<p:inputMask id="cantidad" label="cantidad" value="#{mb_Movimiento.nexoAdd.cantidad}" maxlength="10" >
         	<p:keyFilter regEx="/[0-9_]/i" />
     	</p:inputMask>
 		
-		<h:outputLabel value="Costo" for="costo" rendered="#{mb_Movimiento.verCosto}"  />
-		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.nexoAdd.costo}" rendered="#{mb_Movimiento.verCosto}" />   
-	
-		<p:commandButton value="Agregar" oncomplete="PF('additem').hide();" process="@form" action ="#{mb_Movimiento.addNexo(paramTemporal)}"  update="@([id$=datatableitem]) message" />
+		<h:outputLabel value="Costo:" for="costo" rendered="#{mb_Movimiento.verCosto}"  />
+		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.nexoAdd.costo}" minValue="0.00" maxValue="9999999.99" 
+		rendered="#{mb_Movimiento.verCosto}" decimalSeparator="," thousandSeparator=""/>   
+ 
+			<p:commandButton value="Agregar" actionListener="#{mb_Movimiento.addNexo()}"  oncomplete="handleAddItemRequest(xhr, status, args)"
+			update="@([id$=datatableitem]) message" />	
 
-
+		 
 
 
 	</h:panelGrid>  
 </h:form>
+
+<script type="text/javascript">
+function handleAddItemRequest(xhr, status, args) {
+    if(args.validationFailed ) {
+        PF('additem').jq.effect("shake", {times:5}, 100);
+    }
+    else {
+    	
+        PF('additem').hide(); 
+       // PF('datatablecliente').addRow();
+    }
+}   
+</script>
+
 </ui:composition>
 </html>
 

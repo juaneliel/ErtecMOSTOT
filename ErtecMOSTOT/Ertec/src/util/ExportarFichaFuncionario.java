@@ -71,9 +71,6 @@ public class ExportarFichaFuncionario {
 	}
 	
   public void ExportarPDF(int idFuncionario, ServletOutputStream sOS  )   {
-  
-  	 
-  	
   	//FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/1964.pdf");
   	
   	DAO_Funcionario dao= new DAO_Funcionario();
@@ -471,23 +468,7 @@ public class ExportarFichaFuncionario {
        this.resPosYCamPagina(120);
        
        
-       
-       
-       
-      
-       
-       
-       //nueva pagina
-       
-      
-       
-       
-       
-
-      
-       
-       
-       
+             
        
        
        document.close();

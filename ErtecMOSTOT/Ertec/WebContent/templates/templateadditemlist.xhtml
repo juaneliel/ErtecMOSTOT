@@ -41,7 +41,7 @@
 		   rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID!=5)}"
 		   update="foraddnexo"/>      
 		   
-    <p:commandButton value="Devolución"  oncomplete="PF('additemdev').show()" style="float:left" update="formdev"
+    <p:commandButton value="Devolución"  oncomplete="PF('additemdev').show()" style="float:left" update="formarrendamiento"
          actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Movimiento.movSelected.contrato)}"
         rendered="#{mb_Usuario.acceso('AGREGAR','movimiento') and (mb_Movimiento.movSelected.codigoMovimientoID==5)}"/>    
      </f:facet>      
@@ -62,6 +62,10 @@
 					<p:rowEditor    >
 					</p:rowEditor>					
 		    </p:column>
+		    
+		     <p:column headerText="Articulo:" sortBy="#{nexo.nexoMovimientoID}" style = "width:50px;text-align:center" filterMatchMode="contains" filterBy="#{nexo.nexoMovimientoID}">		                
+		   		 <h:outputText value="#{nexo.nexoMovimientoID}" /> 
+				</p:column>
 			  
 				<p:column headerText="Articulo:" sortBy="#{nexo.articulo.descripcion}"  filterMatchMode="contains" filterBy="#{nexo.articulo.descripcion}">		                
 		   		<p:cellEditor>
@@ -86,7 +90,7 @@
 		    
 		    
 		    <p:column headerText=""  style = "width:10px">		   
-					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo,paramTemporal)}"   update="@([id$=datatableitem]) message"  />
+					<p:commandButton  icon="ui-icon-trash" id="trashEsp" actionListener="#{mb_Movimiento.deleteNexo(nexo)}"   update="@([id$=datatableitem]) message"  />
 				</p:column>
 				
 			</p:dataTable>  
@@ -100,15 +104,14 @@
  
 <p:dialog header="Agregar item" widgetVar="additem"  modal="true" resizable="true" id="additem" 
    appendTo="@(body)" showEffect="explode" dynamic="true" >
-<ui:include src="/templates/templateaddnexo.xhtml" id="listanexos">	 
-<ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
+<ui:include src="/templates/templateaddnexo.xhtml" id="listanexos">	  
 </ui:include>
 </p:dialog>	   
  	 
 <p:dialog header="Devolver item" widgetVar="additemdev"  modal="true" resizable="true" id="additemdev"  
    appendTo="@(body)" showEffect="explode" dynamic="true" width="85%">
- <ui:include src="/templates/templateadddev.xhtml" id="listadev">	 
-<ui:param name="paramTemporal"   value = "{paramTemporal}"/>		
+ <ui:include src="/templates/templatearrendamiento.xhtml" id="listadev">
+<ui:param name="paramVerDev" value = "true"/>		
 </ui:include>
 </p:dialog>	 
 

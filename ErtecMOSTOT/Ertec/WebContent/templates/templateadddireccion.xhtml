@@ -7,59 +7,49 @@
  
   <ui:composition>		
 	<h:form id="formadddireccion">         
-	  <h:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 
-			    
+	  <h:panelGrid id="panelcontratos" columns="2" border="1"  cellpadding="5" cellspacing="1"> 			    
+
+	  <p:outputLabel value="Tipo:" for="tipo" />   
+		<p:outputLabel id="tipo" label="tipo" value="#{mb_Cliente.contratoAdd.tipo}" /> 
 
 		<p:outputLabel   value="Contrato ID:" for="contrato" /> 
-		<p:inputText disabled="true" id="contrato" label="contrato" value="#{mb_Cliente.contratoAdd.contratoID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
-		
-				 		 
+		<p:outputLabel id="contrato" label="contrato" value="#{mb_Cliente.contratoAdd.contratoID}" /> 		 		 
 
 		<p:outputLabel value="Cliente ID:" for="cliente" /> 
-		<p:inputText disabled="true" id="cliente" label="Cliente" value="#{mb_Cliente.contratoAdd.clienteID}"  style="float:left !important;margin:0px 0px 3px 0px;"/> 
-			 
-	  <p:outputLabel value="Tipo:" for="tipo" />   
-		<p:selectOneMenu disabled="true" id="tipo" value="#{mb_Cliente.contratoAdd.tipo}" style="width:85%">
-	    	<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
-	        <f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
-		</p:selectOneMenu>		 
-			 
-			 
-		<p:outputLabel value="Corredor:" for="corredorID" />    
-		
+		<p:outputLabel id="cliente" label="Cliente" value="#{mb_Cliente.cliSelected.nombre}" /> 
+			 			 
+		<p:outputLabel value="Corredor:" for="corredorID" />		
 		 		<p:inputMask converterMessage="Ingrese un valor de corredor"  id="corredorID" label="corredorID" value="#{mb_Cliente.contratoAdd.corredorID}" maxlength="10" >
       	<p:keyFilter regEx="/[0-9_]/i" /> 
   	</p:inputMask>
-		
-		
  
 		<p:outputLabel value="Equipo:" for="equipo" />   
-		<h:inputText id="equipo" value="#{mb_Cliente.contratoAdd.equipo}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:inputText id="equipo" value="#{mb_Cliente.contratoAdd.equipo}" />  
  
 		<p:outputLabel value="Direccion:" for="direccion" />   
-		<h:inputText id="direccion" value="#{mb_Cliente.contratoAdd.direccion}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:inputText id="direccion" value="#{mb_Cliente.contratoAdd.direccion}" />  
 		 
 		<p:outputLabel value="Localidad:" for="localidad" />   
-		<h:inputText id="localidad" value="#{mb_Cliente.contratoAdd.localidad}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:inputText id="localidad" value="#{mb_Cliente.contratoAdd.localidad}" />  
 				 		 
 		 <p:outputLabel value="Retirado:" for="retirado" />    
   		<p:selectOneMenu id="retirado" value="#{mb_Cliente.contratoAdd.retirado}" style="width:85%">
-	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />
-	        <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
-		</p:selectOneMenu>	
-  
-  
-
+  			<f:selectItem   itemLabel="Sin Retirar" itemValue="NO" />
+	    	<f:selectItem  itemLabel="Retirado" itemValue="SI" />	        
+		</p:selectOneMenu>
 		 			 
 		<p:outputLabel value="Zona:" for="zona" />   
-		<h:inputText id="zona" value="#{mb_Cliente.contratoAdd.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:inputText id="zona" value="#{mb_Cliente.contratoAdd.zona}" />  
 
-		<p:outputLabel  value="Inicio" for="fechaInicio" />
-		<p:calendar id="fechaInicio" value="#{mb_Cliente.contratoAdd.fechaInicio}" disabled="true" pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+		<p:outputLabel  value="Inicio" for="fechaInicio" /> 	
+ 	  <p:calendar mindate="#{mb_Cliente.contratoAdd.fechaInicio}" maxdate="#{mb_Cliente.contratoAdd.fechaInicio}" id="fechaInicio" value="#{mb_Cliente.contratoAdd.fechaInicio}"
+		          pattern="dd-MM-yyyy" mask="true" />  
+ 	
  	
  		<p:outputLabel for="fechaFin" value="FechaFin:" />
-		<p:calendar id="fechaFin" value="#{mb_Cliente.contratoAdd.fechaFin}" disabled="true" pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
-  
+	<p:calendar mindate="#{mb_Cliente.contratoAdd.fechaFin}" maxdate="#{mb_Cliente.contratoAdd.fechaFin}" id="fechaFin" value="#{mb_Cliente.contratoAdd.fechaFin}"
+		          pattern="dd-MM-yyyy" mask="true" />  
+	
 	
 		<p:commandButton value="Agregar"  oncomplete="PF('adddireccion').hide();PF('vercontratos').show();" process="@form" action ="#{mb_Cliente.addDireccionContrato}"  update="message formcontratos"  />
    

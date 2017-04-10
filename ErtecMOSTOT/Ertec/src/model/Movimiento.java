@@ -44,7 +44,7 @@ public class Movimiento implements Serializable {
 	private int comprobante;
 
 	@Column(name="Cotizacion")
-	private BigDecimal cotizacion;
+	private BigDecimal cotizacion=BigDecimal.ZERO;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="Fecha")

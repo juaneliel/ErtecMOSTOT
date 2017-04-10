@@ -252,7 +252,7 @@
 
  
  
-<p:dialog id="dialficha"  widgetVar="dialficha" showEffect="explode" hideEffect="fade"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
+<p:dialog header="Ficha funcionario" id="dialficha"  widgetVar="dialficha" showEffect="explode" hideEffect="fade"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
     <iframe frameborder="0" align="left"
          src="#{mb_Funcionario.urlImprimirFun()}"
          name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
@@ -283,17 +283,8 @@
             <h:outputLabel for="fileIdPhoto" value="Sube archivo:" /> 
             <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="true" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
              multiple="false" ajax="false" oncomplete="PF('subirarchivo').hide()" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
- 
-    
-
- 
  </h:form> 
-
-
 </p:dialog>
-
-
-
 
 <p:dialog header="Detalle funcionario" widgetVar="dialogodetalles" modal="true" showEffect="explode" hideEffect="fade" dynamic="true" >
         <p:outputPanel id="detalles" style="text-align:center;">
@@ -349,18 +340,6 @@
             </p:panelGrid>
         </p:outputPanel>
     </p:dialog>
-
-
-
-
-
-
-
-
-
-
-
-       
        
  <p:dialog id="addeducacion"  appendTo="@(body)"  widgetVar="addeducacion" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"    >
   <h:form>     
@@ -439,35 +418,3 @@
 
 </ui:define>
 </ui:composition>
-
-
-<!--   <f:event type="preRenderView" listener="#{mb_Reclamo.recargar}" /> -->
-
-<!--   <p:ajax event="rowSelect" listener="#{mb_Reclamo.onRowReclamoSelect}" update=":formreclamo:detalles" oncomplete="PF('dialogodetalles').show()" /> -->
- 
-
-<!-- 	 <p:ajax event="rowSelect" listener="#{mb_Funcionario.onRowSelect}" update=":formfuncionarios:detalles" oncomplete="PF('dialogodetalles').show()" /> -->
-   
-		
-		
-		
-		
-		
-<!-- <p:fileUpload label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar" fileUploadListener="#{mb_Funcionario.upload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000000" description="Seleccione el archivo"/> -->
-<!-- <h:graphicImage value="/resources/fotos/c.png" height="100" width="100"/> -->
-		
-		
- 
-<!--     <p:ajax event="contextMenu" process="datatablefuncionario"   update="@([id$=contextmenu])" onclick="PF('contextmenu').show();" /> -->
- 		
- 		
-<!-- 				<p:column headerText="Nacimiento:"  visible="#{mb_Usuario.viewFuncionarios[9]}" style="min-width:100px;"  sortBy="#{funcionario.ficha.nacimiento}"  filterMatchMode="contains" filterBy="#{funcionario.ficha.nacimiento}">		                 -->
-<!-- 				   <p:cellEditor> -->
-<!-- 				         <f:facet name="output"> -->
-<!-- 				         	<p:calendar mindate="#{funcionario.ficha.nacimiento}" maxdate="#{funcionario.ficha.nacimiento}" id="nacimiento" value="#{funcionario.ficha.nacimiento}" -->
-<!-- 				          pattern="dd-MM-yyyy" mask="true" /> -->
-<!-- 						</f:facet> -->
-<!-- 				         <f:facet name="input"> <p:calendar id="nacimientoin" value="#{funcionario.ficha.nacimiento}" pattern="dd-MM-yyyy" mask="true" /> -->
-<!-- 		 				</f:facet> -->
-<!-- 					</p:cellEditor> -->
-<!-- 				</p:column>	 -->

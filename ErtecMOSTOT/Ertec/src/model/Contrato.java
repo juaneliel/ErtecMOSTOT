@@ -72,7 +72,7 @@ public class Contrato implements Serializable {
 	private String tipo;
 
 	@Column(name="TopeMesesVisita")
-	private int topeMesesVisita;
+	private int topeMesesVisita=3;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="UltimoAjuste")

@@ -73,7 +73,7 @@ public class mb_Articulo {
 	}
 	
 	public void filtrarInfoMovArticulo(){
-		 filtrado=dao.filtrarInfoMovArticulo(articuloID,fechaIni,fechaFin);
+		 filtrado=dao.filtrarInfoMovArticulo(artSelected.getArticuloID(),fechaIni,fechaFin);
 	}
 	
 	public void initMovArt(){

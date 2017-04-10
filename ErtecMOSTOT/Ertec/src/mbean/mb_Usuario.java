@@ -65,13 +65,14 @@ import model.UsuarioLogin;
 import model.DAO.DAO_Articulo;
 import model.DAO.DAO_Cliente;
 import model.DAO.DAO_Funcionario;
+import model.DAO.DAO_Movimiento;
 import model.DAO.DAO_OT;
 import model.DAO.DAO_Usuario;
 
 import javax.faces.bean.SessionScoped;
 import util.JpaUtil;
 
-@ManagedBean
+@ManagedBean(name="mb_Usuario")
 @SessionScoped
 public class mb_Usuario {
 
@@ -161,23 +162,7 @@ public class mb_Usuario {
   }
 	
   private void cargarCodMov(){
-  	EntityManager em=JpaUtil.getEntityManager();
-  	String consulta = "SELECT c FROM Cod_Movimiento c ";
-  	TypedQuery<Cod_Movimiento> query= em.createQuery(consulta, Cod_Movimiento.class); 
-  	try{
-			ArrayList<Cod_Movimiento> auxlist= (ArrayList<Cod_Movimiento>) query.getResultList();
-			for(Cod_Movimiento c : auxlist){
-				mapaCodMov.put(c.getCodMov_ID(), c);
-			}
-			
-		}
-		catch (Exception e){
-			e.printStackTrace();			
-		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
-		}
+  	 mapaCodMov =DAO_Movimiento.cargarCodMov();
   }
   
   public void onIdle() {

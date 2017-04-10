@@ -5,14 +5,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import mbean.mb_Usuario;
 import model.Adicional;
 import model.Arrendamiento;
 import model.Articulo;
@@ -43,8 +46,10 @@ public class DAO_Movimiento {
 				Arrendamiento arrendamiento=new Arrendamiento();
 				arrendamiento.setArticulo(a);
 				arrendamiento.setCantidad(nexo.getCantidad().intValue());
+				arrendamiento.setCosto(nexo.getCosto());
+				arrendamiento.setFecha(movimiento.getFecha());
 				arrendamiento.setMovimientoID(movimiento.getMovimientoID()); 
-				arrendamiento.setSaldo(nexo.getCantidad().intValue());
+				arrendamiento.setSaldo(nexo.getCantidad().intValue()); 
 				em.persist(arrendamiento);				
 			}
 			movimiento.getNexos().add(nexo);
@@ -83,21 +88,47 @@ public class DAO_Movimiento {
 	
 	//se podria poner en el codigo algo que indique la estrategia a usar
 	private static void acomodarNexo(Movimiento movimiento,NexoMovimiento nexo, Articulo a){
-		if(movimiento.getCodigoMovimientoID()==1||movimiento.getCodigoMovimientoID()==2||movimiento.getCodigoMovimientoID()==3){	
+		mb_Usuario service = (mb_Usuario) 
+    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mb_Usuario"); 
+		Cod_Movimiento cm=service.getMapaCodMov().get(movimiento.getCodigoMovimientoID());	
+		
+		if(cm.getSumarStockYCostos()==1){	
 			entradaStockConCosto(movimiento,nexo,a);
 		}
 		
 		else {
-			if(movimiento.getCodigoMovimientoID()==5||movimiento.getCodigoMovimientoID()==11){	
+			if(cm.getSumarStock()==1){	
 				a.setStock(a.getStock().add(nexo.getCantidad())); 	
 			}
 			else{
-				if(movimiento.getCodigoMovimientoID()==25||movimiento.getCodigoMovimientoID()==31){	
+				if(cm.getRestarStock()==1){	
 					a.setStock(a.getStock().subtract(nexo.getCantidad())); 	
 				}
 			}
 		}
 	}
+	
+  public static Map<Integer,Cod_Movimiento> cargarCodMov(){
+  	Map<Integer,Cod_Movimiento> salida = new HashMap<Integer, Cod_Movimiento>(); 
+  	
+  	EntityManager em=JpaUtil.getEntityManager();
+  	String consulta = "SELECT c FROM Cod_Movimiento c ";
+  	TypedQuery<Cod_Movimiento> query= em.createQuery(consulta, Cod_Movimiento.class); 
+  	try{
+			ArrayList<Cod_Movimiento> auxlist= (ArrayList<Cod_Movimiento>) query.getResultList();
+			for(Cod_Movimiento c : auxlist){
+				salida.put(c.getCodMov_ID(), c);
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();			
+		}finally{ 
+	    	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}
+  	return salida;
+  }
 	
 	private static Articulo entradaStockConCosto(Movimiento m,NexoMovimiento nexo, Articulo a){
     
@@ -136,13 +167,15 @@ public class DAO_Movimiento {
 	}
 	
 	//es el contrato  por su id entidad
+	//se listan ademas los arrendamientos que fueron hechos sin contratos asociados a movimientos
 	public ArrayList<Arrendamiento> getArrendados (int cId){
 	  ArrayList<Arrendamiento> salida = new ArrayList<Arrendamiento>();
 	    
 	  try{       
       EntityManager em=JpaUtil.getEntityManager();      
       String consulta ="SELECT a FROM Movimiento m, Arrendamiento a "+
-                       " WHERE a.movimientoID = m.movimientoID and m.contrato.id= "+ cId +
+                       " WHERE a.movimientoID = m.movimientoID "
+                       + "and (  m.contrato  IS NULL or m.contrato.id= "+ cId + ")"+
                        " ORDER BY a.id DESC ";
       System.out.println("Consulta arrendados "+consulta);
       TypedQuery<Arrendamiento> consultaFuncionario= em.createQuery(consulta, Arrendamiento.class);
@@ -322,13 +355,11 @@ public class DAO_Movimiento {
 	//este metodo es el mas dificil deberia hacer una recorrida de los movimientos
 	//desde una base inicial para determinar por fechas como se fue acomodando 
 	//el articulo
-	public boolean deleteNexo(int idmov,NexoMovimiento nexo){
+	public boolean deleteNexo(NexoMovimiento nexo){
 		EntityManager em=JpaUtil.getEntityManager();
 		boolean salida = false;
 		try{		
-			em.getTransaction().begin();	
-			Movimiento mov= em.find(Movimiento.class,idmov);
-			mov.getNexos().remove(nexo);				
+			em.getTransaction().begin();				
 			em.remove(em.contains(nexo) ? nexo : em.merge(nexo));
 			em.getTransaction().commit();
 			salida = true;

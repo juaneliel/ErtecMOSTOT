@@ -218,11 +218,11 @@ public class mb_Funcionario {
   
 	public String urlImprimirFun(){
 		//ExportarOTPDF.ExportarPDF(ot, "");
-		long funID=0;
-		if(this.funSelected!=null){
-			funID =this.funSelected.getFuncionarioID();
+		long funID=this.funSelected.getFuncionarioID();
+		if(funID==0){
+			funID =168;
 		} 
-		 this.urlImpresion=  "/ertec/exportarpdf?faces-redirect=true"+"&id="+funID+"&tipo=fun";
+		 this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+funID+"&tipo=fun";
 		 System.out.println("url impresion ficha "+this.urlImpresion);
 		 return this.urlImpresion;
 	}

@@ -51,9 +51,10 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 		    </f:facet>
 		    
 		 <f:facet name="{agregar}">    
-		  <p:commandButton value="Agregar"  oncomplete="PF('addmanodeobra').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','manodeobra')}"/>      
+		  <p:commandButton value="Agregar"  oncomplete="PF('addmanodeobra').show()" style="float:left"  actionListener="#{mb_ManoObra.initAddMO(paramCliente,paramIdOT)}"
+		  rendered="#{mb_Usuario.acceso('AGREGAR','manodeobra')}"/>      
      </f:facet>      
-       
+        
 		 
 		 <f:facet name="{vercol}">
         <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
@@ -74,49 +75,17 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 		</p:column>
 		 
 		 
-		<p:column headerText="Cliente:" sortBy="#{mo.clienteNombre}"  filterMatchMode="contains" filterBy="#{mo.clienteNombre}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.cliente.nombre}" /></f:facet>
-		         <f:facet name="input">
-		         <p:autoComplete  id="cliente" value="#{mo.cliente}"
- completeMethod="#{mb_Usuario.completarCliente}" disabled="#{mo.ordenTrabajo!=0}"
-var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- converter="ConverterCliente" forceSelection="true" /> 
-		         
-			     </f:facet>
-			</p:cellEditor>
+		<p:column headerText="Cliente" sortBy="#{mo.clienteNombre}"  filterMatchMode="contains" filterBy="#{mo.clienteNombre}">		                
+		   <p:outputLabel value="#{mo.cliente.nombre}" />
 		</p:column> 
-
     
-    
-    
-<p:column headerText="Funcionario Nombre:" style="min-width:190px;" sortBy="#{mo.funcionario.nombre}"  filterMatchMode="contains" filterBy="#{mo.funcionario.nombre}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.funcionario.nombre}" /></f:facet>
-		         <f:facet name="input">
-					<p:autoComplete id="funcionario" value="#{mo.funcionario}" required="true"
-					 completeMethod="#{mb_Usuario.completarFuncionario}" 
-					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
-					 converter="ConverterFuncionario" forceSelection="true" 					  
-					  queryDelay="1000" label="Funcionario"
-					  /> 
-				  </f:facet>
-			</p:cellEditor>
+		<p:column headerText="Funcionario" style="min-width:190px;" sortBy="#{mo.funcionario.nombre}"  filterMatchMode="contains" filterBy="#{mo.funcionario.nombre}">		                
+		   <p:outputLabel value="#{mo.funcionario.nombre}" />
 		</p:column>		
-		
-		    
-		
-		<p:column headerText="N Contrato:" sortBy="#{mo.NContrato}" style = "width:40px"  filterMatchMode="contains" filterBy="#{mo.NContrato}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.NContrato}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="NContrato" value="#{mo.NContrato}" style="width:100%"/></f:facet>
-			</p:cellEditor>
-		</p:column>
-
     
-    		<p:column headerText="Codigo:" sortBy="#{mo.codigo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.codigo}">		                
+    <p:column rendered="false" headerText="Codigo" sortBy="#{mo.codigo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.codigo}">		                
 		   <p:cellEditor>
-         <f:facet name="output"><h:outputText value="#{mo.codigo}" /></f:facet>
+         <f:facet name="output"><p:outputLabel value="#{mo.codigo}" /></f:facet>
          <f:facet name="input">
 						<p:selectOneMenu value="#{mo.codigo}" style="width:100%">
                <f:selectItems value="#{mb_ManoObra.listaCodMO}" var="cmo" 
@@ -125,57 +94,39 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		  	</f:facet>
 			</p:cellEditor>
 		</p:column>
-    
- 
-	       		   
-		<p:column headerText="Fecha:" sortBy="#{mo.fecha}"  filterMatchMode="contains" filterBy="#{mo.fecha}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><p:calendar mindate="#{mo.fecha}" maxdate="#{mo.fecha}" id="maskout" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
- </f:facet>
-		         <f:facet name="input"> <p:calendar id="maskin" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
- </f:facet>
-			</p:cellEditor>
-		</p:column>
-	       		   
+     	   
  
 		<p:column headerText="MYR" sortBy="#{mo.myr}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.myr}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.myr}" /></f:facet>
+		         <f:facet name="output"><p:outputLabel value="#{mo.myr}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="MYR" value="#{mo.myr}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
 
 	 
-    <p:column headerText="O.T.:" sortBy="#{mo.ordenTrabajo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.ordenTrabajo}">		                
-		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.ordenTrabajo}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="ot" value="#{mo.ordenTrabajo}" disabled="#{mo.ordenTrabajo!=0}" style="width:100%"/></f:facet>
-			</p:cellEditor>
+    <p:column headerText="O.T." sortBy="#{mo.ordenTrabajo}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.ordenTrabajo}">		                
+		   <p:outputLabel value="#{mo.ordenTrabajo}" />
 		</p:column>
-       	
-
-
-    
      
-     		<p:column headerText="T. Contrato" sortBy="#{mo.TContrato}" rendered="false" filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
+     <p:column headerText="T.Contrato" sortBy="#{mo.TContrato}" rendered="false" filterMatchMode="contains" filterBy="#{mo.TContrato}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.TContrato}" /></f:facet>
+		         <f:facet name="output"><p:outputLabel value="#{mo.TContrato}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="tcon" value="#{mo.TContrato}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
-    		<p:column headerText="Tipo:" sortBy="#{mo.tipo}" style = "width:40px" rendered="false"  filterMatchMode="contains" filterBy="#{mo.tipo}">		                
+    		<p:column headerText="Tipo" sortBy="#{mo.tipo}" style = "width:40px" rendered="false"  filterMatchMode="contains" filterBy="#{mo.tipo}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.tipo}" /></f:facet>
+		         <f:facet name="output"><p:outputLabel value="#{mo.tipo}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="tipo" value="#{mo.tipo}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
      
     
-    		<p:column headerText="Tipo Hora" sortBy="#{mo.tipoHora}"  filterMatchMode="contains" filterBy="#{mo.tipoHora}">		                
+    		<p:column headerText="T.Hora" sortBy="#{mo.tipoHora}" style = "width:60px" filterMatchMode="contains" filterBy="#{mo.tipoHora}">		                
 		   <p:cellEditor>
-	         <f:facet name="output"><h:outputText value="#{mo.tipoHora}" /></f:facet>
+	         <f:facet name="output"><p:outputLabel value="#{mo.tipoHora}" /></f:facet>
 	         <f:facet name="input">
 		          <p:selectOneMenu value="#{mo.tipoHora}" style="width:80%" id="tipoHora" required="true" >					
                 <f:selectItem itemLabel="Comun" itemValue="COMUN" />
@@ -188,9 +139,9 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
     
      
     
-    		<p:column headerText="Tipo Mano" sortBy="#{mo.tipoMano}"  filterMatchMode="contains" filterBy="#{mo.tipoMano}">		                
+    		<p:column headerText="T.Mano" sortBy="#{mo.tipoMano}" style = "width:40px"  filterMatchMode="contains" filterBy="#{mo.tipoMano}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.tipoMano}" /></f:facet>
+		         <f:facet name="output"><p:outputLabel value="#{mo.tipoMano}" /></f:facet>
 		         <f:facet name="input"> 
 			         <p:selectOneMenu value="#{mo.tipoMano}" style="width:80%" id="tipoMano" required="true" >					
 					       	<f:selectItem itemLabel="Trabajadas" itemValue="T" />
@@ -201,14 +152,21 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 		</p:column>
     
      
-    		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}" style = "width:40px" filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
+    		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}" style = "width:50px" filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
 		   <p:cellEditor>
-		         <f:facet name="output"><h:outputText value="#{mo.totalHora}" /></f:facet>
+		         <f:facet name="output"><p:outputLabel value="#{mo.totalHora}" /></f:facet>
 		         <f:facet name="input"><p:inputText id="total" value="#{mo.totalHora}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
-        
+			<p:column headerText="Fecha" sortBy="#{mo.fecha}" style="width:90px" filterMatchMode="contains" filterBy="#{mo.fecha}">		                
+		   <p:cellEditor>
+		   		<f:facet name="output"><p:calendar mindate="#{mo.fecha}" maxdate="#{mo.fecha}" id="maskout" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
+ 					</f:facet>
+		   		<f:facet name="input"> <p:calendar id="maskin" value="#{mo.fecha}" pattern="dd-MM-yyyy" mask="true" />
+				 </f:facet>
+			</p:cellEditor>
+		</p:column>
 		    		 
 
 		     
@@ -247,7 +205,7 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
     }       
 </script>
 
-<p:dialog id="addmanodeobra" header="Agregar articulo" appendTo="@(body)" widgetVar="addmanodeobra" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+<p:dialog id="addmanodeobra" header="Agregar mano de obra" appendTo="@(body)" widgetVar="addmanodeobra" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
 
  <h:form >
 
@@ -261,18 +219,11 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 					 converter="ConverterFuncionario" forceSelection="true" /> 
 			 
-		  
-
-
-			<p:outputLabel value="Cliente" for="cliente" />
-<p:autoComplete title="Ingrese parte del nombre o id del cliente"   id="cliente" value="#{mb_ManoObra.manodeobraAdd.cliente}"
- completeMethod="#{mb_Usuario.completarCliente}" 
-var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- converter="ConverterCliente" forceSelection="true" /> 
-		
-			
+			<p:outputLabel value="Cliente" for="cliente" rendered="#{paramIdOT!=0}" />
+			<p:outputLabel value="#{mb_OT.otSelected.cliente.nombre}" id="cliente" rendered="#{paramIdOT!=0}" />				
+					
 			<p:outputLabel  value="Fecha:" for="fechamo"/>
-        	<p:calendar id="fechamo" value="#{mb_ManoObra.manodeobraAdd.fecha}" effect="fold" required="true" />	
+      <p:calendar id="fechamo" value="#{mb_ManoObra.manodeobraAdd.fecha}" effect="fold" required="true" />	
 
 			<p:outputLabel value="MyR:" for="myr"  rendered="#{paramIdOT==0}" />   
 			<p:inputText id="myr" label="myr" value="#{mb_ManoObra.manodeobraAdd.myr}" rendered="#{paramIdOT==0}"/>	       	
@@ -280,10 +231,8 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 			<p:outputLabel value="Id OT:" for="ordenTrabajo" rendered="#{paramIdOT!=0}" /> 
 			<p:outputLabel id="ordenTrabajo" label="ordenTrabajo"  rendered="#{paramIdOT!=0}" value="#{mb_ManoObra.manodeobraAdd.ordenTrabajo}" />	
 			
-			
-				<p:outputLabel value="Codigo:" for="codigo" rendered="true" /> 
-			
-			<p:selectOneMenu value="#{mb_ManoObra.manodeobraAdd.codigo}"  id="codigo">
+			<p:outputLabel value="Codigo:" for="codigo" rendered="false" /> 			
+			<p:selectOneMenu rendered="false" value="#{mb_ManoObra.manodeobraAdd.codigo}"  id="codigo">
                <f:selectItems value="#{mb_ManoObra.listaCodMO}" var="cmo" 
                itemLabel="#{cmo.descripcion}" itemValue="#{cmo.codigo}" />
            </p:selectOneMenu>
@@ -323,4 +272,15 @@ var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
 
 	</ui:composition>
 </html>
+
+
+
+<!-- 		<p:column headerText="N Contrato:" sortBy="#{mo.NContrato}" style = "width:40px"  filterMatchMode="contains" filterBy="#{mo.NContrato}">		                 -->
+<!-- 		   <p:cellEditor> -->
+<!-- 		         <f:facet name="output"><p:outputLabel value="#{mo.NContrato}" /></f:facet> -->
+<!-- 		         <f:facet name="input"><p:inputText id="NContrato" value="#{mo.NContrato}" style="width:100%"/></f:facet> -->
+<!-- 			</p:cellEditor> -->
+<!-- 		</p:column> -->
+
+
  	

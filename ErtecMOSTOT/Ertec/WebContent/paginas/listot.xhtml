@@ -202,17 +202,7 @@
 		 				</f:facet>
 					</p:cellEditor>
 				</p:column> 
-	  
-	  
-	  
-	  
-	  
-		  
-
-
-
- 
-		    	   
+	  		    	   
 		      
 		</p:dataTable>
 	
@@ -236,85 +226,24 @@
   </h:form>
 
  
-<p:dialog header="Detalle cliente" widgetVar="vercli"  modal="true"  id="vercli"  dynamic="true">
-<ui:include src="/templates/templatecliente.xhtml" id="listaAdicionales">	  
-<ui:param name="paramcliente"   value = "#{mb_OT.otSelected.cliente}"/>		
-</ui:include>
-</p:dialog>	 
-
-
-<p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
-<ui:include src="/templates/templateadicional.xhtml" id="listaAdicionales">	 
-</ui:include>
-</p:dialog>	   
- 
- <p:dialog header="Compras Externas" widgetVar="verce"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatecompraexterna.xhtml" id="listaCE">	
-</ui:include>
-</p:dialog>
-
-<p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400"  dynamic="true">
-<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">	 
-<ui:param name="paramIdOT"   value = "#{mb_OT.otSelected.id}"/>			
-</ui:include>			
-</p:dialog>	
-
-<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="95%"  dynamic="true">
-<ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	 
-<ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
-<ui:param name="paramCodIni"   value = "#{4}"/>		
-<ui:param name="paramCliente"   value ="#{mb_OT.otSelected.cliente}"/>			
-</ui:include>			
-</p:dialog>	
-
-
-
-<p:dialog header="Agregar Adicional" id="addad" widgetVar="addad"  modal="true" width="580px" height="230"  dynamic="true">
-<ui:include src="/templates/templateaddadicional.xhtml" id="addadicional">			
-</ui:include>			
-</p:dialog>	
-
-<p:dialog header="Agregar Compra Externa" widgetVar="addce"  modal="true" width="450" height="390"  dynamic="true">
-<ui:include src="/templates/templateaddcompraexterna.xhtml" id="listaComprasExternasOUT">			
-</ui:include>			
-</p:dialog>	    
-
-<p:dialog header="Agregar Mano Obra" widgetVar="addmo"  modal="true" width="460" height="450"  dynamic="true">
-<ui:include src="/templates/templateaddmanoobra.xhtml" id="addmanoobra">			
-<ui:param name="verIDOT"   value = "true"/>
-</ui:include>			
-</p:dialog>		
-
-	
-
-
-
-
-
-
-
-
-		
 
 <script type="text/javascript">
-    function handleAddOtRequest(xhr, status, args) { 
-        if(args.validationFailed ) {
-            PF('addordendetrabajo').jq.effect("shake", {times:5}, 100);
-        }
-        else {
-            PF('addordendetrabajo').hide(); 
-            //PF('datatablearticulos').filter();
-        }
-    }       
+	
+	function handleAddOtRequest(xhr, status, args) { 
+	    if(args.validationFailed ) {
+	        PF('addordendetrabajo').jq.effect("shake", {times:5}, 100);
+	    }
+	    else {
+	        PF('addordendetrabajo').hide(); 
+	        //PF('datatablearticulos').filter();
+	    }
+	}       
 </script>
 
 <p:dialog id="addordendetrabajo" header="Agregar orden de trabajo"  widgetVar="addordendetrabajo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
  <h:form> 
-
 	<p:panelGrid id="panel1"  border="2" cellpadding="5" cellspacing="1" columns="2">     
-			 
- 
-
+			
 	<h:outputLabel  value="Cliente:*" for="cliente"  />
 		 	<p:autoComplete  required="true" label="Cliente" id="cliente" value="#{mb_OT.otAdd.cliente}"  
  				completeMethod="#{mb_Usuario.completarCliente}" 
@@ -399,138 +328,58 @@
 
 
 
-<p:dialog id="verpdfot" header="Ot en PDF"  widgetVar="verpdfot" showEffect="size" hideEffect="puff"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
+<p:dialog id="verpdfot"  widgetVar="verpdfot" showEffect="explode" hideEffect="fade" modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
     <iframe frameborder="0" align="left"
-         src="#{mb_OT.urlImprimirOT(mb_OT.otSelected.id)}"
+         src="#{mb_OT.urlImprimirOT()}"
          name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
      </iframe>
 </p:dialog>
 
 
-<p:dialog header="Movimiento en PDF" id="verpdfmov"  widgetVar="verpdfmov" showEffect="slide" hideEffect="drop"  modal="true"  onHide="jQuery('#someId').hide();" onShow="jQuery('#someId').show();" dynamic="true"  width="80%" height="500"  >
+<p:dialog  id="verpdfmov"  widgetVar="verpdfmov" showEffect="explode" hideEffect="fade" modal="true"  onHide="jQuery('#someId2').hide();" onShow="jQuery('#someId2').show();" dynamic="true"  width="80%" height="500"  >
     <iframe frameborder="0" align="left"
-         src="#{mb_OT.urlImprimirMov(mb_OT.otSelected.id)}"
-         name="someName" id="someId" scrolling="auto" width="100%" height="100%" >
+         src="#{mb_OT.urlImprimirMov()}"
+         name="someName2" id="someId2" scrolling="auto" width="100%" height="100%" >
      </iframe>
 </p:dialog>
 	
-	  
+
+<p:dialog header="Detalle cliente" widgetVar="vercli"  modal="true"  id="vercli"  dynamic="true">
+<ui:include src="/templates/templatecliente.xhtml" id="listaAdicionales">	  
+<ui:param name="paramcliente"   value = "#{mb_OT.otSelected.cliente}"/>		
+</ui:include>
+</p:dialog>	 
+
+
+<p:dialog header="Adicionales" widgetVar="verad"  modal="true" width="90%" height="400" id="verad"  dynamic="true">
+<ui:include src="/templates/templateadicional.xhtml" id="listaAdicionales">	 
+</ui:include>
+</p:dialog>	   
+ 
+ <p:dialog header="Compras Externas" widgetVar="verce"  modal="true" width="90%" height="400"  dynamic="true">
+<ui:include src="/templates/templatecompraexterna.xhtml" id="listaCE">	
+</ui:include>
+</p:dialog>
+
+<p:dialog header="Mano de Obra" widgetVar="vermo"  modal="true" width="90%" height="400"  dynamic="true">
+<ui:include src="/templates/templatemanoobra.xhtml" id="listaMovimientos">	 
+<ui:param name="paramIdOT"   value = "#{mb_OT.otSelected.id}"/>		 
+<ui:param name="paramCliente"   value ="#{mb_OT.otSelected.cliente}"/>	 
+</ui:include>			
+</p:dialog>	
+
+<p:dialog header="Movimientos"  id="vermov" widgetVar="vermov"  modal="true" width="95%"  dynamic="true">
+<ui:include src="/templates/templatemovimientoot.xhtml" id="listaMovimientos">	 
+<ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>	
+<ui:param name="paramCodIni"   value = "#{4}"/>		
+<ui:param name="paramCliente"   value ="#{mb_OT.otSelected.cliente}"/>		
+<ui:param name="paramReferencia"   value ="#{mb_OT.otSelected.id}"/>	
+</ui:include>			
+</p:dialog>	
+
+
+
+ 
 
 </ui:define>
 </ui:composition>
-
-
-
- 		     			 
-<!-- 				<p:column headerText="Arre" sortBy="#{ot.arrendamiento}"  filterMatchMode="contains" filterBy="#{ot.arrendamiento}">		                 -->
-<!-- 		        <p:cellEditor> -->
-<!-- 	               <f:facet name="output"><h:outputText value="#{ot.arrendamiento}" /></f:facet> -->
-<!-- 	               <f:facet name="input"><p:inputText id="arrendamiento" value="#{ot.arrendamiento}" style="width:100%"/></f:facet> -->
-<!--            		</p:cellEditor> -->
-<!-- 		    </p:column>   -->
-		    		 
-			
-			 
-			 
-<!-- 			<p:column headerText="Mant" sortBy="#{ot.mantenimiento}"  filterMatchMode="contains" filterBy="#{ot.mantenimiento}">		                 -->
-<!-- 		        <p:cellEditor> -->
-<!-- 	               <f:facet name="output"><h:outputText value="#{ot.mantenimiento}" /></f:facet> -->
-<!-- 	               <f:facet name="input"><p:inputText id="mantenimiento" value="#{ot.mantenimiento}" style="width:100%"/></f:facet> -->
-<!--            		</p:cellEditor> -->
-<!-- 		    </p:column> -->
-
-<!-- 			<p:column headerText="Tipo" sortBy="#{ot.tipoID}"  filterMatchMode="contains" filterBy="#{ot.tipoID}">		                 -->
-<!-- 		        <p:cellEditor> -->
-<!-- 	               <f:facet name="output"><h:outputText value="#{ot.tipoID}" /></f:facet> -->
-<!-- 	               <f:facet name="input"><p:inputText id="tipoID" value="#{ot.tipoID}" style="width:100%"/></f:facet> -->
-<!--            		</p:cellEditor> -->
-<!-- 		    </p:column> -->
-
-<!-- <p:commandButton value="Agregar Movimiento" update="formAddMov" -->
-<!-- onclick="PF('addmov').show()"  -->
-<!-- actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">   -->
-<!-- <f:actionListener binding="#{mb_Movimiento.setReferencia(ot.id)}" /> -->
-<!-- </p:commandButton> -->
-
-
-
-<!-- 		  <p:rowExpansion id="datatable3">	  		 -->
-	  
-	   
-<!-- <p:commandButton value="Ver Adicionales"  update=":datatableADI:datatable2ADI"  -->
-<!-- onclick="PF('verad').show();#{mb_OT.recargarListaAdicionales(ot.id)}" -->
-<!-- action="#{mb_OT.recargarListaAdicionales(ot.id)}"/>  -->
-
-	  
-<!-- <p:commandButton value="Ver Compras Externas" update=":datatableCE:datatable2CE"  -->
-<!-- onclick="PF('verce').show()"  -->
-<!-- action="#{mb_OT.recargarListaComprasExternas(ot.id)}" -->
-<!-- />   -->
-
-
- 
-<!-- <p:commandButton value="Ver Mano de Obra" update=":datatableMO:datatable2MO"  -->
-<!-- onclick="PF('vermo').show();"  -->
-<!-- action="#{mb_OT.recargarListaManoObra(ot.id)}"/>  -->
-
- 	  
-<!-- <p:commandButton value="Ver Movimientos" update=":datatableMOV:datatable2MOV" -->
-<!-- onclick="PF('vermov').show()"    -->
-<!-- action="#{mb_OT.recargarListaMovimientos(ot.id)}"/>  -->
-
-<!-- <br/> -->
-
-
-<!-- <p:commandButton value="Agregar Adicional"  -->
-<!-- onclick="PF('addad').show();#{mb_OT.setNumeroID(ot.id)};#{mb_OT.setNumeroID(ot.id)};" -->
-<!-- action="#{mb_OT.setNumeroID(ot.id)}"/>   -->
-	
-
-
-<!-- <p:commandButton value="Agregar Compras Externas" -->
-<!-- onclick="PF('addce').show();"  -->
-<!-- actionListener="#{mb_OT.setearIDOT(ot.id)}"/>   -->
-    
-			
-			 
-<!-- <p:commandButton value="Agregar Mano Obra"  update="formAddMO" -->
-<!-- onclick="PF('addmo').show();#{mb_OT.setNumeroID(ot.id)}"  -->
-<!-- 	action="#{mb_ManoObra.setOrdenTrabajo(ot.id)}"/>   -->
-			
-
-
-<!-- <p:commandButton value="Agregar Movimiento" update="formAddMov" -->
-<!-- onclick="PF('addmov').show()"  -->
-<!-- actionListener="#{mb_Movimiento.ajustesAddMovimentoOT(ot.cliente,ot.id)}">   -->
-<!-- </p:commandButton> -->
-
-
-<!-- <br/>  -->
-
-<!-- <p:column headerText="Pdf" style="width:40px" stylr="color:red">   -->
- 
-<!-- <p:commandButton  icon="ui-icon-print" id="imprimir"  onclick="window.open('#{mb_OT.urlImprimirMov(ot.id)}','_blank');"  -->
-<!-- action="#{mb_OT.urlImprimirOT(ot.id)}"  update="message"   /> -->
- 
-<!-- </p:column> -->
-
-
-<!-- <p:column headerText="Pdf" style="width:40px" stylr="color:red">   -->
- 
-<!-- <p:commandButton  icon="ui-icon-print" id="imprimir2" onclick="window.open('#{mb_OT.urlImprimirOT(ot.id)}','_blank');"  -->
-<!-- action="#{mb_OT.urlImprimirMov(ot.id)}"  update="message"   /> -->
- 
-<!-- </p:column> -->
-
-   
-<!-- 		  </p:rowExpansion> -->
-
-
-<!-- 		  <p:commandButton value="imp" ajax="false"  action="#{mb_OT.imprimirOT()}" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','ordendetrabajo')}"/>       -->
- 
-	
-<!-- <p:dialog header="Agregar Movimiento" widgetVar="addmov"    modal="true" width="90%" height="550"  dynamic="true"> -->
-<!-- <ui:include src="/templates/templateaddmovimiento.xhtml" id="addmovimiento">	 -->
-<!--   <ui:param name="paramListaCodMov"   value = "#{mb_Movimiento.listaCodMovimientosEnOt}"/>			 -->
-<!-- </ui:include>			 -->
-<!-- </p:dialog> -->

@@ -141,23 +141,23 @@ public class ExportarOTPDF {
        // Creacion de tabla 1         
        PdfPTable tabla1 = new PdfPTable(2);    
        tabla1.setTotalWidth(350);  
-       cell =new PdfPCell(new Paragraph("CLIENTE: "+cliente, new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("CLIENTE: "+cliente, new Font(FontFamily.TIMES_ROMAN,10)));
        cell.setMinimumHeight(20);
        
        tabla1.addCell( cell );
-       tabla1.addCell( new PdfPCell(new Paragraph("ID: "+ numeroCliente , new Font(FontFamily.HELVETICA, 10))));         
+       tabla1.addCell( new PdfPCell(new Paragraph("ID: "+ numeroCliente , new Font(FontFamily.TIMES_ROMAN,10))));         
        
-       cell =new PdfPCell(new Paragraph("DIRECCION: " +direccion , new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("DIRECCION: " +direccion , new Font(FontFamily.TIMES_ROMAN,10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );         
-       tabla1.addCell( new PdfPCell(new Paragraph( "TEL: "+telCliente, new Font(FontFamily.HELVETICA, 10))));
+       tabla1.addCell( new PdfPCell(new Paragraph( "TEL: "+telCliente, new Font(FontFamily.TIMES_ROMAN,10))));
        
-       cell =new PdfPCell(new Paragraph("LUGAR DE OBRA: "+ lugarDeObra , new Font(FontFamily.HELVETICA, 10)));
+       cell =new PdfPCell(new Paragraph("LUGAR DE OBRA: "+ lugarDeObra , new Font(FontFamily.TIMES_ROMAN,10)));
        cell.setMinimumHeight(20);         
        tabla1.addCell( cell );   
-       tabla1.addCell( new PdfPCell(new Paragraph("TEL " + telObra, new Font(FontFamily.HELVETICA, 10))));
+       tabla1.addCell( new PdfPCell(new Paragraph("TEL: " + telObra, new Font(FontFamily.TIMES_ROMAN,10))));
        tabla1.setWidths( new int[]{ 10,5 } );
-       tabla1.writeSelectedRows(0, -1, 20, 710, canvas);
+       tabla1.writeSelectedRows(0, -1, 20, 720, canvas);
                   
        
        
@@ -199,13 +199,14 @@ public class ExportarOTPDF {
        //trabajo a efectuar ver como se define  
        PdfPTable tabla4 = new PdfPTable(1); 
        tabla4.setTotalWidth(550);   
+              
+       String[] parts = trabajo.split("\n");      
        
-       cell = new PdfPCell(new Paragraph(trabajo, new Font(FontFamily.HELVETICA, 12)));
-  	 cell.setMinimumHeight(20);
-       tabla4.addCell(cell); 
-       
-       for (int i=1; i<=16;i++){ 
-      	 cell = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 12)));
+       for (int i=0; i<16;i++){ 
+      	 cell = new PdfPCell(new Paragraph("", new Font(FontFamily.HELVETICA, 10)));
+      	 if(i<parts.length){
+      		 cell = new PdfPCell(new Paragraph(parts[i], new Font(FontFamily.HELVETICA, 10)));
+      	 }
       	 cell.setMinimumHeight(20);
          tabla4.addCell(cell);  
        }         
@@ -373,7 +374,7 @@ public class ExportarOTPDF {
     tabla8.addCell( new PdfPCell(new Paragraph("PROCESO" , new Font(FontFamily.HELVETICA, 10)))); 
     
     
-    tabla8.addCell( new PdfPCell(new Paragraph("e" , new Font(FontFamily.HELVETICA, 10)))); 
+    tabla8.addCell( new PdfPCell(new Paragraph("." , new Font(FontFamily.HELVETICA, 10)))); 
      
     
     detalleFActuras = new PdfPCell(new Paragraph("TOTAL", new Font(FontFamily.HELVETICA, 10))); 
@@ -545,13 +546,6 @@ public class ExportarOTPDF {
        
        tabla12.setWidths( new int[]{5,5,1 } );
        tabla12.writeSelectedRows(0, -1, 330, 100, canvas);
-       
-       
-       
-      
-       
-       
-       
        
        
        document.close();

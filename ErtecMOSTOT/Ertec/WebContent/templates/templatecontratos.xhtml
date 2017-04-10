@@ -45,8 +45,7 @@
  			  <p:columnToggler datasource="datatablecontratos" trigger="toggler" /> 	 
 		 </f:facet> 
 
-		<p:ajax event="rowEdit" listener="#{mb_Cliente.editContrato}" update="message" />
-		<p:ajax event="rowToggle" listener="#{mb_Movimiento.recargarListaArrendamientos(contrato.clienteID)}" update="formarrendamiento" />
+		<p:ajax event="rowEdit" listener="#{mb_Cliente.editContrato}" update="message" /> 
 
 		<p:column headerText=""  style = "width:0px" exportable="false">				
 			<p:rowEditor rendered="#{mb_Usuario.acceso('EDITAR','cliente')}" >
@@ -56,38 +55,12 @@
 
 
  		<p:column headerText="Tipo" sortBy="#{contrato.tipo}" style="text-align:center;width:40px;"  filterMatchMode="contains" filterBy="#{contrato.tipo}">		                
-			<p:cellEditor>
-				<f:facet name="output">
-					<h:outputText value="#{contrato.tipo}" />  
-				</f:facet>
-		 		<f:facet name="input">
-					<p:selectOneMenu id="tipo" value="#{contrato.tipo}" style="width:85%">
-						<f:selectItem  itemLabel="Arrendamiento" itemValue="A" />
-						<f:selectItem   itemLabel="Mantenimiento" itemValue="M" />
-					</p:selectOneMenu>	
-				</f:facet>
-			</p:cellEditor>
+			<h:outputText value="#{contrato.tipo}" />  
 		</p:column>
 
 
 		<p:column headerText="Id" sortBy="#{contrato.contratoID}" style="text-align:center;width:50px;" filterMatchMode="startsWith" filterBy="#{contrato.contratoID}">		                
- 
-		  <p:cellEditor>
-				<f:facet name="output">
-					<h:outputText value="#{contrato.contratoID}" />  
-				</f:facet>
-		 		<f:facet name="input">
-				 <p:inputMask converterMessage="Ingrese un valor de referencia"  min="1" id="contratoid" label="contratoid" value="#{contrato.contratoID}"  maxlength="10" >
-		      	<p:keyFilter regEx="/[0-9_]/i" />
-		      	 <f:validateDoubleRange minimum="1" />  
-		  	</p:inputMask>
-				 		 
-				 
-				</f:facet>
-			</p:cellEditor>
-		  
-		  
-		  
+ 			<h:outputText value="#{contrato.contratoID}" />  		  
 		</p:column>
 				 		 
 		<p:column headerText="Cor" sortBy="#{contrato.corredorID}" style="text-align:center;width:40px;" filterMatchMode="contains" filterBy="#{contrato.corredorID}">		                
@@ -113,7 +86,7 @@
 					<h:outputText value="#{contrato.equipo}" />  
 				</f:facet>
 		 		<f:facet name="input">
-					<h:inputText id="equipo" value="#{contrato.equipo}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+					<p:inputText id="equipo" value="#{contrato.equipo}"/>  
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
@@ -124,7 +97,7 @@
 					<h:outputText value="#{contrato.direccion}" />  
 				</f:facet>
 		 		<f:facet name="input">
-					<h:inputText id="direccion" value="#{contrato.direccion}" style="float:left  !important;margin:0px 0px 3px 0px;"/> 
+					<p:inputText id="direccion" value="#{contrato.direccion}" /> 
 				</f:facet>
 			</p:cellEditor>
 		</p:column>				
@@ -135,7 +108,7 @@
 					<h:outputText value="#{contrato.localidad}" />  
 				</f:facet>
 		 		<f:facet name="input">
-					<h:inputText id="localidad" value="#{contrato.localidad}" style="float:left  !important;margin:0px 0px 3px 0px;"/> 
+					<p:inputText id="localidad" value="#{contrato.localidad}"/> 
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
@@ -165,7 +138,7 @@
 					<h:outputText value="#{contrato.zona}" />  
 				</f:facet>
 		 		<f:facet name="input">
-						<h:inputText id="zona" value="#{contrato.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+						<p:inputText id="zona" value="#{contrato.zona}" />  
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
@@ -178,19 +151,19 @@
 		          pattern="dd-MM-yyyy" mask="true" />  
 				</f:facet>
 		 		<f:facet name="input">
-					<p:calendar id="fechaInicio" value="#{contrato.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+					<p:calendar id="fechaInicio" value="#{contrato.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" required="true"/>	
  	  		</f:facet>
 			</p:cellEditor>
 		</p:column>
     
-		<p:column headerText="Fin" sortBy="#{contrato.fechaFin}" style="text-align:center;width:70px;" filterMatchMode="contains" filterBy="#{contrato.fechaFin}">		                
+		<p:column headerText="Fin" sortBy="#{contrato.fechaFin}" style="text-align:center;width:70px;"  filterMatchMode="contains" filterBy="#{contrato.fechaFin}">		                
 			<p:cellEditor>
 				<f:facet name="output">
   				<p:calendar mindate="#{contrato.fechaFin}" maxdate="#{contrato.fechaFin}" id="contratoFin" value="#{contrato.fechaFin}"
 		          pattern="dd-MM-yyyy" mask="true" /> 
 				</f:facet>
 		 		<f:facet name="input">
-					<p:calendar id="fechaFin" value="#{contrato.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+					<p:calendar id="fechaFin" value="#{contrato.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" required="true"/>	
 				</f:facet>
 			</p:cellEditor>
 		</p:column>
@@ -222,7 +195,7 @@
 	
 	<p:contextMenu for="datatablecontratos">
   	<p:menuitem value="Ver arrendamientos" rendered="true"  
-    	oncomplete="PF('verarrendamientos').show();" upload="formarrendamiento:datatablearrendamiento"
+    	oncomplete="PF('verarrendamientos').show();" update="formarrendamiento"
      	actionListener="#{mb_Movimiento.recargarListaArrendamientos(mb_Cliente.conSelected)}"/> 
 		<p:menuitem	value="Agregar Direccion"  rendered="#{mb_Usuario.acceso('AGREGAR','cliente')}"  
 			oncomplete="PF('adddireccion').show();" update="formadddireccion"
@@ -270,33 +243,30 @@
   	</p:inputMask>
  
 		<p:outputLabel value="Equipo:" for="equipo" />   
-		<h:inputText id="equipo" value="#{mb_Cliente.contratoAdd.equipo}"/>  
+		<p:inputText id="equipo" value="#{mb_Cliente.contratoAdd.equipo}"/>  
  
 		<p:outputLabel value="Direccion:" for="direccion" />   
-		<h:inputText id="direccion" value="#{mb_Cliente.contratoAdd.direccion}" />  
+		<p:inputText id="direccion" value="#{mb_Cliente.contratoAdd.direccion}" />  
 		 
 		<p:outputLabel value="Localidad:" for="localidad" />   
-		<h:inputText id="localidad" value="#{mb_Cliente.contratoAdd.localidad}" />  
+		<p:inputText id="localidad" value="#{mb_Cliente.contratoAdd.localidad}" />  
 				 		 
 		 <p:outputLabel value="Retirado:" for="retirado" />    
   		<p:selectOneMenu id="retirado" value="#{mb_Cliente.contratoAdd.retirado}" style="width:85%">
-  		  <f:selectItem   itemLabel="Sin Retirar" itemValue="0" />
-	    	<f:selectItem  itemLabel="Retirado" itemValue="1" />	       
+  		  <f:selectItem   itemLabel="Sin Retirar" itemValue="NO" />
+	    	<f:selectItem  itemLabel="Retirado" itemValue="SI" />	       
 		</p:selectOneMenu>	
-  
-  
-
 		 			 
 		<p:outputLabel value="Zona:" for="zona" />   
-		<h:inputText id="zona" value="#{mb_Cliente.contratoAdd.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
+		<p:inputText id="zona" value="#{mb_Cliente.contratoAdd.zona}" style="float:left  !important;margin:0px 0px 3px 0px;"/>  
 
-		<p:outputLabel  value="Inicio" for="fechaInicio" />
-		<p:calendar id="fechaInicio" value="#{mb_Cliente.contratoAdd.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+		<p:outputLabel  value="Fecha inicio" for="fechaInicio" />
+		<p:calendar id="fechaInicio" label="Fecha inicio" value="#{mb_Cliente.contratoAdd.fechaInicio}"  pattern="dd-MM-yyyy" mask="true" effect="fold" required="true"/>	
  	
- 		<p:outputLabel for="fechaFin" value="FechaFin:" />
-		<p:calendar id="fechaFin" value="#{mb_Cliente.contratoAdd.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:left !important;margin:0px 0px 3px 0px;"/>	
+ 		<p:outputLabel for="fechaFin" value="Fecha fin:" />
+		<p:calendar id="fechaFin" label="Fecha fin" value="#{mb_Cliente.contratoAdd.fechaFin}"  pattern="dd-MM-yyyy" mask="true" effect="fold" required="true"/>	
   
-		<p:outputLabel value="tope sin visitas" for="topemesesvisita" />    
+		<p:outputLabel value="Tope sin visitas" for="topemesesvisita" />    
  		 <p:inputMask converterMessage="Ingrese un maximo de tiempo sin ser visitado"  min="1" id="topemesesvisita" label="topemesesvisita" value="#{mb_Cliente.contratoAdd.topeMesesVisita}"  maxlength="2" >
 		      	<p:keyFilter regEx="/[0-9_]/i" />
 		      	 <f:validateDoubleRange minimum="1" />  
@@ -313,15 +283,16 @@
 
 
 
-<p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" width="420" height="600" id="dialogdireccion" dynamic="true">
+<p:dialog header="Agregar direccion" widgetVar="adddireccion"  appendTo="@(body)" modal="true" id="dialogdireccion" dynamic="true">
 <ui:include src="/templates/templateadddireccion.xhtml" id="adddireccion">	 
 </ui:include>	
 </p:dialog>	
 
 
 <p:dialog header="Ver arrendamientos" widgetVar="verarrendamientos"  appendTo="@(body)" modal="true" width="90%" dynamic="true">
-<ui:include src="/templates/templatearrendamientos.xhtml" id="verarrendamientos">	
-<ui:param name="#{paramListaArrendamientos}"   value = "#{mb_Movimiento.listaArrendamientos}"/>					
+<ui:include src="/templates/templatearrendamiento.xhtml" id="verarrendamientos">	
+<ui:param name="#{paramListaArrendamientos}" value = "#{mb_Movimiento.listaArrendamientos}"/>		
+<ui:param name="paramVerDev" value = "false"/>		
 </ui:include>	
 </p:dialog>		
 

@@ -66,8 +66,7 @@ public class PruebaServlet extends HttpServlet {
 //      } 
       
       
-    String id=request.getParameter("id");
-    System.out.println(id);    
+    String id=request.getParameter("id"); 
     String tipo=request.getParameter("tipo");
 
     
@@ -76,7 +75,7 @@ public class PruebaServlet extends HttpServlet {
    // path = request.getRealPath(split_path[0]);
     String imagePath="\\resources\\images\\letterHead.jpg";
     //Image image = Image.getInstance(path+imagePath);
-    System.out.println("path "+path+" "+id);
+    System.out.println("path "+path+" "+id+" "+tipo);
     
     ServletOutputStream sOS=response.getOutputStream();
     System.out.println("pruebaservlet is ready"+sOS.toString());

@@ -113,10 +113,13 @@ public class mb_Movimiento {
 	
 	//ojo contratoID no del contrato A123 sino del su id entidad
 	public void recargarListaArrendamientos (Contrato con){  
-		if (con!=null){
-			this.spinnerDevolucion=0;
-		  this.mapaArrendamiento.clear();
+		this.spinnerDevolucion=0;
+	  this.mapaArrendamiento.clear();
+		if (con!=null){		
 		  this.listaArrendamientos =  dao.getArrendados (con.getId());
+		}
+		else{
+			this.listaArrendamientos =  dao.getArrendados (-1);
 		}
 	}
 	
@@ -168,9 +171,10 @@ public class mb_Movimiento {
 	}
  
 	//inicializa el valor inicial de codmov
-	public void initAddMov (int cod, Cliente cli){
+	public void initAddMov (int cod, Cliente cli,int ref){
 		movimientoAdd.setCodigoMovimientoID(cod);
 		movimientoAdd.setCliente(cli);
+		movimientoAdd.setReferencia(ref);
 		this.actualizarCotizacionYContrato(cod);
 	}
 	
@@ -294,7 +298,7 @@ public class mb_Movimiento {
     this.mapaArrendamiento = mapaArrendamiento;
   }
 
-  public String addNexo(boolean temporal){
+  public String addNexo(){
 //  	 if(temporal){ 
 //  		nexoAdd.setMovimientoID(0);		
 //  		this.listaNexos.add(nexoAdd);
@@ -341,17 +345,12 @@ public class mb_Movimiento {
 	}
   
   
-	public void deleteNexo(NexoMovimiento nexo,boolean temporal){ 
+	public void deleteNexo(NexoMovimiento nexo){ 
 		HttpServletRequest servletContext = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
   	String realPath=(String) servletContext.getServletPath(); 
-  	System.out.println("contexto deletenexo: "+realPath);
-  	//se elimina de una lista temporal
-  	if(temporal){ 
-			this.listaNexos.remove(nexo);			
-			return;
-		}		
-		if (dao.deleteNexo(movSelected.getMovimientoID(),nexo) ){
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el Item");
+  	System.out.println("contexto deletenexo: "+realPath); 
+		if (dao.deleteNexo(nexo) ){
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino el Item "+nexo.getNexoMovimientoID());
 	    FacesContext.getCurrentInstance().addMessage(null, message);	
 	    this.listaNexos.remove(nexo);
 		}
@@ -363,7 +362,9 @@ public class mb_Movimiento {
     
 	}
 
-	
+	public void actualizarCostoArticulo(){
+		this.nexoAdd.setCosto(nexoAdd.getArticulo().getCostoPesos());
+	}
 	
 	public void actualizarTipoReferencia (int codRef) { 
 		

@@ -34,8 +34,6 @@ public class DAO_Cliente {
 		}
 		return salida;
 	}
-
-
 	
 	public boolean update(Cliente c){ 
 		EntityManager em=JpaUtil.getEntityManager(); 
@@ -68,9 +66,9 @@ public class DAO_Cliente {
 		catch (Exception e){
 			e.printStackTrace();	
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+			if(em.isOpen() ){
+				em.close();
+			}		
 		}
 		return salida;
 	}
@@ -119,9 +117,9 @@ public class DAO_Cliente {
 		catch (Exception e){
 			e.printStackTrace();
 		}finally{ 
-	    	  if(em.isOpen() ){
-				  em.close();
-			  }		
+	  	if(em.isOpen() ){
+				em.close();
+			}		
 		}		
 		return salida;
 	}
@@ -130,8 +128,8 @@ public class DAO_Cliente {
 		ArrayList<Contrato> salida = new ArrayList<Contrato>();
 		EntityManager em=JpaUtil.getEntityManager();  
 		try{ 
-			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID + "and retirado='NO'" +
-					"ORDER BY contratoID DESC";
+			String consulta ="Select n From Contrato n where  clienteID = "+ clienteID + " and retirado='NO' " +
+					" ORDER BY contratoID DESC";
 			System.out.println("Consulta getContratosCliente"+consulta);
 			TypedQuery<Contrato> query= em.createQuery(consulta, Contrato.class);
 			ArrayList<Contrato> auxLista = (ArrayList<Contrato>) query.getResultList(); 
