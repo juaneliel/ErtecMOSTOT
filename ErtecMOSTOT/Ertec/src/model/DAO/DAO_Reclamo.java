@@ -10,9 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import model.Articulo;
 import model.Contrato;
 import model.Funcionario;
 import model.Reclamo;
+import model.VentaContado;
 import util.JpaUtil;
 
  
@@ -53,8 +55,8 @@ public class DAO_Reclamo {
 //        + " NOT EXISTS  (SELECT * FROM Reclamos r WHERE r.contratoID = c.id and "; 
 //    
     
-    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 13 and "
-        + " NOT EXISTS  (SELECT * FROM Reclamos r,Contratos c2 WHERE r.contratoID = c2.id "+
+    String consulta =  "SELECT * FROM  Contratos c where c.TopeMesesVisita <> 0 and "
+        + " NOT EXISTS  (SELECT * FROM Reclamos r,Contratos c2 WHERE r.contrato_id = c2.id "+
     		" and c2.contratoID = c.contratoID and "; 
     
     
@@ -119,22 +121,15 @@ public class DAO_Reclamo {
     System.out.println("dao tamanio sinvisitas " +salida.size() );
     
     return salida;
-    
-    
-    
   }
   
-  
+ 
   
   public ArrayList<DAO_infoService> filtrarInformeVisitadosPorFechas(Date fechaIni, Date fechaFin,boolean buscarVisitado){
     
     String consulta =  "SELECT count(r.cliente.clienteID), r.cliente.clienteID, r.nombreCliente, sum(r.red),AVG(r.red+r.antel+r.conmutador+r.energia+r.telefonos),"
         + " c.equipo,c.tipo,c.contratoID,max( DATEDIFF(r.fechaVisita,r.fechaReclamado) ),sum(r.antel),sum(r.conmutador),sum(r.energia),sum(r.telefonos) "
-        + "FROM Reclamo r, Contrato c where r.contrato.id = c.id ";
- 
-        
-                 
-    
+        + "FROM Reclamo r, Contrato c where r.contrato.id = c.id ";    
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     String fi = "";
     String ff="";
@@ -228,6 +223,113 @@ public class DAO_Reclamo {
     return salida;
   }
   
+  
+  public boolean addvc (VentaContado o){
+    EntityManager em=JpaUtil.getEntityManager(); 
+    boolean salida=false;
+    try{      
+      em.getTransaction().begin();
+      em.persist(o);
+      em.getTransaction().commit(); 
+      salida = true;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+     }finally{ 
+          if(em.isOpen() ){
+          em.close();
+        }   
+    }
+    return salida;
+  }
+  
+	public boolean updatevc (VentaContado vc){ 
+		EntityManager em=JpaUtil.getEntityManager();
+		boolean salida=false;
+		try{			
+			em.getTransaction().begin();
+			em.merge(vc);
+      em.getTransaction().commit();
+			salida= true;
+		}catch (Exception e){
+			e.printStackTrace();			
+		}finally{ 
+			if(em.isOpen() ){
+			  em.close();
+		  }		
+		}
+		return salida;
+	}	
+  
+  public boolean deletevc (VentaContado o){ 
+    EntityManager em=JpaUtil.getEntityManager();
+    boolean salida = false;
+    try{      
+      em.getTransaction().begin();
+      em.remove(em.contains(o) ? o : em.merge(o)); 
+      em.getTransaction().commit();
+      salida = true;
+    }
+    catch (Exception e){
+      e.printStackTrace();  
+    }finally{ 
+          if(em.isOpen() ){
+          em.close();
+        }   
+    }
+    return salida;
+  }
+  
+  public ArrayList<VentaContado> getListaVC (){    
+    ArrayList<VentaContado> salida = new ArrayList<VentaContado>();    
+    String consulta="SELECT vc FROM VentaContado vc Where activo = 'si' and codigo = 'V/C'";
+    EntityManager em=JpaUtil.getEntityManager();
+    TypedQuery<VentaContado> consultaFuncionario= em.createQuery(consulta,VentaContado.class);
+    try{
+      System.out.println(">>>consulta>"+ consulta);
+      salida =  (ArrayList<VentaContado>) consultaFuncionario.getResultList();
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }finally{ 
+          if(em.isOpen() ){
+          em.close();
+        }   
+    }
+    return salida; 
+  }
+  
+  public static ArrayList<VentaContado> completarVC(String buscar){
+		ArrayList<VentaContado> salida= new ArrayList<VentaContado>();
+		
+		
+		String consulta="";
+		//se verifica si es numerico se busca por el id sino se busca por nombre
+		try {
+			int idVC = Integer.parseInt(buscar);
+			consulta="SELECT vc FROM VentaContado vc Where id like '"+idVC+"%' " + " and activo='si' and codigo = 'V/C'";
+			
+		} catch (NumberFormatException nfe){
+			consulta="SELECT vc FROM VentaContado vc Where cliente like '%"+ buscar+"%' " + " and activo='si' and codigo = 'V/C'";
+		}
+		
+		System.out.println("Consulta: "+consulta);
+		EntityManager em=JpaUtil.getEntityManager();
+		TypedQuery<VentaContado> query= em.createQuery(consulta, VentaContado.class);
+		try{
+			System.out.println(">>>consulta completar VC: "+ consulta);
+			salida =  (ArrayList<VentaContado>) query.getResultList();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}finally{ 
+	    	  if(em.isOpen() ){
+				  em.close();
+			  }		
+		}		
+		return salida;
+	}
+	
   
   public ArrayList<Reclamo> getListaPendientes (){    
     ArrayList<Reclamo> salida = new ArrayList<Reclamo>();    

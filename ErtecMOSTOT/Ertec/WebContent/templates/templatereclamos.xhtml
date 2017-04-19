@@ -63,8 +63,12 @@
 			<h:outputText  value="#{reclamo.id}"/>
 		</p:column>
 				 
-		<p:column headerText="Cliente:"  visible="#{mb_Reclamo.list[1]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
+		<p:column headerText="Cliente"  visible="#{mb_Reclamo.list[1]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
 		 <h:outputText value="#{reclamo.nombreCliente}" />  
+		</p:column> 
+
+		<p:column headerText="Equipo"  visible="#{mb_Reclamo.list[1]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
+		 <h:outputText value="#{reclamo.equipo}"  />  
 		</p:column> 
 
 		<p:column headerText="Codigo" visible="#{mb_Reclamo.list[2]}" sortBy="#{reclamo.codigo}"  filterMatchMode="contains" filterBy="#{reclamo.codigo}">		                
@@ -255,7 +259,7 @@
 	<p:contextMenu for="datatablereclamo">
   	<p:menuitem actionListener="#{mb_Reclamo.initDetalleReclamo()}" value="Ver/Editar detalles" update="formdetallereclamo" icon="ui-icon-search" oncomplete="PF('dialogodetalles').show()"/>
   	<p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','reclamo')}" value="Borrar" update="formreclamo message"  
-	     actionListener="#{mb_Reclamo.delete(reclamo)}" icon="ui-icon-trash" >
+	     actionListener="#{mb_Reclamo.delete(mb_Reclamo.reclamoSelected)}" icon="ui-icon-trash" >
 			<p:confirm   header="Borrar reclamo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
 		</p:menuitem>	
   </p:contextMenu>
@@ -292,14 +296,20 @@
 <p:dialog id="addreclamo" header="Agregar reclamo"  widgetVar="addreclamo" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
  <h:form> 
  		<p:panelGrid id="panelreclamo" columns="2" border="1"  cellpadding="5" cellspacing="1">    
-		
+ 		
+ 		 		
+ 							<p:outputLabel value="Tipo Cliente:" for="tipocliente" /> 			 
+					<p:selectOneMenu id="tipocliente"  value="#{mb_Reclamo.tipocliente}"  >
+						<p:ajax listener="#{mb_Reclamo.actualizarVC()}"  update="@parent" />
+							<f:selectItem  itemLabel="Cliente" itemValue="1" />
+							<f:selectItem   itemLabel="Venta Contado" itemValue="0" />
+					</p:selectOneMenu>  		
     
-     	<h:outputLabel  value="Cliente: *" for="clientea"  />
-		 	<p:autoComplete  required="true"  id="clientea" value="#{mb_Reclamo.reclamoAdd.cliente}"  
+     	<h:outputLabel  value="Cliente: *" for="clientea"  />     	
+		 	<p:autoComplete rendered="#{mb_Reclamo.tipocliente==1}" required="true"  id="clientea" value="#{mb_Reclamo.reclamoAdd.cliente}"  
  				completeMethod="#{mb_Usuario.completarCliente}" 
 				var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
- 				converter="ConverterCliente" forceSelection="true"
- 				style="float:left !important;margin:0px 0px 3px 0px;width:90%"> 
+ 				converter="ConverterCliente" forceSelection="true"> 
  				<p:ajax event="itemSelect" listener="#{mb_Usuario.recargarListaContratos(mb_Reclamo.reclamoAdd.cliente.clienteID)}" update="contrato" />  				
  								
  				<f:facet name="itemtip">
@@ -316,12 +326,32 @@
             </f:facet>
 			</p:autoComplete>
 			
-			
+			<p:autoComplete rendered="#{mb_Reclamo.tipocliente==0}" required="true"  id="clienteb" value="#{mb_Reclamo.reclamoAdd.ventaContado}"  
+ 				completeMethod="#{mb_Usuario.completarVC}" 
+				var="theme" itemLabel="#{theme.cliente}" itemValue="#{theme}"
+ 				converter="ConverterVC" forceSelection="true" >   								
+ 				<f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                		<h:outputText value="ID:" />
+                    <h:outputText value="#{theme.id}" />
+                
+                    <h:outputText value="Direccion:" />
+                    <h:outputText value="#{theme.direccion}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telefono}" />
+                    
+                    <h:outputText value="Equipo:" />
+                    <h:outputText value="#{theme.equipo}" />
+                </h:panelGrid>
+            </f:facet>
+			</p:autoComplete>
+			 
  
 				
 			
-			<p:outputLabel value="Contrato:" for="contrato" /> 
-		<p:selectOneMenu id="contrato" value="#{mb_Reclamo.reclamoAdd.contrato}" style="width:70%"    
+			<p:outputLabel value="Contrato:" for="contrato" rendered="#{mb_Reclamo.tipocliente==1}"/> 
+		<p:selectOneMenu id="contrato" value="#{mb_Reclamo.reclamoAdd.contrato}" style="width:70%"  rendered="#{mb_Reclamo.tipocliente==1}"  
 		panelStyle="min-width:200px" var="t" effect="fade" converter="ConverterContrato" filter="true" filterMatchMode="startsWith"
 		>
 			<f:selectItems value="#{mb_Usuario.listaContratosOBJ}" var="contrato" title="dale" 			
@@ -352,7 +382,7 @@
 			<h:outputLabel    value="Contacto:" for="contacto" />
  			<p:inputText required="true" id="contacto" value="#{mb_Reclamo.reclamoAdd.contacto}"  />
  			
- 			<h:outputLabel value="Reclamo:" for="reclamo" /> 			
+ 			<h:outputLabel value="Reclamo: *" for="reclamo" /> 			
       <p:inputTextarea required="true" value="#{mb_Reclamo.reclamoAdd.reclamo}"  id="reclamo"  rows="5" cols="20"  maxlength="1000" counterTemplate="{0} characters remaining."  />
      
 		

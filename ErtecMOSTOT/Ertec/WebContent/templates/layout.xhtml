@@ -96,8 +96,9 @@
     		<p:submenu label="Reclamos" icon="" rendered="#{mb_Usuario.acceso('VER','reclamo')}">    
             <p:menuitem value="Historial" url="/paginas/reclamos.xhtml" icon="" />
             <p:menuitem value="Informes" url="/paginas/informeservice.xhtml" icon="" />
-            <p:menuitem value="Pendientes" url="/paginas/reclamospendientes.xhtml" icon="" /> 
-            <p:menuitem value="Sin visitas" url="/paginas/sinvisitas.xhtml" icon="" />
+            <p:menuitem value="Pendientes" action="#{mb_Reclamo.recargarpendientes()}" icon="" /> 
+            <p:menuitem value="Sin visitas" url="/paginas/sinvisitas.xhtml" icon="" />              
+            <p:menuitem value="Ventas contado" action="#{mb_Reclamo.recargarvc()}" icon="" />
             <p:separator />
             <p:menuitem value="Ocultar" url="#" />
         </p:submenu>

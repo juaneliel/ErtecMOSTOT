@@ -28,6 +28,7 @@
 		<class>model.Referencia</class>
 		<class>model.TipoOT</class>
 		<class>model.Usuario</class>
+		<class>model.VentaContado</class>
 		
 		
 		

@@ -19,66 +19,48 @@ public class Reclamo implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REC_SEQ")
-  private int id;
-  
+  private int id;  
  
-  @OneToOne(fetch=FetchType.EAGER,optional=true) 
-  @JoinColumn(name="funcionarioID")
+  @OneToOne(fetch=FetchType.EAGER,optional=true)  
   private Funcionario funcionario;
   
-  @OneToOne(fetch=FetchType.EAGER,optional=true )
-  @JoinColumn(name="clienteID")
+  @OneToOne(fetch=FetchType.EAGER,optional=true ) 
   private Cliente cliente;
   
-  @OneToOne(fetch=FetchType.EAGER,optional=true)
-  @JoinColumn(name="contratoID")
+  @OneToOne(fetch=FetchType.EAGER,optional=true) 
   private Contrato contrato;
 
-	private short antel;
- 
-	private String codigo;
-
+  @OneToOne(fetch=FetchType.EAGER,optional=true) 
+  private VentaContado ventaContado;
+  
+	private short antel; 
+	private String codigo="";
 	private short conmutador;
-
-	private String contacto;
- 
-
+	private String contacto="";
 	private short energia;
-
-	private String estado;
-
+	private String estado="";
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_reclamado")
 	private Date fechaReclamado;
-
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_visita")
 	private Date fechaVisita;
-
-
 	@Column(name="hora_reclamado")
 	private Time horaReclamado;
-
 	private String myr;
-
 	@Column(name="myr_estado")
-	private String myrEstado;
-
-	private String nombreCliente;
-
-	private String observaciones;
-
-	private String ordenreparacion;
-
-	private String reclamo;
-
+	private String myrEstado="";
+	private String nombreCliente="";
+	private String observaciones="";
+	private String ordenreparacion="";
+	private String reclamo="";
 	private short red;
-
 	private short telefonos;
-
-	private String urgente;
-
-	public Reclamo() {
+	private String urgente="";
+	private String equipo="";
+	
+	public Reclamo() { 
+		super();
 	}
 
 	public int getId() {
@@ -257,6 +239,22 @@ public class Reclamo implements Serializable {
 
 	public void setContrato(Contrato contrato) {
 		this.contrato = contrato;
+	}
+
+	public VentaContado getVentaContado() {
+		return ventaContado;
+	}
+
+	public void setVentaContado(VentaContado ventaContado) {
+		this.ventaContado = ventaContado;
+	}
+
+	public String getEquipo() {
+		return equipo;
+	}
+
+	public void setEquipo(String equipo) {
+		this.equipo = equipo;
 	}
 
 }

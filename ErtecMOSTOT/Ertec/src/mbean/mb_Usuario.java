@@ -62,11 +62,13 @@ import model.Funcionario;
 import model.Proveedores;
 import model.Usuario;
 import model.UsuarioLogin;
+import model.VentaContado;
 import model.DAO.DAO_Articulo;
 import model.DAO.DAO_Cliente;
 import model.DAO.DAO_Funcionario;
 import model.DAO.DAO_Movimiento;
 import model.DAO.DAO_OT;
+import model.DAO.DAO_Reclamo;
 import model.DAO.DAO_Usuario;
 
 import javax.faces.bean.SessionScoped;
@@ -102,6 +104,7 @@ public class mb_Usuario {
 	private ArrayList<Cliente> listaClientesOBJ;
 	private ArrayList<Proveedores> listaProveedoresOBJ;
 	private ArrayList<Contrato> listaContratosOBJ;
+	private ArrayList<VentaContado> listaVCOBJ;
 	private Map<Integer,Cod_Movimiento> mapaCodMov = new HashMap<Integer, Cod_Movimiento>(); 
 	
 
@@ -454,6 +457,11 @@ public class mb_Usuario {
 		return listaClientesOBJ;		
 	}
 	
+	public ArrayList <VentaContado> completarVC(String query){
+		this.listaVCOBJ = DAO_Reclamo.completarVC(query); 
+		return listaVCOBJ;		
+	}
+	
 	public ArrayList <Funcionario> completarFuncionario(String query){
 		this.listaFuncionariosOBJ=DAO_Funcionario.completarFuncionario(query);
 		return listaFuncionariosOBJ;
@@ -581,6 +589,14 @@ public class mb_Usuario {
 
 	public void setMapaCodMov(Map<Integer, Cod_Movimiento> mapaCodMov) {
 		this.mapaCodMov = mapaCodMov;
+	}
+
+	public ArrayList<VentaContado> getListaVCOBJ() {
+		return listaVCOBJ;
+	}
+
+	public void setListaVCOBJ(ArrayList<VentaContado> listaVCOBJ) {
+		this.listaVCOBJ = listaVCOBJ;
 	}
 	
 }

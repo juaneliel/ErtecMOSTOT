@@ -68,18 +68,6 @@
 									    <p:inputText id="cat" value="#{mb_Funcionario.funcionarioAdd.cat}" />										
 								    							                    
 	                </h:panelGrid>
-	                
-	                 <p:outputLabel for="image" value="Seleccione imagen" />
-                <p:fileUpload id="image" value="#{mb_Funcionario.file}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                
-                  <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="false" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar"
-             multiple="false"  ajax="false" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  />
- 
-                
-                
-                <f:facet name="footer">
-                    <h:commandButton value="Submit" ajax="false" 
-                                     actionListener="#{mb_Funcionario.upload()}"/></f:facet>
          	                
 	          	</h:panelGrid>
 	          	   <h:graphicImage value="#{mb_Funcionario.foto}" width="50" height="50"></h:graphicImage>
@@ -344,3 +332,17 @@ paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" live
 <!-- 	private String pathLibretaConducir1; -->
 <!-- 	private String pathLibretaConducir2;	 -->
 <!-- 	private String pathFoto; -->
+
+
+
+
+	                
+<!-- 	                 <p:outputLabel for="image" value="Seleccione imagen" /> -->
+<!--                 <p:fileUpload id="image" value="#{mb_Funcionario.file}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  -->
+                
+<!--                   <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{mb_Funcionario.upload}" mode="advanced" dragDropSupport="false" label="Elegir" uploadLabel="Guardar" cancelLabel="Cancelar" -->
+<!--              multiple="false"  ajax="false" update="message" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip|png|pdf)$/"  /> -->
+
+<!--                 <f:facet name="footer"> -->
+<!--                     <h:commandButton value="Submit" ajax="false"  -->
+<!--                                      actionListener="#{mb_Funcionario.upload()}"/></f:facet> -->

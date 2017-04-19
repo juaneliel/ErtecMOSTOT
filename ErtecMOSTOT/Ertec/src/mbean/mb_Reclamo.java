@@ -12,14 +12,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
+import model.Articulo;
 import model.Cliente;
 import model.Contrato;
 import model.Funcionario;
 import model.Reclamo;
+import model.VentaContado;
 import model.DAO.DAO_Cliente;
 import model.DAO.DAO_Reclamo;
 import model.DAO.DAO_infoService;
@@ -32,12 +36,15 @@ public class mb_Reclamo {
   private List<Boolean> list;
   private ArrayList<Reclamo> lista;
   private DAO_Reclamo dao=new DAO_Reclamo();
-
+private int tipocliente=0;
   private ArrayList<Reclamo> listaPendientes;
   private ArrayList<Reclamo> listaAnuladas;
   private ArrayList<Reclamo> listaVisitadas;
   private ArrayList<DAO_infoService> filtrado; 
   private Reclamo reclamoAdd=new Reclamo();
+  private VentaContado vcAdd=new VentaContado();
+  private VentaContado vcSelected=new VentaContado();
+  private ArrayList <VentaContado> listavc=new ArrayList <VentaContado>();
   private boolean habEdiRec;
   
   private ArrayList<Contrato> listaSinVisitar;
@@ -84,15 +91,33 @@ public class mb_Reclamo {
   }
   
   public void recargar() {
+  	recargarvc();
+  	recargarpendientes();
     this.filtrado=dao.filtrarInformeVisitadosPorFechas(this.fechaIni, this.fechaFin, true);
     this.lista=dao.getLista();
-    this.listaPendientes=dao.getListaPendientes();
     this.listaSinVisitar=dao.filtrarSinVisitar(this.fechaIni, this.fechaFin,true);
     System.out.println("mb tamaño reclamos "+lista.size());
   } 
   
+  public String recargarvc(){
+    this.listavc=dao.getListaVC();
+    System.out.println("tamano listavc "+listavc.size());
+  	return "/paginas/ventacontado.xhtml?faces-redirect=true"; 
+  }
+  
+  public String recargarpendientes(){
+    this.listaPendientes=dao.getListaPendientes();
+  	return "/paginas/reclamospendientes.xhtml?faces-redirect=true"; 
+  }
+  
+  
+  
   public void updateReclamoSelected(){
   	dao.update(this.reclamoSelected);
+  }
+  
+  public void actualizarVC(){
+  	
   }
   
   public void filtrarInformeVisitadosPorFechas(){
@@ -103,26 +128,63 @@ public class mb_Reclamo {
     this.listaSinVisitar=dao.filtrarSinVisitar(this.fechaIni, this.fechaFin,true);
   }
   
+  public void addvc(){
+  	if (dao.addvc (vcAdd)){
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego la venta contado "+vcAdd.getId());
+      FacesContext.getCurrentInstance().addMessage(null, message);
+      this.listavc.add(vcAdd); 
+    }
+    else{
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", " No se pudo agregar el reclamo");
+          FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+  }
+  
+  public void deletevc(VentaContado vc){ 
+		if (dao.deletevc(vc) ){
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Borrado", "Se elimino la venta contado "+vc.getId());
+      FacesContext.getCurrentInstance().addMessage(null, message);	
+      listavc.remove(vc);
+      //usado para recargar cuando se borra filtrado
+      DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+          .findComponent("formvc:datatablevc");
+      if (dataTable != null) {
+      	dataTable.reset();
+      }
+		}
+		else{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se puede eliminar la venta contado");
+	        FacesContext.getCurrentInstance().addMessage(null, message);			
+		}
+		//return "/paginas/funcionarios.xhtml?faces-redirect=true";
+        
+	}
+  
   public String add(){
-    String salida=null;
-    
-    if(reclamoAdd.getCliente()!=null){ 
+    String salida=null;    
+    if(tipocliente==1){ 
     	reclamoAdd.setNombreCliente(reclamoAdd.getCliente().getNombre());
-    } 
-     System.out.println(">>>>reclamoaddcontrato "+reclamoAdd.getContrato());
-    if(reclamoAdd.getContrato()!=null){
-      reclamoAdd.setCodigo(reclamoAdd.getContrato().getTipo()+reclamoAdd.getContrato().getContratoID()); 
-    } 
+    	if(reclamoAdd.getContrato()!=null){
+        reclamoAdd.setCodigo(reclamoAdd.getContrato().getTipo()+reclamoAdd.getContrato().getContratoID()); 
+        reclamoAdd.setEquipo(reclamoAdd.getContrato().getEquipo());
+    	} 
+    }
+    else{
+    		reclamoAdd.setNombreCliente(reclamoAdd.getVentaContado().getCliente());
+    		reclamoAdd.setCodigo(reclamoAdd.getVentaContado().getCodigo());
+    		reclamoAdd.setEquipo(reclamoAdd.getVentaContado().getEquipo());
+    }
+    System.out.println(">>>>reclamoaddcontrato "+reclamoAdd.getContrato());   
     reclamoAdd.setMyrEstado("pen");
     reclamoAdd.setFuncionario(null);
-    reclamoAdd.setEstado("pendiente");
-    
+    reclamoAdd.setEstado("pendiente");    
     if (dao.add (reclamoAdd)){
       salida= "/paginas/reclamos.xhtml?faces-redirect=true";
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", "Se agrego el reclamo "+reclamoAdd.getId());
       FacesContext.getCurrentInstance().addMessage(null, message);
       this.listaPendientes.add(reclamoAdd);
       this.lista.add(reclamoAdd);
+      reclamoAdd=new Reclamo();
     }
     else{
       FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", " No se pudo agregar el reclamo");
@@ -149,8 +211,16 @@ public class mb_Reclamo {
   }
  
  
-  public void onRowReclamoSelect(){
-  	
+  public void editvc (RowEditEvent event) {    
+    VentaContado o= (VentaContado) event.getObject();  
+    if(dao.updatevc(o)){       
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Actualizado", "Se actualizo la Venta contado ");
+      FacesContext.getCurrentInstance().addMessage(null, message);  
+    }
+    else{
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo actualizar");
+      FacesContext.getCurrentInstance().addMessage(null, message);           
+    }   
   }
   
   public void editReclamo (RowEditEvent event) {
@@ -192,9 +262,6 @@ public class mb_Reclamo {
     list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
   }
   
-  
-  
-  
   public ArrayList<Reclamo> getLista() {
     return lista;
   }
@@ -203,14 +270,10 @@ public class mb_Reclamo {
     this.lista = lista;
   }
 
-
   public void setList(List<Boolean> list) {
     this.list = list;
   }
-
-
- 
-
+  
   public ArrayList<Reclamo> getListaPendientes() {
     return listaPendientes;
   }
@@ -276,4 +339,38 @@ public class mb_Reclamo {
 	public void setHabEdiRec(boolean habEdiRec) {
 		this.habEdiRec = habEdiRec;
 	}
+
+	public int getTipocliente() {
+		return tipocliente;
+	}
+
+	public void setTipocliente(int tipocliente) {
+		this.tipocliente = tipocliente;
+	}
+
+	public VentaContado getVcAdd() {
+		return vcAdd;
+	}
+
+	public void setVcAdd(VentaContado vcAdd) {
+		this.vcAdd = vcAdd;
+	}
+
+	public VentaContado getVcSelected() {
+		return vcSelected;
+	}
+
+	public void setVcSelected(VentaContado vcSelected) {
+		this.vcSelected = vcSelected;
+	}
+
+	public ArrayList<VentaContado> getListavc() {
+		return listavc;
+	}
+
+	public void setListavc(ArrayList<VentaContado> listavc) {
+		this.listavc = listavc;
+	}
+	
+	
 }

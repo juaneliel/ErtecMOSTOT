@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/templates/layout.xhtml"
+ xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+      
+<ui:define name="cuerpo"> 
+ 
+	<h:form id="formvc" onkeypress="if (event.keyCode == 13) { return false; }">
+	
+	<p:dataTable var="vc" value="#{mb_Reclamo.listavc}" id="datatablevc" widgetVar="datatablearticulos"
+		 selection="#{mb_Reclamo.vcSelected}" selectionMode="single" rowKey="#{vc.id}"	
+		 paginator="true" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 
+		 scrollable="true"    scrollWidth="100%"   currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 editable="true"   emptyMessage="Sin Registros" 
+		 	 paginatorTemplate=" {agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters} {vercol}"
+    rowsPerPageTemplate="50"	sortBy="#{vc.id}" sortOrder="descending"
+		 >
+
+	<f:facet name="{Exporters}">
+	    <h:commandLink>
+	      <p:graphicImage name="/images/excel.png" width="24"/>
+	      <p:dataExporter type="xls" target="datatablevc" fileName="ventacontado"   />
+	    </h:commandLink>
+	
+	    <h:commandLink>
+	      <p:graphicImage name="/images/pdf.png" width="24"/>
+	      <p:dataExporter type="pdf" target="datatablevc" fileName="ventacontado"  />
+	    </h:commandLink> 
+		</f:facet>
+
+ 
+		
+				 	<f:facet name="{titulo}">
+		        Venta contado		 		        
+		    </f:facet>
+		    
+		 <f:facet name="{agregar}">    
+		  <p:commandButton value="Agregar"  onclick="PF('addvc').show()" style="float:left"  rendered="#{mb_Usuario.acceso('AGREGAR','reclamo')}"/>      
+      </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatablevc" trigger="toggler" >
+		        	<p:ajax event="toggle" listener="#{mb_Usuario.onToggleFuncionarios}" />
+		        </p:columnToggler> 
+		    </f:facet> 
+		
+		
+		 
+		<p:ajax event="rowEdit" listener="#{mb_Reclamo.editvc}" update="message" />	   	
+		
+		
+		<p:column headerText=""  style = "width:0px" exportable="false" rendered="#{mb_Usuario.acceso('EDITAR','reclamo')}">		
+				<p:rowEditor    >
+				</p:rowEditor>					
+	    </p:column>
+
+		<p:column headerText="Id" sortBy="#{vc.id}"  filterMatchMode="startsWith" filterBy="#{vc.id}">		                
+			<p:outputLabel  value="#{vc.id}"/>
+		</p:column>
+
+		<p:column headerText="Cliente" sortBy="#{vc.cliente}"  filterMatchMode="contains" filterBy="#{vc.cliente}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.cliente}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="cliente" value="#{vc.cliente}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>  
+      
+   	<p:column headerText="Direccion" sortBy="#{vc.direccion}"  filterMatchMode="contains" filterBy="#{vc.direccion}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.direccion}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="direccion" value="#{vc.direccion}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>     
+      
+      
+       	<p:column headerText="Horario" sortBy="#{vc.horario}"  filterMatchMode="contains" filterBy="#{vc.horario}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.horario}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="horario" value="#{vc.horario}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>   
+		
+		
+	 <p:column headerText="Equipo" sortBy="#{vc.equipo}"  filterMatchMode="contains" filterBy="#{vc.equipo}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.equipo}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="equipo" value="#{vc.equipo}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>   
+		
+			 <p:column headerText="Telefono" sortBy="#{vc.telefono}"  filterMatchMode="contains" filterBy="#{vc.telefono}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.telefono}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="telefono" value="#{vc.telefono}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>   
+			
+			 <p:column headerText="Observacion" sortBy="#{vc.observaciones}"  filterMatchMode="contains" filterBy="#{vc.observaciones}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.observaciones}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="observacion" value="#{vc.observaciones}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column>   	
+		
+		
+	
+		<p:column headerText="Activo" sortBy="#{vc.activo}"  filterMatchMode="contains" filterBy="#{vc.activo}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.activo}" /></f:facet>
+	      <f:facet name="input">
+			     <p:selectOneMenu id="activo" value="#{vc.activo}" style="width:85%">
+						<f:selectItem  itemLabel="Si" itemValue="Si" />
+						<f:selectItem   itemLabel="No" itemValue="No" />
+					</p:selectOneMenu>	
+	      </f:facet>
+			</p:cellEditor>
+		</p:column> 
+	
+			<p:column headerText="Moroso" sortBy="#{vc.moroso}"  filterMatchMode="contains" filterBy="#{vc.moroso}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.moroso}" /></f:facet>
+	      <f:facet name="input">
+			      <p:selectOneMenu id="moroso" value="#{vc.moroso}" style="width:85%">
+						<f:selectItem  itemLabel="Si" itemValue="Si" />
+						<f:selectItem   itemLabel="No" itemValue="No" />
+					</p:selectOneMenu>	
+	      </f:facet>
+			</p:cellEditor>
+		</p:column>  
+		
+		<p:column headerText="Codigo" sortBy="#{vc.codigo}"  filterMatchMode="contains" filterBy="#{vc.codigo}">		                
+			<p:cellEditor>
+	      <f:facet name="output"><p:outputLabel value="#{vc.codigo}" /></f:facet>
+	      <f:facet name="input"><p:inputTextarea id="codigo" value="#{vc.codigo}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+			</p:cellEditor>
+		</p:column> 
+		
+		    
+    
+</p:dataTable>
+
+	<p:contextMenu for="datatablevc">
+  	 <p:menuitem rendered="#{mb_Usuario.acceso('BORRAR','reclamo')}" value="Borrar" update="formvc message"  actionListener="#{mb_Reclamo.deletevc(mb_Reclamo.vcSelected)}" icon="ui-icon-trash" >
+			<p:confirm   header="Borrar articulo" message="Seguro que quieres borrar?" icon="ui-icon-alert"  />
+		</p:menuitem>		
+	</p:contextMenu>  
+
+
+
+
+</h:form>
+			 
+
+
+<script type="text/javascript">
+    function handleAddRequest(xhr, status, args) { 
+        if(args.validationFailed ) {
+            PF('addarticulos').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('addarticulos').hide(); 
+            //PF('datatablearticulos').addRow();
+        }
+    }    
+</script>
+
+<p:dialog id="addarticulos" header="Agregar articulo"  widgetVar="addarticulos" showEffect="explode" hideEffect="fade"  modal="true"   dynamic="true"   >
+ <h:form> 
+  <p:panelGrid id="panel" columns="2" border="1"  cellpadding="5" cellspacing="1">  
+			    
+			<p:outputLabel value="Id:" for="id" /> 
+			<p:inputText id="Id" label="id" value="#{mb_Reclamo.vcAdd.id}" required="true" />  
+		   
+			<p:outputLabel value="Cliente:" for="cliente" /> 
+			<p:inputText id="cliente" label="cliente" value="#{mb_Reclamo.vcAdd.cliente}" required="true" />  
+			
+			<p:outputLabel value="Direccion:" for="direccion" /> 
+			<p:inputText id="direccion" label="direccion" value="#{mb_Reclamo.vcAdd.direccion}" required="true" />  
+			
+			<p:outputLabel value="Horario:" for="horario" /> 
+			<p:inputText id="horario" label="horario" value="#{mb_Reclamo.vcAdd.horario}" required="true" /> 
+			
+			<p:outputLabel value="Equipo:" for="equipo" /> 
+			<p:inputText id="equipo" label="equipo" value="#{mb_Reclamo.vcAdd.equipo}" required="true" /> 
+			
+			<p:outputLabel value="Telefono:" for="telefono" /> 
+			<p:inputText id="telefono" label="telefono" value="#{mb_Reclamo.vcAdd.telefono}" required="true" /> 
+			
+			<p:outputLabel value="Observacion:" for="observaciones" /> 
+			<p:inputText id="observaciones" label="observaciones" value="#{mb_Reclamo.vcAdd.observaciones}" required="true" /> 
+			
+			<p:outputLabel value="Activo:" for="activo" />
+			<p:selectOneMenu id="activo" value="#{vc.activo}" style="width:85%">
+				<f:selectItem  itemLabel="Si" itemValue="Si" />
+				<f:selectItem   itemLabel="No" itemValue="No" />
+			</p:selectOneMenu>}
+				
+			<p:outputLabel value="Moroso:" for="moroso" />
+			 <p:selectOneMenu id="moroso" value="#{vc.moroso}" style="width:85%">
+						<f:selectItem  itemLabel="Si" itemValue="Si" />
+						<f:selectItem   itemLabel="No" itemValue="No" />
+					</p:selectOneMenu>	
+			 
+  		
+			<p:commandButton value="Agregar" actionListener="#{mb_Reclamo.addvc }"  oncomplete="handleAddRequest(xhr, status, args)"
+			update="@([id$=datatablevc]) message" />	
+
+		   	
+		</p:panelGrid>
+ </h:form>
+ </p:dialog>
+ 
+</ui:define>
+</ui:composition>   

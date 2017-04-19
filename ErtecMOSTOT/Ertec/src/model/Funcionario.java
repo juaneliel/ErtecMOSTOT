@@ -26,7 +26,7 @@ public class Funcionario implements Serializable {
 	private byte[] foto;
   
 	
-	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL, optional = false)
+	@OneToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name="fichaID")
 	private FichaPersonal ficha=new FichaPersonal();
 	

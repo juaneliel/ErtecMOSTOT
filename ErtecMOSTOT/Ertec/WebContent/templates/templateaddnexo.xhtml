@@ -15,15 +15,16 @@
 			completeMethod="#{mb_Usuario.completarArticulo}"
 			var="theme" itemLabel="#{theme.descripcion}" itemValue="#{theme}" required="true"
 			converter="ConverterArticulo" forceSelection="true"   style="float:left !important;margin:0px 0px 3px 0px;">  		          
-		  <p:ajax event="itemSelect" listener="#{mb_Movimiento.actualizarCostoArticulo()}" update="costo" />  				
+		  <p:ajax event="itemSelect" listener="#{mb_Movimiento.actualizarCostoArticulo()}" update="costo cantidad" />  				
 		</p:autoComplete>			  
 		    
 		    
 		    
 		<h:outputLabel value="Cantidad:" for="cantidad" />		 
-		<p:inputMask id="cantidad" label="cantidad" value="#{mb_Movimiento.nexoAdd.cantidad}" maxlength="10" >
-        	<p:keyFilter regEx="/[0-9_]/i" />
-    	</p:inputMask>
+    <p:spinner id="cantidad"   size="3" value="#{mb_Movimiento.nexoAdd.cantidad}" min="0" max="#{mb_Movimiento.nexoAdd.articulo.stock}" > 
+		</p:spinner>	
+    	
+    	
 		
 		<h:outputLabel value="Costo:" for="costo" rendered="#{mb_Movimiento.verCosto}"  />
 		<p:inputNumber id="costo" label="costo" value="#{mb_Movimiento.nexoAdd.costo}" minValue="0.00" maxValue="9999999.99" 
@@ -53,6 +54,12 @@ function handleAddItemRequest(xhr, status, args) {
 
 </ui:composition>
 </html>
+
+
+<!-- 		<p:inputMask id="cantidad" label="cantidad" value="#{mb_Movimiento.nexoAdd.cantidad}" maxlength="10" > -->
+<!--         	<p:keyFilter regEx="/[0-9_]/i" /> -->
+<!--     	</p:inputMask> -->
+
 
 <!-- 	<p:outputLabel for="effect" value="Fecha:" /> -->
 <!-- 		<p:calendar id="effect" value="#{mb_Movimiento.fecha}"  pattern="dd-MM-yyyy" mask="true" effect="fold" style="float:right !important;margin:0px 0px 3px 0px;"/>	 -->
