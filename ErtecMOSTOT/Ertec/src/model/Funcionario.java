@@ -34,6 +34,11 @@ public class Funcionario implements Serializable {
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
 	private List<ActividadAnterior> actividadAnteriores= new ArrayList<ActividadAnterior>();
 	
+
+	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
+	private List<ActividadInterna> actividadInterna= new ArrayList<ActividadInterna>();
+	
 	@OneToMany (fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="funcionarioID", referencedColumnName="funcionarioID")
 	private List<Capacitacion> capacitaciones=new ArrayList<Capacitacion>();
@@ -259,6 +264,14 @@ public class Funcionario implements Serializable {
 
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
+	}
+
+	public List<ActividadInterna> getActividadInterna() {
+		return actividadInterna;
+	}
+
+	public void setActividadInterna(List<ActividadInterna> actividadInterna) {
+		this.actividadInterna = actividadInterna;
 	}
 
 }

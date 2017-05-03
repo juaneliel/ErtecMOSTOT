@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.wizard.Wizard;
 import org.primefaces.context.RequestContext;
@@ -36,6 +37,7 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
 import model.ActividadAnterior;
+import model.ActividadInterna;
 import model.Capacitacion;
 import model.Educacion;
 import model.FichaPersonal;
@@ -53,7 +55,7 @@ public class mb_Funcionario {
 	private String urlImpresion;
 	private Funcionario funcionarioOBJ;
 	private ArrayList<Funcionario> listaFuncionariosOBJ=new ArrayList<Funcionario>(); 
-  private String nombreArchivo="foto.jpg";
+  private String nombreArchivo ;
 	private Funcionario funSelected=new Funcionario();	
 	private Funcionario funcionarioAdd=new Funcionario();	
 	private FileUploadEvent eventUpload;
@@ -64,6 +66,9 @@ public class mb_Funcionario {
 	private UploadedFile file;
 	private boolean skip;
 	private byte[] foto;
+	private String destination="/archivosFichaPersonal/";
+	private ActividadInterna actividadInterna=new ActividadInterna();
+	
 	
 	@PostConstruct
 	public void init(){
@@ -78,7 +83,6 @@ public class mb_Funcionario {
     }
 	}
 	
-	private String destination="/archivosFichaPersonal/";
 	
   public void upload(FileUploadEvent event) {  
       FacesMessage msg = new FacesMessage("Exito ", event.getFile().getFileName() + " se subio el archivo.");  
@@ -99,7 +103,19 @@ public class mb_Funcionario {
           e.printStackTrace();
       }
   }  
-
+ 
+  public void uploadFile(FileUploadEvent event) {  
+    FacesMessage msg = new FacesMessage("Exito ", event.getFile().getFileName() + " se subio el archivo.");  
+    FacesContext.getCurrentInstance().addMessage(null, msg);
+    try {    	
+    	copyFile(this.nombreArchivo, event.getFile().getInputstream());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+  }  
+  
+  
+  
 	public void generarFicha(){
 		dao.generarFicha();
 	}
@@ -129,25 +145,25 @@ public class mb_Funcionario {
 	  
   public void copyFile(String fileName, InputStream in) {
   	try {	    
-  		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
-       .getExternalContext().getContext();
-  		String path= ctx.getRealPath("/");    
-      // write the inputStream to a FileOutputStream
-  		System.out.println("pathcopy "+path);
-      //OutputStream out = new FileOutputStream(new File(path + destination + fileName));   
-      
-  		int index=-1;
-  		for (int i=0;i<3;i++){
-  			index = path.indexOf("/",index+1); 
-  		}   
-       
-      String pathbase=path.substring(0, index);
-      String pathcompleto=pathbase+destination+fileName;
-      System.out.println("pathcompleto"+pathcompleto);
+//  		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
+//       .getExternalContext().getContext();
+//  		String path= ctx.getRealPath("/");    
+//      // write the inputStream to a FileOutputStream
+//  		System.out.println("pathcopy "+path);
+//      //OutputStream out = new FileOutputStream(new File(path + destination + fileName));   
+//      
+//  		int index=-1;
+//  		for (int i=0;i<3;i++){
+//  			index = path.indexOf("/",index+1); 
+//  		}   
+//       
+//      String pathbase=path.substring(0, index);
+//      String pathcompleto=pathbase+destination+fileName;
+//      System.out.println("pathcompleto"+pathcompleto);
   		
   		
   		
-  		OutputStream out = new FileOutputStream(new File(pathcompleto));   
+  		OutputStream out = new FileOutputStream(new File(getPathBase()+fileName));   
       
       
       
@@ -164,6 +180,37 @@ public class mb_Funcionario {
      	System.out.println(e.getMessage());
     }
   } 	
+  
+  //retorna el path donde se guardan los archivos esto para linux habria que hacer uno para windows
+  public String getPathBase(){
+  	try {
+  	ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
+        .getExternalContext().getContext();
+   		String path= ctx.getRealPath("/");    
+       // write the inputStream to a FileOutputStream
+   		System.out.println("pathcopy "+path);
+       //OutputStream out = new FileOutputStream(new File(path + destination + fileName));   
+       
+   		int index=-1;
+   		for (int i=0;i<3;i++){
+   			index = path.indexOf("/",index+1); 
+   		}   
+        
+      String pathbase = path.substring(0, index);
+      String pathcompleto=pathbase+destination+this.funSelected.getFuncionarioID()+"/";
+      
+      //File folder = new File("x:\\devtroce\\java"); para windows
+      File folder = new File(pathcompleto);
+      if (!folder.exists()) {
+      	folder.mkdirs();
+      }
+      return pathcompleto;
+  	}
+  	catch(Exception e){
+  		e.printStackTrace();
+  	}
+  	return "";
+  }
   
   //*************Ficha personal*************//
   
@@ -184,6 +231,17 @@ public class mb_Funcionario {
   public void borrarActividad(ActividadAnterior aa){
   	this.funcionarioAdd.getActividadAnteriores().remove(aa);
   }
+  
+  public void agregarActividadInterna(){  	
+  	this.funcionarioAdd.getActividadInterna().add(actividadInterna);
+  	actividadInterna=new ActividadInterna();
+  }
+  
+  public void borrarActividadInterna(ActividadInterna ai){
+  	this.funcionarioAdd.getActividadInterna().remove(ai);
+  }
+  
+
   
   public void agregarCapacitacion(){
   	this.funcionarioAdd.getCapacitaciones().add(this.capacitacion);
@@ -225,6 +283,28 @@ public class mb_Funcionario {
 		 this.urlImpresion=  "/ertec/exportarpdf?"+"&id="+funID+"&tipo=fun";
 		 System.out.println("url impresion ficha "+this.urlImpresion);
 		 return this.urlImpresion;
+	}
+	
+	public String urlImprimirArchivo(){
+		long funID=this.funSelected.getFuncionarioID();
+		if(funID==0){
+			funID =168;
+		} 
+		File file = new File(getPathBase()+nombreArchivo);  
+		if ( file.exists()){
+			this.urlImpresion=  "/ertec/docfunpdf?faces-redirect=true"+"&path="+getPathBase()+this.nombreArchivo;
+			System.out.println("url impresion cedula "+this.urlImpresion);
+			return this.urlImpresion;
+		}else{
+			return "/ertec/noexistearchivo.xhtml";
+		}
+		
+	}
+	
+	public boolean existeArchivo(String nombre){
+    File file = new File(getPathBase()+nombre); 
+    System.out.println("existearchivo: "+getPathBase()+nombre+" "+file.exists());
+		return file.exists();
 	}
 	
 	public String add(){
@@ -480,14 +560,26 @@ public class mb_Funcionario {
      this.file = file;
  }
 
-public Funcionario getFuncionarioAdd() {
-	return funcionarioAdd;
-}
-
-public void setFuncionarioAdd(Funcionario funcionarioAdd) {
-	this.funcionarioAdd = funcionarioAdd;
-}
+	public Funcionario getFuncionarioAdd() {
+		return funcionarioAdd;
+	}
 	
+	public void setFuncionarioAdd(Funcionario funcionarioAdd) {
+		this.funcionarioAdd = funcionarioAdd;
+	}
+	
+	public void fijarNombreArchivo(String nombre){
+		this.nombreArchivo=nombre;
+	}
+
+	public ActividadInterna getActividadInterna() {
+		return actividadInterna;
+	}
+
+	public void setActividadInterna(ActividadInterna actividadInterna) {
+		this.actividadInterna = actividadInterna;
+	}
+
 	
 	
 }

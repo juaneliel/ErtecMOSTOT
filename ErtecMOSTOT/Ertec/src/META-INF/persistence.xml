@@ -3,8 +3,8 @@
 	
 	<persistence-unit name="MOSTOT"  transaction-type="RESOURCE_LOCAL">
 		<class>model.ActividadAnterior</class>
+		<class>model.ActividadInterna</class>
 		<class>model.Adicional</class>
-		<class>model.Area</class>
 		<class>model.Arrendamiento</class>
 		<class>model.Articulo</class>
 		<class>model.Capacitacion</class>
@@ -17,6 +17,7 @@
 		<class>model.DatosGlobale</class>
 		<class>model.DireccionContrato</class>
 		<class>model.Educacion</class>
+		<class>model.FacturacionAutomaticaContratos</class>
 		<class>model.FichaPersonal</class>
 		<class>model.Funcionario</class>
 		<class>model.ManoObra</class>

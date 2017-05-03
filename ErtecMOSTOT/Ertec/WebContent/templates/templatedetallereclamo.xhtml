@@ -26,27 +26,54 @@
                
                
                <h:outputText value="F.Reclamado:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaReclamado}" rendered="#{!mb_Reclamo.habEdiRec}" /> 
-               <p:calendar rendered="#{mb_Reclamo.habEdiRec}" id="fechaReclamado" value="#{mb_Reclamo.reclamoSelected.fechaReclamado}"  required="true"  pattern="dd-MM-yyyy HH:mm" mask="true"/>
+               	<p:calendar  rendered="#{!mb_Reclamo.habEdiRec}"  mindate="#{mb_Reclamo.reclamoSelected.fechaReclamado}" maxdate="#{mb_Reclamo.reclamoSelected.fechaReclamado}" value="#{mb_Reclamo.reclamoSelected.fechaReclamado}" pattern="dd-MM-yyyy HH:mm" mask="true" />
+			        <p:calendar rendered="#{mb_Reclamo.habEdiRec}" id="fechaReclamado" value="#{mb_Reclamo.reclamoSelected.fechaReclamado}"  required="true"  pattern="dd-MM-yyyy HH:mm" mask="true"/>
 		 		
               
                <h:outputText value="Estado:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.estado}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.estado}" rendered="#{!mb_Reclamo.habEdiRec}"/>
+               <p:selectOneMenu id="estado" value="#{mb_Reclamo.reclamoSelected.estado}" style="width:85%" rendered="#{mb_Reclamo.habEdiRec}">
+						<f:selectItem  itemLabel="Pendiente" itemValue="pendiente" />
+						<f:selectItem   itemLabel="Visitado" itemValue="visitado" />
+						<f:selectItem   itemLabel="Anulado" itemValue="anulado" />				
+					</p:selectOneMenu>  
                
                <h:outputText value="F.Visita:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.fechaVisita}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                	<p:calendar  rendered="#{!mb_Reclamo.habEdiRec}"  mindate="#{mb_Reclamo.reclamoSelected.fechaVisita}" maxdate="#{mb_Reclamo.reclamoSelected.fechaVisita}" value="#{mb_Reclamo.reclamoSelected.fechaVisita}" pattern="dd-MM-yyyy HH:mm" mask="true" />
+			       
                <p:calendar rendered="#{mb_Reclamo.habEdiRec}" id="fechavisita" value="#{mb_Reclamo.reclamoSelected.fechaVisita}" pattern="dd-MM-yyyy HH:mm" mask="true"/>
 		 		
 		 		
                
                <h:outputText value="Tecnico:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.funcionario.nombre}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.funcionario.nombre}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:autoComplete id="tecnico" value="#{mb_Reclamo.reclamoSelected.funcionario}" rendered="#{mb_Reclamo.habEdiRec}"
+					 	completeMethod="#{mb_Usuario.completarFuncionario}"  
+						var="theme" itemLabel="#{theme.nombre}" itemValue="#{theme}"
+					 	converter="ConverterFuncionario" forceSelection="false" 
+					  style="float:left !important;margin:0px 0px 3px 0px;"
+					  queryDelay="1000" >
+					    <f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="3">  
+                    <h:outputText value="Area:" />
+                    <h:outputText value="#{theme.area}" />
+ 
+                    <h:outputText value="Telefono:" />
+                    <h:outputText value="#{theme.telefono}" />
+                </h:panelGrid>
+            	</f:facet>		
+					</p:autoComplete>
+               
+               
                
                <h:outputText value="MYR:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.myr}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.myr}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                <p:inputText rendered="#{mb_Reclamo.habEdiRec}" value="#{mb_Reclamo.reclamoSelected.myr}"  id="myr" />
+     
                               
                <h:outputText value="O.R.:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.ordenreparacion}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.ordenreparacion}"  rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                <p:inputText rendered="#{mb_Reclamo.habEdiRec}" value="#{mb_Reclamo.reclamoSelected.ordenreparacion}"  id="or" />
                               
                <h:outputText value="Observaciones:" />
                <h:outputText value="#{mb_Reclamo.reclamoSelected.observaciones}" rendered="#{!mb_Reclamo.habEdiRec}" /> 
@@ -60,23 +87,30 @@
 								 <f:selectItem   itemLabel="NO" itemValue="NO" />
 							 </p:selectOneMenu>
                               
-               <h:outputText value="MYR estado:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.myrEstado}" /> 
-                              
                <h:outputText value="H.Red" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.red}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.red}" rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:inputNumber id="red" value="#{mb_Reclamo.reclamoSelected.red}" emptyValue="0" thousandSeparator=""  rendered="#{mb_Reclamo.habEdiRec}"
+				decimalSeparator="," minValue="0" maxValue="999999"/>
                               
                <h:outputText value="H.Telefono:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.telefonos}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.telefonos}"  rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                <p:inputNumber id="telefono" value="#{mb_Reclamo.reclamoSelected.telefonos}" emptyValue="0" thousandSeparator=""  rendered="#{mb_Reclamo.habEdiRec}"
+				decimalSeparator="," minValue="0" maxValue="999999"/>
                               
                <h:outputText value="H.Energia:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.energia}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.energia}"  rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                <p:inputNumber id="energia" value="#{mb_Reclamo.reclamoSelected.energia}" emptyValue="0" thousandSeparator=""  rendered="#{mb_Reclamo.habEdiRec}"
+				decimalSeparator="," minValue="0" maxValue="999999"/>
                                              
                <h:outputText value="H.Conmutador:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.conmutador}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.conmutador}"  rendered="#{!mb_Reclamo.habEdiRec}"/> 
+               <p:inputNumber id="conmutador" value="#{mb_Reclamo.reclamoSelected.conmutador}" emptyValue="0" thousandSeparator=""  rendered="#{mb_Reclamo.habEdiRec}"
+				decimalSeparator="," minValue="0" maxValue="999999"/> 
                                              
                <h:outputText value="H.Antel:" />
-               <h:outputText value="#{mb_Reclamo.reclamoSelected.antel}" /> 
+               <h:outputText value="#{mb_Reclamo.reclamoSelected.antel}"  rendered="#{!mb_Reclamo.habEdiRec}"/> 
+                <p:inputNumber id="antel" value="#{mb_Reclamo.reclamoSelected.antel}" emptyValue="0" thousandSeparator=""  rendered="#{mb_Reclamo.habEdiRec}"
+				decimalSeparator="," minValue="0" maxValue="999999"/>
 
                <h:outputText value="Contacto:" />
                <h:outputText value="#{mb_Reclamo.reclamoSelected.contacto}" />              

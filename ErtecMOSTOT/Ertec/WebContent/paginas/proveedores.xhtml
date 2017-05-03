@@ -34,7 +34,8 @@
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatableproveedor" fileName="proveedor"   />
+	      <p:dataExporter type="pdf" target="datatableproveedor" fileName="proveedor"  options="#{mb_Usuario.pdfOpt}" preProcessor="#{mb_Usuario.preProcessPDF}" />
+ 
 	    </h:commandLink> 
 		</f:facet>
 		 

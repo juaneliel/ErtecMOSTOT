@@ -30,7 +30,8 @@
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatablevc" fileName="ventacontado"  />
+	      <p:dataExporter type="pdf" target="datatablevc" fileName="ventacontado" options="#{mb_Usuario.pdfOpt}" preProcessor="#{mb_Usuario.preProcessPDF}" />
+ 
 	    </h:commandLink> 
 		</f:facet>
 
@@ -135,10 +136,14 @@
 			</p:cellEditor>
 		</p:column>  
 		
-		<p:column headerText="Codigo" sortBy="#{vc.codigo}"  filterMatchMode="contains" filterBy="#{vc.codigo}">		                
+		<p:column headerText="Vigencia" sortBy="#{vc.vigencia}"  filterMatchMode="contains" filterBy="#{vc.vigencia}">		                
 			<p:cellEditor>
-	      <f:facet name="output"><p:outputLabel value="#{vc.codigo}" /></f:facet>
-	      <f:facet name="input"><p:inputTextarea id="codigo" value="#{vc.codigo}" rows="2"   style="width:100%;heigth:100%"/></f:facet>
+	      <f:facet name="output">
+	      	<p:calendar   id="fechaReclamadoout" mindate="#{vc.vigencia}" maxdate="#{vc.vigencia}" value="#{vc.vigencia}" pattern="dd-MM-yyyy" mask="true" />			
+	      
+	      </f:facet>
+	      <f:facet name="input">	<p:calendar id="fechaReclamadoin" value="#{vc.vigencia}" pattern="dd-MM-yyyy HH:mm" mask="true"/>		 
+ 			</f:facet>
 			</p:cellEditor>
 		</p:column> 
 		

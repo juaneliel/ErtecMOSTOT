@@ -19,8 +19,7 @@ public class ActividadAnterior implements Serializable {
 	private Date hasta;	
 	private String firma;
 	private String puesto;
-	private String causaRetiro;
-	private String sueldo;
+	private String causaRetiro; 
 	private String detalle;
 	private String otros; 
 	public ActividadAnterior() {
@@ -66,12 +65,6 @@ public class ActividadAnterior implements Serializable {
 	}
 	public void setCausaRetiro(String causaRetiro) {
 		this.causaRetiro = causaRetiro;
-	}
-	public String getSueldo() {
-		return sueldo;
-	}
-	public void setSueldo(String sueldo) {
-		this.sueldo = sueldo;
 	}
 	public String getDetalle() {
 		return detalle;

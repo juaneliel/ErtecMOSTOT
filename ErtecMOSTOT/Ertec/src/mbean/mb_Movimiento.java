@@ -41,6 +41,8 @@ public class mb_Movimiento {
 	private boolean editarCliente;
 	private boolean editarCosto;
 	private boolean editarContrato;
+	private Date fechaIni;
+	private Date fechaFin;
 	private int otID;
 	
 	private ArrayList<Movimiento> lista;
@@ -82,6 +84,11 @@ public class mb_Movimiento {
 		editarCotizacion=false;
 		editarCliente=false;
 		
+	}
+	
+	public void movimientosPorFechas(){
+		lista= dao.movimientosPorFechas(this.fechaIni, this.fechaFin);
+    
 	}
 	
 	
@@ -581,6 +588,22 @@ public class mb_Movimiento {
 
 	public void setEditarContrato(boolean editarContrato) {
 		this.editarContrato = editarContrato;
+	}
+
+	public Date getFechaIni() {
+		return fechaIni;
+	}
+
+	public void setFechaIni(Date fechaIni) {
+		this.fechaIni = fechaIni;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
  

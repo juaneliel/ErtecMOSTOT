@@ -6,6 +6,23 @@
  
  
 <ui:composition>
+
+ <h:form  > 	
+ 	<p:panelGrid        columns="3">  
+<p:panelGrid      columns="2"> 		
+		<p:outputLabel for="maskIni" value="Fecha inicial:" />
+<p:calendar id="maskIni" value="#{mb_Movimiento.fechaIni}"  pattern="dd-MM-yyyy" mask="true"  effect="fold" />
+</p:panelGrid>
+<p:panelGrid    columns="2"> 
+<p:outputLabel for="maskFin" value="  Fecha final:"   />
+<p:calendar id="maskFin" value="#{mb_Movimiento.fechaFin}"   pattern="dd-MM-yyyy" mask="true" effect="fold" />
+</p:panelGrid>
+<p:commandButton value="Buscar"   icon="ui-icon-search" id="Buscar" action="#{mb_Movimiento.movimientosPorFechas}"   
+update=":formmovimiento:datatablemovimiento :message"/>
+</p:panelGrid>
+ </h:form>	
+
+
   <h:form id="formmovimiento">
     <p:dataTable var="movimiento" value="#{mb_Movimiento.lista}" id="datatablemovimiento" widgetVar="datatablemovimiento"
 		 selection="#{mb_Movimiento.movSelected}" selectionMode="single" rowKey="#{movimiento.movimientoID}"
@@ -20,11 +37,12 @@
 		<f:facet name="{Exporters}">
 		  <h:commandLink>
 		    <p:graphicImage name="/images/excel.png" width="24"/>
-		    <p:dataExporter type="xls" target="datatablemovimiento" fileName="ot"   />
+		    <p:dataExporter type="xls" target="datatablemovimiento" fileName="movimiento"   />
 		  </h:commandLink>		
 		  <h:commandLink>
 		    <p:graphicImage name="/images/pdf.png" width="24"/>
-		    <p:dataExporter type="pdf" target="datatablemovimiento" fileName="ot"   />
+		    <p:dataExporter type="pdf" target="datatablemovimiento" fileName="movimiento"  options="#{mb_Usuario.pdfOpt}" preProcessor="#{mb_Usuario.preProcessPDF}" />
+ 
 		  </h:commandLink> 
 		</f:facet>
 		 

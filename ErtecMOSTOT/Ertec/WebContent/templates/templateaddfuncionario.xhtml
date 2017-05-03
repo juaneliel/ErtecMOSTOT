@@ -213,10 +213,7 @@
 									    		</p:column>									    		
 									    		<p:column headerText="Cau. Ret."  visible="true" sortBy="#{aa.causaRetiro}"  filterMatchMode="contains" filterBy="#{aa.causaRetiro}">		                
 		  										<p:outputLabel value="#{aa.causaRetiro}" />
-									    		</p:column>	
-									    	   <p:column headerText="Sueldo"  visible="true" sortBy="#{aa.sueldo}"  filterMatchMode="contains" filterBy="#{aa.sueldo}">		                
-		  										<p:outputLabel value="#{aa.sueldo}" />
-									    		</p:column>									    		
+									    		</p:column>								    		
 									    		<p:column headerText="Detalle"  visible="true" sortBy="#{aa.detalle}"  filterMatchMode="contains" filterBy="#{aa.detalle}">		                
 		  										<p:outputLabel value="#{aa.detalle}" />
 									    		</p:column>		
@@ -275,6 +272,72 @@ paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" live
                  			</p:dataTable> 
             </p:panel>
         </p:tab>      
+        
+        
+        
+              <p:tab id="actividadesinternas" title="Actividades internas" rendered="#{mb_Usuario.acceso('AGREGAR','fichapersonal')}" >
+            <p:panel header="Actividades internas">
+                <p:messages /> 		                	
+								    		<p:dataTable id="datatableactividadinterna" value="#{mb_Funcionario.funcionarioAdd.actividadInterna}" var="ai"  emptyMessage="Sin Registros"									
+									    		
+ paginator="true" paginatorPosition="top" rows ="50" resizableColumns="true" liveResize="true" draggableColumns="true" 		 
+		 editable="true" currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}" 
+		 paginatorTemplate="{agregar} {titulo} {CurrentPageReport} {RowsPerPageDropdown}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {vercol}"
+    rowsPerPageTemplate="10,50,100">					
+								    		
+			<f:facet name="{titulo}">
+		        Actividad Interna 		        
+		    </f:facet>
+		 
+		 <f:facet name="{vercol}">   
+		    <p:commandButton id="toggler" type="button" value="Ver Columnas" style="float:right;font-size:12px" icon="ui-icon-calculator" />
+		        <p:columnToggler datasource="datatableactividadinterna" trigger="toggler" />
+		    </f:facet> 
+		 
+		 <f:facet name="{agregar}">    
+		  <p:commandButton style="float:left;font-size:12px" value="Agregar"  onclick="PF('addactividadinterna').show()"   rendered="#{mb_Usuario.acceso('AGREGAR','funcionario')}"/>      
+     </f:facet> 	    		
+									    		<p:column headerText="Fecha"  visible="true" sortBy="#{ai.fecha}"  filterMatchMode="contains" filterBy="#{ai.fecha}">		                
+		  										<p:outputLabel value="#{ai.fecha}" />
+									    		</p:column>
+									    		
+									    		<p:column headerText="Cargo"  visible="true" sortBy="#{ai.cargo}"  filterMatchMode="contains" filterBy="#{ai.cargo}">		                
+		  										<p:outputLabel value="#{ai.cargo}" />
+									    		</p:column>
+									    		
+									    		
+									    		<p:column headerText="Seccion"  visible="true" sortBy="#{ai.seccion}"  filterMatchMode="contains" filterBy="#{ai.seccion}">		                
+		  										<p:outputLabel value="#{ai.seccion}" />
+									    		</p:column>
+									    								
+									    		<p:column headerText="Sueldo"  visible="true" sortBy="#{ai.sueldo}"  filterMatchMode="contains" filterBy="#{ai.sueldo}">		                
+		  										<p:outputLabel value="#{ai.sueldo}" />
+									    		</p:column>
+									    								
+									    		<p:column headerText="Comision"  visible="true" sortBy="#{ai.comision}"  filterMatchMode="contains" filterBy="#{ai.comision}">		                
+		  										<p:outputLabel value="#{ai.comision}" />
+									    		</p:column>									    								
+									    		
+													<p:column headerText="Otros"  visible="true" sortBy="#{ai.otros}"  filterMatchMode="contains" filterBy="#{ai.otros}">		                
+		  										<p:outputLabel value="#{ai.otros}" />
+									    		</p:column>
+									    		
+													<p:column headerText="Detalle"  visible="true" sortBy="#{ai.detalle}"  filterMatchMode="contains" filterBy="#{ai.detalle}">		                
+		  										<p:outputLabel value="#{ai.detalle}" />
+									    		</p:column>						
+									    										    		
+									    		<p:column headerText="" style="width:10px">		     
+		                      <p:commandLink actionListener="#{mb_Funcionario.borrarActividadInterna(ai)}" update="datatableactividadinterna message" >
+		                       <span class="ui-icon ui-icon-trash"></span>
+   												</p:commandLink>  		                     
+		                      </p:column>										    		
+								    		</p:dataTable>              
+                
+            </p:panel>
+        </p:tab>
+        
+        
+        
         
         <p:tab id="confirmacion" title="Confirmacion">
             <p:panel header="Confirmacion">

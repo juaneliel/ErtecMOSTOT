@@ -1,5 +1,4 @@
-
-
+import java.io.FileInputStream;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,14 +20,10 @@ import util.ExportarOTPDF;
 
 
 
-@WebServlet("/otapdf")
-public class PruebaServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public PruebaServlet() {
+@WebServlet("/docfunpdf")
+public class ServletDocFuncionario extends HttpServlet {
+	private static final long serialVersionUID = 1L; 
+    public ServletDocFuncionario() {
         super();
     }
 
@@ -37,26 +32,23 @@ public class PruebaServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
       response.setContentType("application/pdf");
-//     try {
-//          //request.getParameter("otID");
-//        
-//          // step 1
-//          Document document = new Document();
-//          // step 2
-//          PdfWriter.getInstance(document, response.getOutputStream());
-//          // step 3
-//          document.open();
-//          // step 4
-//          document.add(new Paragraph("Hello World"));
-//          document.add(new Paragraph(new Date().toString()));
-//          // step 5
-//          document.close(); 
-//      } catch (DocumentException de) {
-//          throw new IOException(de.getMessage());
-//      } 
-    String idOT=request.getParameter("otID");
-    System.out.println(idOT);
-    ExportarOTPDF.ExportarPDF(Integer.parseInt(idOT),response.getOutputStream());
+      
+      //corregir la direccion de la carpeta, verificar si no existe crearla, y catchear si no halla
+      //el archivo
+     try {
+       String path=request.getParameter("path"); 
+    	 FileInputStream ficheroInput = new FileInputStream(path);
+    	 int tamanoInput = ficheroInput.available();
+    	 byte[] datosPDF = new byte[tamanoInput];
+    	 ficheroInput.read( datosPDF, 0, tamanoInput);
+    	 response.setHeader("Content-disposition","inline; filename=Exportar archivo funcionario" );
+    	 response.setContentType("application/pdf");
+    	 response.setContentLength(tamanoInput);
+    	 response.getOutputStream().write(datosPDF);
+    	 ficheroInput.close();
+      } catch (Exception de) {
+          throw new IOException(de.getMessage());
+      }  
 	}
 
 	/**

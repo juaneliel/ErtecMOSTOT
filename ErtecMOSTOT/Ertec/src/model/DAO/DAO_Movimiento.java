@@ -546,6 +546,46 @@ public class DAO_Movimiento {
     }  
     return salida;    
 	}
+	
+	public ArrayList<Movimiento> movimientosPorFechas(Date fechaIni, Date fechaFin){
+		ArrayList<Movimiento> salida=new ArrayList<Movimiento>();
+	  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	  String fi;
+	  String ff;
+		String consulta="Select mov from Movimiento mov "; 
+		 
+	  if (fechaIni!=null){
+	  	fi = formatter.format(fechaIni);
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+="where fecha BETWEEN '" +
+	  				fi + "' AND '" + ff + "'" ;
+	  	}
+	  	else{
+	  		consulta+=" where fecha >= '"+ fi+"'" ;
+	  	}
+	  }
+	  else{
+	  	if(fechaFin!=null){
+	  		ff = formatter.format(fechaFin);
+	  		consulta+=" where fecha <= '"+ ff+"'" ;
+	  	}
+	  }
+		EntityManager em=JpaUtil.getEntityManager();
+		TypedQuery<Movimiento> query= em.createQuery(consulta, Movimiento.class);
+		try{
+			System.out.println(">>>consulta>"+ consulta);
+			salida= (ArrayList<Movimiento>) query.getResultList();
+		}finally{ 
+	  	  if(em!=null ){
+				  em.close();
+			  }		
+		}
+		
+		System.out.println(">>>filtrado por fechas: "+salida.size());
+		return salida;
+	}
+	
 }
 	
 //	public ArrayList<Codigo> getListaCodigos(){

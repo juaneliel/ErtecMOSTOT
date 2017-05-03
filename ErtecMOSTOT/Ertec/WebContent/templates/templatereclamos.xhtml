@@ -23,12 +23,13 @@
 		 		  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatablereclamo" fileName="ot"   />
+	      <p:dataExporter type="xls" target="datatablereclamo" fileName="reclamo"   />
 	    </h:commandLink>
 	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatablereclamo" fileName="ot"   />
+	      <p:dataExporter type="pdf" target="datatablereclamo" fileName="reclamo"  options="#{mb_Usuario.pdfOpt}" preProcessor="#{mb_Usuario.preProcessPDF}" />
+ 
 	    </h:commandLink> 
 		</f:facet>
 		 
@@ -44,14 +45,14 @@
 		 
 		 <f:facet name="{vercol}">   
 		     <p:commandButton id="toggler" type="button" value="Elegir Columnas" style="float:right" icon="ui-icon-calculator" />
-			<p:columnToggler datasource="datatablereclamo" trigger="toggler" >
-		  	<p:ajax event="toggle" listener="#{mb_Reclamo.onToggle}" />
+			<p:columnToggler datasource="datatablereclamo" trigger="toggler"  >
+		  	<p:ajax event="toggle" listener="#{mb_Reclamo.onToggle}" update="@parent" />
 			</p:columnToggler>
 		    </f:facet> 
   
    
 				 
-		<p:ajax event="rowEdit" listener="#{mb_Reclamo.editReclamo}" update="message reclamo" />	  
+		<p:ajax event="rowEdit"  listener="#{mb_Reclamo.editReclamo}" update="message reclamo" />	  
 	 
 		   <p:column exportable="false" headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','reclamo')}">				
 					<p:rowEditor>
@@ -59,23 +60,23 @@
        </p:column>
   
 		 
-		<p:column headerText="Id" sortBy="#{reclamo.id}" visible="#{mb_Reclamo.list[0]}"  filterMatchMode="startsWith" filterBy="#{reclamo.id}">
+		<p:column headerText="Id" sortBy="#{reclamo.id}" exportable="#{mb_Reclamo.list[1]}"  visible="#{mb_Reclamo.list[1]}"  filterMatchMode="startsWith" filterBy="#{reclamo.id}">
 			<h:outputText  value="#{reclamo.id}"/>
 		</p:column>
 				 
-		<p:column headerText="Cliente"  visible="#{mb_Reclamo.list[1]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
+		<p:column headerText="Cliente" exportable="#{mb_Reclamo.list[2]}"  visible="#{mb_Reclamo.list[2]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
 		 <h:outputText value="#{reclamo.nombreCliente}" />  
 		</p:column> 
-
-		<p:column headerText="Equipo"  visible="#{mb_Reclamo.list[1]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
+		
+		<p:column headerText="Equipo" exportable="#{mb_Reclamo.list[3]}"  visible="#{mb_Reclamo.list[3]}" style="min-width:120px;font-family: Times;font-size:12px" sortBy="#{reclamo.nombreCliente}"  filterMatchMode="contains" filterBy="#{reclamo.nombreCliente}">		                
 		 <h:outputText value="#{reclamo.equipo}"  />  
 		</p:column> 
 
-		<p:column headerText="Codigo" visible="#{mb_Reclamo.list[2]}" sortBy="#{reclamo.codigo}"  filterMatchMode="contains" filterBy="#{reclamo.codigo}">		                
+		<p:column headerText="Codigo" exportable="#{mb_Reclamo.list[4]}"  visible="#{mb_Reclamo.list[4]}" sortBy="#{reclamo.codigo}"  filterMatchMode="contains" filterBy="#{reclamo.codigo}">		                
 		<h:outputText value="#{reclamo.codigo}" />
 		</p:column> 
 
-	 	<p:column headerText="Reclamo" visible="#{mb_Reclamo.list[3]}" sortBy="#{reclamo.reclamo}"   filterMatchMode="contains" filterBy="#{reclamo.reclamo}">		                
+	 	<p:column headerText="Reclamo" exportable="#{mb_Reclamo.list[5]}"  visible="#{mb_Reclamo.list[5]}" sortBy="#{reclamo.reclamo}"   filterMatchMode="contains" filterBy="#{reclamo.reclamo}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.reclamo}" /></f:facet>
 	    	<f:facet name="input">
@@ -88,7 +89,7 @@
 		 
 		
   
-  	<p:column headerText="F.Reclamado" visible="#{mb_Reclamo.list[4]}" sortBy="#{reclamo.fechaReclamado}"  filterMatchMode="contains" filterBy="#{reclamo.fechaReclamado}">		                
+  	<p:column headerText="F.Reclamado" exportable="#{mb_Reclamo.list[6]}"  visible="#{mb_Reclamo.list[6]}" sortBy="#{reclamo.fechaReclamado}"  filterMatchMode="contains" filterBy="#{reclamo.fechaReclamado}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<p:calendar   id="fechaReclamadoout" mindate="#{reclamo.fechaReclamado}" maxdate="#{reclamo.fechaReclamado}" value="#{reclamo.fechaReclamado}" pattern="dd-MM-yyyy HH:mm" mask="true" />
@@ -99,7 +100,7 @@
 			</p:cellEditor>
 		</p:column>
   
-		<p:column headerText="Estado"  visible="#{mb_Reclamo.list[5]}" sortBy="#{reclamo.estado}"  filterMatchMode="contains" filterBy="#{reclamo.estado}">		                
+		<p:column headerText="Estado"  exportable="#{mb_Reclamo.list[7]}"  visible="#{mb_Reclamo.list[7]}" sortBy="#{reclamo.estado}"  filterMatchMode="contains" filterBy="#{reclamo.estado}">		                
 			<p:cellEditor>
 	     	<f:facet name="output"><h:outputText value="#{reclamo.estado}" /></f:facet>
 	   		<f:facet name="input">
@@ -112,7 +113,7 @@
 	   	</p:cellEditor>
 		</p:column> 
   
-		<p:column headerText="F.Visita" visible="#{mb_Reclamo.list[6]}" sortBy="#{reclamo.fechaVisita}"  filterMatchMode="contains" filterBy="#{reclamo.fechaVisita}">		                
+		<p:column headerText="F.Visita" exportable="#{mb_Reclamo.list[8]}"  visible="#{mb_Reclamo.list[8]}" sortBy="#{reclamo.fechaVisita}"  filterMatchMode="contains" filterBy="#{reclamo.fechaVisita}">		                
 			<p:cellEditor>
 				<f:facet name="output">
 					<p:calendar   id="fechaVisitaout" mindate="#{reclamo.fechaVisita}" maxdate="#{reclamo.fechaVisita}" value="#{reclamo.fechaVisita}" pattern="dd-MM-yyyy HH:mm" mask="true" />
@@ -123,7 +124,7 @@
 			</p:cellEditor>
 		</p:column>
   
-		<p:column headerText="Tecnico"  visible="#{mb_Reclamo.list[7]}" style="min-width:120px;" sortBy="#{reclamo.funcionario.nombre}"  filterMatchMode="contains" filterBy="#{reclamo.funcionario.nombre}">		                
+		<p:column headerText="Tecnico"  exportable="#{mb_Reclamo.list[9]}"  visible="#{mb_Reclamo.list[9]}" style="min-width:120px;" sortBy="#{reclamo.funcionario.nombre}"  filterMatchMode="contains" filterBy="#{reclamo.funcionario.nombre}">		                
 		   <p:cellEditor>
 		   	<f:facet name="output"><h:outputText value="#{reclamo.funcionario.nombre}" /></f:facet>
 		    <f:facet name="input">
@@ -149,21 +150,21 @@
 			</p:cellEditor>
 		</p:column>
   
-		<p:column headerText="MYR" visible="#{mb_Reclamo.list[8]}" sortBy="#{reclamo.myr}"  filterMatchMode="contains" filterBy="#{reclamo.myr}">		                
+		<p:column headerText="MYR" exportable="#{mb_Reclamo.list[10]}"  visible="#{mb_Reclamo.list[10]}" sortBy="#{reclamo.myr}"  filterMatchMode="contains" filterBy="#{reclamo.myr}">		                
 			<p:cellEditor>
        	<f:facet name="output"><h:outputText value="#{reclamo.myr}" /></f:facet>
       	<f:facet name="input"><p:inputText id="myr" value="#{reclamo.myr}" style="width:100%"/></f:facet>
 			</p:cellEditor>
 		</p:column> 
   
-   	<p:column headerText="O.R." visible="#{mb_Reclamo.list[9]}" sortBy="#{reclamo.ordenreparacion}"  filterMatchMode="contains" filterBy="#{reclamo.ordenreparacion}">		                
+   	<p:column headerText="O.R." exportable="#{mb_Reclamo.list[11]}"  visible="#{mb_Reclamo.list[11]}" sortBy="#{reclamo.ordenreparacion}"  filterMatchMode="contains" filterBy="#{reclamo.ordenreparacion}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.ordenreparacion}" /></f:facet>
 	    	<f:facet name="input"><p:inputText id="ordenreparacion" value="#{reclamo.ordenreparacion}" /></f:facet>
    		</p:cellEditor>
 		</p:column>  
   
-	 	<p:column headerText="Obs." visible="#{mb_Reclamo.list[10]}" sortBy="#{reclamo.observaciones}"  filterMatchMode="contains" filterBy="#{reclamo.observaciones}">		                
+	 	<p:column headerText="Obs." exportable="#{mb_Reclamo.list[12]}"  visible="#{mb_Reclamo.list[12]}" sortBy="#{reclamo.observaciones}"  filterMatchMode="contains" filterBy="#{reclamo.observaciones}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.observaciones}" /></f:facet>
 	    	<f:facet name="input"><p:inputText id="observaciones" value="#{reclamo.observaciones}" /></f:facet>
@@ -171,7 +172,7 @@
 		</p:column> 
   
   
- 		<p:column headerText="Urgente" visible="#{mb_Reclamo.list[11]}" sortBy="#{reclamo.urgente}"  filterMatchMode="contains" filterBy="#{reclamo.urgente}">		                
+ 		<p:column headerText="Urgente" exportable="#{mb_Reclamo.list[13]}"  visible="#{mb_Reclamo.list[13]}" sortBy="#{reclamo.urgente}"  filterMatchMode="contains" filterBy="#{reclamo.urgente}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.urgente}" /></f:facet>
 	    	<f:facet name="input">  
@@ -183,54 +184,52 @@
    		</p:cellEditor>
 		</p:column>   
    
-  
- 		<p:column headerText="E.MYR" visible="#{mb_Reclamo.list[12]}" sortBy="#{reclamo.myrEstado}"  filterMatchMode="contains" filterBy="#{reclamo.myrEstado}">		                
-			<p:cellEditor>
-				<f:facet name="output"><h:outputText value="#{reclamo.myrEstado}" /></f:facet>
-	    	<f:facet name="input">
-	    		<p:selectOneMenu id="myrEstado" value="#{reclamo.myrEstado}" style="width:85%">
-						<f:selectItem  itemLabel="Pendiente" itemValue="pen" />
-						<f:selectItem   itemLabel="Liquidado" itemValue="liq" /> 		
-					</p:selectOneMenu> 
-	    	</f:facet>
-   		</p:cellEditor>
-		</p:column>  
-		
-
-
-		<p:column headerText="Antel" visible="#{mb_Reclamo.list[18]}" sortBy="#{reclamo.antel}"  filterMatchMode="contains" filterBy="#{reclamo.antel}">		                
+ 
+		<p:column headerText="Antel" exportable="#{mb_Reclamo.list[14]}"  visible="#{mb_Reclamo.list[14]}" sortBy="#{reclamo.antel}"  filterMatchMode="contains" filterBy="#{reclamo.antel}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{reclamo.antel}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="antel" value="#{reclamo.antel}"  /></f:facet>
+	       		<f:facet name="input"> 
+	       		<p:inputNumber id="antel" value="#{reclamo.antel}" emptyValue="0" thousandSeparator=""
+				decimalSeparator="," minValue="0" maxValue="999999"/>
+	       		</f:facet>
         	</p:cellEditor>
 		</p:column> 
 		  
-		
-					<p:column headerText="Conmutador" visible="#{mb_Reclamo.list[17]}" sortBy="#{reclamo.conmutador}"  filterMatchMode="contains" filterBy="#{reclamo.conmutador}">		                
+		<p:column headerText="Conmutador" exportable="#{mb_Reclamo.list[15]}"  visible="#{mb_Reclamo.list[15]}" sortBy="#{reclamo.conmutador}"  filterMatchMode="contains" filterBy="#{reclamo.conmutador}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{reclamo.conmutador}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="conmutador" value="#{reclamo.conmutador}"  /></f:facet>
+	       		<f:facet name="input">
+	       	  <p:inputNumber id="conmutador" value="#{reclamo.conmutador}" emptyValue="0" thousandSeparator=""
+				decimalSeparator="," minValue="0" maxValue="999999"/>
+	       		</f:facet>
         	</p:cellEditor>
 		</p:column>  
 		
 		
-			<p:column headerText="Energia" visible="#{mb_Reclamo.list[15]}" sortBy="#{reclamo.energia}"  filterMatchMode="contains" filterBy="#{reclamo.energia}">		                
+			<p:column headerText="Energia" exportable="#{mb_Reclamo.list[16]}"  visible="#{mb_Reclamo.list[16]}" sortBy="#{reclamo.energia}"  filterMatchMode="contains" filterBy="#{reclamo.energia}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{reclamo.energia}" /></f:facet>
-	       		<f:facet name="input"><p:inputText id="energia" value="#{reclamo.energia}"  /></f:facet>
+	       		<f:facet name="input"> 
+	       		<p:inputNumber id="energia" value="#{reclamo.energia}" emptyValue="0" thousandSeparator=""
+				decimalSeparator="," minValue="0" maxValue="999999"/>
+	       		
+	       		</f:facet>
         	</p:cellEditor>
 		</p:column> 
 		
 		
 
-	 	<p:column headerText="Red" sortBy="#{reclamo.red}" visible="#{mb_Reclamo.list[13]}" filterMatchMode="contains" filterBy="#{reclamo.red}">		                
+	 	<p:column headerText="Red" sortBy="#{reclamo.red}" exportable="#{mb_Reclamo.list[17]}"  visible="#{mb_Reclamo.list[17]}" filterMatchMode="contains" filterBy="#{reclamo.red}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.red}" /></f:facet>
-	    	<f:facet name="input"><p:inputText id="red" value="#{reclamo.red}" /></f:facet>
+	    	<f:facet name="input">	    	
+	       		<p:inputNumber id="red" value="#{reclamo.red}" emptyValue="0" thousandSeparator=""
+				decimalSeparator="," minValue="0" maxValue="999999"/>	    	
+	    	</f:facet>
    		</p:cellEditor>
 		</p:column>   
 
-	 	<p:column headerText="Tel" visible="#{mb_Reclamo.list[14]}" sortBy="#{reclamo.telefonos}"  filterMatchMode="contains" filterBy="#{reclamo.telefonos}">		                
+	 	<p:column headerText="Tel" exportable="#{mb_Reclamo.list[18]}"  visible="#{mb_Reclamo.list[18]}" sortBy="#{reclamo.telefonos}"  filterMatchMode="contains" filterBy="#{reclamo.telefonos}">		                
 			<p:cellEditor>
 				<f:facet name="output"><h:outputText value="#{reclamo.telefonos}" /></f:facet>
 	    	<f:facet name="input"><p:inputText id="telefonos" value="#{reclamo.telefonos}"  /></f:facet>
@@ -242,7 +241,7 @@
 
 
 
-	<p:column headerText="Contacto" visible="#{mb_Reclamo.list[16]}" sortBy="#{reclamo.contacto}"  filterMatchMode="contains" filterBy="#{reclamo.contacto}">		                
+	<p:column headerText="Contacto" exportable="#{mb_Reclamo.list[19]}"  visible="#{mb_Reclamo.list[19]}" sortBy="#{reclamo.contacto}"  filterMatchMode="contains" filterBy="#{reclamo.contacto}">		                
 			<p:cellEditor>
 	        	<f:facet name="output"><h:outputText value="#{reclamo.contacto}" /></f:facet>
 	       		<f:facet name="input"><p:inputText id="contacto" value="#{reclamo.contacto}" /></f:facet>

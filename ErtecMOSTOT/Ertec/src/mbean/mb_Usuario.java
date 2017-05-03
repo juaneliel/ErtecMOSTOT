@@ -2,10 +2,20 @@ package mbean;
 
 
 import com.lowagie.text.BadElementException;
+
+
+
+
+
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,10 +30,12 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor;  
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +55,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.component.export.PDFOptions;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
@@ -158,6 +171,7 @@ public class mb_Usuario {
 	 
   @PostConstruct  
   public void init(){
+    customizationOptions();
     initViewFuncionarios();
     recargarLista();
     FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale("es"));
@@ -254,16 +268,7 @@ public class mb_Usuario {
   public void recargarLista(){
   	this.lista=dao.getLista();
   }
-  
-  public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
-  	 Document pdf = (Document) document;
-     pdf.setPageSize(PageSize.A4);
-    
-     pdf.open();
-     pdf.addTitle("Funcionario");
-}
- 
-  
+
   
   
   public String updateClave(){
@@ -597,6 +602,53 @@ public class mb_Usuario {
 
 	public void setListaVCOBJ(ArrayList<VentaContado> listaVCOBJ) {
 		this.listaVCOBJ = listaVCOBJ;
+	}
+	
+	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {
+	 
+			try
+			{
+			System.out.println("working on pdf");
+			Document pdf = (Document) document;
+			pdf.setPageSize(PageSize.A4);
+			pdf.setMargins(-40,-40,30,30); 
+
+//			Phrase phraseBefore = new Phrase("                       Fecha "+new Date());
+//			Phrase phraseAfter = new Phrase("dale");
+			
+//			HeaderFooter header = new HeaderFooter(phraseBefore, false);
+//			HeaderFooter footer = new HeaderFooter(phraseAfter, false);			
+//			pdf.setHeader(header);
+//			pdf.setFooter(footer);
+			pdf.open();
+
+//			pdf.add(phraseBefore);
+			
+			
+			 
+			} catch (Exception e)
+			{
+			System.out.println(e.toString());
+			}
+
+			
+}
+	 private PDFOptions pdfOpt;
+	 public void customizationOptions() {       
+    pdfOpt = new PDFOptions();
+    pdfOpt.setFacetBgColor("#eeeeee");
+    pdfOpt.setFacetFontColor("#000000");
+    pdfOpt.setFacetFontSize("8");
+    pdfOpt.setFacetFontStyle("BOLD");
+    pdfOpt.setCellFontSize("7");
+}
+
+	public PDFOptions getPdfOpt() {
+		return pdfOpt;
+	}
+
+	public void setPdfOpt(PDFOptions pdfOpt) {
+		this.pdfOpt = pdfOpt;
 	}
 	
 }

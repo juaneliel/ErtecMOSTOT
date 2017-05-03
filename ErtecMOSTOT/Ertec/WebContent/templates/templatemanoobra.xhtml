@@ -38,11 +38,12 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
     	  <f:facet name="{Exporters}">
 	    <h:commandLink>
 	      <p:graphicImage name="/images/excel.png" width="24"/>
-	      <p:dataExporter type="xls" target="datatablemanodeobra" fileName="ot"   />
+	      <p:dataExporter type="xls" target="datatablemanodeobra" fileName="mano_obra"   />
 	    </h:commandLink>	
 	    <h:commandLink>
 	      <p:graphicImage name="/images/pdf.png" width="24"/>
-	      <p:dataExporter type="pdf" target="datatablemanodeobra" fileName="ot"   />
+	      <p:dataExporter type="pdf" target="datatablemanodeobra" fileName="mano_obra"  options="#{mb_Usuario.pdfOpt}" preProcessor="#{mb_Usuario.preProcessPDF}" />
+ 
 	    </h:commandLink> 
 		</f:facet>
 		 
@@ -62,10 +63,8 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 		 </f:facet> 
     
     
-    <p:ajax event="rowEdit" listener="#{mb_ManoObra.onRowEdit}" update="message" />
-		 
-	
-		 		   <p:column toggleable="false" headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','manodeobra')}" exportable="true" >				
+    <p:ajax event="rowEdit" listener="#{mb_ManoObra.onRowEdit}" update="message" />	
+		 		   <p:column toggleable="false" headerText=""  style = "width:0px" rendered="#{mb_Usuario.acceso('EDITAR','manodeobra')}" exportable="false" >				
 					<p:rowEditor >
 					</p:rowEditor>									
 		    </p:column>
@@ -155,7 +154,8 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
     		<p:column headerText="Total Horas" sortBy="#{mo.totalHora}" style = "width:50px" filterMatchMode="contains" filterBy="#{mo.totalHora}">		                
 		   <p:cellEditor>
 		         <f:facet name="output"><p:outputLabel value="#{mo.totalHora}" /></f:facet>
-		         <f:facet name="input"><p:inputText id="total" value="#{mo.totalHora}" style="width:100%"/></f:facet>
+		         <f:facet name="input"><p:inputNumber id="total" value="#{mo.totalHora}" emptyValue="0" thousandSeparator="" 
+				decimalSeparator="," minValue="0" maxValue="999999"/></f:facet>
 			</p:cellEditor>
 		</p:column>
     
@@ -170,7 +170,7 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
 		    		 
 
 		     
-		    <p:column toggleable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','manodeobra')}">	
+		    <p:column exportable="false" headerText="Bor"  style = "width:20px"  rendered="#{mb_Usuario.acceso('BORRAR','manodeobra')}">	
 			<p:commandLink actionListener="#{mb_ManoObra.delete(mo)}"   	
    	update="datatablemanodeobra message" >
         <p:confirm header="Confirmacion" message="Borrar Mano de Obra de #{mo.funcionario.nombre}?" icon="ui-icon-alert" />
@@ -254,7 +254,8 @@ update=":formmanodeobra:datatablemanodeobra :message"/>
          
 
 			<p:outputLabel value="Total de horas:" for="totalHora" /> 
-			<p:inputNumber  id="totalHora" value="#{mb_ManoObra.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="" />  
+			<p:inputNumber  id="totalHora" value="#{mb_ManoObra.manodeobraAdd.totalHora}" required="true" decimalSeparator="," thousandSeparator="" 
+			 minValue="0" maxValue="999999" />  
 						
 			<p:commandButton value="Agregar" actionListener="#{mb_ManoObra.add}"  oncomplete="handleAddMORequest(xhr, status, args)"
 			update="@([id$=formmanodeobra]) message" />	

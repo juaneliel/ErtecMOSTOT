@@ -1,5 +1,16 @@
 package mbean;
 
+ 
+
+
+
+
+
+
+
+
+
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +25,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.PDFOptions;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
@@ -75,7 +87,7 @@ private int tipocliente=0;
   public void init(){
     this.recargar();
     list = Arrays.asList(true, true, true, true, true,true, true, true, true, true, true,
-        true, false, false, false, false, true, false, false);
+        true, false, false, false, false, false, false, false, false, false, false);
     
   } 
   
@@ -260,6 +272,7 @@ private int tipocliente=0;
   
   public void onToggle(ToggleEvent e) {
     list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
+    System.out.println("lista"+list);
   }
   
   public ArrayList<Reclamo> getLista() {
@@ -371,6 +384,8 @@ private int tipocliente=0;
 	public void setListavc(ArrayList<VentaContado> listavc) {
 		this.listavc = listavc;
 	}
+	
+
 	
 	
 }
